@@ -33,7 +33,7 @@ getaddrinfo()，freeaddrinfo()，gai_strerror()：
 * Glibc 2.21和更早版本：_POSIX_C_SOURCE
 
 # 3 说明 
-## 2.1 基本说明
+
 给定用于标识Internet主机和服务的++node++和++service++，**getaddrinfo**()返回一个或多个addrinfo结构体，每个结构体都包含一个可以在**bind**(2)和**connect**(2)中指定的Internet地址。 **getaddrinfo**()函数将**gethostbyname**(3)和**getservbyname**(3)函数提供的功能组合到一个接口中，但是与后面的函数不同，**getaddrinfo**()是可重入的，并允许程序消除IPv4-vs-IPv6依赖性。
 
 **getaddrinfo**()使用的++addrinfo++结构体包含以下字段：
@@ -92,7 +92,7 @@ struct addrinfo {
 
 freeaddrinfo()函数释放为动态分配的链表res分配的内存。
 	   
-## 2.1 国际化域名的getaddrinfo扩展
+## 3.1 国际化域名的getaddrinfo扩展
 从glibc 2.3.4开始，对getaddrinfo()进行了扩展，以选择性地允许传入和传出的主机名与国际化域名(IDN)格式进行透明转换(请参阅RFC 3490，应用程序中的国际化域名(IDNA)) 。 定义了四个新标志：
  
  **AI_IND** 
@@ -109,7 +109,7 @@ freeaddrinfo()函数释放为动态分配的链表res分配的内存。
 
 设置这些标志将启用分别用于IDNA处理的IDNA_ALLOW_UNASSIGNED(允许未分配的Unicode代码点) 和IDNA_USE_STD3_ASCII_RULES(检查输出以确保它是符合STD3的主机名)标志。
  
-# 3 返回值
+# 4 返回值
 **getaddrinfo** 成功返回0，失败返回错误码。如下：
 
 **EAI_ADDRFAMILY** 指定的网络主机在请求的地址族中没有任何网络地址。
@@ -137,10 +137,10 @@ freeaddrinfo()函数释放为动态分配的链表res分配的内存。
 
 **gai_strerror**()英语再将错误码转为字符串，适用于错误报告。
 
-# 4 文件
+# 5 文件
 `/etc/gai.conf`
 
-# 5 属性
+# 6 属性
 对本节使用的术语，请看**attributes**(7)。
 
 |接口|属性|值|
@@ -148,10 +148,10 @@ freeaddrinfo()函数释放为动态分配的链表res分配的内存。
 |getaddrinfo()|线程安全|MT_Safe  env local|
 |freeaddrinfo()<br />gai_strerror|线程安全|MT-Safe|
 
-# 6 遵守标准
+# 7 遵守标准
 POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
 
-# 7 注意
+# 8 注意
 **getaddrinfo**()支持用于指定IPv6作用域ID的++address％scope-id++表示法。
 
 自glibc 2.3.3起，**AI_ADDRCONFIG，AI_ALL和AI_V4MAPPED**可用。 自glibc 2.3.4起**AI_NUMERICSERV**可用。
@@ -159,7 +159,7 @@ POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
 根据POSIX.1，将++hints++指定为NULL应该会使++ai_flags++假定为0。在这种情况下，GNU C库假定值为(**AI_V4MAPPED | AI_ADDRCONFIG**)，因为该值被认为是对规范的改进。
 
 
-# 8 示例
+# 9 示例
 以下程序演示了getaddrinfo()，gai_strerror()，freeaddrinfo()和getnameinfo(3)的用法。 这个程序是UDP数据报的回显服务器和客户端。
 
 服务端
@@ -352,10 +352,10 @@ POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
        }
 ```
 
-# 8 另请参阅
+# 10 另请参阅
 **getaddrinfo_a**(3), **gethostbyname**(3), **getnameinfo**(3), **inet**(3), **gai.conf**(5), **hostname**(7), **ip**(7)
 
-# 9 版权
+# 11 版权
 
 该页面是Linux手册页项目4.15版的一部分。 可以在<https://www.kernel.org/doc/man-pages/>上找到该项目的描述，有关报告错误的信息以及此页面的最新版本。
 
