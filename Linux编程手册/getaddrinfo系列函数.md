@@ -32,7 +32,7 @@ getaddrinfo()，freeaddrinfo()，gai_strerror()：
 * 从glibc 2.22开始：_POSIX_C_SOURCE> = 200112L
 * Glibc 2.21和更早版本：_POSIX_C_SOURCE
 
-# 2 说明 
+# 3 说明 
 ## 2.1 基本说明
 给定用于标识Internet主机和服务的++node++和++service++，**getaddrinfo**()返回一个或多个addrinfo结构体，每个结构体都包含一个可以在**bind**(2)和**connect**(2)中指定的Internet地址。 **getaddrinfo**()函数将**gethostbyname**(3)和**getservbyname**(3)函数提供的功能组合到一个接口中，但是与后面的函数不同，**getaddrinfo**()是可重入的，并允许程序消除IPv4-vs-IPv6依赖性。
 
