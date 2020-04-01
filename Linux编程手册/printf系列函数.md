@@ -44,11 +44,11 @@ dprintf(), vdprintf():
 &emsp;&emsp;&emsp;&emsp;_GNU_SOURCE
 
 # 3 说明
-**printf**()系列中的函数根据如下所述的格式`format`产生输出。函数**printf**()和**vprintf**()将输出写入标准输出流`stdout`。 **fprintf**()和**vfprintf**()将输出写入给定的输出流`stream`； **sprintf**()，**snprintf**()，**vsprintf**()和**vsnprintf**()写入字符串`str`。
+**printf**()系列中的函数根据如下所述的格式<u>format</u>产生输出。函数**printf**()和**vprintf**()将输出写入标准输出流<u>stdout</u>。 **fprintf**()和**vfprintf**()将输出写入给定的输出流<u>stream</u>； **sprintf**()，**snprintf**()，**vsprintf**()和**vsnprintf**()写入字符串<u>str</u>。
 
- 函数**dprintf**()与**fprintf**()相同，只不过它输出到文件描述符`fd`而不是标标准I/O流。
- 
-函数**snprintf**()和**vsnprintf**()最多将`size`大小的字节（包括终止的空字节（'\0'））写入str。
+ 函数**dprintf**()与**fprintf**()相同，只不过它输出到文件描述符<u>fd</u>`而不是标标准I/O流。
+
+函数**snprintf**()和**vsnprintf**()最多将<u>size</u>大小的字节（包括终止的空字节（'\0'））写入str。
 
 函数**vprintf**()，**vfprintf**()，**vdprintf**()，**vsprintf**()，**vsnprintf**()分别等效于函数**printf**()，**fprintf**()，**dprintf**()，**sprintf**()，**snprintf**()，除了使用`va_list`而不是可变数量的参数来调用它们之外。 这些函数不调用`va_end`宏。 因为它们调用`va_arg`宏，所以在调用这些函数之后，`ap`的值是不确定的。 参见stdarg（3）。
 
