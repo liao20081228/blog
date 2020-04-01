@@ -12,7 +12,6 @@ tags: Linux编程手册
 
 # 1 名字
 printf, fprintf, dprintf, sprintf, snprintf, vprintf, vfprintf, vdprintf, vsprintf, vsnprintf——格式化输出转换
-
 # 2 概述
 ```c
 #include <stdio.h>
@@ -46,11 +45,11 @@ dprintf(), vdprintf():
 # 3 说明
 **printf**()系列中的函数根据如下所述的格式<u>format</u>产生输出。函数**printf**()和**vprintf**()将输出写入标准输出流<u>stdout</u>。 **fprintf**()和**vfprintf**()将输出写入给定的输出流<u>stream</u>； **sprintf**()，**snprintf**()，**vsprintf**()和**vsnprintf**()写入字符串<u>str</u>。
 
- 函数**dprintf**()与**fprintf**()相同，只不过它输出到文件描述符<u>fd</u>`而不是标标准I/O流。
+ 函数**dprintf**()与**fprintf**()相同，只不过它输出到文件描述符<u>fd</u>而不是标标准I/O流。
 
 函数**snprintf**()和**vsnprintf**()最多将<u>size</u>大小的字节（包括终止的空字节（'\0'））写入<u>str</u>。
 
-函数**vprintf**()，**vfprintf**()，**vdprintf**()，**vsprintf**()，**vsnprintf**()分别等效于函数**printf**()，**fprintf**()，**dprintf**()，**sprintf**()，**snprintf**()，除了使用`va_list`而不是可变数量的参数来调用它们之外。 这些函数不调用`va_end`宏。 因为它们调用`va_arg`宏，所以在调用这些函数之后，`ap`的值是不确定的。 参见stdarg（3）。
+函数**vprintf**()，**vfprintf**()，**vdprintf**()，**vsprintf**()，**vsnprintf**()分别等效于函数**printf**()，**fprintf**()，**dprintf**()，**sprintf**()，**snprintf**()，除了使用<u>va_list</u>而不是可变数量的参数来调用它们之外。 这些函数不调用<u>va_end</u>宏。 因为它们调用<u>va_arg</u>宏，所以在调用这些函数之后，<u>ap</u>的值是不确定的。 参见stdarg（3）。
 
 所有这些函数都在格式字符串的控制下进行输出，该格式字符串指定如何转换后续参数（或通过stdarg(3
 )的可变长度参数工具访问的参数）以输出。
