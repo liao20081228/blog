@@ -1,5 +1,5 @@
 ---
-title: 命令行参数处理——getopt系列函数
+title: getopt系列函数
 tags: Linux系统API
 ---
 
