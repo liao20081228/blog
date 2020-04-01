@@ -1,6 +1,6 @@
 ---
 title: getopt系列函数
-tags: Linux系统API
+tags: Linux编程手册
 ---
 
 ------
