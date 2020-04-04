@@ -41,8 +41,6 @@ getopt解析命令行参数。它的参数argc和argv是在程序调用时传递
   * 如果argv中，除了argv[0]之外，没有与选项无关的元素，则optind就置为argc。
   * 否则，则将optind置为第一个与选项无关的元素的下标。
 
-
-
 特殊元素“--”强制结束选项扫描，无论扫描模式如何。
 
 参数**optstring**是合法选项的字符串，比如："a:b:cd::e"，这就是一个选项字符串。对应到命令行就是-a ,-b ,-c ,-d, -e 。规则如下：
@@ -252,5 +250,5 @@ int main(int argc , char * argv[])
 ------
 
 &emsp;&emsp;<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《Linux man pages》](https://linux.die.net/man/ "点击跳转")。。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
-
+    
 ------
