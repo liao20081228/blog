@@ -1,5 +1,5 @@
 ---
-title: getaddrinfo系列函数
+title: **getaddrinfo**系列函数
 tags: Linux编程手册
 ---
 
@@ -10,7 +10,7 @@ tags: Linux编程手册
 ------
 
 # 1 名字
-getaddrinfo, freeaddrinfo, gai_strerror——网络地址和服务转换
+**getaddrinfo**, **freeaddrinfo**, **gai_strerror**——网络地址和服务转换
 
 # 2 概述
 ```cpp
@@ -26,11 +26,11 @@ const char *gai_strerror(int errcode);
 ```
 
 
-**glibc的函数测试宏要求**(请参阅feature_test_macros(7))
+glibc的函数测试宏要求(请参阅feature_test_macros(7))
 
-getaddrinfo()，freeaddrinfo()，gai_strerror()：
-* 从glibc 2.22开始：_POSIX_C_SOURCE> = 200112L
-* Glibc 2.21和更早版本：_POSIX_C_SOURCE
+**getaddrinfo**()，**freeaddrinfo**()，**gai_strerror**()：
+* 从glibc 2.22开始：\_POSIX_C_SOURCE> = 200112L
+* Glibc 2.21和更早版本：\_POSIX_C_SOURCE
 
 # 3 说明 
 
@@ -90,10 +90,10 @@ struct addrinfo {
 
 如果++hints.ai_flags++指定**AI_V4MAPPED**标志，并且++hints.ai_family++被指定为**AF_INET6**，并且找不到匹配的IPv6地址，则在++res++指向的列表中返回IPv4映射的IPv6地址。如果在++hints.ai_flags++中同时指定了**AI_V4MAPPED**和**AI_ALL**，则在++res++指向的列表中返回IPv6地址和IPv4映射的IPv6地址。如果未同时指定**AI_V4MAPPED**，则将忽略**AI_ALL**。
 
-freeaddrinfo()函数释放为动态分配的链表res分配的内存。
+**freeaddrinfo**()函数释放为动态分配的链表res分配的内存。
 	   
-## 3.1 国际化域名的getaddrinfo扩展
-从glibc 2.3.4开始，对getaddrinfo()进行了扩展，以选择性地允许传入和传出的主机名与国际化域名(IDN)格式进行透明转换(请参阅RFC 3490，应用程序中的国际化域名(IDNA)) 。 定义了四个新标志：
+## 3.1 国际化域名的**getaddrinfo**扩展
+从glibc 2.3.4开始，对**getaddrinfo**()进行了扩展，以选择性地允许传入和传出的主机名与国际化域名(IDN)格式进行透明转换(请参阅RFC 3490，应用程序中的国际化域名(IDNA)) 。 定义了四个新标志：
  
  **AI_IND** 
  如果指定了此标志，则在必要时将++node++中给定的节点名转换为IDN格式。源编码是当前语言环境的编码。
@@ -145,11 +145,11 @@ freeaddrinfo()函数释放为动态分配的链表res分配的内存。
 
 |接口|属性|值|
 |:--|:--|:--|
-|getaddrinfo()|线程安全|MT_Safe  env local|
-|freeaddrinfo()<br />gai_strerror|线程安全|MT-Safe|
+|**getaddrinfo**()|线程安全|MT_Safe  env local|
+|**freeaddrinfo**()<br />**gai_strerror**|线程安全|MT-Safe|
 
 # 7 遵守标准
-POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
+POSIX.1-2001，POSIX.1-2008。**getaddrinfo**()函数记录在RFC 2553中。
 
 # 8 注意
 **getaddrinfo**()支持用于指定IPv6作用域ID的++address％scope-id++表示法。
@@ -160,7 +160,7 @@ POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
 
 
 # 9 示例
-以下程序演示了getaddrinfo()，gai_strerror()，freeaddrinfo()和getnameinfo(3)的用法。 这个程序是UDP数据报的回显服务器和客户端。
+以下程序演示了**getaddrinfo**()，**gai_strerror**()，**freeaddrinfo**()和getnameinfo(3)的用法。 这个程序是UDP数据报的回显服务器和客户端。
 
 服务端
 ``` cpp
@@ -199,13 +199,13 @@ POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
            hints.ai_addr = NULL;
            hints.ai_next = NULL;
 
-           s = getaddrinfo(NULL, argv[1], &hints, &result);
+           s = **getaddrinfo**(NULL, argv[1], &hints, &result);
            if (s != 0) {
-               fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+               fprintf(stderr, "**getaddrinfo**: %s\n", **gai_strerror**(s));
                exit(EXIT_FAILURE);
            }
 
-           /* getaddrinfo() returns a list of address structures.
+           /* **getaddrinfo**() returns a list of address structures.
               Try each address until we successfully bind(2).
               If socket(2) (or bind(2)) fails, we (close the socket
               and) try the next address. */
@@ -226,7 +226,7 @@ POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
                exit(EXIT_FAILURE);
            }
 
-           freeaddrinfo(result);           /* No longer needed */
+           **freeaddrinfo**(result);           /* No longer needed */
 
            /* Read datagrams and echo them back to sender */
 
@@ -246,7 +246,7 @@ POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
                    printf("Received %zd bytes from %s:%s\n",
                            nread, host, service);
                else
-                   fprintf(stderr, "getnameinfo: %s\n", gai_strerror(s));
+                   fprintf(stderr, "getnameinfo: %s\n", **gai_strerror**(s));
 
                if (sendto(sfd, buf, nread, 0,
                            (struct sockaddr *) &peer_addr,
@@ -291,13 +291,13 @@ POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
            hints.ai_flags = 0;
            hints.ai_protocol = 0;          /* Any protocol */
 
-           s = getaddrinfo(argv[1], argv[2], &hints, &result);
+           s = **getaddrinfo**(argv[1], argv[2], &hints, &result);
            if (s != 0) {
-               fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+               fprintf(stderr, "**getaddrinfo**: %s\n", **gai_strerror**(s));
                exit(EXIT_FAILURE);
            }
 
-           /* getaddrinfo() returns a list of address structures.
+           /* **getaddrinfo**() returns a list of address structures.
               Try each address until we successfully connect(2).
               If socket(2) (or connect(2)) fails, we (close the socket
               and) try the next address. */
@@ -319,7 +319,7 @@ POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
                exit(EXIT_FAILURE);
            }
 
-           freeaddrinfo(result);           /* No longer needed */
+           **freeaddrinfo**(result);           /* No longer needed */
 
            /* Send remaining command-line arguments as separate
               datagrams, and read responses from server */
@@ -353,7 +353,7 @@ POSIX.1-2001，POSIX.1-2008。getaddrinfo()函数记录在RFC 2553中。
 ```
 
 # 10 另请参阅
-**getaddrinfo_a**(3), **gethostbyname**(3), **getnameinfo**(3), **inet**(3), **gai.conf**(5), **hostname**(7), **ip**(7)
+**getaddrinfo**_a**(3), **gethostbyname**(3), **getnameinfo**(3), **inet**(3), **gai.conf**(5), **hostname**(7), **ip**(7)
 
 # 11 版权
 
