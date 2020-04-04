@@ -13,7 +13,7 @@ tags: Linux编程手册
 # 1 名字
 printf, fprintf, dprintf, sprintf, snprintf, vprintf, vfprintf, vdprintf, vsprintf, vsnprintf——格式化输出转换
 # 2 概述
-c
+```c
 #include <stdio.h>
 
 int printf(const char *format, ...);
@@ -29,18 +29,18 @@ int vfprintf(FILE *stream, const char *format, va_list ap);
 int vdprintf(int fd, const char *format, va_list ap);
 int vsprintf(char *str, const char *format, va_list ap);
 int vsnprintf(char *str, size_t size, const char *format, va_list ap);
-
+```
 
 glibc的功能测试宏要求（参见feature_test_macros(7)）
 
 snprintf(), vsnprintf():
-&emsp;&emsp;_XOPEN_SOURCE >= 500 || _ISOC99_SOURCE || || /* Glibc versions <= 2.19: */ _BSD_SOURCE
+&emsp;&emsp;\_XOPEN_SOURCE >= 500 || \_ISOC99_SOURCE || || /* Glibc versions <= 2.19: \*/ \_BSD_SOURCE
 
 dprintf(), vdprintf():
 &emsp;&emsp;Since glibc 2.10:
-&emsp;&emsp;&emsp;&emsp;_POSIX_C_SOURCE >= 200809L
+&emsp;&emsp;&emsp;&emsp;\_POSIX_C_SOURCE >= 200809L
 &emsp;&emsp;Before glibc 2.10:
-&emsp;&emsp;&emsp;&emsp;_GNU_SOURCE
+&emsp;&emsp;&emsp;&emsp;\_GNU_SOURCE
 
 # 3 说明
 **printf**()系列中的函数根据如下所述的格式<u>format</u>产生输出。函数**printf**()和**vprintf**()将输出写入标准输出流<u>stdout</u>。 **fprintf**()和**vfprintf**()将输出写入给定的输出流<u>stream</u>； **sprintf**()，**snprintf**()，**vsprintf**()和**vsnprintf**()写入字符串<u>str</u>。
