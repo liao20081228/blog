@@ -9,6 +9,10 @@ tags: Linux程序员手册
 
 ------
 
+# 1 名字
+
+getopt，getopt_long，getopt_long_only，optarg，optind，opterr，optopt——解析命令行参数
+
 # 1 getopt
 **原型**：
 ```cpp
