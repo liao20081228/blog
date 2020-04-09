@@ -1,6 +1,6 @@
 ---
 title: C与C++基本数据类型大小
-tags: C_and_C++
+tags: C和C++
 ---
 
 ------
