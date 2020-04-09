@@ -9,8 +9,6 @@ tags: Linux程序员手册
 
 ------
 
-<style>table{word-break:initial;}</style>
-
 # 1 getopt
 **原型**：
 ```cpp
