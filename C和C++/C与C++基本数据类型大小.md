@@ -9,10 +9,6 @@ tags: C_and_C++
 
 ------
 
-<style>table{word-break:initial;}</style>
-
-
-
 # 1 VC_64位
 |基本类型|有符号| 无符号类型|大小|
 |--|--|--|--|
@@ -32,7 +28,7 @@ tags: C_and_C++
 
 
 |基本类型|有符号| 无符号类型|大小|
-|--|--|--|--|
+|:--|:--|:--|:--|
 |布尔型  |_Bool或bool|_Bool或bool|1B
 |字符型|char singed char| unsigned char |1B|
 |短整型|short=short int=signed short=signed short int	|unsigned short=unsigned short int|	2B	|	
