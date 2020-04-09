@@ -5,7 +5,7 @@ tags: Linux程序员手册
 
 ------
 
-&emsp;&emsp;<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《Linux man pages》](https://linux.die.net/man/ "点击跳转")。。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>[《Linux man-pages 4.15》](https://www.kernel.org/doc/man-pages/)。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
 
@@ -249,6 +249,6 @@ int main(int argc , char * argv[])
 
 ------
 
-&emsp;&emsp;<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《Linux man pages》](https://linux.die.net/man/ "点击跳转")。。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
-    
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>[《Linux man-pages 4.15》](https://www.kernel.org/doc/man-pages/)。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+
 ------
