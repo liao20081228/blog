@@ -1,6 +1,6 @@
 ---
 title: **getaddrinfo**系列函数
-tags: Linux编程手册
+tags: Linux程序员手册
 ---
 
 ------
