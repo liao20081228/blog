@@ -51,20 +51,19 @@ struct addrinfo
 	struct addrinfo		*ai_next;
 };
 ```
-<u>hints<u>参数指向一个addrinfo结构体，该结构体指定用于选择<u>res<u>指向的列表中返回的套接字地址结构体的条件。 如果<u>hints<u>不是NULL，则指向一个<u>addrinfo<u>结构体，它的<u>ai_family<u>，<u>ai_socktype<u>和<u>ai_protocol<u>指定了限制**getaddrinfo**()返回的套接字地址集的条件，如下所示：
+<u>hints</u>参数指向一个addrinfo结构体，该结构体指定用于选择<u>res</u>指向的列表中返回的套接字地址结构体的条件。 如果<u>hints</u>不是NULL，则指向一个<u>addrinfo</u>结构体，它的<u>ai_family</u>，<u>ai_socktype</u>和<u>ai_protocol</u>指定了限制**getaddrinfo**()返回的套接字地址集的条件，如下所示：
 
-<u>ai_family<u> 该字段为返回的地址指定所需的地址族。 该字段的有效值包括**AF_INET**和**AF_INET6**。 值**AF_UNSPEC**指示**getaddrinfo**()应该返回可与<u>node<u>和<u>service<u>一起使用的任何地址系列(例如，IPv4或IPv6)的套接字地址。
+<u>ai_family</u> 该字段为返回的地址指定所需的地址族。 该字段的有效值包括**AF_INET**和**AF_INET6**。 值**AF_UNSPEC**指示**getaddrinfo**()应该返回可与<u>node</u>和<u>service</u>一起使用的任何地址系列(例如，IPv4或IPv6)的套接字地址。
 
+<u>ai_socktype</u> 该字段指定首选的套接字类型，例如**SOCK_STREAM**或**SOCK_DGRAM**。 在该字段中指定0表示**getaddrinfo**()可以返回任何类型的套接字地址。
 
-<u>ai_socktype<u> 该字段指定首选的套接字类型，例如**SOCK_STREAM**或**SOCK_DGRAM**。 在该字段中指定0表示**getaddrinfo**()可以返回任何类型的套接字地址。
+<u>ai_protocol</u> 该字段指定返回的套接字地址的协议。 在此字段中指定0表示**getaddrinfo**()可以返回任何协议的套接字地址。
 
-<u>ai_protocol<u> 该字段指定返回的套接字地址的协议。 在此字段中指定0表示**getaddrinfo**()可以返回任何协议的套接字地址。
+<u>ai_flags</u> 此字段指定附加选项，如下所述。 通过对它们进行按位或运算来指定多个标志。
 
-<u>ai_flags<u> 此字段指定附加选项，如下所述。 通过对它们进行按位或运算来指定多个标志。
+<u>hints</u>所指向的结构体中的所有其他字段必须包含0或空指针(视情况而定)。
 
-<u>hints<u>所指向的结构体中的所有其他字段必须包含0或空指针(视情况而定)。
-
-将<u>hints<u>指定为NULL等效于将<u>ai_socktype<u>和<u>ai_protocol<u>设置为0； <u>ai_family<u>设置为**AF_UNSPEC**; <u>ai_flags<u>设置为(**AI_V4MAPPED | AI_ADDRCONFIG**)。(POSIX为<u>ai_flags<u>指定了不同的默认值；请参见“注意”。)<u>node<u>指定了数字网络地址(对于IPv4，由inet_aton支持的点分十进制格式；对于IPv6，由inet_pton(3)支持的冒分十六进制格式 )或可以查找并解析其网络地址的网络主机名。 如果<u>hints.ai_flags<u>包含**AI_NUMERICHOST**标志，则<u>node<u>必须是数字网络地址。 **AI_NUMERICHOST**标志禁止任何可能冗长的网络主机地址查找。
+将<u>hints</u>指定为NULL等效于将<u>ai_socktype<u>和<u>ai_protocol<u>设置为0； <u>ai_family</u>设置为**AF_UNSPEC**; <u>ai_flags<u>设置为(**AI_V4MAPPED | AI_ADDRCONFIG**)。(POSIX为<u>ai_flags<u>指定了不同的默认值；请参见“注意”。)<u>node</u>指定了数字网络地址(对于IPv4，由inet_aton支持的点分十进制格式；对于IPv6，由inet_pton(3)支持的冒分十六进制格式 )或可以查找并解析其网络地址的网络主机名。 如果<u>hints.ai_flags</u>包含**AI_NUMERICHOST**标志，则<u>node<u>必须是数字网络地址。 **AI_NUMERICHOST**标志禁止任何可能冗长的网络主机地址查找。
 
 如果在<u>hints.ai_flags<u>中指定了**AI_PASSIVE**标志，并且<u>node<u>为NULL，则返回的套接字地址将适用于**bind**(2) 和 **accpet**(2)。 返回的套接字地址将包含“通配符地址”(对于IPv4地址为**INADDR_ANY**，对于IPv6地址为**IN6ADDR_ANY_INIT**)。 通配符地址由打算接受任何主机网络地址上的连接的应用程序(通常是服务器)使用。 如果<u>node<u>不为NULL，则**AI_PASSIVE**标志将被忽略。
 
