@@ -5,14 +5,13 @@ tags: C和C++
 
 ------
 
-&emsp;&emsp;<font color=blue>**_版权声明_**</font>：<font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+***<font color=blue>版权声明</font>：<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
 
-<style>table{word-break:initial;}</style>
-
 
 # 1 传值
+
 C/C++默认的采用传值，即在函数被调用的时候，给形参申请一个空间，再将实参的值传递给形参，**对形参的任何改变不会影响实参数的值**：
 
 ```c++
@@ -46,7 +45,7 @@ int main()
 
 # 2 传址
 ## 2.1 传指针
-&emsp;&emsp;所谓传址又叫做传指针，即在函数被调用的时候，给形参开辟一个空间用来存放传递过来的地址，将实参的值传递给形参，**对形参的任何改变也不会影响实参所指的内容，但是对形参所指的内容的改变将会影响到实参所指的内容**（因为这两个指针都指向同一个内存空间）
+所谓传址又叫做传指针，即在函数被调用的时候，给形参开辟一个空间用来存放传递过来的地址，将实参的值传递给形参，**对形参的任何改变也不会影响实参所指的内容，但是对形参所指的内容的改变将会影响到实参所指的内容**（因为这两个指针都指向同一个内存空间）
 
 ```c++
 #include<iostream>
@@ -95,12 +94,12 @@ int main()
 ## 2.2 传数组
 传数组是传址的另一方式，数组作为形参传递，实质传递的数组的首地址，一维数组形参 :`数据类型 数组名[]`，二维数组形参：`数据类型 数组名[][上界]` 。
 
->**注意**：数组在传递时会退化为指针，因而要传入数组长度。
+>**注意**：数组在传递时会退化为指针，因而要传入数组长度。因此在C++中推荐使用容器来代替数组。
 
 
 # 3 传引用
 ## 3.1 传引用
-引用是什么？C++中的引用可以理解为类似为typedef的作用（C中是没有此用法，typedef是对类型取别名），引用相当于是实参的别名，**对形参的任何操作，就是对实参的操作**，函数调用时不会再内存中新开辟空间。
+引用是什么？C++中的引用可以理解为类似为typedef的作用（C中是没有此用法，typedef是对类型取别名），引用相当于是变量的别名，**对形参的任何操作，就是对实参的操作**，函数调用时不会再内存中新开辟空间。
 
 ```c++
 #include<iostream>
@@ -169,68 +168,14 @@ int main()
 结论：
 &emsp;&emsp;可以看到调用时没有在内存中开辟空间存储传递来的地址。对形参的改变就是对实参的改变。
 
-
-
-
-
 # 4 总结
 
-&emsp;&emsp;一般时候对传入的实参如果要做改变，或传入的数据非常大时候，C\+\+中优先考虑传引用（C/C\+\+都可以传址，然后对指针所指内容做改变），这样调用函数时可以节约拷贝的时间和空间；如果对传入的实参不做改变可以传值、传引用、传址。
-
-&emsp;&emsp;传引用有些时候可以避免未初始化的错误。
-```c++
-#include<iostream>
-using namespace std;
-#define ok 0
-struct linknode
-{
-	int data;
-	linknode *next;
-};
-typedef linknode linklist;
-int initlist(linklist *L)
-{
-	L = (linknode*)malloc(sizeof(linknode));
-	return ok;
-}
-int main()
-{
-	linklist* L;
-	initlist(L);
-}
-```
-&emsp;&emsp;这里由于在主函数定义了指针变量L后没有初始化赋值，因而出现未初始化的错误。将`int initlist(linklist *L)`改成`int initlist(linklist *&L)`就可以免于此错误。
-
-
-```c++
-#include<iostream>
-using namespace std;
-#define ok 0
-struct linknode
-{
-	int data;
-	linknode *next;
-};
-typedef linknode linklist;
-int initlist(linklist *&L)
-{
-	L = (linknode*)malloc(sizeof(linknode));
-	return ok;
-}
-int main()
-{
-	linklist *L;
-	cout<<&L
-	initlist(L);
-}
-```
-
-
+一般时候对传入的实参如果要做改变，或传入的数据非常大时候，C\+\+中优先考虑传引用（C/C\+\+都可以传址，然后对指针所指内容做改变），这样调用函数时可以节约拷贝的时间和空间；如果对传入的实参不做改变可以传值、传引用、传址。
 
 
 
 ------
 
-&emsp;&emsp;<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+***<font color=blue>版权声明</font>：<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
