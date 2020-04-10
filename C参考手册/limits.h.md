@@ -6,7 +6,7 @@ tags: C
 
 ------
 
-***<font color=blue>版权声明</font>：本文参考了<font color=blue>。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>[《C参考手册》](https://en.cppreference.com/w/c/header)。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
 
@@ -26,6 +26,6 @@ limis.h规定了整数的极限值，一个字符的宽度，多字的最大宽�
 
 ------
 
-***<font color=blue>版权声明</font>：本文参考了<font color=blue>。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>[《C参考手册》](https://en.cppreference.com/w/c/header)。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
