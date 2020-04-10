@@ -9,8 +9,6 @@ tags: C_and_C++
 
 ------
 
-<style>table{word-break:initial;}</style>
-
 # 1 隐式转换
 ## 1.1 算术转换
 
