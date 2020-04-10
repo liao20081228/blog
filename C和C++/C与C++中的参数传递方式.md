@@ -36,7 +36,7 @@ int main()
 
 输出结果如下：
 
-![图1](https://www.github.com/liao20081228/blog/raw/master/图片/C与C++中的参数传递方式/图1.jpg)
+![图1](https://gitee.com/liao20081228/blog_pictures/raw/master/C与C++中的参数传递方式/1586500022533.jpg#pic_center)
 
 结论：
 &emsp;&emsp;可以看到形参实参的地址不一样，说明新申请了内存空间。
@@ -84,7 +84,7 @@ int main()
 
 运行下结果如下：
 
-![图2](https://www.github.com/liao20081228/blog/raw/master/图片/C与C++中的参数传递方式/图2.jpg)
+![图2](https://gitee.com/liao20081228/blog_pictures/raw/master/C与C++中的参数传递方式/1586500022542.jpg#pic_center)
 
 结论：
 &emsp;&emsp;指针a和指针x所在地址不同说明新申请内存空间用以存放传来的地址。
@@ -122,7 +122,7 @@ int main()
 ```
 运行结果如下：
 
-![图3](https://www.github.com/liao20081228/blog/raw/master/图片/C与C++中的参数传递方式/图3.jpg)
+![图3](https://gitee.com/liao20081228/blog_pictures/raw/master/C与C++中的参数传递方式/1586500022415.jpg#pic_center)
 
 结论：
 &emsp;&emsp;可以看到实参和形参的地址是相同的，也就是说并没有开辟一个新的空间。对引用的操作就是对实参的操作。
@@ -163,7 +163,7 @@ int main()
 
 运行结果如下：
 
-![图4](https://www.github.com/liao20081228/blog/raw/master/图片/C与C++中的参数传递方式/图4.jpg)
+![图4](https://gitee.com/liao20081228/blog_pictures/raw/master/C与C++中的参数传递方式/1586500022534.jpg#pic_center)
 
 结论：
 &emsp;&emsp;可以看到调用时没有在内存中开辟空间存储传递来的地址。对形参的改变就是对实参的改变。
