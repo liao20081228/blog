@@ -5,13 +5,9 @@ tags: C和C++
 
 ------
 
-&emsp;&emsp;<font color=blue>**_版权声明_**</font>：<font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+
 
 ------
-
-<style>table{word-break:initial;}</style>
-
-
 
 # 1 main函数的返回值
 main函数的返回值，用于说明程序的退出状态。如果返回0，则代表程序正常退出；返回其它数字的含义则由系统决定。通常，返回非零代表程序异常退出。
