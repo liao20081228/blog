@@ -5,7 +5,7 @@ tags: C++
 
 ------
 
-<font color=blue>**_版权声明_**</font>：本文翻译至<font color=blue>[《C++文档》](https://en.cppreference.com/w/cpp/language/value_category)。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>[《C++文档》](https://en.cppreference.com/w/cpp/language/value_category)。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
 
@@ -197,7 +197,6 @@ CWG 1213	C++11	数组右值的下标操作导致左值	重分类为亡值
 
 ------
 
-
-<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《C++文档》](https://en.cppreference.com/w/cpp/language/value_category)。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>[《C++文档》](https://en.cppreference.com/w/cpp/language/value_category)。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
