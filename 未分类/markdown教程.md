@@ -108,7 +108,199 @@ Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
 **在引用里可以使用其他 markdown 语法，例如：标题、列表、粗体、斜体、图片、链接、表格、代码、代码块、高级代码块等，对于需要多行的语法每一行都要添加`<`标记**。
 
 ## 1.6 无序列表
-            
+
+**在每一个条目前面添加一个`*`或`+`或`-`，再接一个空格就可以表示无序列表的一个列表项，同一个列表的同一级列表项应使用同一种标记符号**， 例如
+
+```
++ 无序条目 
++ 无序条目 
++ 无序条目
+```
+
+显示效果：
+
++ 无序条目 
++ 无序条目 
++ 无序条目
+
+
+**无序列表可以有多级，每一级用一个缩进表示：两个空格或一个制表符以上，同级连续列表项应使用相同数量的同一缩进符号**，例如：
+
+```
++ 无序条目 
+  + 子无序条目 
+  + 子无序条目 
+		- 孙无序条目 
+		- 孙无序条目 
++ 无序条目 
+	* 子无序条目 
+	* 子无序条目 
++ 无序条目 
+```
+
+显示效果：
+
++ 无序条目 
+  + 子无序条目 
+  + 子无序条目 
+		- 孙无序条目 
+		- 孙无序条目 
++ 无序条目 
+	* 子无序条目 
+	* 子无序条目 
++ 无序条目 
+
+**无序列表可以有多层，可以是有序列表或无需列表**，例如：
+
+```
+* 一级一层无序条目
+* * 一级二层无序条目
+	* * + 三层三级无序条目
+	* * 1. 三层三级有序条目
+```
+显示效果：
+
+* 一级一层无序条目
+* * 一级二层无序条目
+	* * + 三层三级无序条目
+	* * 1. 三层三级有序条目
+
+**无序列表可与有序列表嵌套**，例如：
+
+```
+* 无序条目
+* 无条条目
+	1. 有序条目
+	2. 有序条目
+* 无序条目
+```
+显示效果：
+
+* 无序条目
+* 无条条目
+	1. 有序条目
+	2. 有序条目
+* 无序条目
+
+
+**单个列表项可以有多行，每行开头可以添加空格或制表符，或者不添加，但是不能有空行，否则视为下一段**，例如：
+
+```
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
+  viverra nec, fringilla in, laoreet vitae, risus. 
+  * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+	Suspendisse id sem consectetuer libero luctus adipiscing.
+```
+显示效果：
+
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
+  viverra nec, fringilla in, laoreet vitae, risus. 
+  * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+	Suspendisse id sem consectetuer libero luctus adipiscing.
+
+**单个列表项可以有多段，每段之间用空行隔开，每段第一行或每一行必须在列表项目的缩进基础上再加一个缩进：两个空格或一个制表符以上**，例如：
+
+```
+* This is a list item with two paragraphs. Lorem ipsum dolor 
+sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
+mi posuere lectus. 
+ 
+  Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
+  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+  sit amet velit. 
+ 
+	* This is a list item with two paragraphs. Lorem ipsum dolor 
+sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
+mi posuere lectus. 
+ 
+		Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
+	  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+	  sit amet velit. 
+```
+显示效果：
+
+* This is a list item with two paragraphs. Lorem ipsum dolor 
+sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
+mi posuere lectus. 
+ 
+  Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
+  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+  sit amet velit. 
+ 
+	* This is a list item with two paragraphs. Lorem ipsum dolor 
+sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
+mi posuere lectus. 
+ 
+		Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
+	  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+	  sit amet velit. 
+
+**一个列表项可以嵌套引用**，例如：
+
+```
+* 这是一个列表项
+* >引用作为一个列表项
+* 这是一个列表项
+	>引用作为一个列表项引用作为一个列表项的一部分
+* 这是一个列表项
+
+	>引用作为一个列表项的一部分
+	>引用作为一个列表项的一部分
+```
+显示效果：
+
+* 这是一个列表项
+* >引用作为一个列表项
+* 这是一个列表项
+	>引用作为一个列表项的一部分
+* 这是一个列表项
+
+	>引用作为一个列表项的一部分
+	>引用作为一个列表项的一部分
+
+**一个列表项可以嵌套代码块，该区块每一行需要在列表项目的缩进基础上再加一个制表符或4个空格，如果列表项标记后紧跟代码块，则可以省略首行的缩进**，例如：
+
+```
+* 这是一个无序列表项
+
+		嵌套代码块作为列表项的一部分（两个制表符）
+		嵌套代码块作为列表项的一部分（两个制表符）
+
+	* 这是一个无序列表项
+
+			嵌套代码块作为列表项的一部分（三个制表符，1个表示二级列表+1个表示属于列表项+1个表示代码块）
+			嵌套代码块作为列表项的一部分（三个制表符，1+1+1）
+
+*     嵌套代码块作为列表项（1空格+4个空格）
+      嵌套代码块作为列表项（6个空格，2个表示属于列表项+4个表示代码块）
+        嵌套代码块作为列表项（8个空格，4个表示属于列表项+4个表示代码块）
+		嵌套代码块作为列表项（两个制表符，1个表示属于列表项+1个表示代码块）
+		嵌套代码块作为列表项（两个制表符）
+```
+显示效果：
+
+* 这是一个无序列表项
+
+		嵌套代码块作为列表项的一部分（两个制表符）
+		嵌套代码块作为列表项的一部分（两个制表符）
+
+	* 这是一个无序列表项
+
+			嵌套代码块作为列表项的一部分（三个制表符，1个表示二级列表+1个表示属于列表项+1个表示代码块）
+			嵌套代码块作为列表项的一部分（三个制表符，1+1+1）
+
+*     嵌套代码块作为列表项（1空格+4个空格）
+      嵌套代码块作为列表项（6个空格，2个表示属于列表项+4个表示代码块）
+        嵌套代码块作为列表项（8个空格，4个表示属于列表项+4个表示代码块）
+		嵌套代码块作为列表项（两个制表符，1个表示属于列表项+1个表示代码块）
+		嵌套代码块作为列表项（两个制表符）
+
+**一个列表项可以嵌套高级代码块，和普通块类似，只不过用\`\`\`代替四个空格或制表符**。
+
+**一个列表项还可以嵌套图片、链接、粗体、表格等语法。
+
 
 ## 1.7 有序列表
 1. 有序列表用**序号.加空格**表示，
