@@ -11,77 +11,99 @@ tags: 未分类
 
 # 1 基本语法
 ## 1.1 转义
-右斜线`\`表示转义，markdown中标记字符`[`、 `\`、`*`、`\`、`$`、`_`、`<`、```都需要加上转义符号才能使用原字符。
+右斜线`\`表示转义，markdown中标记字符`[`、 `\`、`*`、`\`、`$`、`_`、`<`、\`都需要加上转义符号才能使用原字符。
 
 ## 1.2 标题
-```markdown
-# h 表示一级标题
-## h 表示二级标题
-### h 表示三级标题
-#### h 表示四级标题
-##### h 表示五级标题 
-###### h 表示六级标题
-```
-**注意：**只有当`#`位于**一行开头，或引用文字中的一行开头**的才会起作用。
+* 第一种使用`#`加空格：
+	```markdown
+	# head1 表示一级标题
+	## head2 表示二级标题
+	### head3 表示三级标题
+	#### head4 表示四级标题
+	##### head5 表示五级标题 
+	###### head6  表示六级标题
+	```
+	**注意：**只有当`#`位于**一行开头，或引用文字中的一行开头**的才会起作用。
 
-**注意：**#与标题之间要有空格，在标准的markdown规范中必须要有空格才会起作用。
+	**注意：**#与标题之间要有空格，在标准的markdown规范中必须要有空格才会起作用。
 
-```markdown
-h
-===  表示上一级标题
-h
----  表示次一级标题
-```
+* 第二种使用`=`与`-`：
+
+	```markdown
+	head1
+	===  表示上一级标题
+	head2
+	---  表示次一级标题
+	```
 
 ## 1.3 加粗和斜体
-&emsp;&emsp;一个`*`或`_`环绕表示斜体，如`*斜体*`， 显示效果：*斜体*。
+一个`*`或`_`环绕表示斜体，如`*斜体*`， 显示效果：*斜体*。
 
-&emsp;&emsp;两个`*`或`_`环绕表示加粗，如`**加粗**` ，显示效果：**加粗**。
+两个`*`或`_`环绕表示加粗，如`**加粗**` ，显示效果：**加粗**。
 
-&emsp;&emsp;三个`*`或`_`环绕或混用`*`和`_`表示粗斜体，如`***粗斜体***`，显示效果：***粗斜体***。
+三个`*`或`_`环绕或混用`*`和`_`表示粗斜体，如`***粗斜体***`，显示效果：***粗斜体***。
 
 ## 1.4 删除线和水平线
 
-&emsp;&emsp;两个  `~`环绕表示删除线，如`~~删除线~~`，显示效果：~~删除线~~
+两个  `~`环绕表示删除线，如`~~删除线~~`，显示效果：~~删除线~~
 
-&emsp;&emsp;三个及以上的`*` 或 或 `-`表示一条横线，如`***`和`---`，显示效果：
+三个及以上的`*` 或  `-`表示一条横线，如`***`和`---`，显示效果：
 
 ----
 
 ****
 
 ## 1.5 引用
-````markdown
->* 用`>`表示引用。
->* 对一段话引用只需在开头使用一次。也可以每一行都使用`>` 
->* 引用中可以使用**标题**，**粗体**、*斜体*、***粗斜体***、~~删除线~~、`代码`、`代码块`、公式、有序或无序列表。
->*  引用中可以使用**链接、图片、跳转、表格**，在支持注脚的版本中也可以使用注脚。
->*  可以多层引用
->>  |名字|年龄|
->>  |---|---|
->>  | 张三|10|
->> 
->>  [使用链接,该链接连接到百度](https://www.baidu.com "跳转到百度")
->```c
->include<stdio.h>//引用代码块
->int i=1;
->```
-````
+* 在一行的开始用`>`表示引用。例如：
+	```
+	>这是引用
+	```
+	显示效果:
 
->* 用`>`表示引用。
->* 对一段话引用只需在开头使用一次。也可以每一行都使用`>` 
->* 引用中可以使用**标题**，**粗体**、*斜体*、***粗斜体***、~~删除线~~、`代码`、`代码块`、公式、有序或无序列表。
->*  引用中可以使用**链接、图片、跳转、表格**，在支持注脚的版本中也可以使用注脚。
->*  可以多层引用
->>  |名字|年龄|
->>  |---|---|
->>  | 张三|10|
->> 
->>  [使用链接,该链接连接到百度](https://www.baidu.com "跳转到百度")
->```c
->include<stdio.h>//引用代码块
->int i=1;
->```
+	>这是引用
+
+* 对一段话引用只需在开头使用一次,也可以每一行都使用`>`，例如
+
+	```
+	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+	> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+	> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+	
+	
+	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+	consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+	Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+	```
+
+	显示效果：
+
+	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+	> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+	> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+	>  
+	
+	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+	consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+	Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+
+* 连继多个 `>` 符号，就可以实现多级引用。例如：
+	```
+	> 这是一个多级引用 
+	> 一级引用 
+	>> 二级引用 
+	>>> 三级引用 
+	```
+	显示效果：
+
+	> 这是一个多级引用 
+	> 一级引用 
+	>> 二级引用 
+	>>> 三级引用 
+
+ * 在引用里可以使用其他 markdown 语法
+
+
+
 
 
 ## 1.6 无序列表
