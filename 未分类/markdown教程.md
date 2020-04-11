@@ -11,39 +11,41 @@ tags: 未分类
 
 # 1 基本语法
 ## 1.1 转义
-右斜线`\`表示转义，markdown中标记字符`[`、 `\`、`*`、`\`、`$`、`_`、`<`、\`都需要加上转义符号才能使用原字符。
+右斜线`\`表示转义，markdown中标记字符，例如`[`、 `\`、`*`、`\`、`$`、`_`、`<`、\`都需要加上转义符号才能使用原字符。
 
 ## 1.2 标题
-* 第一种使用`#`加空格：
-	```markdown
-	# head1 表示一级标题
-	## head2 表示二级标题
-	### head3 表示三级标题
-	#### head4 表示四级标题
-	##### head5 表示五级标题 
-	###### head6  表示六级标题
-	```
-	**注意：**只有当`#`位于**一行开头，或引用文字中的一行开头**的才会起作用。
+**第一种，使用`#`加空格**，例如：
 
-	**注意：**#与标题之间要有空格，在标准的markdown规范中必须要有空格才会起作用。
+```markdown
+# head1 表示一级标题
+## head2 表示二级标题
+### head3 表示三级标题
+#### head4 表示四级标题
+##### head5 表示五级标题 
+###### head6  表示六级标题
+```
 
-* 第二种使用`=`与`-`：
+>**注意**：只有当`#`位于一行开头，或引用文字中的一行开头的才会起作用。
+>**注意**：#与标题之间要有空格，在标准的markdown规范中必须要有空格才会起作用。
 
-	```markdown
-	head1
-	===  表示上一级标题
-	head2
-	---  表示次一级标题
-	```
+**第二种，使用`=`与`-`**，例如：
 
-## 1.3 加粗和斜体
+```markdown
+head1
+===  表示上一级标题
+
+head2
+---  表示次一级标题
+```
+
+## 1.3 加粗与斜体
 一个`*`或`_`环绕表示斜体，例如`*斜体*`， 显示效果：*斜体*。
 
 两个`*`或`_`环绕表示加粗，例如`**加粗**` ，显示效果：**加粗**。
 
 三个`*`或`_`环绕或混用`*`和`_`表示粗斜体，例如`***粗斜体***`，显示效果：***粗斜体***。
 
-## 1.4 删除线和水平线
+## 1.4 删除线与水平线
 
 两个  `~`环绕表示删除线，例如`~~删除线~~`，显示效果：~~删除线~~
 
@@ -54,138 +56,58 @@ tags: 未分类
 ****
 
 ## 1.5 引用
-* 在一行的开始用`>`表示引用。例如：
-	```
-	>这是引用
-	```
-	显示效果:
+**在一行的开始用`>`表示引用**。例如：
 
-	>这是引用
+```
+>这是引用
+```
+显示效果:
 
-* 对一段话引用只需在开头使用一次,也可以每一行都使用`>`，例如
+>这是引用
 
-	```
-	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
-	> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
-	> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
-	
-	
-	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
-	consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
-	Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
-	```
+**对一段话引用只需在开头使用一次,也可以每一行都使用`>`**，例如
 
-	显示效果：
+```
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
 
-	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
-	> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
-	> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
-	>  
-	
-	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
-	consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
-	Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
 
-* 连继多个 `>` 符号，就可以实现多级引用。例如：
-	```
-	> 这是一个多级引用 
-	> 一级引用 
-	>> 二级引用 
-	>>> 三级引用 
-	```
-	显示效果：
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+```
 
-	> 这是一个多级引用 
-	> 一级引用 
-	>> 二级引用 
-	>>> 三级引用 
+显示效果：
 
- * 在引用里可以使用其他 markdown 语法，例如：标题、列表、粗体、斜体、图片、链接、表格、代码、代码块、高级代码块等，对于多行语法每一行都要添加`<`标记。
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+>  
+
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+
+**连继多个 `>` 符号，就可以实现多级引用**。例如：
+
+```
+> 这是一个多级引用 
+> 一级引用 
+>> 二级引用 
+>>> 三级引用 
+```
+显示效果：
+
+> 这是一个多级引用 
+> 一级引用 
+>> 二级引用 
+>>> 三级引用 
+
+
+**在引用里可以使用其他 markdown 语法，例如：标题、列表、粗体、斜体、图片、链接、表格、代码、代码块、高级代码块等，对于多行语法每一行都要添加`<`标记**。
 
 ## 1.6 无序列表
-````markdown
-* `*`或`+`或`-`，分别加一个空格表示无序列表
-  * 每级列表缩进需要缩进两个以上空格
-  1. 无序列表可与有序列表嵌套
-  3. 无序列表可与有序列表嵌套
-  * 1. 列表项可以有多层
-  * 2. 1. 列表项可以有多层
-  * 3. * 列表项可以有多层
-  * * 列表项可以有多层
-
-* 列表项可以有多行，每行开头最多三个空格或者无空格
-但是不能有空行
-
-
-* 列表项可以有多段，每段之间用空行隔开，
-
-  每段第一行必须在列表项目的基础上再缩进两个以上空格或一个制表符
-
-  或者每段每一行必须在列表项目的基础上再缩进两个以上空格或一个制表符
-
-  >可以嵌套引用
-  >可以嵌套引用
-
-
-* >可以嵌套引用
-* 可以嵌套代码块，该区块每一行就需要缩进两次，也就是 8 个空格或是 2 个制表符：
-
-		int a=10;
-		int i=10;
-  * 	int a=10;
-		int i=10;
-* 可以嵌套高级代码块，该区块每一行需要缩进一个制表符，
-	```c
-	int a=10;
-	int b=10;
-	```
-
-  * ```c
-	int a=10;
-	int i=10;
-	```
-```` 
-
-* `*`或`+`或`-`，分别加一个空格表示无序列表
-  * 每级列表缩进需要缩进两个以上空格
-  1. 无序列表可与有序列表嵌套
-  3. 无序列表可与有序列表嵌套
-  * 1. 列表项可以有多层
-  * 2. 1. 列表项可以有多层
-  * 2. 2. 列表项可以有多层
-    * 3. * 列表项可以有多层
-    * 4. * 列表项可以有多层
-* 一个列表项可以有多行，每行开头最多三个空格或者无空格
-但是不能有空行
-但是不能有空行
-但是不能有空行
-
-* 一个列表项可以有多段，每段之间用空行隔开，
-
-  每段第一行必须在列表项目的基础上再缩进两个以上空格或一个制表符
-
-  或者每段每一行必须在列表项目的基础上再缩进两个以上空格或一个制表符
-
-  >一个列表项可以嵌套引用
-  >一个列表项可以嵌套引用
-
-
-* >一个列表项可以嵌套引用
-* 一个列表项可以嵌套代码块，该区块每一行就需要缩进两次，也就是 8 个空格或是 2 个制表符：
-
-		int a=10;
-		int i=10;
-  * 	int a=10;
-		int i=10;
-* 可以嵌套高级代码块，该区块每一行需要缩进一次，也就是 4 个空格或是 1 个制表符：
-    ```c
-    int a=10;
-    int b=10;
-    ```
-  * ```c
-    int a=10;
-    int i=10;
-    ```
 
 ## 1.7 有序列表
 1. 有序列表用**序号.加空格**表示，
