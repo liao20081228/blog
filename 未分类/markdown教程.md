@@ -348,7 +348,7 @@ mi posuere lectus.
 
 只要支持GFM的markdown都兼容html标签
 
-# 2 扩展语法
+# 2 高级语法
 |markdown版本|cmd|csdn|xiaoshujiang|
 |:--|:--|:--|:--|
 |任务列表|支持|支持|支持|
@@ -471,11 +471,9 @@ int b = 20;
 
 ![图1](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/1.jpg#pic_center)
 
-
 **支持显示成思维脑图大纲**`[toc!]`，显示如下：
 
 ![图2](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/2.jpg#pic_center)
-
 
 **思维脑图大纲支持其它一些参数**：`[toc!?depth=n&direction=v|h|lr|rl|tb|bl&]colors=颜色值[,颜色值1][,颜色值2][,颜色值3]&theme=gray|colorful]`
 * depth，表示显示到第几层
@@ -559,8 +557,8 @@ int b = 20;
 ## 2.10 LaTeX数学公式
 ### 2.10.1 基本语法
 
-* `$数学公式$`——表示行内数学公式，如` $a^+b^2 $`,显示效果： $a^2+b^2$；
-* `$$数学公式$$`—— 表示整行数学公式，如`$$a^2+b^2 =c^2$$`，显示效果：$$a^2+b^2 =c^2$$
+`$数学公式$`——表示行内数学公式，如` $a^+b^2 $`,显示效果： $a^2+b^2$；
+`$$数学公式$$`—— 表示块级数学公式，如`$$a^2+b^2 =c^2$$`，显示效果：$$a^2+b^2 =c^2$$
 
 * xiaoshujiang markdown支持另一种写法：
 ````markdown
