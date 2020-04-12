@@ -1157,6 +1157,7 @@ sub(right)->op
 
 
 ### 2.10.2 序列图
+
 * 定义序列图:
 ````markdown
 ```mermaid!
