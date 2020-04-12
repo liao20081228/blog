@@ -746,8 +746,7 @@ int b = 20;
 
 ### 2.9.2 公式对齐
 
-* `\begin{align} ... \end{align}`，使用&表示对齐位置，\\\表示换行，\tag{n}标签序号。
-
+`\begin{align} ... \end{align}`，**使用&表示对齐位置，\\\表示换行，\tag{n}标签序号**。
 
 ```markdown
 $$
@@ -758,12 +757,11 @@ h(x) =& \frac{1}{\int_xt(x)\mathrm{d}x} \tag{1} \\
 $$
 ```
 
-&emsp;&emsp;显示如下：
+显示效果：
 
-![1](https://www.github.com/liao20081228/blog/raw/master/图片/markdown教程/1.jpg)
+![图2](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/2.jpg#pic_center)
 
-* `\begin{eqnarray} ...\end{eqnarray}`，使用&表示对齐位置
-
+`\begin{eqnarray} ...\end{eqnarray}`，**使用&表示对齐位置**：
 
 ```markdown
 $$
@@ -775,13 +773,13 @@ a & = & b + c \\
 \end{eqnarray}
 $$
 ```
-&emsp;&emsp;显示如下：
+显示如下：
 
-![2](https://www.github.com/liao20081228/blog/raw/master/图片/markdown教程/2.jpg)
+![图3](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/3.jpg#pic_center)
 
-### 2.10.3  矩阵
+### 2.9.3 矩阵
 
-* 简单矩阵—— `$$\begin{matrix}…\end{matrix}$$`来生成矩阵，其中... 表示的是LaTeX 的矩阵命令，矩阵命令中每一行以  \   \\ 结束，矩阵的元素之间用&来分隔开。
+**简单矩阵**：`$$\begin{matrix}…\end{matrix}$$`来生成矩阵，其中... 表示的是LaTeX 的矩阵命令，矩阵命令中每一行以  \   \\ 结束，矩阵的元素之间用&来分隔开。例如：
 ```markdown
  $$
   \begin{matrix}
@@ -791,18 +789,19 @@ $$
   \end{matrix} \tag{1}
 $$
 ```
-&emsp;&emsp;显示如：
+显示效果：
+
  $$
   \begin{matrix}
    1 & 2 & 3 \\
    4 & 5 & 6 \\
    7 & 8 & 9
-  \end{matrix} \tag{1}
+  \end{matrix} \tag{5}
 $$
 
 
 
-* 带括号的Matrix——可以给矩阵加上括号，分为两种：使用`\left矩阵左括号 ... \right矩阵右括号 `(其中花括号要进行转义)或者把公式命令中的matrix 改成 `pmatrix（圆括号）、bmatrix（方括号）、Bmatrix（花括号）、vmatrix（行列式）、Vmatrix（双竖线）`等。
+**带括号的矩阵**：可以给矩阵加上括号，分为两种：使用`\left矩阵左括号 ... \right矩阵右括号 `(其中花括号要进行转义)或者把公式命令中的matrix 改成 `pmatrix（圆括号）、bmatrix（方括号）、Bmatrix（花括号）、vmatrix（行列式）、Vmatrix（双竖线）`等。例如：
 ```markdown
 $$
  \left\{
@@ -814,7 +813,9 @@ $$
   \right\} \tag{2}
 $$
 ```
-&emsp;&emsp;显示如下：
+
+显示效果：
+
 $$
  \left\{
  \begin{matrix}
@@ -824,6 +825,7 @@ $$
   \end{matrix}
   \right\} \tag{2}
 $$
+
 ```markdown
 $$
  \begin{pmatrix}
@@ -833,7 +835,9 @@ $$
   \end{pmatrix} \tag{4}
 $$
 ```
-&emsp;&emsp;显示如下：
+
+显示效果：
+
 $$
  \begin{pmatrix}
    1 & 2 & 3 \\
@@ -841,6 +845,7 @@ $$
    7 & 8 & 9
   \end{pmatrix} \tag{4}
 $$
+
 ```markdown
 $$
  \begin{bmatrix}
@@ -850,7 +855,8 @@ $$
   \end{bmatrix} \tag{5}
 $$
 ```
-&emsp;&emsp;显示如下：
+显示效果：
+
 $$
  \begin{bmatrix}
    1 & 2 & 3 \\
@@ -858,6 +864,7 @@ $$
    7 & 8 & 9
   \end{bmatrix} \tag{5}
 $$
+
 ```markdown
 $$
  \begin{Bmatrix}
@@ -867,7 +874,8 @@ $$
   \end{Bmatrix} \tag{5}
 $$
 ```
-&emsp;&emsp;显示如下：
+显示效果：
+
 $$
  \begin{Bmatrix}
    1 & 2 & 3 \\
@@ -875,6 +883,7 @@ $$
    7 & 8 & 9
   \end{Bmatrix} \tag{5}
 $$
+
 ```markdown
 $$
  \begin{vmatrix}
@@ -884,7 +893,8 @@ $$
   \end{vmatrix} \tag{5}
 $$
 ```
-&emsp;&emsp;显示如下：
+显示效果：
+
 $$
  \begin{vmatrix}
    1 & 2 & 3 \\
@@ -892,6 +902,7 @@ $$
    7 & 8 & 9
   \end{vmatrix} \tag{5}
 $$
+
 ```markdown
 $$
  \begin{Vmatrix}
@@ -901,7 +912,7 @@ $$
   \end{Vmatrix} \tag{5}
 $$
 ```
-&emsp;&emsp;显示如下：
+显示效果：
 $$
  \begin{Vmatrix}
    1 & 2 & 3 \\
@@ -910,7 +921,8 @@ $$
   \end{Vmatrix} \tag{5}
 $$
 
-* 带省略符号的矩阵——如果矩阵元素太多，可以使用\cdots \ddots \vdots 等省略符号来定义矩阵。
+**带省略符号的矩阵**：如果矩阵元素太多，可以使用\cdots \ddots \vdots 等省略符号来定义矩阵。例如：
+
 ```markdown
 $$
 \left[
@@ -923,7 +935,7 @@ $$
 \right]
 $$
 ```
-&emsp;&emsp;显示如下：
+显示效果：
 
 $$
 \left[
@@ -936,9 +948,8 @@ $$
 \right]
 $$
 
+**带参数的矩阵**：比如写增广矩阵，可能需要最右边一列单独考虑。可以用array命令来处理,其中\\begin{array}{cc|c}中的c表示居中对齐元素,|用来作为分割列的符号**。例如：
 
-
-* 带参数的矩阵——比如写增广矩阵，可能需要最右边一列单独考虑。可以用array命令来处理,其中\\begin{array}{cc|c}中的c表示居中对齐元素,|用来作为分割列的符号。
 ```markdown
 $$ 
 \left[
@@ -949,7 +960,8 @@ $$
 \right] \tag{7}
 $$
 ```
-&emsp;&emsp;显示如下：
+显示效果：
+
 $$ 
 \left[
     \begin{array}{cc|c}
@@ -959,16 +971,15 @@ $$
 \right] \tag{7}
 $$
 
+**行间矩阵**：可以使用`\bigl(\begin{smallmatrix} ... \end{smallmatrix}\\bigr)`，例如：
 
-
-* 行间矩阵——可以使用`\bigl(\begin{smallmatrix} ... \end{smallmatrix}\\bigr)`，
 ```markdown
  $\bigl( \begin{smallmatrix} a & b \\ c & d \end{smallmatrix} \bigr)$
 ```
 &emsp;&emsp;显示如下：![3](https://www.github.com/liao20081228/blog/raw/master/图片/markdown教程/3.jpg)
 
-### 2.10.4 数学符号
-* 希腊字母——如果使用大写的希腊字母，把命令的首字母变成大写即可，例如 \Gamma 输出的是 $\Gamma$。如果使用斜体大写希腊字母，再在大写希腊字母的LaTeX命令前加上var，例如\varGamma 生成$\varGamma$。
+### 2.9.4 数学符号
+**希腊字母**：如果使用大写的希腊字母，把命令的首字母变成大写即可，例如 \Gamma 输出的是 $\Gamma$。如果使用斜体大写希腊字母，再在大写希腊字母的LaTeX命令前加上var，例如\varGamma 生成$\varGamma$。
 
 |命令|	显示|命令|	显示|命令|	显示|命令|	显示|
 |--|--|--|--|--|--|--|--|
@@ -980,7 +991,7 @@ $$
 |\chi|	$\chi$	|	\psi|	$\psi$|\omega|	$\omega$|	\ell|$\ell$|		
 	
 
-* 和号、积号、积分号、集合、极限
+**和号、积号、积分号、集合、极限**：
 
 |命令|	显示	|	命令|	显示
 |--|--|--|--|
@@ -994,7 +1005,7 @@ $$
 |\bigcap_{i=1}^{N}|$\bigcap_{i=1}^{N}$|\lim_{x \to 0}	|$\lim_{x \to 0}$|
 
 
-* 三角函数和双曲函数
+**三角函数和双曲函数**：
 
 |命令|	显示	|	命令|	显示|
 |--|--|--|--|--|--|--|--|
@@ -1007,7 +1018,7 @@ $$
 |\tanh x|$\tanh x$|\coth x|$\coth x$|
 
 
-* 根号、上标、下标、分数、括号、空格
+**根号、上标、下标、分数、括号、空格**：
 
 |命令|	显示|		命令|	显示|
 |--|--|--|--|
@@ -1016,7 +1027,7 @@ $$
 |\frac{1}{2}	|$\frac{1}{2}$	|
 
 
-* 特殊数学符号
+**特殊数学符号**：
 
 |命令|	显示|		命令|	显示|
 |--|--|--|--|
@@ -1027,7 +1038,7 @@ $$
 |||\overleftrightarrow {xyz}|$\overleftrightarrow {xyz}$|
 
 
-* 特殊符号
+**特殊符号**：
 
 |命令|	显示|		命令|	显示|
 |--|--|--|--|
@@ -1041,7 +1052,7 @@ $$
 |a\equiv b\pmod n|$a\equiv b\pmod n$|\tag x|$\tag x$|
 
 
-* 其他符号
+**其他符号**：
 
 |命令|	显示|命令|	显示|命令|	显示|		命令|	显示|命令|	显示|
 |--|--|--|--|--|--|--|--|--|--|
@@ -1077,7 +1088,7 @@ $$
 |\mathfrak| Fraktur|$\mathfrak {ABCDEFGH}$
 
 
-* 分组：同一个元素如果有个多个普通字符，使用大括号括起来表示同组：`{a+b}`
+**分组**：同一个元素如果有个多个普通字符，使用大括号括起来表示同组：`{a+b}`
 
 
 
