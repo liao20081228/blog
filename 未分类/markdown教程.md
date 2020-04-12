@@ -597,7 +597,6 @@ Content Cell  | Content Cell| Content Cell|
 
 **支持显示成思维脑图大纲**`[toc!]`，显示如下：
 
-![图2](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/2.jpg#pic_center)
 
 **思维脑图大纲支持其它一些参数**：`[toc!?depth=n&direction=v|h|lr|rl|tb|bl&]colors=颜色值[,颜色值1][,颜色值2][,颜色值3]&theme=gray|colorful]`
 * depth，表示显示到第几层
@@ -614,15 +613,15 @@ Content Cell  | Content Cell| Content Cell|
 	* gray: 黑白效果的分支。
 
 ## 2.3 上标和下标
-**上标文字**
+### 2.3.1 markdown
+`文字^上角^`，显示如：文字^上角^。
+`文字~下角~`，显示如：文字~下角~。
 
-* `文字^上角^`，显示如：文字^上角^
-* `文字<sup>上角</sup>`，显示如：文字<sup>上角</sup>
+### 2.3.2 html
 
-**文字下标**
+`文字<sup>上角</sup>`，显示如：文字<sup>上角</sup>
 
-* `文字~下角~`，显示如：文字~下角~
-* `文字<sub>下角</sub>`，显示如：文字<sub>下角</sub>
+`文字<sub>下角</sub>`，显示如：文字<sub>下角</sub>
 
 
 # 3 扩展语法
