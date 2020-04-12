@@ -1158,17 +1158,7 @@ sub(right)->op
 
 ### 2.10.2 序列图
 
-* 定义序列图:
-````markdown
-```mermaid!
-sequenceDiagram
-... ...
-... ...
-
-```
-	或
-
-```sequence！
+```sequence
 ... ...
 ... ...
 
@@ -1618,7 +1608,17 @@ G-->H
 click H "http://www.baidu.com" "This is a link"
 ```
 
+### 2.10.2 序列图
 
+* 定义序列图:
+````markdown
+```mermaid!
+sequenceDiagram
+... ...
+... ...
+
+```
+	或
 
 
 
