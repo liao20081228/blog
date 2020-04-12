@@ -591,27 +591,6 @@ Content Cell  | Content Cell| Content Cell|
 
 [toc]
 
-**支持参数depth, 表示显示到第几层**`[toc?depth=2]`，显示如下：
-
-![图1](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/1.jpg#pic_center)
-
-**支持显示成思维脑图大纲**`[toc!]`，显示如下：
-
-
-**思维脑图大纲支持其它一些参数**：`[toc!?depth=n&direction=v|h|lr|rl|tb|bl&]colors=颜色值[,颜色值1][,颜色值2][,颜色值3]&theme=gray|colorful]`
-* depth，表示显示到第几层
-* direction参数设置布局，取值可以是：
-	* v: 根结点在中间，分支均匀分布在垂直上下两侧
-	* h: 根结点在中间，分支均匀分布在水平左右两侧
-	* lr: 根结点在所有分支的左侧
-	* rl: 根结点在所有分支的右侧
-	* tb: 根结点在所有分支的上侧
-	* bt: 根结点在所有分支的下侧
-* colors参数设置分支颜色，必须是合法的十六进制颜色值，注意去掉`#`符号。
-* theme参数设置主题，取值可以为：
-	* colorful: 系统默认的彩色分支。如果用户指定了 colors 参数值， 则 theme 里面的颜色就会失效。
-	* gray: 黑白效果的分支。
-
 ## 2.3 上标和下标
 ### 2.3.1 markdown
 `文字^上角^`，显示如：文字^上角^。
@@ -685,31 +664,7 @@ int b = 20;
 int a = 10 ;
 int b = 20;
 ```
-**高级代码块支持是否显示行号，默认会显示**：
-````markdown
-```语言关键字?linenums[=true|false]
-... ...
-... ...
 
-```
-````
-
-**高级代码块支持设置起始行号**：
-````markdown
-```语言关键字?linenums=起始行号
-... ...
-... ...
-
-```
-````
-**高级代码块支持单独高亮某些行**：
-````markdown
-```语言关键字?linenums&fancy=行号列表
-... ...
-... ...
-
-```
-````
 支持的语言包括：
 
 |语言|关键字|语言|关键字|
@@ -735,6 +690,43 @@ int b = 20;
 
 |命令关键字|作用|
 |--|--|
+|flow|流程图|
+|sequence|序列图|
+|mermaid|mermaid流程图、序列图、甘特图
+
+# 3 扩展语法
+
+## 3.1 高级代码块
+**高级代码块支持是否显示行号，默认会显示**：
+````markdown
+```语言关键字?linenums[=true|false]
+... ...
+... ...
+
+```
+````
+
+**高级代码块支持设置起始行号**：
+````markdown
+```语言关键字?linenums=起始行号
+... ...
+... ...
+
+```
+````
+**高级代码块支持单独高亮某些行**：
+````markdown
+```语言关键字?linenums&fancy=行号列表
+... ...
+... ...
+
+```
+````
+
+**增强代码块还支持根据特定的命令关键字实现特定的功能**。
+
+|命令关键字|作用|
+|--|--|
 |mathjax!|数学公式|
 |flow或flow!|流程图|
 |plot!|统计图|
@@ -742,8 +734,30 @@ int b = 20;
 |mermaid!|mermaid流程图、序列图、甘特图
 |mindmap!|思维导图
 
+## 3.2 思维脑图形式的大纲
 
-# 3 扩展语法
+**支持参数depth, 表示显示到第几层**`[toc?depth=2]`，显示如下：
+
+![图1](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/1.jpg#pic_center)
+
+**支持显示成思维脑图大纲**`[toc!]`，显示如下：
+
+
+**思维脑图大纲支持其它一些参数**：`[toc!?depth=n&direction=v|h|lr|rl|tb|bl&]colors=颜色值[,颜色值1][,颜色值2][,颜色值3]&theme=gray|colorful]`
+* depth，表示显示到第几层
+* direction参数设置布局，取值可以是：
+	* v: 根结点在中间，分支均匀分布在垂直上下两侧
+	* h: 根结点在中间，分支均匀分布在水平左右两侧
+	* lr: 根结点在所有分支的左侧
+	* rl: 根结点在所有分支的右侧
+	* tb: 根结点在所有分支的上侧
+	* bt: 根结点在所有分支的下侧
+* colors参数设置分支颜色，必须是合法的十六进制颜色值，注意去掉`#`符号。
+* theme参数设置主题，取值可以为：
+	* colorful: 系统默认的彩色分支。如果用户指定了 colors 参数值， 则 theme 里面的颜色就会失效。
+	* gray: 黑白效果的分支。
+
+
 ------
 
 ***<font color=blue>版权声明</font>：本文章参考了<font color=blue >《小书匠markdown 官方教程》。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处！！！</font>***
