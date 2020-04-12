@@ -606,17 +606,24 @@ Content Cell  | Content Cell| Content Cell|
 
 [toc]
 
-## 2.3 上标和下标
+## 2.3 文字格式
 ### 2.3.1 markdown
-`文字^上角^`，显示如：文字^上角^。
-`文字~下角~`，显示如：文字~下角~。
+
+上标：`文字^上角^`，显示效果：文字^上角^。
+
+下标：`文字~下角~`，显示效果：文字~下角~。
+
+文本高亮：`==文本==`，显示效果： ==文本==
 
 ### 2.3.2 html
 
-`文字<sup>上角</sup>`，显示如：文字<sup>上角</sup>
+上标：`文字<sup>上角</sup>`，显示效果：文字<sup>上角</sup>
 
-`文字<sub>下角</sub>`，显示如：文字<sub>下角</sub>
+下标：`文字<sub>下角</sub>`，显示效果：文字<sub>下角</sub>
 
+下划线：`<u>下划线</u>`表示下划线 ，显示效果：<u>下划线</u>
+
+**字体、颜色、大小**：`<font face="字体名" size=大小 color=颜色>文本内容</font>`，显示效果：<font face="黑体" size=5 color=red>文本内容</font>
 
 ## 2.5 定义列表
 ### 2.5.1 markdown
@@ -1448,9 +1455,9 @@ end
 
  
 
-## 2.14 甘特图
+## 2.12 甘特图
 
-* 定义甘特图： 
+**定义甘特图**： 
 ````markdown
 ```mermaid! 
 gantt
@@ -1459,7 +1466,7 @@ gantt
 
 ```
 ````
-* 定义时间格式：```dateFormat  时间格式 ```
+**定义时间格式**：`dateFormat  时间格式 `
 
 |格式字符|举列	|描述|
 |--|--|--|
@@ -1493,20 +1500,23 @@ gantt
 |Z 或 ZZ|+12:00	|与 UTC 的偏移量，如 +-HH:mm, +-HHmm, or Z
 
 
-* 定义部门：`section section_name`
-* 定义任务：`taskname :[crit][,active|done][,task_id][,start_time][,end_time]`
-	 * done ：已完成
-	 * active ：未完成
-	 * crit：重要的，高亮显示
-	 * id：唯一标识任务
-	 * start：开始时间
-		 * 缺省：前一个任务的结束时间
-		 * 绝对时间：任务开始时间
-		 * 相对时间：after task_id 表示某任务的结束时间
-	 * end：结束时间
-		 * 绝对时间：该任务的截止时间
-		 * 持续时间：该任务需要多久完成
-* 示例
+**定义部门**：`section section_name`
+
+**定义任务**：`taskname :[crit][,active|done][,id][,start_time][,end_time]`
+
+* done ：已完成
+* active ：未完成
+* crit：重要的，高亮显示
+* id：唯一标识任务
+* start：开始时间
+	 * 缺省：前一个任务的结束时间
+	 * 绝对时间：任务开始时间
+	 * 相对时间：`after task_id`,表示某任务的结束时间
+* end：结束时间
+	* 绝对时间：该任务的截止时间
+	* 持续时间：该任务需要多久完成
+
+**示例**：
 ````markdown
 ```mermaid!
 gantt
@@ -1526,6 +1536,7 @@ gantt
         验收: 3d
 ```
 ````
+显示效果：
 
 ```mermaid!
 gantt
