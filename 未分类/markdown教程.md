@@ -1313,6 +1313,207 @@ end
 ```
 
  
+
+# 3 扩展语法
+
+## 3.1 高级代码块
+**高级代码块支持是否显示行号，默认会显示**：
+````markdown
+```语言关键字?linenums[=true|false]
+... ...
+... ...
+
+```
+````
+
+**高级代码块支持设置起始行号**：
+````markdown
+```语言关键字?linenums=起始行号
+... ...
+... ...
+
+```
+````
+**高级代码块支持单独高亮某些行**：
+````markdown
+```语言关键字?linenums&fancy=行号列表
+... ...
+... ...
+
+```
+````
+
+**增强代码块还支持根据特定的命令关键字实现特定的功能**。
+
+|命令关键字|作用|
+|--|--|
+|mathjax!|数学公式|
+|flow或flow!|流程图|
+|plot!|统计图|
+|sequence或sequence!|序列图|
+|mermaid!|mermaid流程图、序列图、甘特图
+|mindmap!|思维导图
+
+## 3.2 思维脑图形式的大纲
+
+**支持参数depth, 表示显示到第几层**`[toc?depth=2]`，显示如下：
+
+![图1](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/1.jpg#pic_center)
+
+**支持显示成思维脑图大纲**`[toc!]`，显示如下：
+
+
+**思维脑图大纲支持其它一些参数**：`[toc!?depth=n&direction=v|h|lr|rl|tb|bl&]colors=颜色值[,颜色值1][,颜色值2][,颜色值3]&theme=gray|colorful]`
+* depth，表示显示到第几层
+* direction参数设置布局，取值可以是：
+	* v: 根结点在中间，分支均匀分布在垂直上下两侧
+	* h: 根结点在中间，分支均匀分布在水平左右两侧
+	* lr: 根结点在所有分支的左侧
+	* rl: 根结点在所有分支的右侧
+	* tb: 根结点在所有分支的上侧
+	* bt: 根结点在所有分支的下侧
+* colors参数设置分支颜色，必须是合法的十六进制颜色值，注意去掉`#`符号。
+* theme参数设置主题，取值可以为：
+	* colorful: 系统默认的彩色分支。如果用户指定了 colors 参数值， 则 theme 里面的颜色就会失效。
+	* gray: 黑白效果的分支。
+
+## 3.3 标签
+标签分类，在新行使用`tags：标签1, 标签2...`或`TAGS：标签名, 标签2...`，可以给文章贴上标签。
+
+## 3.4 多媒体
+
+音频：`~[文件名](URL)`
+
+视频: `%[文件名](URL)`
+
+附件: `=[文件名](URL)`
+
+## 3.5 mathjax数学公式
+
+* xiaoshujiang markdown支持另一种写法：
+````markdown
+```mathjax!
+数学公式1
+数学公式1
+数学公式1
+```
+````
+
+## 3.6 Mermaid流程图
+
+## 2.12 统计图
+语法格式为：
+
+````markdown
+```plot!
+{
+"data": [ [[0, 0], [1, 1]] ],
+"options": { "yaxis": { "max": 1 } }
+}
+```
+````
+显示如图：
+
+![7](https://www.github.com/liao20081228/blog/raw/master/图片/markdown教程/7.jpg)
+
+
+## 2.14 甘特图
+
+* 定义甘特图： 
+````markdown
+```mermaid! 
+gantt
+... ...
+... ...
+
+```
+````
+* 定义时间格式：```dateFormat  时间格式 ```
+
+|格式字符|举列	|描述|
+|--|--|--|
+|YYYY|	2014|4位数字的年|
+|YY	|14	|2位数字的年|
+|Y|	-25	|Year with any number of digits and sign|
+|Q|	1,2,3,4|季度|
+|M 或 MM|	1..12|数字月份|
+|MMM 或 MMMM|Jan..December|英文名月份|
+|D| DD|	1..31|该月的几号|
+|Do|	1st..31st|一月的第几天|
+|DDD 或 DDDD|	1..365|	一年的第几天|
+|X|	1410715640.579|	Unix 时间戳，单位为秒|
+|x|	1410715640579|	Unix 时间戳，单位为毫秒|
+|gggg|	2014|当地的4位数字的年
+|gg	|14|当地的2位数字的年
+|w 或 ww|1..53|	一年的第几周|
+|e|	0..6|一周的星期几（数字）|
+|ddd 或 dddd|	Mon...Sunday|	一周的星期几（英文）|
+|GGGG|	2014|	ISO 4位数字的年
+|GG	|14	|ISO 2位数字的年
+|W 或 WW	|1..53|	ISO 一年的第几周|
+|E|	1..7|	ISO 一周的星期几（数字）|
+|H 或 HH|0..23|24小时制的小时（0-23）
+|h 或 hh|1..12|12小时制的小时（）
+|k 或 kk|1..24|24小时制的小时，（1-24）
+|a 或 A|am pm|	上午或下午
+|m 或 mm|	0..59|	分
+|s 或 ss|	0..59|	秒
+|S 或 SS 或 SSS|	0..999|	小数秒
+|Z 或 ZZ|+12:00	|与 UTC 的偏移量，如 +-HH:mm, +-HHmm, or Z
+
+
+* 定义部门：`section section_name`
+* 定义任务：`taskname :[crit][,active|done][,task_id][,start_time][,end_time]`
+	 * done ：已完成
+	 * active ：未完成
+	 * crit：重要的，高亮显示
+	 * id：唯一标识任务
+	 * start：开始时间
+		 * 缺省：前一个任务的结束时间
+		 * 绝对时间：任务开始时间
+		 * 相对时间：after task_id 表示某任务的结束时间
+	 * end：结束时间
+		 * 绝对时间：该任务的截止时间
+		 * 持续时间：该任务需要多久完成
+* 示例
+````markdown
+```mermaid!
+gantt
+    dateFormat YYYY-MM-DD
+    title 项目开发流程
+    section 项目确定
+        需求分析       :done,a1, 2016-06-22, 14d
+        可行性报告     :after a1, 5d
+        概念验证       :crit,5d
+    section 项目实施
+        概要设计      :2016-07-05, 5d
+        详细设计      :2016-07-08, 10d
+        编码          :2016-07-15, 10d
+        测试          :2016-07-22, 5d
+    section 发布验收
+        发布: 2d
+        验收: 3d
+```
+````
+
+```mermaid!
+gantt
+        dateFormat YYYY-MM-DD
+        title 项目开发流程
+    section 项目确定
+        需求分析       :done,a1, 2016-06-22, 3d
+        可行性报告     :after a1, 5d
+        概念验证       :crit,5d
+		
+    section 项目实施
+        概要设计      :2016-07-05, 5d
+        详细设计      :2016-07-08, 10d
+        编码          :2016-07-15, 10d
+        测试          :2016-07-22, 5d
+    section 发布验收
+        发布: 2d
+        验收: 3d
+```
 ## 2.13 流程图
 
 
@@ -1418,209 +1619,11 @@ click H "http://www.baidu.com" "This is a link"
 
 
 
-## 2.14 甘特图
-
-* 定义甘特图： 
-````markdown
-```mermaid! 
-gantt
-... ...
-... ...
-
-```
-````
-* 定义时间格式：```dateFormat  时间格式 ```
-
-|格式字符|举列	|描述|
-|--|--|--|
-|YYYY|	2014|4位数字的年|
-|YY	|14	|2位数字的年|
-|Y|	-25	|Year with any number of digits and sign|
-|Q|	1,2,3,4|季度|
-|M 或 MM|	1..12|数字月份|
-|MMM 或 MMMM|Jan..December|英文名月份|
-|D| DD|	1..31|该月的几号|
-|Do|	1st..31st|一月的第几天|
-|DDD 或 DDDD|	1..365|	一年的第几天|
-|X|	1410715640.579|	Unix 时间戳，单位为秒|
-|x|	1410715640579|	Unix 时间戳，单位为毫秒|
-|gggg|	2014|当地的4位数字的年
-|gg	|14|当地的2位数字的年
-|w 或 ww|1..53|	一年的第几周|
-|e|	0..6|一周的星期几（数字）|
-|ddd 或 dddd|	Mon...Sunday|	一周的星期几（英文）|
-|GGGG|	2014|	ISO 4位数字的年
-|GG	|14	|ISO 2位数字的年
-|W 或 WW	|1..53|	ISO 一年的第几周|
-|E|	1..7|	ISO 一周的星期几（数字）|
-|H 或 HH|0..23|24小时制的小时（0-23）
-|h 或 hh|1..12|12小时制的小时（）
-|k 或 kk|1..24|24小时制的小时，（1-24）
-|a 或 A|am pm|	上午或下午
-|m 或 mm|	0..59|	分
-|s 或 ss|	0..59|	秒
-|S 或 SS 或 SSS|	0..999|	小数秒
-|Z 或 ZZ|+12:00	|与 UTC 的偏移量，如 +-HH:mm, +-HHmm, or Z
-
-
-* 定义部门：`section section_name`
-* 定义任务：`taskname :[crit][,active|done][,task_id][,start_time][,end_time]`
-	 * done ：已完成
-	 * active ：未完成
-	 * crit：重要的，高亮显示
-	 * id：唯一标识任务
-	 * start：开始时间
-		 * 缺省：前一个任务的结束时间
-		 * 绝对时间：任务开始时间
-		 * 相对时间：after task_id 表示某任务的结束时间
-	 * end：结束时间
-		 * 绝对时间：该任务的截止时间
-		 * 持续时间：该任务需要多久完成
-* 示例
-````markdown
-```mermaid!
-gantt
-    dateFormat YYYY-MM-DD
-    title 项目开发流程
-    section 项目确定
-        需求分析       :done,a1, 2016-06-22, 14d
-        可行性报告     :after a1, 5d
-        概念验证       :crit,5d
-    section 项目实施
-        概要设计      :2016-07-05, 5d
-        详细设计      :2016-07-08, 10d
-        编码          :2016-07-15, 10d
-        测试          :2016-07-22, 5d
-    section 发布验收
-        发布: 2d
-        验收: 3d
-```
-````
-
-```mermaid!
-gantt
-        dateFormat YYYY-MM-DD
-        title 项目开发流程
-    section 项目确定
-        需求分析       :done,a1, 2016-06-22, 3d
-        可行性报告     :after a1, 5d
-        概念验证       :crit,5d
-		
-    section 项目实施
-        概要设计      :2016-07-05, 5d
-        详细设计      :2016-07-08, 10d
-        编码          :2016-07-15, 10d
-        测试          :2016-07-22, 5d
-    section 发布验收
-        发布: 2d
-        验收: 3d
-```
 
 
 
 
 
-# 3 扩展语法
-
-## 3.1 高级代码块
-**高级代码块支持是否显示行号，默认会显示**：
-````markdown
-```语言关键字?linenums[=true|false]
-... ...
-... ...
-
-```
-````
-
-**高级代码块支持设置起始行号**：
-````markdown
-```语言关键字?linenums=起始行号
-... ...
-... ...
-
-```
-````
-**高级代码块支持单独高亮某些行**：
-````markdown
-```语言关键字?linenums&fancy=行号列表
-... ...
-... ...
-
-```
-````
-
-**增强代码块还支持根据特定的命令关键字实现特定的功能**。
-
-|命令关键字|作用|
-|--|--|
-|mathjax!|数学公式|
-|flow或flow!|流程图|
-|plot!|统计图|
-|sequence或sequence!|序列图|
-|mermaid!|mermaid流程图、序列图、甘特图
-|mindmap!|思维导图
-
-## 3.2 思维脑图形式的大纲
-
-**支持参数depth, 表示显示到第几层**`[toc?depth=2]`，显示如下：
-
-![图1](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/1.jpg#pic_center)
-
-**支持显示成思维脑图大纲**`[toc!]`，显示如下：
-
-
-**思维脑图大纲支持其它一些参数**：`[toc!?depth=n&direction=v|h|lr|rl|tb|bl&]colors=颜色值[,颜色值1][,颜色值2][,颜色值3]&theme=gray|colorful]`
-* depth，表示显示到第几层
-* direction参数设置布局，取值可以是：
-	* v: 根结点在中间，分支均匀分布在垂直上下两侧
-	* h: 根结点在中间，分支均匀分布在水平左右两侧
-	* lr: 根结点在所有分支的左侧
-	* rl: 根结点在所有分支的右侧
-	* tb: 根结点在所有分支的上侧
-	* bt: 根结点在所有分支的下侧
-* colors参数设置分支颜色，必须是合法的十六进制颜色值，注意去掉`#`符号。
-* theme参数设置主题，取值可以为：
-	* colorful: 系统默认的彩色分支。如果用户指定了 colors 参数值， 则 theme 里面的颜色就会失效。
-	* gray: 黑白效果的分支。
-
-## 3.3 标签
-标签分类，在新行使用`tags：标签1, 标签2...`或`TAGS：标签名, 标签2...`，可以给文章贴上标签。
-
-## 3.4 多媒体
-
-音频：`~[文件名](URL)`
-
-视频: `%[文件名](URL)`
-
-附件: `=[文件名](URL)`
-
-## 3.5 mathjax数学公式
-
-* xiaoshujiang markdown支持另一种写法：
-````markdown
-```mathjax!
-数学公式1
-数学公式1
-数学公式1
-```
-````
-
-## 3.6 Mermaid流程图
-
-## 2.12 统计图
-语法格式为：
-
-````markdown
-```plot!
-{
-"data": [ [[0, 0], [1, 1]] ],
-"options": { "yaxis": { "max": 1 } }
-}
-```
-````
-显示如图：
-
-![7](https://www.github.com/liao20081228/blog/raw/master/图片/markdown教程/7.jpg)
 
 ------
 
