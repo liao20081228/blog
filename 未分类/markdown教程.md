@@ -1158,8 +1158,7 @@ sub(right)->op
 
 ### 2.10.2 mermaid流程图
 
-
-* 定义流程图： 
+**定义流程图**： 
 ````markdown
 ```mermaid! 
 graph [方向]
@@ -1168,41 +1167,52 @@ graph [方向]
 
 ```
 ````
-* 方向:
-	 * TD或TB（ top bottom）表示从上到下(缺省)
-	 * BT（bottom top）表示从下到上
-	 * RL（right left）表示从右到左
-	 * LR（left right）表示从左到右
 
-* 定义节点：```node[text1] ```
-	 * 默认节点： A
-	 * 矩形节点： B[bname]
-	 * 圆角矩形节点： C(cname)
-	 * 圆形节点： D((dname))
-	 * 非对称节点： E>ename]
-	 * 菱形节点： F{fname}
+**方向**：
 
-* 连接
-     * A-->B 实线带箭头
-     * A---B 实线不带箭头
-     * A--text-->B或A-->|text|B 实线带箭头带标签
-     * A--text---B或A---|text|B 实线不带箭头带标签
-     * A-.->B 虚线带箭头
-     * A-.-B 虚线不带箭头
-     * A-.text.->B或A-.->|text|B  虚线带箭头带标签
-     * A-.text.-B或A-.-|text|B  虚线不带箭头带标签
+* TD或TB（ top bottom）：从上到下(缺省)
+* BT（bottom top）：从下到上
+* RL（right left）：从右到左
+* LR（left right）：从左到右
 
-* 定义子流程图
+**定义节点**：```node[文字说明] ```
+
+* 默认节点： A
+* 矩形节点： A[bname]
+* 圆角矩形节点： A(cname)
+* 圆形节点： A((dname))
+* 非对称节点： A>ename]
+* 菱形节点： A{fname}
+
+**连接**：
+
+* `A-->B` ：细实线带箭头
+* `A---B` ：细实线不带箭头
+* `A--text-->B`或`A-->|text|B` ：细实线带箭头带说明
+* `A--text---B`或`A---|text|B` ：细实线不带箭头带说明
+* `A==>B` ：粗实线带箭头
+* `A===B` ：粗实线不带箭头
+* `A==text==>B`或`A==>|text|B` ：粗实线带箭头带说明
+* `A==text===B`或`A===|text|B` ：粗实线不带箭头带说明
+* `A-.->B` ：虚线带箭头
+* `A-.-B` ：虚线不带箭头
+* `A-.text.->B`或`A-.->|text|B`  ：虚线带箭头带说明
+* `A-.text.-B`或`A-.-|text|B`  ：虚线不带箭头带说明
+
+**定义子流程图**：
+
 ```markdown
 subgraph title
     graph definition
 end
 ```
-* 定义交互
-	 * js回调：`click node callback "js函数名"`
-	 * 打开连接：` click node "URL" "注释"`
 
-* 示例
+**定义交互**：
+
+* js回调：`click nodename callback "js函数名"`
+* 打开连接：` click nodename "URL" "注释"`
+
+**示例**：
 ````markdown
 ```mermaid!
 graph BT
@@ -1230,6 +1240,7 @@ G-->H
 click H "http://www.baidu.com" "This is a link"
 ```
 ````
+显示如下：
 
 ```mermaid!
 graph TB
@@ -1260,19 +1271,15 @@ click H "http://www.baidu.com" "This is a link"
 
 ## 2.11 序列图
 
-### 2.11.1 普通序列图
-
-* 定义序列图:
+**定义序列图**：
 ````markdown
 ```mermaid!
 sequenceDiagram
 ... ...
 ... ...
 
-```
-	或
-
-
+````
+或
 
 ````
 ```sequence
@@ -1281,43 +1288,54 @@ sequenceDiagram
 
 ```
 ````
-* 定义标题：`title: 标题`
-* 定义对象（可以省略）：`participant 对象 [as 别名]`
-* 定义注释：`note [left of|right of|over]  对象：注释 `
-	* left of, 表示当前对象的左侧
-	* right of, 表示当前对象的右侧
-	* over, 表示覆盖在当前对象（们）的上面
-* 定义动作：`对象1 箭头 对象2:内容`
-	* -> 不带箭头的实线
-	* --> 不带箭头的虚线
-   * ->> 带箭头的实线
-   * -->>	带箭头的虚线
-   * -x 带x带箭头实线 (异步)
-   * --x	带x带箭头虚线(异步)
-* 激活/不激活：
-	* 第一种：`activate|deactivate  对象 `
-	* 第二种：定义动作时在对象2之前加`+`表示激活，加`-`表示不激活
-* 循环：
-```shell
+
+**定义标题**：`title: 标题`
+
+**定义对象**（可以省略）：`participant 对象 [as 别名]`
+
+**定义注释**：`note [left of|right of|over] 对象：注释 `
+
+* * left of, 表示当前对象的左侧
+* right of, 表示当前对象的右侧
+* over, 表示覆盖在当前对象（们）的上面
+
+**定义动作**：`对象1 箭头 对象2:内容`
+
+* `->`：不带箭头的实线
+* `-->`：不带箭头的虚线
+* `->>`：带箭头的实线
+* `-->>`：带箭头的虚线
+* `-x`：带x带箭头实线 (异步)
+* `--x`：带x带箭头虚线(异步)
+
+**激活/不激活**：
+
+* 第一种：`activate|deactivate  对象 `
+* 第二种：定义动作时在对象2之前加`+`表示激活，加`-`表示不激活
+
+**循环**：
+```
 loop Loop-text
 ... statements ...
 end
 ```
-* 替代路径alt或opt：
-```shell
+
+**替代路径alt或opt**：
+
+```
 #如果有两条替代路径
-alt Describing text
+alt Describing-text
 ... statements ...
-else Describing text
+else Describing-text
 ... statements ...
 end
 
 #如果只有一条替代路径
-opt Describing text
+opt Describing-text
 ... statements ...
 end
 ```
-* 示例
+**示例**：
 ````markdown
 ```mermaid!
 sequenceDiagram
@@ -1354,7 +1372,9 @@ B->>C:测试循环
 B-->C:测试循环
 B-->>C:测试循环
 end
+
 A->>D:首选路径
+
 alt 替代路径1
 A->>C: 
 C->>D: 
@@ -1362,7 +1382,9 @@ else 替代路径2
 A->>B: 
 B->>D: 
 end
+
 A-->>C: 首选路径
+
 opt 一种替代路径
 A-->>B: 
 B-->>D: 
@@ -1405,7 +1427,9 @@ B->>C:测试循环
 B-->C:测试循环
 B-->>C:测试循环
 end
+
 A->>D:首选路径
+
 alt 替代路径1
 A->>C: 
 C->>D: 
@@ -1413,7 +1437,9 @@ else 替代路径2
 A->>B: 
 B->>D: 
 end
+
 A-->>C: 首选路径
+
 opt 一种替代路径
 A-->>B: 
 B-->>D: 
