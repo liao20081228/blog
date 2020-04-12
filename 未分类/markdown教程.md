@@ -705,9 +705,9 @@ int b = 20;
 
 |命令关键字|作用|
 |--|--|
-|flow|流程图|
-|sequence|序列图|
-|mermaid|mermaid流程图、序列图、甘特图
+|flow!|流程图|
+|sequence!|序列图|
+|mermaid或mermaid!|mermaid流程图、序列图、甘特图
 
 ## 2.8 脚注
 
@@ -1311,20 +1311,6 @@ end
 
 ## 3.6 Mermaid流程图
 
-## 2.12 统计图
-语法格式为：
-
-````markdown
-```plot!
-{
-"data": [ [[0, 0], [1, 1]] ],
-"options": { "yaxis": { "max": 1 } }
-}
-```
-````
-显示如图：
-
-![7](https://www.github.com/liao20081228/blog/raw/master/图片/markdown教程/7.jpg)
 
 
 ## 2.14 甘特图
