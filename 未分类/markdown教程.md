@@ -1091,7 +1091,72 @@ $$
 **分组**：同一个元素如果有个多个普通字符，使用大括号括起来表示同组：`{a+b}`
 
 ## 2.10 UML图
-### 2.10.1 序列图
+
+### 2.10.1 流程图
+**定义流程图**：
+````markdown
+```flow!
+... ...
+... ...
+```
+````
+**定义元素**：` tag=>type: text_content:>url[blank]`
+* tag就是一个标签，在第二段连接元素时用
+* type是流程图的基本类型
+	* start：开始节点
+	* end：结束节点
+	* operation：处理节点
+	* subroutine：子路径节点
+	* condition：判断节点
+	* inputoutput：输入输出节点
+	* parallel：并行节点
+* `:>url`：可点击的节点，可以省略。
+* `[blank]`：在新窗口打开，默认当前窗口。
+
+**连接元素**：`tag1(方向)->tag2(方向)->tag3....`
+
+* 使用 `->` 来连接两个元素
+* right,left：表示箭头在当前模块上的起点(默认箭头从下端开始)
+* 对于condition类型，有yes和no两个分支，如示例中的cond(yes)和cond(no)
+ 
+**示例**:  
+````
+```flow
+st=>start: START:>www.baidu.com
+e=>end: END
+in=>inputoutput: input
+out=>inputoutput: output
+op=>operation: My Operation
+sub=>subroutine: My subroute
+cond=>condition: Yes or No?
+io=>inputoutput: catch something
+
+st->in->op->cond
+cond(yes)->out->e
+cond(no)->sub
+sub(right)->op
+```
+````
+显示效果：
+
+```flow
+st=>start: START:>www.baidu.com
+e=>end: END
+in=>inputoutput: input
+out=>inputoutput: output
+op=>operation: My Operation
+sub=>subroutine: My subroute
+cond=>condition: Yes or No?
+io=>inputoutput: catch something
+
+st->in->op->cond
+cond(yes)->out->e
+cond(no)->sub
+sub(right)->op
+```
+
+
+### 2.10.2 序列图
 * 定义序列图:
 ````markdown
 ```mermaid!
@@ -1250,62 +1315,7 @@ end
  
 ## 2.13 流程图
 
-### 2.13.1 flow
-* 定义流程图：
-```markdown
-```flow!
-... ...
-... ...
 
-```
-* 定义元素：` tag=>type: text_content:>url`
-	* tag就是一个标签，在第二段连接元素时用type是这个标签的类型
-	* type是流程图的基本类型
-		* start
-	   * end
-		* operation
-		* subroutine
-		* condition
-		* inputoutput
-* 连接元素：`tag1(方向)->tag2(方向)->tag3....`
-	* 使用 `->` 来连接两个元素
-	* right,left：表示箭头在当前模块上的起点(默认箭头从下端开始)
-	* 对于condition类型，有yes和no两个分支，如示例中的cond(yes)和cond(no)
- 
-* 示例  
-```
-```flow
-st=>start: START:>www.baidu.com
-e=>end: END
-in=>inputoutput: input
-out=>inputoutput: output
-op=>operation: My Operation
-sub=>subroutine: My subroute
-cond=>condition: Yes or No?
-io=>inputoutput: catch something
-
-st->in->op->cond
-cond(yes)->out->e
-cond(no)->sub
-sub(right)->op
-```
-
-
-```flow!
-st=>start: START:>www.baidu.com
-e=>end: END
-in=>inputoutput: input
-out=>inputoutput: output
-op=>operation: My Operation
-sub=>subroutine: My subroute
-cond=>condition: Yes or No?
-io=>inputoutput: catch something
-
-st->in->op->cond
-cond(yes)->out->e
-cond(no)->sub
-sub(right)->op
-```
 ### 3.13.2 graph
 
 * 定义流程图： 
