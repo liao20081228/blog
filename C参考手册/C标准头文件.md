@@ -9,8 +9,6 @@ tags: C
 
 ------
 
-
-
 |头文件|版本|说明|
 |:--|:--|:--|
 |assert.h|	|条件编译宏，将参数与零比较
@@ -33,7 +31,7 @@ tags: C
 |stddef.h||常用宏定义
 |stdint.h| C99 起|	定宽整数类型
 |stdio.h|	|输入/输出
-|stdlib.h|	|基础工具：内存管理<br />程序工具<br />字符串转换<br />随机数
+|stdlib.h|	|基础工具：内存管理、程序工具、字符串转换、随机数
 |stdnoreturn.h| C11 起|	noreturn 便利宏
 |string.h|	|字符串处理
 |tgmath.h| C99 起|	泛型数学（包装 math.h 和 complex.h 的宏）
