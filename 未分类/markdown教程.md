@@ -1090,9 +1090,9 @@ $$
 
 **分组**：同一个元素如果有个多个普通字符，使用大括号括起来表示同组：`{a+b}`
 
-## 2.10 UML图
+## 2.10 流程图
 
-### 2.10.1 流程图
+### 2.10.1 普通流程图
 **定义流程图**：
 ````markdown
 ```flow!
@@ -1156,7 +1156,123 @@ sub(right)->op
 ```
 
 
-### 2.10.2 序列图
+### 2.10.2 mermaid流程图
+
+
+* 定义流程图： 
+````markdown
+```mermaid! 
+graph [方向]
+... ...
+... ...
+
+```
+````
+* 方向:
+	 * TD或TB（ top bottom）表示从上到下(缺省)
+	 * BT（bottom top）表示从下到上
+	 * RL（right left）表示从右到左
+	 * LR（left right）表示从左到右
+
+* 定义节点：```node[text1] ```
+	 * 默认节点： A
+	 * 矩形节点： B[bname]
+	 * 圆角矩形节点： C(cname)
+	 * 圆形节点： D((dname))
+	 * 非对称节点： E>ename]
+	 * 菱形节点： F{fname}
+
+* 连接
+     * A-->B 实线带箭头
+     * A---B 实线不带箭头
+     * A--text-->B或A-->|text|B 实线带箭头带标签
+     * A--text---B或A---|text|B 实线不带箭头带标签
+     * A-.->B 虚线带箭头
+     * A-.-B 虚线不带箭头
+     * A-.text.->B或A-.->|text|B  虚线带箭头带标签
+     * A-.text.-B或A-.-|text|B  虚线不带箭头带标签
+
+* 定义子流程图
+```markdown
+subgraph title
+    graph definition
+end
+```
+* 定义交互
+	 * js回调：`click node callback "js函数名"`
+	 * 打开连接：` click node "URL" "注释"`
+
+* 示例
+````markdown
+```mermaid!
+graph BT
+A
+B[矩形]
+C(圆角矩形)
+D{菱形}
+E((圆形))
+F>非对称]
+
+A-->B 
+A---B 
+A--text-->B
+A-->|text|B 
+C--text---D
+C---|text|D 
+C-.->D
+C-.-D
+E-.text.->F
+E-.->|text|F 
+E-.text.-F
+E-.-|text|F
+
+G-->H
+click H "http://www.baidu.com" "This is a link"
+```
+````
+
+```mermaid!
+graph TB
+A
+B[矩形]
+C(圆角矩形)
+D{菱形}
+E((圆形))
+F>非对称]
+
+A-->B 
+A---B 
+A--text-->B
+A-->|text|B 
+C--text---D
+C---|text|D 
+C-.->D
+C-.-D
+E-.text.->F
+E-.->|text|F 
+E-.text.-F
+E-.-|text|F
+
+G-->H
+click H "http://www.baidu.com" "This is a link"
+```
+
+
+## 2.11 序列图
+
+### 2.11.1 普通序列图
+
+* 定义序列图:
+````markdown
+```mermaid!
+sequenceDiagram
+... ...
+... ...
+
+```
+	或
+
+
 
 ````
 ```sequence
@@ -1306,11 +1422,6 @@ end
 
  
 
-
-## 3.6 Mermaid流程图
-
-
-
 ## 2.14 甘特图
 
 * 定义甘特图： 
@@ -1408,126 +1519,6 @@ gantt
         发布: 2d
         验收: 3d
 ```
-## 2.13 流程图
-
-
-### 3.13.2 graph
-
-* 定义流程图： 
-````markdown
-```mermaid! 
-graph [方向]
-... ...
-... ...
-
-```
-````
-* 方向:
-	 * TD或TB（ top bottom）表示从上到下(缺省)
-	 * BT（bottom top）表示从下到上
-	 * RL（right left）表示从右到左
-	 * LR（left right）表示从左到右
-
-* 定义节点：```node[text1] ```
-	 * 默认节点： A
-	 * 矩形节点： B[bname]
-	 * 圆角矩形节点： C(cname)
-	 * 圆形节点： D((dname))
-	 * 非对称节点： E>ename]
-	 * 菱形节点： F{fname}
-
-* 连接
-     * A-->B 实线带箭头
-     * A---B 实线不带箭头
-     * A--text-->B或A-->|text|B 实线带箭头带标签
-     * A--text---B或A---|text|B 实线不带箭头带标签
-     * A-.->B 虚线带箭头
-     * A-.-B 虚线不带箭头
-     * A-.text.->B或A-.->|text|B  虚线带箭头带标签
-     * A-.text.-B或A-.-|text|B  虚线不带箭头带标签
-
-* 定义子流程图
-```markdown
-subgraph title
-    graph definition
-end
-```
-* 定义交互
-	 * js回调：`click node callback "js函数名"`
-	 * 打开连接：` click node "URL" "注释"`
-
-* 示例
-````markdown
-```mermaid!
-graph BT
-A
-B[矩形]
-C(圆角矩形)
-D{菱形}
-E((圆形))
-F>非对称]
-
-A-->B 
-A---B 
-A--text-->B
-A-->|text|B 
-C--text---D
-C---|text|D 
-C-.->D
-C-.-D
-E-.text.->F
-E-.->|text|F 
-E-.text.-F
-E-.-|text|F
-
-G-->H
-click H "http://www.baidu.com" "This is a link"
-```
-````
-
-```mermaid!
-graph TB
-A
-B[矩形]
-C(圆角矩形)
-D{菱形}
-E((圆形))
-F>非对称]
-
-A-->B 
-A---B 
-A--text-->B
-A-->|text|B 
-C--text---D
-C---|text|D 
-C-.->D
-C-.-D
-E-.text.->F
-E-.->|text|F 
-E-.text.-F
-E-.-|text|F
-
-G-->H
-click H "http://www.baidu.com" "This is a link"
-```
-
-### 2.10.2 序列图
-
-* 定义序列图:
-````markdown
-```mermaid!
-sequenceDiagram
-... ...
-... ...
-
-```
-	或
-
-
-
-
-
-
 
 ------
 
