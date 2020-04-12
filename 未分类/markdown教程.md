@@ -29,7 +29,7 @@ tags: 未分类, 未完成
 ```
 显示效果：
 
-![图0](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/0.jpg#pic_center)
+![图1](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/1.jpg#pic_center)
 
 	>**注意**：只有当`#`位于一行开头，或引用文字中的一行开头的才会起作用。
 	>**注意**：#与标题之间要有空格，在标准的markdown规范中必须要有空格才会起作用。
@@ -490,37 +490,9 @@ mi posuere lectus.
  :--|:--:|--:
  张三|100|20
 
-### 2.1.3 增强表格
 
-提供增强型表格语法扩展功能：
 
-**行合并**：如果单元格的右侧内容为空时，系统自动向右合并单元格。系统也支持在前一个单元格输入 `>`，来把当前的单元格合并到下一个单元格里。
-
-**列合并**：系统也支持在前一个单元格输入 `^`，来把当前的单元格合并到上一个单元格里。
-
-**表格标题**：在表格定义的结尾添加 `[标题内容]`
-
-**多表头**：普通表格只能在 ---- 分界线的上方添加一个表格头，增强版的表格允许添加多个表格头
-
-**多表格身**：当表格内容部份有空行时，系统会生成多表格身效果。在 html 上就是生成多个 tbody
-
-```markdown
-|First Header  | Second Header ||
-|First Header  | Second Header | Third Header|
-|------------- | -------------|-------------|
-表身1Content Cell  | Merge Content Cell||
-Content Cell  | Content Cell| Content Cell|
-
-表身2Content Cell  | Merge Content Cell||
-Content Cell  | Content Cell| Content Cell|
-[表格标题]
-```
-
-显示效果：
-
-![8](https://www.github.com/liao20081228/blog/raw/master/图片/markdown教程/8.jpg)
-
-### 2.1.4 html表格
+### 2.1.3 html表格
 
 **定义表格**：`<table>...</table>` 
 
@@ -983,7 +955,7 @@ $$
 ```markdown
  $\bigl( \begin{smallmatrix} a & b \\ c & d \end{smallmatrix} \bigr)$
 ```
-&emsp;&emsp;显示如下：![3](https://www.github.com/liao20081228/blog/raw/master/图片/markdown教程/3.jpg)
+显示如下：![图4](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/4.jpg#pic_center)
 
 ### 2.9.4 数学符号
 **希腊字母**：如果使用大写的希腊字母，把命令的首字母变成大写即可，例如 \Gamma 输出的是 $\Gamma$。如果使用斜体大写希腊字母，再在大写希腊字母的LaTeX命令前加上var，例如\varGamma 生成$\varGamma$。
