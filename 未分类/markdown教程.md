@@ -705,8 +705,8 @@ int b = 20;
 
 |命令关键字|作用|
 |--|--|
-|flow!|流程图|
-|sequence!|序列图|
+|flow或flow!|流程图|
+|sequence或sequence!|序列图|
 |mermaid或mermaid!|mermaid流程图、序列图、甘特图
 
 ## 2.8 脚注
