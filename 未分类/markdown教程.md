@@ -1090,9 +1090,427 @@ $$
 
 **分组**：同一个元素如果有个多个普通字符，使用大括号括起来表示同组：`{a+b}`
 
+## 2.10 UML图
+### 2.10.1 序列图
+* 定义序列图:
+````markdown
+```mermaid!
+sequenceDiagram
+... ...
+... ...
+
+```
+	或
+
+```sequence！
+... ...
+... ...
+
+```
+````
+* 定义标题：`title: 标题`
+* 定义对象（可以省略）：`participant 对象 [as 别名]`
+* 定义注释：`note [left of|right of|over]  对象：注释 `
+	* left of, 表示当前对象的左侧
+	* right of, 表示当前对象的右侧
+	* over, 表示覆盖在当前对象（们）的上面
+* 定义动作：`对象1 箭头 对象2:内容`
+	* -> 不带箭头的实线
+	* --> 不带箭头的虚线
+   * ->> 带箭头的实线
+   * -->>	带箭头的虚线
+   * -x 带x带箭头实线 (异步)
+   * --x	带x带箭头虚线(异步)
+* 激活/不激活：
+	* 第一种：`activate|deactivate  对象 `
+	* 第二种：定义动作时在对象2之前加`+`表示激活，加`-`表示不激活
+* 循环：
+```shell
+loop Loop-text
+... statements ...
+end
+```
+* 替代路径alt或opt：
+```shell
+#如果有两条替代路径
+alt Describing text
+... statements ...
+else Describing text
+... statements ...
+end
+
+#如果只有一条替代路径
+opt Describing text
+... statements ...
+end
+```
+* 示例
+````markdown
+```mermaid!
+sequenceDiagram
+title: 序列图sequence(示例)
+participant A
+participant B
+participant C
+participant D as test
+
+note left of A: A左侧说明
+note over B,C: 覆盖B,C的说明
+note right of C: C右侧说明
+
+A->A:自己到自己
+A->B:实线不带箭头
+A-->B:虚线不带箭头
+A->>B:实线带箭头
+A-->>B:虚线带箭头
+A-xB:带x带箭头实线（异步）
+A--xB:带x带箭头虚线（异步）
+C->D:激活
+activate C
+C->D:不激活
+deactivate C
+
+C->+D:激活
+C->+D:激活
+C->-D:不激活
+C->-D:不激活
+
+loop 循环
+B->C:测试循环
+B->>C:测试循环
+B-->C:测试循环
+B-->>C:测试循环
+end
+A->>D:首选路径
+alt 替代路径1
+A->>C: 
+C->>D: 
+else 替代路径2
+A->>B: 
+B->>D: 
+end
+A-->>C: 首选路径
+opt 一种替代路径
+A-->>B: 
+B-->>D: 
+end
+```
+````
+
+```mermaid!
+sequenceDiagram
+title: 序列图sequence(示例)
+participant A
+participant B
+participant C
+participant D as test
+
+note left of A: A左侧说明
+note over B,C: 覆盖B,C的说明
+note right of C: C右侧说明
+
+A->A:自己到自己
+A->B:实线不带箭头
+A-->B:虚线不带箭头
+A->>B:实线带箭头
+A-->>B:虚线带箭头
+A-xB:带x带箭头实线（异步）
+A--xB:带x带箭头虚线（异步）
+C->D:激活
+activate C
+C->D:不激活
+deactivate C
+
+C->+D:激活
+C->+D:激活
+C->-D:不激活
+C->-D:不激活
+
+loop 循环
+B->C:测试循环
+B->>C:测试循环
+B-->C:测试循环
+B-->>C:测试循环
+end
+A->>D:首选路径
+alt 替代路径1
+A->>C: 
+C->>D: 
+else 替代路径2
+A->>B: 
+B->>D: 
+end
+A-->>C: 首选路径
+opt 一种替代路径
+A-->>B: 
+B-->>D: 
+end
+```
+
+ 
+## 2.13 流程图
+
+### 2.13.1 flow
+* 定义流程图：
+```markdown
+```flow!
+... ...
+... ...
+
+```
+* 定义元素：` tag=>type: text_content:>url`
+	* tag就是一个标签，在第二段连接元素时用type是这个标签的类型
+	* type是流程图的基本类型
+		* start
+	   * end
+		* operation
+		* subroutine
+		* condition
+		* inputoutput
+* 连接元素：`tag1(方向)->tag2(方向)->tag3....`
+	* 使用 `->` 来连接两个元素
+	* right,left：表示箭头在当前模块上的起点(默认箭头从下端开始)
+	* 对于condition类型，有yes和no两个分支，如示例中的cond(yes)和cond(no)
+ 
+* 示例  
+```
+```flow
+st=>start: START:>www.baidu.com
+e=>end: END
+in=>inputoutput: input
+out=>inputoutput: output
+op=>operation: My Operation
+sub=>subroutine: My subroute
+cond=>condition: Yes or No?
+io=>inputoutput: catch something
+
+st->in->op->cond
+cond(yes)->out->e
+cond(no)->sub
+sub(right)->op
+```
 
 
-# 3 小书匠扩展语法
+```flow!
+st=>start: START:>www.baidu.com
+e=>end: END
+in=>inputoutput: input
+out=>inputoutput: output
+op=>operation: My Operation
+sub=>subroutine: My subroute
+cond=>condition: Yes or No?
+io=>inputoutput: catch something
+
+st->in->op->cond
+cond(yes)->out->e
+cond(no)->sub
+sub(right)->op
+```
+### 3.13.2 graph
+
+* 定义流程图： 
+````markdown
+```mermaid! 
+graph [方向]
+... ...
+... ...
+
+```
+````
+* 方向:
+	 * TD或TB（ top bottom）表示从上到下(缺省)
+	 * BT（bottom top）表示从下到上
+	 * RL（right left）表示从右到左
+	 * LR（left right）表示从左到右
+
+* 定义节点：```node[text1] ```
+	 * 默认节点： A
+	 * 矩形节点： B[bname]
+	 * 圆角矩形节点： C(cname)
+	 * 圆形节点： D((dname))
+	 * 非对称节点： E>ename]
+	 * 菱形节点： F{fname}
+
+* 连接
+     * A-->B 实线带箭头
+     * A---B 实线不带箭头
+     * A--text-->B或A-->|text|B 实线带箭头带标签
+     * A--text---B或A---|text|B 实线不带箭头带标签
+     * A-.->B 虚线带箭头
+     * A-.-B 虚线不带箭头
+     * A-.text.->B或A-.->|text|B  虚线带箭头带标签
+     * A-.text.-B或A-.-|text|B  虚线不带箭头带标签
+
+* 定义子流程图
+```markdown
+subgraph title
+    graph definition
+end
+```
+* 定义交互
+	 * js回调：`click node callback "js函数名"`
+	 * 打开连接：` click node "URL" "注释"`
+
+* 示例
+````markdown
+```mermaid!
+graph BT
+A
+B[矩形]
+C(圆角矩形)
+D{菱形}
+E((圆形))
+F>非对称]
+
+A-->B 
+A---B 
+A--text-->B
+A-->|text|B 
+C--text---D
+C---|text|D 
+C-.->D
+C-.-D
+E-.text.->F
+E-.->|text|F 
+E-.text.-F
+E-.-|text|F
+
+G-->H
+click H "http://www.baidu.com" "This is a link"
+```
+````
+
+```mermaid!
+graph TB
+A
+B[矩形]
+C(圆角矩形)
+D{菱形}
+E((圆形))
+F>非对称]
+
+A-->B 
+A---B 
+A--text-->B
+A-->|text|B 
+C--text---D
+C---|text|D 
+C-.->D
+C-.-D
+E-.text.->F
+E-.->|text|F 
+E-.text.-F
+E-.-|text|F
+
+G-->H
+click H "http://www.baidu.com" "This is a link"
+```
+
+
+
+## 2.14 甘特图
+
+* 定义甘特图： 
+````markdown
+```mermaid! 
+gantt
+... ...
+... ...
+
+```
+````
+* 定义时间格式：```dateFormat  时间格式 ```
+
+|格式字符|举列	|描述|
+|--|--|--|
+|YYYY|	2014|4位数字的年|
+|YY	|14	|2位数字的年|
+|Y|	-25	|Year with any number of digits and sign|
+|Q|	1,2,3,4|季度|
+|M 或 MM|	1..12|数字月份|
+|MMM 或 MMMM|Jan..December|英文名月份|
+|D| DD|	1..31|该月的几号|
+|Do|	1st..31st|一月的第几天|
+|DDD 或 DDDD|	1..365|	一年的第几天|
+|X|	1410715640.579|	Unix 时间戳，单位为秒|
+|x|	1410715640579|	Unix 时间戳，单位为毫秒|
+|gggg|	2014|当地的4位数字的年
+|gg	|14|当地的2位数字的年
+|w 或 ww|1..53|	一年的第几周|
+|e|	0..6|一周的星期几（数字）|
+|ddd 或 dddd|	Mon...Sunday|	一周的星期几（英文）|
+|GGGG|	2014|	ISO 4位数字的年
+|GG	|14	|ISO 2位数字的年
+|W 或 WW	|1..53|	ISO 一年的第几周|
+|E|	1..7|	ISO 一周的星期几（数字）|
+|H 或 HH|0..23|24小时制的小时（0-23）
+|h 或 hh|1..12|12小时制的小时（）
+|k 或 kk|1..24|24小时制的小时，（1-24）
+|a 或 A|am pm|	上午或下午
+|m 或 mm|	0..59|	分
+|s 或 ss|	0..59|	秒
+|S 或 SS 或 SSS|	0..999|	小数秒
+|Z 或 ZZ|+12:00	|与 UTC 的偏移量，如 +-HH:mm, +-HHmm, or Z
+
+
+* 定义部门：`section section_name`
+* 定义任务：`taskname :[crit][,active|done][,task_id][,start_time][,end_time]`
+	 * done ：已完成
+	 * active ：未完成
+	 * crit：重要的，高亮显示
+	 * id：唯一标识任务
+	 * start：开始时间
+		 * 缺省：前一个任务的结束时间
+		 * 绝对时间：任务开始时间
+		 * 相对时间：after task_id 表示某任务的结束时间
+	 * end：结束时间
+		 * 绝对时间：该任务的截止时间
+		 * 持续时间：该任务需要多久完成
+* 示例
+````markdown
+```mermaid!
+gantt
+    dateFormat YYYY-MM-DD
+    title 项目开发流程
+    section 项目确定
+        需求分析       :done,a1, 2016-06-22, 14d
+        可行性报告     :after a1, 5d
+        概念验证       :crit,5d
+    section 项目实施
+        概要设计      :2016-07-05, 5d
+        详细设计      :2016-07-08, 10d
+        编码          :2016-07-15, 10d
+        测试          :2016-07-22, 5d
+    section 发布验收
+        发布: 2d
+        验收: 3d
+```
+````
+
+```mermaid!
+gantt
+        dateFormat YYYY-MM-DD
+        title 项目开发流程
+    section 项目确定
+        需求分析       :done,a1, 2016-06-22, 3d
+        可行性报告     :after a1, 5d
+        概念验证       :crit,5d
+		
+    section 项目实施
+        概要设计      :2016-07-05, 5d
+        详细设计      :2016-07-08, 10d
+        编码          :2016-07-15, 10d
+        测试          :2016-07-22, 5d
+    section 发布验收
+        发布: 2d
+        验收: 3d
+```
+
+
+
+
+
+# 3 扩展语法
 
 ## 3.1 高级代码块
 **高级代码块支持是否显示行号，默认会显示**：
@@ -1166,7 +1584,7 @@ $$
 
 附件: `=[文件名](URL)`
 
-## 3.5 
+## 3.5 mathjax数学公式
 
 * xiaoshujiang markdown支持另一种写法：
 ````markdown
@@ -1176,6 +1594,23 @@ $$
 数学公式1
 ```
 ````
+
+## 3.6 Mermaid流程图
+
+## 2.12 统计图
+语法格式为：
+
+````markdown
+```plot!
+{
+"data": [ [[0, 0], [1, 1]] ],
+"options": { "yaxis": { "max": 1 } }
+}
+```
+````
+显示如图：
+
+![7](https://www.github.com/liao20081228/blog/raw/master/图片/markdown教程/7.jpg)
 
 ------
 
