@@ -624,6 +624,125 @@ Content Cell  | Content Cell| Content Cell|
 `文字<sub>下角</sub>`，显示如：文字<sub>下角</sub>
 
 
+## 2.5 定义列表
+### 2.5.1 markdown
+```markdown
+苹果
+: 	一种水果
+: 	一种品牌，计算机，手持设备
+桔子
+: 一种水果
+```
+显示效果：
+
+
+苹果
+:	一种水果
+:	一种品牌，计算机，手持设备
+
+桔子
+:	一种水果
+
+### 2.5.2 html
+
+<dl> 
+<dt>苹果</dt> 
+<dd>一种水果</dd> 
+<dd>一种品牌，计算机，手持设备</dd> 
+<dt>桔子</dt> 
+<dd>一种水果</dd> 
+</dl> 
+
+## 2.6 任务列表或TODO
+
+
+任务列表,`- [] 任务`表示未完成`- [X] 任务`表示已完成， 任务列表也支持多级使用。例如：
+
+```markdown
+-  [ ] 未完成
+-  [x] 已完成
+-  [X] 已完成
+```
+显示效果：
+
+-  [ ] 未完成
+-  [x] 已完成
+-  [X] 已完成
+
+
+## 2.7 高级代码块
+
+**在行首使用 \` \` \`…… \` \` \`表示高级代码块，在第一行的三个\` \` \` 后面可以添加对应语言关键字来实现语法高亮，此时语言关键字后面不需要加感叹号`！`，如**：
+````markdown
+```cpp 
+int a = 10 ;
+int b = 20; 
+
+```
+````
+显示效果：
+```cpp
+int a = 10 ;
+int b = 20;
+```
+**高级代码块支持是否显示行号，默认会显示**：
+````markdown
+```语言关键字?linenums[=true|false]
+... ...
+... ...
+
+```
+````
+
+**高级代码块支持设置起始行号**：
+````markdown
+```语言关键字?linenums=起始行号
+... ...
+... ...
+
+```
+````
+**高级代码块支持单独高亮某些行**：
+````markdown
+```语言关键字?linenums&fancy=行号列表
+... ...
+... ...
+
+```
+````
+支持的语言包括：
+
+|语言|关键字|语言|关键字|
+|--|--|--|--
+|AppleScript|	applescript|普通文本|text , plain
+|ActionScript 3.0|	actionscript3 , as3|Python|	py , python|
+|Shell	|bash , shell|Ruby|	ruby , rails , ror , rb
+|ColdFusion	|coldfusion , cf|SASS&SCSS|	sass , scss
+|C|	cpp , c|Scala|	scala
+|C#	|c# , c-sharp , csharp|SQL|	sql
+|CSS|	css|Visual Basic|	vb , vbnet
+|Delphi|	delphi , pascal , pas|XML|	xml , xhtml , xslt , html
+|diff&patch|	diff patch|Objective C|	objc , obj-c
+|Erlang|	erl , erlang|F#	|f# f-sharp , fsharp
+|Groovy|	groovy|R|	r , s , splus
+|Java|	java|matlab|	matlab
+|JavaFX|	jfx , javafx|swift|	swift
+|JavaScript	|js , jscript , javascript|GO	|go , golang
+|Perl|	perl , pl , Perl
+|PHP|	php
+
+**增强代码块还支持根据特定的命令关键字实现特定的功能**。
+
+|命令关键字|作用|
+|--|--|
+|mathjax!|数学公式|
+|flow或flow!|流程图|
+|plot!|统计图|
+|sequence或sequence!|序列图|
+|mermaid!|mermaid流程图、序列图、甘特图
+|mindmap!|思维导图
+
+
 # 3 扩展语法
 ------
 
