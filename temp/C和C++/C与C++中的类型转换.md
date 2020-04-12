@@ -1,6 +1,6 @@
 ---
 title: C与C++中的类型转化
-tags: C_and_C++
+tags: C和C++
 ---
 
 ------
