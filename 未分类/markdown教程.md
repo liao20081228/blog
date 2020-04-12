@@ -16,268 +16,318 @@ tags: 未分类, 未完成
 
 ## 1.2 标题
 
-**markdown语法**：
-* 第一种，`# 标题`或`# 标题 #`，·闭合的`#`可与开始的`#`数目不同，例如：
+### 1.2.1 markdown
+**第一种，`# 标题`或`# 标题 #`，·闭合的`#`可与开始的`#`数目不同**。例如：
 
-	```
-	# head1 表示一级标题 
-	## head2 表示二级标题 ##
-	### head3 表示三级标题 ###
-	#### head4 表示四级标题 #
-	##### head5 表示五级标题 #
-	###### head6  表示六级标题
-	```
-	显示效果：
+```
+# head1 表示一级标题 
+## head2 表示二级标题 ##
+### head3 表示三级标题 ###
+#### head4 表示四级标题 #
+##### head5 表示五级标题 #
+###### head6  表示六级标题
+```
+显示效果：
 
-	![图0](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/0.jpg#pic_center)
+![图0](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/0.jpg#pic_center)
 
 	>**注意**：只有当`#`位于一行开头，或引用文字中的一行开头的才会起作用。
 	>**注意**：#与标题之间要有空格，在标准的markdown规范中必须要有空格才会起作用。
 
-* 第二种，使用`=`与`-`作为标题的底线**，例如：
+**第二种，使用`=`与`-`作为标题的底线**。例如：
 
-	```markdown
-	head1
-	===
-	head2
-	---
-	```
+```markdown
+head1
+==
+head2
+---
+```
 
-**html语法**：
+### 1.2.2 html
 ```html
 <h1>head1</h1>
-<h1>head2</h1>
-<h1>head3</h1>
-<h1>head4</h1>
-<h1>head5</h1>
-<h1>head6</h1>
+<h2>head2</h2>
+<h3>head3</h3>
+<h4>head4</h4>
+<h5>head5</h5>
+<h6>head6</h6>
 ```
+
 ## 1.3 段落
+### 1.3.1 markdown
 
-**markdown语法**：Markdown 的段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行（空行的定义是显示上看起来像是空的，便会被视为空行。比方说，若某一行只包含空格和制表符，则该行也会被视为空行）。普通段落不该用空格或制表符来缩进。
+Markdown 的段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行（空行的定义是显示上看起来像是空的，便会被视为空行。比方说，若某一行只包含空格和制表符，则该行也会被视为空行）。普通段落不该用空格或制表符来缩进。
 
-**html语法**：`<p>段落文字</p>`，强迫换行`<br />`。
+### 1.3.2 html
+
+一个段落：`<p>段落文字</p>`。
+
+强迫换行：`<br />`。
 
 ## 1.4 加粗与斜体
 
-**markdown语法**：
+### 1.4.1 markdown
 
-* 一个`*`或`_`环绕表示斜体，例如`*斜体*`， 显示效果：*斜体*。
+一个`*`或`_`环绕表示斜体，例如`*斜体*`， 显示效果：*斜体*。
 
-* 两个`*`或`_`环绕表示加粗，例如`**加粗**` ，显示效果：**加粗**。
+两个`*`或`_`环绕表示加粗，例如`**加粗**` ，显示效果：**加粗**。
 
-* 三个`*`或`_`环绕或混用`*`和`_`表示粗斜体，例如`***粗斜体***`，显示效果：***粗斜体***。
+三个`*`或`_`环绕或混用`*`和`_`表示粗斜体，例如`***粗斜体***`，显示效果：***粗斜体***。
 
-**html语法**：
+### 1.4.2 html
 
-* `<b>加粗</b>`。
-* `<i>斜体</i>`。
-* `<i><b>粗斜体</b></i>`。
+加粗：`<b>加粗</b>`。
 
+斜体：`<i>斜体</i>`。
 
+粗斜体：`<i><b>粗斜体</b></i>`。
 
 ## 1.5 删除线与水平线
 
-**markdown语法**：
+### 1.5.1 markdown
+
 * 两个  `~`环绕表示删除线，例如`~~删除线~~`，显示效果：~~删除线~~
 * 三个及以上的`*` 或  `-`表示一条横线，例如`***`和`---`。
 
-**html语法**：
-* `<del>删除线</del>`。
+### 1.5.2 html
+* 删除线：`<del>删除线</del>`。
 * 水平线：`<hr />`。
 
 ## 1.6 引用
-**markdown语法**：
+### 1.6.1 markdown
 
-* 在一行的开始用`>`表示引用。例如：
+**在一行的开始用`>`表示引用**。例如：
 
-	```
-	>这是引用
-	```
-	显示效果:
+```
+>这是引用
+```
+显示效果:
 
-	>这是引用
+>这是引用
 
-* 对一段话引用只需在开头使用一次,也可以每一行都使用`>`。例如
+**对一段话引用只需在开头使用一次,也可以每一行都使用**`>`。例如
 
-	```
-	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
-	> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
-	> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+```
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
 
-	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
-	consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
-	Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
-	```
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+```
 
-	显示效果：
+显示效果：
 
-	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
-	> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
-	> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
-	>  
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+>  
 
-	> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
-	consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
-	Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet, 
+consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. 
+Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. 
 
-* 连继多个 `>` 符号，就可以实现多级引用。例如：
+**连继多个 `>` 符号，就可以实现多级引用**。例如：
 
-	```
-	> 这是一个多级引用 
-	> 一级引用 
-	>> 二级引用 
-	>>> 三级引用 
-	```
+```
+> 这是一个多级引用 
+> 一级引用 
+>> 二级引用 
+>>> 三级引用 
+```
 
-	显示效果：
+显示效果：
 
-	> 这是一个多级引用 
-	> 一级引用 
-	>> 二级引用 
-	>>> 三级引用 
+> 这是一个多级引用 
+> 一级引用 
+>> 二级引用 
+>>> 三级引用 
+
+**在引用里可以使用其他 markdown 语法，例如：标题、列表、粗体、斜体、图片、链接、表格、代码、代码块、高级代码块等，对于需要多行的语法每一行都要添加`<`标记**。
 
 
-* 在引用里可以使用其他 markdown 语法，例如：标题、列表、粗体、斜体、图片、链接、表格、代码、代码块、高级代码块等，对于需要多行的语法每一行都要添加`<`标记。
+### 1.6.2 html
 
-
-**html语法**：`<blockquote>引用文字</blockquote>`
+引用：`<blockquote>引用文字</blockquote>`
 
 ## 1.7 无序列表
 
-**markdown语法**：
+### 1.7.1 markdown
 
-* 在每一个条目前面添加一个`*`或`+`或`-`，再接一个空格就可以表示无序列表的一个列表项，同一个列表的同一级列表项应使用同一种标记符号， 例如
+**在每一个条目前面添加一个`*`或`+`或`-`，再接一个空格就可以表示无序列表的一个列表项，同一个列表的同一级列表项应使用同一种标记符号**。 例如：
 
-	```
-	+ 无序条目 
-	+ 无序条目 
-	+ 无序条目
-	```
+```
++ 无序条目 
++ 无序条目 
++ 无序条目
+```
 
-	显示效果：
+显示效果：
 
-	![图3](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/3.jpg#pic_center)
-
-
-* 无序列表可以有多级，每一级用一个缩进表示：两个空格或一个制表符以上，同级连续列表项应使用相同数量的同一缩进符号，例如：
-
-	```
-	+ 无序条目 
-	  + 子无序条目 
-	  + 子无序条目 
-			- 孙无序条目 
-			- 孙无序条目 
-	+ 无序条目 
-		* 子无序条目 
-		* 子无序条目 
-	+ 无序条目 
-	```
-
-	显示效果：
-
-	![图4](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/图4.jpg#pic_center)
-
-* 无序列表可以有多层，可以是有序列表或无需列表，例如：
-
-	```
-	* 一级一层无序条目
-	* * 一级二层无序条目
-		* * + 三层三级无序条目
-		* * 1. 三层三级有序条目
-	```
-	显示效果：
-
-	![图5](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/图5.jpg#pic_center)
-
-* 无序列表可与有序列表嵌套，例如：
-
-	```
-	* 无序条目
-	* 无条条目
-		1. 有序条目
-		2. 有序条目
-	* 无序条目
-	```
-	显示效果：
-
-	![图6](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/6.jpg#pic_center)
++ 无序条目 
++ 无序条目 
++ 无序条目
 
 
-* 单个列表项可以有多行，每行开头可以添加空格或制表符，或者不添加，但是不能有空行，否则视为下一段，例如：
+**无序列表可以有多级，每一级用一个缩进表示：两个空格或一个制表符以上，同级连续列表项应使用相同数量的同一缩进符号**。例如：
 
-	```
-	* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-	Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
-	  viverra nec, fringilla in, laoreet vitae, risus. 
-	  * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-		Suspendisse id sem consectetuer libero luctus adipiscing.
-	```
+```
++ 无序条目 
+  + 子无序条目 
+  + 子无序条目 
+		- 孙无序条目 
+		- 孙无序条目 
++ 无序条目 
+	* 子无序条目 
+	* 子无序条目 
++ 无序条目 
+```
 
-	显示效果：
+显示效果：
 
-	![图7](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/7.jpg#pic_center)
++ 无序条目 
+  + 子无序条目 
+  + 子无序条目 
+		- 孙无序条目 
+		- 孙无序条目 
++ 无序条目 
+	* 子无序条目 
+	* 子无序条目 
++ 无序条目 
 
-* 单个列表项可以有多段，每段之间用空行隔开，每段第一行或每一行必须在列表项目的缩进基础上再加一个缩进：两个空格或一个制表符以上，例如：
 
-	```
+**无序列表可以有多层，可以是有序列表或无需列表**。例如：
+
+```
+* 一级一层无序条目
+* * 一级二层无序条目
+	* * + 三层三级无序条目
+	* * 1. 三层三级有序条目
+```
+显示效果：
+
+* 一级一层无序条目
+* * 一级二层无序条目
+	* * + 三层三级无序条目
+	* * 1. 三层三级有序条目
+
+**无序列表可与有序列表嵌套**。例如：
+
+```
+* 无序条目
+* 无条条目
+	1. 有序条目
+	2. 有序条目
+* 无序条目
+```
+显示效果：
+
+* 无序条目
+* 无条条目
+	1. 有序条目
+	2. 有序条目
+* 无序条目
+
+**单个列表项可以有多行，每行开头可以添加空格或制表符，或者不添加，但是不能有空行，否则视为下一段**。例如：
+
+```
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
+  viverra nec, fringilla in, laoreet vitae, risus. 
+  * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+	Suspendisse id sem consectetuer libero luctus adipiscing.
+```
+
+显示效果：
+
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
+  viverra nec, fringilla in, laoreet vitae, risus. 
+  * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+	Suspendisse id sem consectetuer libero luctus adipiscing.
+
+**单个列表项可以有多段，每段之间用空行隔开，每段第一行或每一行必须在列表项目的缩进基础上再加一个缩进：两个空格或一个制表符以上**。例如：
+
+```
+* This is a list item with two paragraphs. Lorem ipsum dolor 
+sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
+mi posuere lectus. 
+
+  Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
+  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+  sit amet velit. 
+
 	* This is a list item with two paragraphs. Lorem ipsum dolor 
-	sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
-	mi posuere lectus. 
+sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
+mi posuere lectus. 
 
-	  Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
+		Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
+	  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+	  sit amet velit. 
+```
+显示效果：
+
+* This is a list item with two paragraphs. Lorem ipsum dolor 
+sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
+mi posuere lectus. 
+
+  Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
+  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+  sit amet velit. 
+
+	* This is a list item with two paragraphs. Lorem ipsum dolor 
+sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
+mi posuere lectus. 
+
+		Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
 	  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
 	  sit amet velit. 
 
-		* This is a list item with two paragraphs. Lorem ipsum dolor 
-	sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
-	mi posuere lectus. 
+**一个列表项可以嵌套引用，如果引用作为列表项内容的一段，则应该在列表项的基础上上加上一个缩进，即两个空格以上或一个制表符**。例如：
 
-			Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
-		  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
-		  sit amet velit. 
-	```
-	显示效果：
-
-	![图8](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/8.jpg#pic_center)
-
-* 一个列表项可以嵌套引用，如果引用作为列表项内容的一段，则应该在列表项的基础上上加上一个缩进，即两个空格以上或一个制表符，例如：
-
-	```
+```
+* 这是一个列表项
+* >引用作为一个列表项
+* 这是一个列表项
+	>引用作为一个列表项的一部分
 	* 这是一个列表项
-	* >引用作为一个列表项
-	* 这是一个列表项
+
 		>引用作为一个列表项的一部分
-		* 这是一个列表项
+		>引用作为一个列表项的一部分
+```
 
-			>引用作为一个列表项的一部分
-			>引用作为一个列表项的一部分
-	```
+显示效果：
 
-	显示效果：
+* 这是一个列表项
+* >引用作为一个列表项
+* 这是一个列表项
+	>引用作为一个列表项的一部分
+	* 这是一个列表项
 
-	![图9](https://gitee.com/liao20081228/blog_pictures/raw/master/markdown教程/9.jpg#pic_center)
+		>引用作为一个列表项的一部分
+		>引用作为一个列表项的一部分
 
-* 一个列表项可以嵌套代码块，该区块每一行需要在列表项目的缩进基础上再加一个制表符或4个空格，如果列表项标记后紧跟代码块，则可以省略首行的缩进，例如：
+**一个列表项可以嵌套代码块，该区块每一行需要在列表项目的缩进基础上再加一个制表符或4个空格，如果列表项标记后紧跟代码块，则可以省略首行的缩进**。例如：
 
-	```
+```
+* 这是一个无序列表项
+
+		嵌套代码块作为列表项的一部分（两个制表符）
+		嵌套代码块作为列表项的一部分（两个制表符）
+
 	* 这是一个无序列表项
 
-			嵌套代码块作为列表项的一部分（两个制表符）
-			嵌套代码块作为列表项的一部分（两个制表符）
+			嵌套代码块作为列表项的一部分（三个制表符，1个表示二级列表+1个表示属于列表项+1个表示代码块）
+			嵌套代码块作为列表项的一部分（三个制表符，1+1+1）
 
-		* 这是一个无序列表项
-
-				嵌套代码块作为列表项的一部分（三个制表符，1个表示二级列表+1个表示属于列表项+1个表示代码块）
-				嵌套代码块作为列表项的一部分（三个制表符，1+1+1）
-
-	*     嵌套代码块作为列表项（1空格+4个空格）
-		  嵌套代码块作为列表项（6个空格，2个表示属于列表项+4个表示代码块）
-			嵌套代码块作为列表项（8个空格，4个表示属于列表项+4个表示代码块）
-			嵌套代码块作为列表项（两个制表符，1个表示属于列表项+1个表示代码块）
-			嵌套代码块作为列表项（两个制表符）
-	```
-	显示效果：
+*     嵌套代码块作为列表项（1空格+4个空格）
+	  嵌套代码块作为列表项（6个空格，2个表示属于列表项+4个表示代码块）
+		嵌套代码块作为列表项（8个空格，4个表示属于列表项+4个表示代码块）
+		嵌套代码块作为列表项（两个制表符，1个表示属于列表项+1个表示代码块）
+		嵌套代码块作为列表项（两个制表符）
+```
+显示效果：
 
 * 这是一个无序列表项
 
@@ -290,22 +340,32 @@ tags: 未分类, 未完成
 			嵌套代码块作为列表项的一部分（三个制表符，1+1+1）
 
 *     嵌套代码块作为列表项（1空格+4个空格）
-      嵌套代码块作为列表项（6个空格，2个表示属于列表项+4个表示代码块）
-        嵌套代码块作为列表项（8个空格，4个表示属于列表项+4个表示代码块）
+	  嵌套代码块作为列表项（6个空格，2个表示属于列表项+4个表示代码块）
+		嵌套代码块作为列表项（8个空格，4个表示属于列表项+4个表示代码块）
 		嵌套代码块作为列表项（两个制表符，1个表示属于列表项+1个表示代码块）
 		嵌套代码块作为列表项（两个制表符）
 
 **一个列表项可以嵌套高级代码块，和普通块类似，只不过用\`\`\`代替四个空格或制表符**。
 
-**一个列表项还可以嵌套图片、链接、粗体、表格等语法**
+**一个列表项还可以嵌套图片、链接、粗体、表格等语法**。
 
+### 1.7.2 html
+
+```html
+<ul>
+<li>列表项</li>
+<li>列表项</li>
+</ul
+```
 
 ## 1.8 有序列表
-有序列表用**序号.加空格**表示，有序列表与无序列表类似。
+**markdown语法**：
 
-有序列表每一级都会重新开始排序
+* 有序列表用**序号.加空格**表示，有序列表与无序列表类似。
 
-有序列表显示的是实际的序号与输入的序号无关，而是以该层列表第一项的编号作为起始编号。
+* 有序列表每一级都会重新开始排序
+
+* 有序列表显示的是实际的序号与输入的序号无关，而是以该层列表第一项的编号作为起始编号。
 
 
 >**注意**：大部分情况下，一个TAB或两个或三个空格都能算作一次缩进。建议使用TAB。
