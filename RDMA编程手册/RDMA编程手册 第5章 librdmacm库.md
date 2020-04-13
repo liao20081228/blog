@@ -194,7 +194,7 @@ int rdma_create_id(struct rdma_event_channel *channel, struct rdma_cm_id **id,
 
 **描述**：创建用于跟踪通信信息的标识符。
 
-对于RDMA通信，rdma_cm_ids在概念上等效于套接字。区别在于，RDMA通信需要在通信发生之前显式绑定到指定的RDMA设备，并且大多数操作本生上就是异步的。通过相关事件通道报告rdma_cm_id上的异步通信事件。 如果channel参数为NULL，则rdma_cm_id将被置于同步操作中。 在同步操作时，导致事件的调用将阻塞，直到操作完成。该事件将通过rdma_cm_id结构体返回给用户， 并且在另一个rdma_cm调用发生前，可以访问该事件。
+对于RDMA通信，rdma_cm_id在概念上等效于套接字。区别在于RDMA通信需要在通信发生之前显式绑定到指定的RDMA设备，并且大多数操作天生就是异步的。通过关联的事件通道报告rdma_cm_id上的异步通信事件。 如果channel参数为NULL，则rdma_cm_id将被置于同步操作中。 在同步操作时，导致事件的调用将阻塞，直到操作完成。该事件将通过rdma_cm_id结构体返回给用户， 并且在另一个rdma_cm调用发生前，可以访问该事件。
 
 用户必须调用rdma_destroy_id来释放rdma_destroy_id。
 
