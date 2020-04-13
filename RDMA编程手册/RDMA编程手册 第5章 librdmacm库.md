@@ -184,17 +184,15 @@ int rdma_create_id(struct rdma_event_channel *channel, struct rdma_cm_id **id,
 
 **输入参数**：
 
-* channel——与分配的`rdma_cm_id`相关联的事件的报告通道。可以为NULL。结构体详细信息见`rdma_create_event_channel`。
+* channel——与分配的rdma_cm_id相关联的事件的报告通道。可以为NULL。结构体详细信息见rdma_create_event_channel。
 * ps——RDMA端口空间。 枚举详细信息见下文。
-* context——与`rdma_cm_id`相关联的用户指定上下文。
+* context——用户指定的与rdma_cm_id相关联的上下文。
 
 **输出参数**： id——将在其中返回分配的通信标识符的引用。
 
 **返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
 
-**描述**：
-
-创建用于跟踪通信信息的标识符。
+**描述**：创建用于跟踪通信信息的标识符。
 
 对于RDMA通信，rdma_cm_ids在概念上等效于套接字。区别在于，RDMA通信需要在通信发生之前显式绑定到指定的RDMA设备，并且大多数操作本生上就是异步的。通过相关事件通道报告rdma_cm_id上的异步通信事件。 如果channel参数为NULL，则rdma_cm_id将被置于同步操作中。 在同步操作时，导致事件的调用将阻塞，直到操作完成。该事件将通过rdma_cm_id结构体返回给用户， 并且在另一个rdma_cm调用发生前，可以访问该事件。
 
