@@ -11,16 +11,17 @@ tags: RDMA
 
 # 1 librdmacm介绍
 ## 1.1 概述
+
 RDMA_CM用于在RDMA传输层建立链接。
 
-RDMA CM是一个通信管理器，用于设置可靠的，有连接的和不可靠数据报的数据传输。它提供用于建立连接的RDMA传输中性接口。API概念基于套接字，但适用于基于队列对（QP）的语义：通信必须通过特定的RDMA设备进行，并且数据传输基于消息。
+RDMA CM是一个通信管理器，用于设置可靠的有连接的和不可靠数据报的数据传输。它提供用于建立连接的RDMA传输层中性接口（相同代码可以用于InfiniBand和iWARP）。这些API的慨念基于套接字，但适用于基于队列对（QP）的语义：通信必须通过特定的RDMA设备进行，数据传输基于消息。
 
-RDMA CM可以控制RDMA API的QP和通信管理（连接  建立或拆除）部分，或者仅控制通信管理部分。它与libibverbs库定义的动词API结合使用，当然他原本也封装了一些libibverbs的动词，叫做RDMA动词。 libibverbs库提供了发送和接收数据所需的基础接口。
+RDMA CM可以控制一个RDMA API的QP和通信管理（连接的建立或拆除）部分，或者仅控制通信管理部分。它与libibverbs库定义的动词API结合使用，当然RDMA CM原本也封装了一些libibverbs的动词接口，叫做RDMA动词。 libibverbs库提供了发送和接收数据所需的底层接口。
 
 RDMA CM可以异步或同步运行。用户通过在特定调用中使用rdma_cm事件通道参数来控制操作模式。如果提供了事件通道，则rdma_cm标识符将在该通道上报告其事件数据（例如，连接结果）。如果未提供通道，则所选rdma_cm标识符的所有rdma_cm操作都将阻塞，直到完成。
 
 ## 1.2 RDMA动词
-rdma_cm支持libibverbs库提供的所有动词。 但是，它也为一些更常用的动词功能提供包装函数。 可调用的完整的抽象动词集合如下：
+rdma_cm支持libibverbs库提供的所有动词。 但是，它也为一些更常用的动词提供了包装函数。 完整的抽象动词调用集：
 |动词|描述|
 |:--|:--|
 |rdma_reg_msgs| 注册一个用于发送和接收数据的缓冲区数组|
@@ -29,19 +30,20 @@ rdma_cm支持libibverbs库提供的所有动词。 但是，它也为一些更�
 |rdma_dereg_mr|注销一个内存区域|
 |rdma_post_recv |发布一个缓冲区以接收消息|
 |rdma_post_send|发布一个缓冲区以发送消息|
-|rdma_post_read |发布一个RDMA以将数据读入缓冲区|
-| rdma_post_write| 发布一个RDMA以从缓冲区发送数据|
+|rdma_post_read |发布一个RDMA读以将数据读入缓冲区|
+| rdma_post_write| 发布一个RDMA写以从缓冲区发送数据|
 |rdma_post_recvv |发布一个缓冲区向量以接收消息|
 |rdma_post_sendv |发布一个缓冲区向量以发送消息|
 |rdma_post_readv| 发布一个缓冲区向量以接收RDMA read|
 |rdma_post_writev| 发布一个缓冲区向量以发送RDMA write|
 |rdma_post_ud_send |发布一个缓冲区以在UD QP上发送消息|
 |rdma_get_send_comp| 获取一个send或RDMA操作的完成状态
-|rdma_get_recv_comp| 获取关于已完成recv的信息|
+|rdma_get_recv_comp| 获取关于已完成接收请求的信息|
 
 
 ## 1.3 客户端操作
-本节概述了通信的主动端或客户端的基本操作。 该流程假定异步操作，并显示了低级调用详细信息。 对于同步操作，将消除对rdma_create_event_channel，rdma_get_cm_event，rdma_ack_cm_event和rdma_destroy_event_channel的调用。 抽象调用（例如rdma_create_ep）将这些调用中的几个封装在单个API下。 用户也可以参考示例应用程序以获得代码示例。 一般的连接流程为：
+
+本节概述了通信的主动端（客户端）的基本操作。 该流程假定异步操作，并显示了低级调用详细信息。 对于同步操作，将消除对`rdma_create_event_channel`，`rdma_get_cm_event`，`rdma_ack_cm_event`和`rdma_destroy_event_channel`的调用。 抽象调用（例如`rdma_create_ep`）将这些调用中的几个封装在单个API下。 用户也可以参考示例应用程序以获得代码示例。 一般的连接流程为：
 
 |序号|API|描述|
 |:--|:--|:--|
@@ -96,9 +98,9 @@ rdma_cm支持libibverbs库提供的所有动词。 但是，它也为一些更�
 
 ## 1.5 返回值
 
-大多数librdmacm函数返回0表示成功，返回-1表示失败。如果函数异步操作，则返回值0表示该操作已成功启动。该操作仍可能错误完成；用户应检查相关事件的状态。如果返回值为-1，则errno将包含有关失败原因的其他信息。有关更多详细信息，请参见errno。
+大多数的librdmacm函数返回0表示成功，返回-1表示失败。如果函数是异步操作，则返回值0表示该操作已成功启动，但该操作仍可能错误完成，用户应检查相关事件的状态。如果返回值为-1，则errno将包含有关失败原因的其他信息。有关更多详细信息，请参见errno。
 
-在与ENOMEM，ENODEV，ENODATA，EINVAL和EADDRNOTAVAIL相关的某些情况下，该库的早先版本将返回-errno而不设置errno。想要检查这些错误代码并与以前的库版本兼容的应用程序必须将errno手动设置为返回码的负数（如果它<-1）。
+在与ENOMEM，ENODEV，ENODATA，EINVAL和EADDRNOTAVAIL相关的某些情况下，该库的早先版本将返回-errno而不是设置errno。想要检查这些错误代码并与以前的库版本兼容的应用程序必须将errno手动设置为返回码的负数（如果它<-1）。
 
 
 ## 1.6 库API
