@@ -119,7 +119,7 @@ rdma_cm支持libibverbs库提供的所有动词。 但是，它也为一些更�
 |API|简介|
 |:--|:--|
 |[rdma_create_event_channel](#rdma_create_event_channel)|创建事件通道|
-|rdma_destroy_event_channel|销毁事件通道|
+|[rdma_destroy_event_channel](#rdma_destroy_event_channel)|销毁事件通道|
 
 # 2 RDMA连接管理API
 ## 2.1 事件通道的创建和销毁
@@ -158,7 +158,8 @@ struct rdma_event_channel
 
 ### 2.1.2 rdma_destroy_event_channel
 
-**原型**：
+<span id="rdma_destroy_event_channel">**原型**：</span>
+
 ``` cpp
 void rdma_destroy_event_channel (struct rdma_event_channel *channel)
 ```
