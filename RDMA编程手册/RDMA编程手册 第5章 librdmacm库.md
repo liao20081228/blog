@@ -81,7 +81,7 @@ rdma_cm支持libibverbs库提供的所有动词。 但是，它也为一些更�
 |2|rdma_create_id|分配一个rdma_cm_id，类似于套接字|
 |3|rdma_bind_addr|设置要监听的本地端口号
 |4|rdma_listen|开始监听连接请求|
-|5|rdma_get_cm_event|等待新的rdma_cm_id的RDMA_CM_EVENT_CONNECT_REQUEST事件|
+|5|rdma_get_cm_event|等待新的rdma_cm_id的<br /> RDMA_CM_EVENT_CONNECT_REQUEST事件|
 |6|rdma_create_qp|为新的rdma_cm_id上的通信分配QP|
 |7|rdma_accept|接受连接请求|
 |8|rdma_ack_cm_event|确认事件|
