@@ -188,8 +188,7 @@ int rdma_create_id(struct rdma_event_channel *channel, struct rdma_cm_id **id,
 * ps——RDMA端口空间。 枚举详细信息见下文。
 * context——与rdma_cm_id相关联的用户指定上下文。
 
-**输出参数**： 
-* id——将在其中返回分配的通信标识符的引用。
+**输出参数**：  id——将在其中返回分配的通信标识符的引用。
 
 **返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
 
