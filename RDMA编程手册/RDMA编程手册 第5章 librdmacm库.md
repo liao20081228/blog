@@ -174,11 +174,14 @@ void rdma_destroy_event_channel (struct rdma_event_channel *channel)
 ## 2.2 ID的创建、销毁、迁移、设置
 
 ### 2.2.1 rdma_create_id
+
 **原型**：
+
 ``` cpp
 int rdma_create_id(struct rdma_event_channel *channel, struct rdma_cm_id **id, 
 					void *context, enum rdma_port_space ps)
 ```
+
 **输入参数**：
 
 * channel——与分配的rdma_cm_id相关联的事件的报告通道。可以为NULL。结构体详细信息见rdma_create_event_channel。
@@ -187,7 +190,6 @@ int rdma_create_id(struct rdma_event_channel *channel, struct rdma_cm_id **id,
 
 **输出参数**： 
 * id——将在其中返回分配的通信标识符的引用。
-
 
 **返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
 
