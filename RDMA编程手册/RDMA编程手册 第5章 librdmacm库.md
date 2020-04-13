@@ -133,21 +133,23 @@ struct rdma_event_channel * rdma_create_event_channel (void)
 
 打开一个事件通道，用于用于报告通信事件。 异步事件通过事件通道报告给用户。
 
-**注意事项**：
-
-事件通道用于在rdma_cm_id上定向所有事件。 对于许多客户端来说，单个事件通道可能就足够了，但是，在管理大量连接或cm_id时，用户可能会发现将不同cm_id的事件定向到不同事件通道进行处理很有用。
-
-所有创建的事件通道都必须通过调用rdma_destroy_event_channel进行销毁。 用户应调用rdma_get_cm_event检索事件通道上的事件。
-
-每个事件通道都映射到一个文件描述符。 可以像其他任何fd一样使用和操作关联的文件描述符，以更改其行为。 用户可以将fd设为非阻塞，poll或sellect 该fd，等。
-
 struct channel定义如下：
 ```ceylon
 struct rdma_event_channel 
 {
-        int fd; //文件描述符
+	int fd; //文件描述符
 };  
 ```
+
+**注意事项**：
+
+事件通道用于在`struct rdma_cm_id`上定向所有事件。 对于许多客户端来说，单个事件通道可能就足够了，但是，在管理大量连接或cm_id时，用户可能会发现将不同cm_id的事件定向到不同事件通道进行处理很有用。
+
+所有创建的事件通道都必须通过调用`rdma_destroy_event_channel`进行销毁。 用户应调用`rdma_get_cm_event`检索事件通道上的事件。
+
+每个事件通道都映射到一个文件描述符。 可以像其他任何fd一样使用和操作关联的文件描述符，以更改其行为。 用户可以将fd设为非阻塞，poll或sellect 该fd，等。
+
+
 
 ### 2.1.2 rdma_destroy_event_channel
 
@@ -161,15 +163,12 @@ void rdma_destroy_event_channel (struct rdma_event_channel *channel)
 
 **返回值**：无。
 
-**描述**：
+**描述**：关闭事件通道。 释放与事件通道关联的所有资源，并关闭关联的文件描述符。
 
-关闭事件通道。 释放与事件通道关联的所有资源，并关闭关联的文件描述符。
-
-所有rdma_cm_id关联的事件通道关联都必须被销毁，并且所有返回的事件必须在调用此函数之前被确认。
+**注意事项**：与事件通道关联的所有rdma_cm_id都必须被销毁，并且所有返回的事件必须在调用此函数之前被确认。
 
 
-## 2.2	ID的创建、销毁、迁移、设置
-
+## 2.2 ID的创建、销毁、迁移、设置
 
 ### 2.2.1 rdma_create_id
 **原型**：
