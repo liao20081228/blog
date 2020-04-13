@@ -9,7 +9,6 @@ tags: RDMA
 
 ------
 
-
 # 1 librdmacm介绍
 ## 1.1 概述
 RDMA_CM用于在RDMA传输层建立链接。
