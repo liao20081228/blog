@@ -965,7 +965,7 @@ void rdma_destroy_ep (struct rdma_cm_id *id);
 
 **描述**：rdma_destroy_ep销毁指定的rdma_cm_id和所有相关资源，包括与id关联的QP和SRQ。
 
-## 2.7 地址和端口查询
+## 2.7 查询通信双方地址和端口
 ### 2.7.1 rdma_get_src_port
 **原型**：
 ``` cpp
@@ -978,8 +978,6 @@ __be16 rdma_get_src_port (struct rdma_cm_id *id)
 **返回值**：返回与本地端点关联的16位端口标识符。 如果rdma_cm_id未绑定到端口，则返回值为0。
 
 **描述**：返回已绑定到本地地址的rdma_cm_id的本地端口号。 如果rdma_cm_id未绑定到端口，则返回值为0。
-
-
 
 ### 2.7.2 rdma_get_dst_port
 **原型**：
