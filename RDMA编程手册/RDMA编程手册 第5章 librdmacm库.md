@@ -1094,7 +1094,6 @@ int rdma_create_srq_ex(struct rdma_cm_id *id, struct ibv_srq_init_attr_ex *attr)
 
 **描述**：rdma_destroy_srq销毁在rdma_cm_id上分配的SRQ。 必须先销毁与rdma_cm_id相关的任何SRQ，然后再销毁rdma_cm_id。
 
-
 ### 2.9.3 rdma_destroy_srq
 
 **原型**：
