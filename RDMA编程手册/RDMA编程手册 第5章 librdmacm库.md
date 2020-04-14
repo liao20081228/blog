@@ -532,31 +532,7 @@ rdma_init_qp_attr（）返回rdma_cm_id的qp属性。
 有关qp属性和qp属性掩码的信息是通过qp_attr和qp_attr_mask参数返回的。
 
 ## 2.4 绑定地址、解析地址和解析路由
-
-### 2.4.1 rdma_bind_addr
-
-**原型**：
-``` cpp
-int rdma_bind_addr (struct rdma_cm_id *id, struct sockaddr *addr);
-```
-**输入参数**：
-
-* id——RDMA标识符。结构体详细信息见rdma_create_id。
-* addr——本地地址信息。允许通配符。结构体详细信息见rdma_create_id。
-
-**输出参数**：无。
-
-**返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
-
-**描述**：
-
-rdma_bind_addr将源地址与rdma_cm_id相关联。该地址可能是通配符。如果绑定到指定的本地地址，则rdma_cm_id也将绑定到本地RDMA设备。
-
- 通常，在调用rdma_listen之前，调用此函数以绑定到指定端口号，但是，也可以在一个连接的主动端（客户端）调用 rdma_resolve_addr之前，调用这个函数以绑定到指定地址。
-
-如果用于绑定到端口0，则rdma_cm将选择一个可用端口，这个端口可以使用rdma_get_src_port进行检索。
-
-### 2.4.2 rdma_resolve_addr
+### 2.4.1 rdma_resolve_addr
 **原型**：
 ``` cpp
 int rdma_resolve_addr (struct rdma_cm_id *id, struct sockaddr *src_addr, struct sockaddr *dst_addr, int timeout_ms)
@@ -580,7 +556,7 @@ rdma_resolve_addr将目标地址和可选的源地址从IP地址解析为RDMA地
 
 InfiniBand规范：此调用将目标IP地址和源IP地址映射到GID。为了执行映射，IPoIB必须在本地和远程节点上运行。
 
-### 2.4.3 rdma_resolve_route
+### 2.4.2 rdma_resolve_route
 **原型**：
 ``` cpp
  int rdma_resolve_route (struct rdma_cm_id *id, int timeout_ms)
@@ -599,6 +575,29 @@ InfiniBand规范：此调用将目标IP地址和源IP地址映射到GID。为了
 rdma_resolve_route解析到目标地址的RDMA路由以建立连接。 目的地址必须已经通过调用rdma_resolve_addr解析。 因此，该函数在rdma_resolve_addr之后但在调用rdma_connect之前在客户端被调用。 对于InfiniBand连接，该调用获取该连接使用的路径记录。
 
 InfiniBand规范：此调用获取连接使用的路径记录。
+
+### 2.4.3 rdma_bind_addr
+
+**原型**：
+``` cpp
+int rdma_bind_addr (struct rdma_cm_id *id, struct sockaddr *addr);
+```
+**输入参数**：
+
+* id——RDMA标识符。结构体详细信息见rdma_create_id。
+* addr——本地地址信息。允许通配符。结构体详细信息见rdma_create_id。
+
+**输出参数**：无。
+
+**返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
+
+**描述**：
+
+rdma_bind_addr将源地址与rdma_cm_id相关联。该地址可能是通配符。如果绑定到指定的本地地址，则rdma_cm_id也将绑定到本地RDMA设备。
+
+ 通常，在调用rdma_listen之前，调用此函数以绑定到指定端口号，但是，也可以在一个连接的主动端（客户端）调用 rdma_resolve_addr之前，调用这个函数以绑定到指定地址。
+
+如果用于绑定到端口0，则rdma_cm将选择一个可用端口，这个端口可以使用rdma_get_src_port进行检索。
 
 ### 2.4.4 rdma_getaddrinfo
 **原型**：
@@ -712,7 +711,9 @@ int rdma_connect (struct rdma_cm_id *id, struct rdma_conn_param *conn_param)
 
 **描述**：
 
-rdma_connect启动一个主动端（客户端）的连接请求。对于类型为RDMA_PS_TCP的rdma_cm_id，该调用会发起到远程目标的连接请求。对于类型为RDMA_PS_UDP的rdma_cm_id，它会启动对提供数据报服务的远程QP的查找。调用这个函数之前，用户必须已经通过调用rdma_resolve_route或rdma_create_ep来解析到目标地址的路由。
+rdma_connect启动一个主动端（客户端）的连接请求。对于类型为RDMA_PS_TCP的rdma_cm_id，该调用会发起到远程目标的连接请求。对于类型为RDMA_PS_UDP的rdma_cm_id，它会启动对提供数据报服务的远程QP的查找。
+
+调用这个函数之前，用户必须已经通过调用rdma_resolve_route或rdma_create_ep来解析到目标地址的路由。
 
 InfiniBand规范：
 
@@ -881,7 +882,7 @@ struct rdma_conn_param
 
 InfiniBand规范：
 
-对于InfiniBand规范的连接，QP配置为最小的RNR NAK计时器和本地ACK值。 RNR NAK计时器的最小值设置为0，延迟655 ms。根据数据包生存期和本地HCA ACK延迟计算本地ACK超时。数据包生存期由InfiniBand子网管理员确定，它是已解析路由（路径记录）信息的一部分。 HCA ACK延迟是本地使用的HCA的一个属性。
+除了上述定义的连接属性外，InfiniBand QP还配置了最小RNR NAK定时器和本地ACK超时值。 最小RNR NAK定时器值设置为0，延迟为655ms。 本地ACK超时值是根据包的生存期和本地HCA ACK 延时来计算的。 包的生存期由InfiniBand子网管理员决定，是连接主动端（服务端）获得的路由（路径记录）信息的一部分。 HCA ACK延时是本地使用的HCA的属性。
 
 RNR重试计数为3比特位的值。
 
