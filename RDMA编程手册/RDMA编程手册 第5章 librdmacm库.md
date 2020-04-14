@@ -784,7 +784,7 @@ rdma_get_request检索下一个挂起的连接请求事件。 该调用只能用
 
 如果QP属性与监听端点关联，则返回的rdma_cm_id也将引用已分配的QP。
 
-struct rdma_cm_id详细信息见rdma_create_id。
+
 
 ### 2.5.5 rdma_accept
 **原型**：
