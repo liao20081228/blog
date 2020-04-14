@@ -767,8 +767,6 @@ int rdma_listen (struct rdma_cm_id *id, int backlog)
 
 请注意，在调用rdma_listen之前，必须先通过调用rdma_bind_addr来将rdma_cm_id绑定到本地地址。 如果rdma_cm_id绑定到指定的IP地址，则监听将限于该地址和关联的RDMA设备。 如果rdma_cm_id仅绑定到RDMA端口号，则监听将在所有RDMA设备上进行。
 
-
-
 ### 2.5.4 rdma_get_request
 **原型**：
 ``` cpp
