@@ -1116,8 +1116,9 @@ void rdma_destroy_srq (struct rdma_cm_id *id)
 int rdma_join_multicast (struct rdma_cm_id *id, struct sockaddr *addr, void *context)
 ```
 **输入参数**：
+
 * id——与请求关联的通信标识符。结构体详细信息见rdma_create_id。
-* addr——标识要加入的组的多播地址。结构体详细信息见`man 2  bind`。
+* addr——要加入的多播地址标识符。结构体详细信息见`man 2  bind`。
 * context——与加入请求关联的用户定义上下文。
 
 **输出参数**：无。
@@ -1128,17 +1129,18 @@ int rdma_join_multicast (struct rdma_cm_id *id, struct sockaddr *addr, void *con
 
 加入多播组并将关联的QP添加到该组。
 
-加入多播组之前，必须通过调用rdma_bind_addr或rdma_resolve_addr将rdma_cm_id绑定到RDMA设备。除非提供了指定的源地址，否则使用rdma_resolve_addr要求本地路由表将多播地址解析到RDMA设备。用户必须调用rdma_leave_multicast离开多播组并释放任何多播资源。加入操作完成后，如果QP与rdma_cm_id关联，则当用户检索到多播事件时它将自动添加到多播组，否则，用户负责调用ibv_attach_mcast将QP绑定到多播组。加入上下文通过rdma_cm_event中的private_data字段返回给用户。
+加入多播组之前，必须通过调用rdma_bind_addr或rdma_resolve_addr将rdma_cm_id绑定到RDMA设备。除非提供了指定的源地址，否则rdma_resolve_addr的使用要求本地路由表将多播地址解析到RDMA设备。用户必须调用rdma_leave_multicast离开多播组并释放任何多播资源。加入操作完成后，如果QP与rdma_cm_id关联，则当用户检索到多播事件时，它将自动添加到多播组，否则，用户负责调用ibv_attach_mcast将QP绑定到多播组。加入上下文通过rdma_cm_event中的private_data字段返回给用户。
 
 ### 2.10.2 rdma_join_multicast_ex
 **原型**：
 ``` cpp
-int rdma_join_multicast_ex (struct rdma_cm_id *id, 
-							struct rdma_cm_join_mc_attr_ex *mc_join_attr, void *context)
+int rdma_join_multicast_ex (struct rdma_cm_id *id, struct rdma_cm_join_mc_attr_ex *mc_join_attr,
+							void *context)
 ```
 **输入参数**：
+
 * id——与请求关联的通信标识符。结构体详细信息见rdma_create_id。
-* mc_join_attr——多播组加入属性。结构体详细信息见下文。
+* mc_join_attr——要加入的多播组的属性。结构体详细信息见下文。
 * context——与加入请求关联的用户定义上下文。
 
 **输出参数**：无。
@@ -1147,14 +1149,15 @@ int rdma_join_multicast_ex (struct rdma_cm_id *id,
 
 **描述**：
 
-带扩展选项加入多播组（MCG）。当前支持带有指定加入标志的MC加入。
+带扩展选项加入多播组（MCG）。当前支持带有指定加入标志的多播加入。
 
 加入多播组之前，必须通过调用rdma_bind_addr或rdma_resolve_addr将rdma_cm_id绑定到RDMA设备。除非提供了指定的源地址，否则使用rdma_resolve_addr要求本地路由表将多播地址解析到RDMA设备。用户必须调用rdma_leave_multicast离开多播组并释放任何多播资源。加入操作完成后，如果QP与rdma_cm_id关联，则当用户检索到多播事件时它将自动添加到多播组，否则，用户负责调用ibv_attach_mcast将QP绑定到多播组。加入上下文通过rdma_cm_event中的private_data字段返回给用户。
 
  struct rdma_cm_join_mc_attr_ex定义如下：
- ```cpp
- struct rdma_cm_join_mc_attr_ex 
- {																		       
+
+```cpp
+struct rdma_cm_join_mc_attr_ex 
+{
 	uint32_t comp_mask;		/* enum rdma_cm_join_mc_attr_mask枚举值按位或得到，详细信息见下文 */
 	uint32_t join_flags;   	/* enum rdma_cm_mc_join_flags枚举值之一 ，详细信息见下文*/  
 	struct sockaddr *addr; 	/* 标识要加入的多播组的地址，见`man 2 bind` */
