@@ -931,19 +931,18 @@ int rdma_create_ep(struct rdma_cm_id **id, struct rdma_addrinfo *res, struct ibv
 **输入参数**：
 
 * res——rdma_getaddrinfo返回的与rdma_cm_id关联的地址信息。结构体详细信息见rdma_getaddrinfo。
-* pd——如果QP与rdma_cm_id关联，保护域（可选的）。结构体详细信息见ibv_alloc_pd。
+* pd——如果QP与rdma_cm_id关联，则指定QP的保护域（可选的）。结构体详细信息见ibv_alloc_pd。
 * qp_init_attr——初始QP属性（可选的）。结构体详细信息见ibv_create_qp。
 
-**输出参数**：id——通过该引用被返回的通信标识符。结构体详细信息见rdma_create_id。
-
+**输出参数**：id——用于返回已分配的通信标识符的引用。结构体详细信息见rdma_create_id。
 
 **返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
 
 **描述**：
 
-rdma_create_ep创建用于跟踪通信信息的标识符和QP（QP是可选的）。
+rdma_create_ep创建用于跟踪通信信息的标识符以及QP（QP是可选的）。
 
-使用rdma_getaddrinfo解析地址信息后，，用户可以使用此调用并基于返回的结果来分配rdma_cm_id。
+使用rdma_getaddrinfo解析地址信息后，用户可以使用此调用并基于返回的结果来分配rdma_cm_id。
 
 如果rdma_cm_id将被用于在连接的主动端/客户端，这意味着`res->ai_flag`未设置为RAI_PASSIVE，如果qp_init_attr不为NULL，则将自动创建一个QP并将其与rdma_cm_id关联。 QP将与指定的保护域（如果提供）关联，或者与默认的保护域（如果未提供）关联。用户应该查看rdma_create_qp以获得有关pd和qp_init_attr参数的使用的详细信息。调用rdma_create_ep之后，可以通过调用rdma_connect连接返回的rdma_cm_id。主动端/客户端 调用rdma_resolve_addr和rdma_resolve_route是不需要的。
 
