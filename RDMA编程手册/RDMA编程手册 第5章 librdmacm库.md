@@ -792,7 +792,7 @@ int rdma_accept (struct rdma_cm_id *id, struct rdma_conn_param *conn_param)
 **输入参数**：
 
 * id——与请求关联的RDMA通信标识符。结构体详细信息见rdma_create_id。
-* conn_param——建立连接所需要的信息。结构体详细信息见下文。
+* conn_param——建立连接所需要的信息，可选的。结构体详细信息见下文。
 
 **输出参数**：无。
 
