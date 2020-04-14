@@ -362,7 +362,7 @@ int rdma_destroy_id (struct rdma_cm_id *id)
 
 销毁指定的rdma_cm_id并取消任何未完成的异步操作。
 
-在调用这个函数和确认相关事件之前，用户必须释放rdma_cm_id关联的任何QP。
+在调用这个函数之前，用户必须释放rdma_cm_id关联的任何QP，并确认相关事件。
 
 ### 2.2.3 rdma_migrate_id
 **原型**：
@@ -384,9 +384,8 @@ rdma_migrate_id将通信标识符迁移到其他事件通道，并将与rdma_cm_
 
 用户在通道之间迁移时，不应轮询rdma_cm_id当前事件通道上的事件，也不应在rdma_cm_id上调用其他函数。 当前事件通道上有任何未确认的事件时，此调用将被阻塞。
  
-如果channel参数为NULL，则指定的rdma_cm_id将进入同步操作模式。 ID上的所有调用都将阻塞，直到操作完成。
+如果channel参数为NULL，则指定的rdma_cm_id将进入同步操作模式。 此id上的所有调用都将阻塞，直到操作完成。
 
- 
 ### 2.2.4 rdma_set_option
 **原型**：
 ``` cpp
