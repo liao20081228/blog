@@ -1069,21 +1069,24 @@ int rdma_create_srq (struct rdma_cm_id *id, struct ibv_pd *pd, struct ibv_srq_in
 
 rdma_create_srq分配与指定的rdma_cm_id相关的SRQ。
 
-在调用此函数之前，必须将rdma_cm_id绑定到本地RDMA设备，保护域（如果提供）必须用于同一设备。分配后，SRQ将准备处理接收请求的发布。 
+在调用此函数之前，必须将rdma_cm_id绑定到本地RDMA设备，保护域（如果提供了）必须用于同一设备。分配SRQ后，SRQ将准备好处理发布的接收请求。 
 
-如果未提供保护域（pd参数为NULL），则将使用默认保护域创建rdma_cm_id。每个RDMA设备分配一个默认的保护域。
+如果未提供保护域（pd参数为NULL），则将使用默认保护域创建rdma_cm_id。每个RDMA设备分配了一个默认的保护域。
 
 初始SRQ属性由attr参数指定。 ibv_srq_init_attr中的ext.xrc.cq字段是可选的。如果未为XRC SRQ指定完成队列，则rdma_cm将为SRQ分配CQ以及相应的完成通道。 rdma_cm创建的完成通道和CQ数据通过rdma_cm_id结构体向用户公开。
 
 创建的SRQ的实际功能和属性将通过attr参数返回给用户。 一个rdma_cm_id只能与一个SRQ关联。
 
-### 2.9.2 rdma_destroy_srq_ex（未完成）
+### 2.9.2 rdma_create_srq_ex（未完成）
 
 **原型**：
 ``` cpp
 int rdma_create_srq_ex(struct rdma_cm_id *id, struct ibv_srq_init_attr_ex *attr)
 ```
-**输入参数**：id——与要销毁的SRQ关联的RDMA标识符。结构体详细信息见rdma_create_id。
+**输入参数**：
+
+* id——RDMA通信标识符。结构体详细信息见rdma_create_id。
+* attr——初始SRQ属性（扩展的）。结构体详细信息见ibv_create_srq。
 
 **输出参数**：无。
 
