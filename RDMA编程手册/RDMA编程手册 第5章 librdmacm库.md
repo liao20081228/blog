@@ -471,7 +471,7 @@ int rdma_create_qp_ex(struct rdma_cm_id *id, struct ibv_qp_init_attr_ex *qp_init
 **输入参数**：
 
 * id——RDMA标识符。结构体详细信息见rdma_create_id。
-* qp_init_attr——QP初始属性。
+* qp_init_attr——QP初始属性，带有扩展属性。
 
 **输出参数**：qp_init_attr——通过此结构体返回创建的QP的实际功能和属性。
 
@@ -507,6 +507,7 @@ rdma_destroy_qp销毁在rdma_cm_id上分配的QP。
 用户必须销毁与rdma_cm_id关联的任何QP，然后再销毁ID。
 
  struct rdma_cm_id详细信息见rdma_create_id。
+ 
 ### 2.3.4 rdma_init_qp_attr
 
 **原型**：
@@ -517,8 +518,8 @@ int rdma_init_qp_attr(struct rdma_cm_id *id, struct ibv_qp_attr *qp_attr, int *q
 **输入参数**：
 
 * id——RDMA标识符。结构体详细信息见rdma_create_id。
-* qp_attr——对包含响应信息的qp属性结构体的引用。结构体详细信息见ibv_modify_qp。
-* qp_attr_mask——对包含响应信息的qp属性掩码的引用。
+* qp_attr——指向包含响应信息的qp属性结构体的指针。详细信息见ibv_modify_qp。
+* qp_attr_mask——指向包含响应信息的qp属性掩码的指针。详细信息见ibv_modify_qp。
 
 **输出参数**：qp_attr——返回初始化的qp属性。
 
@@ -551,11 +552,9 @@ int rdma_resolve_addr (struct rdma_cm_id *id, struct sockaddr *src_addr, struct 
 
 rdma_resolve_addr将目标地址和可选的源地址从IP地址解析为RDMA地址。如果成功，则指定的rdma_cm_id将绑定到本地设备。
 
-该调用用于将给定的目标IP地址映射到可用的RDMA地址。 IP到RDMA地址的映射是使用本地路由表或通过ARP完成的。如果指定了源地址，则将rdma_cm_id绑定到该地址，就像调用rdma_bind_addr一样。如果没有给出源地址，并且rdma_cm_id尚未绑定到设备，则rdma_cm_id将基于本地路由表绑定到源地址。调用之后，rdma_cm_id将绑定到RDMA设备。通常在调用rdma_resolve_route和rdma_connect之前从连接的主动端（客户端）进行此调用。
+该调用用于将一个给定的目标IP地址映射到可用的RDMA地址。 IP到RDMA地址的映射是使用本地路由表或通过ARP完成的。如果指定了源地址，则将rdma_cm_id绑定到该地址，就像调用rdma_bind_addr一样。如果没有给出源地址，并且rdma_cm_id尚未绑定到设备，则rdma_cm_id将基于本地路由表绑定到源地址。在此调用之后，rdma_cm_id将绑定到RDMA设备。通常在调用rdma_resolve_route和rdma_connect之前从连接的主动端（客户端）进行此调用。
 
 InfiniBand规范：此调用将目标IP地址和源IP地址映射到GID。为了执行映射，IPoIB必须在本地和远程节点上运行。
-
-
 
 ### 2.4.2 rdma_bind_addr
 **原型**：
