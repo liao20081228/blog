@@ -188,9 +188,9 @@ int rdma_create_id(struct rdma_event_channel *channel, struct rdma_cm_id **id,
 
 **返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
 
-**描述**：创建用于跟踪通信信息的标识符。
+**描述**：
 
-**注意事项**：
+创建用于跟踪通信信息的标识符。
 
 对于RDMA通信，rdma_cm_id在概念上等效于套接字。区别在于RDMA通信需要在通信发生之前显式绑定到指定的RDMA设备，并且大多数操作天生就是异步的。通过关联的事件通道报告rdma_cm_id上的异步通信事件。 如果channel参数为NULL，则rdma_cm_id将被置于同步操作中。 在同步操作时，导致事件的调用将阻塞，直到操作完成。该事件将通过rdma_cm_id结构体返回给用户， 并且在另一个rdma_cm调用发生前，可以访问该事件。
 
@@ -243,27 +243,27 @@ struct ibv_sa_path_rec
 {
 	/* reserved */
 	/* reserved */
-	union ibv_gid	dgid;
-	union ibv_gid	sgid;
-	__be16			dlid;
-	__be16			slid;
+	union ibv_gid	dgid;						//目标gid，详情见ibv_query_gid
+	union ibv_gid	sgid;						//源gid
+	__be16			dlid;						//目标lid
+	__be16			slid;						//源lid
 	int				raw_traffic;
 	/* reserved */
-	__be32			flow_label;
-	uint8_t			hop_limit;
-	uint8_t			traffic_class;
+	__be32			flow_label;					//流标签
+	uint8_t			hop_limit;					//跳数限制
+	uint8_t			traffic_class;				//流量级别
 	int				reversible;
 	uint8_t			numb_path;
-	__be16			pkey;
+	__be16			pkey;						//分区密钥
 	/* reserved */
-	uint8_t			sl;
-	uint8_t			mtu_selector;
-	uint8_t			mtu;
-	uint8_t			rate_selector;
-	uint8_t			rate;
-	uint8_t			packet_life_time_selector;
-	uint8_t			packet_life_time;
-	uint8_t			preference;
+	uint8_t			sl;							//服务级别
+	uint8_t			mtu_selector;				//mtu选择子
+	uint8_t			mtu;						//mtu
+	uint8_t			rate_selector;				//速率选择子
+	uint8_t			rate;						//速率
+	uint8_t			packet_life_time_selector;	//分组生命周期选择子
+	uint8_t			packet_life_time;			//分组生命周期
+	uint8_t			preference;					//偏好
 }; 
 
 struct rdma_addr 
