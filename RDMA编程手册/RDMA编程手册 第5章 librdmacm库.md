@@ -608,9 +608,9 @@ int rdma_getaddrinfo (const char *node, const char *service, const struct rdma_a
 ```
 **输入参数**：
 
-* node——名称，点分十进制的IPv4或IPv6十六进制地址。（可选的）。
-* service——地址的服务名称或端口号。
-* hints——引用rmda_addrinfo结构体，该结构包含有关调用者支持的服务类型的提示。结构体详细信息见下文。
+* node——名称，点分十进制的IPv4或十六进制的IPv6地址，可选的。
+* service——服务名称或地址的端口号。
+* hints——指向rmda_addrinfo结构体的指针，该结构体包含有关调用者支持的服务类型的暗示。结构体详细信息见下文。
 * res——指向包含响应信息的rdma_addrinfo结构体的链表的指针。结构体详细信息见下文。
 
 **输出参数**：res——rdma_addrinfo结构体，该结构体返回建立通信所需的信息。
@@ -621,26 +621,26 @@ int rdma_getaddrinfo (const char *node, const char *service, const struct rdma_a
 
 rdma_getaddrinfo提供与传输无关的地址转换。它解析目标节点和服务地址，并返回建立设备通信所需的信息。它与getaddrinfo的函数等效。
 
-必须提供node service  或hints中的一个。 如果提供了hints，则该操作将由hints.ai_flags控制。 如果指定了RAI_PASSIVE，则调用将解析地址信息以便l连接的被动端使用。 如果提供了node，则rdma_getaddrinfo将尝试解析到给定节点的RDMA地址，路由和连接数据。 如果提供了hints参数，则可以使用它来控制结果输出，如下所示。 如果未提供node，则rdma_getaddrinfo将尝试基于hints.ai_src_addr，hints.ai_dst_addr或hints.ai_route解析RDMA寻址信息。
+必须提供参数node、service或hints中的一个。 如果提供了hints，则该操作将由hints.ai_flags控制。 如果指定了RAI_PASSIVE，则调用将解析地址信息以便l连接的被动端（服务端）使用。 如果提供了node，则rdma_getaddrinfo将尝试解析到给定节点的RDMA地址，路由和连接数据。 如果提供了hints参数，则可以使用它来控制结果输出，如下所示。 如果未提供node，则rdma_getaddrinfo将尝试基于hints.ai_src_addr，hints.ai_dst_addr或hints.ai_route解析RDMA寻址信息。
 
  struct rdma_addrinfo定义如下：
  ```cpp
  struct rdma_addrinfo {
-	int    ai_flags; 			//暗示标志，用于控制操作。它是几个常量的按位或结果。
-	int    ai_family;			//源地址和目标地址的地址族
-	int    ai_qp_type;			//使用的RDMA QP类型
-	int    ai_port_space;		//使用的RDMA端口空间，宏常量按位或，详细信息见下文
-	socklen_t     ai_src_len;			//ai_src_addr引用的源地址的长度
-	socklen_t     ai_dst_len;			//ai_dst_addr引用的目标地址的长度
-	struct sockaddr   *ai_src_addr;		//本地RDMA设备的地址（如果提供），见rdma_create_id
-	struct sockaddr   *ai_dst_addr;		//目标RDMA设备的地址（如果提供），见rdma_create_id
-	char      *ai_src_canonname;	//源的规范名
-	char      *ai_dst_canonname;	//目标的规范名
-	size_t     ai_route_len;		//引用的路由信息缓冲区的大小
-	void      *ai_route;			//RDMA传输的路由信息
-	size_t     ai_connect_len;		//ai_connect引用的连接信息的大小
-	void      *ai_connect;			//交换数据，是建立连接的一部分
-	struct rdma_addrinfo    *ai_next;			//指向链表中下一个rdma_addrinfo结构体的指针。
+	int					ai_flags; 			//暗示标志，用于控制操作。它是几个常量的按位或结果。
+	int					ai_family;			//源地址和目标地址的地址族
+	int					ai_qp_type;			//使用的RDMA QP类型
+	int					ai_port_space;		//使用的RDMA端口空间，宏常量按位或，详细信息见下文
+	socklen_t			ai_src_len;			//ai_src_addr引用的源地址的长度
+	socklen_t			ai_dst_len;			//ai_dst_addr引用的目标地址的长度
+	struct sockaddr		*ai_src_addr;		//本地RDMA设备的地址（如果提供），见rdma_create_id
+	struct sockaddr		*ai_dst_addr;		//目标RDMA设备的地址（如果提供），见rdma_create_id
+	char					*ai_src_canonname;	//源的规范名
+	char					*ai_dst_canonname;	//目标的规范名
+	size_t				ai_route_len;		//引用的路由信息缓冲区的大小
+	void					*ai_route;			//RDMA传输的路由信息
+	size_t				ai_connect_len;		//ai_connect引用的连接信息的大小
+	void					*ai_connect;		//交换数据，是建立连接的一部分
+	struct rdma_addrinfo	*ai_next;			//指向链表中下一个rdma_addrinfo结构体的指针。
 };  
  ```
 
