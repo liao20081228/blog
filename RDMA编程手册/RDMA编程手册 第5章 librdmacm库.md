@@ -732,7 +732,7 @@ int rdma_connect (struct rdma_cm_id *id, struct rdma_conn_param *conn_param)
 
 **描述**：
 
-rdma_connect启动主动的连接请求。对于面向连接的rdma_cm_id，该调用会发起到远程目标的连接请求。或非面向连接的rdma_cm_id，它会启动对提供数据报服务的远程QP的查找。调用这个函数之前，用户必须已经通过调用rdma_resolve_route或rdma_create_ep来解析到目标地址的路由。
+rdma_connect启动一个主动端（客户端）的连接请求。对于类型为RDMA_PS_TCP的rdma_cm_id，该调用会发起到远程目标的连接请求。对于类型为RDMA_PS_UDP的rdma_cm_id，它会启动对提供数据报服务的远程QP的查找。调用这个函数之前，用户必须已经通过调用rdma_resolve_route或rdma_create_ep来解析到目标地址的路由。
 
 InfiniBand规范：
 
@@ -742,7 +742,7 @@ InfiniBand规范：
 
 用户提供的私有数据的长度对于RDMA_PS_TCP限制为56个字节，对于RDMA_PS_UDP限制为180个字节
 
-iWarp规范：当前，通过iWarp RDMA设备建立的连接要求连接的主动端发送第一条消息。
+iWarp规范：当前，通过iWarp RDMA设备建立的连接要求连接的主动端（客户端）发送第一条消息。
 
 
 ### 2.5.3  rdma_establish
