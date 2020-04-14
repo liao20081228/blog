@@ -626,7 +626,7 @@ rdma_getaddrinfo提供与传输无关的地址转换。它解析目标节点和�
  struct rdma_addrinfo定义如下：
  ```cpp
  struct rdma_addrinfo {
-	int					ai_flags; 			//暗示标志，用于控制操作。它是几个常量的按位或结果。
+	int					ai_flags; 			//提示标志，用于控制操作。它是几个常量的按位或结果。
 	int					ai_family;			//源地址和目标地址的地址族
 	int					ai_qp_type;			//使用的RDMA QP类型
 	int					ai_port_space;		//使用的RDMA端口空间，宏常量按位或，详细信息见下文
@@ -651,15 +651,15 @@ rdma_getaddrinfo提供与传输无关的地址转换。它解析目标节点和�
 |ai_flags|用于控制操作的提示标志。它是一个或多个常量的按位或结果。见下面详细描述。|
 |ai_family|源地址和目标地址的地址族。它是一个常量。见下面详细描述。|
 |ai_qp_type|用于通信的RDMA QP的类型。支持的类型为：IBV_UD（不可靠的数据报）和IBV_RC（可靠连接）。|
-|ai_port_space|使用的RDMA端口空间。支持的值为：RDMA_PS_UDP，RDMA_PS_TCP和RDMA_PS_IB。详细信息见rdma_create_id（）|
+|ai_port_space|使用的RDMA端口空间。支持的值为：RDMA_PS_UDP、RDMA_PS_TCP和RDMA_PS_IB。详细信息见rdma_create_id（）|
 |ai_src_len |ai_src_addr引用的源地址的长度。如果找不到给定目标的适当源地址，则该值为0。|
-|ai_dst_len  |ai_dst_addr引用的目标地址的长度。如果将RAI_PASSIVE标志指定为hints的一部分，则该值为0。|
+|ai_dst_len |ai_dst_addr引用的目标地址的长度。如果将RAI_PASSIVE标志指定为hints的一部分，则该值为0。|
 |ai_src_addr|如果提供，则为本地RDMA设备的地址。详细信息见`man 2 bind`|
 |ai_dst_addr|如果提供，则为目标RDMA设备的地址。详细信息见`man 2 bind`|
 |ai_src_canonname|源的规范名字|
 |ai_dst_canonname|目标的规范名字|
 |ai_route_len|ai_route引用的路由信息缓冲区的大小。如果底层传输不需要路由数据，或者无法解析，则为0。|
-|ai_route |RDMA传输的路由信息，它需要路由数据作为连接建立的一部分。路由数据的格式取决于底层传输。如果使用了Infiniband传输，如果路由数据可用，ai_route将在输出中引用struct ibv_path_data数组。可以通过在rdma_getaddrinfo的输入上设置所需的路由数据字段来限制路由路径。对于Infiniband，hints.ai_route可以在输入中引用struct ibv_path_record或struct ibv_path_data数组。|
+|ai_route |RDMA传输的路由信息，RDMA传输需要路由数据作为连接建立的一部分。路由数据的格式取决于底层传输。如果使用了Infiniband传输，且路由数据可用，ai_route将在输出中引用struct ibv_path_data数组。可以通过在rdma_getaddrinfo的输入参数中设置所需的路由数据字段来限制路由路径。对于Infiniband，hints.ai_route可以在输入中引用struct ibv_path_record或struct ibv_path_data数组。|
 |ai_connect_len|ai_connect引用的连接信息的大小。如果基础传输不需要其他连接信息，则该值为0。|
 |ai_connect |交换的数据是连接建立过程的一部分。如果提供，ai_connect数据必须作为私有数据传输，任何用户提供的私有数据都紧随其后。|
 |ai_next  |指向链表中下一个rdma_addrinfo结构体的指针。如果没有更多结构体，则为NULL。|
@@ -667,10 +667,10 @@ rdma_getaddrinfo提供与传输无关的地址转换。它解析目标节点和�
 
 ai_flags的可取值定义如下：
 ```cpp
-#define RAI_PASSIVE     0x00000001 //结果将用于连接的被动/监听侧。
-#define RAI_NUMERICHOST 0x00000002 //参数node(如果提供)必须是数字网络地址。该标志禁止任何冗长的地址解析
-#define RAI_NOROUTE     0x00000004 //如果设置，则此标志抑制任何冗长的路由解析
-#define RAI_FAMILY      0x00000008 //如果设置，则ai_family设置应用作解释节点参数的输入提示。
+#define RAI_PASSIVE		0x00000001	//结果将用于连接的被动/监听侧。
+#define RAI_NUMERICHOST	0x00000002	//参数node(如果提供)必须是数字网络地址。该标志禁止任何冗长的地址解析
+#define RAI_NOROUTE		0x00000004	//如果设置，则此标志抑制任何冗长的路由解析
+#define RAI_FAMILY		0x00000008	//如果设置，则ai_family设置应该用作解释node参数的输入提示。
 ```
 
 下面是ai_family的可取值的完整描述：
@@ -694,8 +694,6 @@ void rdma_freeaddrinfo(struct rdma_addrinfo *res)
 **返回值**：无。
 
 **描述**：rdma_freeaddrinfo释放函数rdma_getaddrinfo返回的rdma_addrinfo（res）结构体。 请注意，如果ai_next不为NULL，则rdma_freeaddrinfo将释放addrinfo结构体的整个链表。
-
-
 
 ## 2.5	连接的监听、连接、接受、拒绝、断开
 ### 2.5.1 rdma_listen
