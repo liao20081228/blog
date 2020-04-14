@@ -531,7 +531,7 @@ rdma_init_qp_attr（）返回rdma_cm_id的qp属性。
 
 有关qp属性和qp属性掩码的信息是通过qp_attr和qp_attr_mask参数返回的。
 
-## 2.4 解析地址和路由
+## 2.4 绑定地址、解析地址和解析路由
 
 ### 2.4.1 rdma_bind_addr
 
@@ -552,7 +552,7 @@ int rdma_bind_addr (struct rdma_cm_id *id, struct sockaddr *addr);
 
 rdma_bind_addr将源地址与rdma_cm_id相关联。该地址可能是通配符。如果绑定到指定的本地地址，则rdma_cm_id也将绑定到本地RDMA设备。
 
- 通常，在调用rdma_listen之前，调用此函数以绑定到指定端口号，但是，也可以在一个连接的主动端调用 rdma_resolve_addr之前，调用这个函数以绑定到指定地址。
+ 通常，在调用rdma_listen之前，调用此函数以绑定到指定端口号，但是，也可以在一个连接的主动端（客户端）调用 rdma_resolve_addr之前，调用这个函数以绑定到指定地址。
 
 如果用于绑定到端口0，则rdma_cm将选择一个可用端口，这个端口可以使用rdma_get_src_port进行检索。
 
@@ -696,27 +696,7 @@ void rdma_freeaddrinfo(struct rdma_addrinfo *res)
 **描述**：rdma_freeaddrinfo释放函数rdma_getaddrinfo返回的rdma_addrinfo（res）结构体。 请注意，如果ai_next不为NULL，则rdma_freeaddrinfo将释放addrinfo结构体的整个链表。
 
 ## 2.5	连接的监听、连接、接受、拒绝、断开
-### 2.5.1 rdma_listen
-**原型**：
-``` cpp
-int rdma_listen (struct rdma_cm_id *id, int backlog)
-```
-**输入参数**：
-
-* id——RDMA标识符。结构体详细信息见rdma_create_id。
-* backlog——传入的连接请求的积压。
-
-**输出参数**：无。
-
-**返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
-
-**描述**：   
-
-启动对传入的连接请求或数据报服务查找的监听。监听将仅限于本地绑定的源地址。
-
-请注意，在调用rdma_listen之前，必须先通过调用rdma_bind_addr来将rdma_cm_id绑定到本地地址。 如果rdma_cm_id绑定到指定的IP地址，则监听将限于该地址和关联的RDMA设备。 如果rdma_cm_id仅绑定到RDMA端口号，则监听将在所有RDMA设备上进行。
-
-### 2.5.2 rdma_connect
+### 2.5.1 rdma_connect
 **原型**：
 ``` cpp
 int rdma_connect (struct rdma_cm_id *id, struct rdma_conn_param *conn_param)
@@ -744,8 +724,7 @@ InfiniBand规范：
 
 iWarp规范：当前，通过iWarp RDMA设备建立的连接要求连接的主动端（客户端）发送第一条消息。
 
-
-### 2.5.3  rdma_establish
+### 2.5.2  rdma_establish
 **原型**：
 ``` cpp
 int rdma_establish(struct rdma_cm_id *id)
@@ -760,13 +739,35 @@ int rdma_establish(struct rdma_cm_id *id)
 
 rdma_ establish确认传入的连接响应事件并完成连接建立。
 
-在获得连接响应事件后，如果尚未在rdma_cm_id上创建QP，则主动端（客户端）应调用此函数以完成连接，
+如果尚未在rdma_cm_id上创建QP，那么在获得连接响应事件后，主动端（客户端）应调用此函数以完成连接，
 
 这将触在被动端（服务端）触发连接建立事件。
 
 不得在已创建QP的rdma_cm_id上使用此函数。
 
-struct rdma_cm_id详细信息见rdma_create_id。
+译者注：通常用于不使用RDMA CM而用libibverbs来创建QP的情况，
+
+### 2.5.3 rdma_listen
+**原型**：
+``` cpp
+int rdma_listen (struct rdma_cm_id *id, int backlog)
+```
+**输入参数**：
+
+* id——RDMA标识符。结构体详细信息见rdma_create_id。
+* backlog——传入的连接请求的积压。
+
+**输出参数**：无。
+
+**返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
+
+**描述**：   
+
+启动对传入的连接请求或数据报服务查找的监听。监听将仅限于本地绑定的源地址。
+
+请注意，在调用rdma_listen之前，必须先通过调用rdma_bind_addr来将rdma_cm_id绑定到本地地址。 如果rdma_cm_id绑定到指定的IP地址，则监听将限于该地址和关联的RDMA设备。 如果rdma_cm_id仅绑定到RDMA端口号，则监听将在所有RDMA设备上进行。
+
+
 
 ### 2.5.4 rdma_get_request
 **原型**：
