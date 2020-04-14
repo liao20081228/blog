@@ -780,9 +780,9 @@ int rdma_get_request (struct rdma_cm_id *listen, struct rdma_cm_id **id)
 
 **描述**：
 
-rdma_get_request检索下一个挂起的连接请求事件。 该调用只能用于同步运行的rdma_cm_ids监听中。 如果调用成功，代表连接请求的新rdma_cm_id（id）将返回给用户。 新的rdma_cm_id将引用与该请求关联的事件信息，直到用户在新创建的RDMA标识符上调用rdma_reject，rdma_accept或rdma_destroy_id为止。 有关事件数据的描述，请参见rdma_get_cm_event。
+rdma_get_request检索一个挂起的连接请求事件。 该调用只能用于同步运行的rdma_cm_ids监听中。 如果调用成功，代表连接请求的新rdma_cm_id（id）将返回给用户。 新的rdma_cm_id将引用与该请求关联的事件信息，直到用户在新创建的RDMA标识符上调用rdma_reject，rdma_accept或rdma_destroy_id为止。 有关事件数据的描述，请参见rdma_get_cm_event。
 
-如果QP属性与监听端点关联，则返回的rdma_cm_id也将引用已分配的QP。
+如果QP与监听端点关联，则返回的rdma_cm_id也将引用已分配的QP。
 
 ### 2.5.5 rdma_accept
 **原型**：
