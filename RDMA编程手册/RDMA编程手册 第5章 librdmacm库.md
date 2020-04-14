@@ -135,6 +135,12 @@ struct rdma_event_channel * rdma_create_event_channel (void)
 
 打开一个事件通道，用于用于报告通信事件。 异步事件通过事件通道报告给用户。
 
+事件通道用于在struct rdma_cm_id上定向所有事件。 对于许多客户端来说，单个事件通道可能就足够了，但是，在管理大量连接或cm_id时，用户可能会发现将不同cm_id的事件定向到不同事件通道进行处理很有用。
+
+所有创建的事件通道都必须通过调用rdma_destroy_event_channel进行销毁。 用户应调用rdma_get_cm_event检索事件通道上的事件。
+
+每个事件通道都映射到一个文件描述符。 可以像其他任何fd一样使用和操作关联的文件描述符，以更改其行为。 用户可以将fd设为非阻塞，poll或sellect 该fd，等。
+
 struct channel定义如下：
 ```ceylon
 struct rdma_event_channel 
@@ -142,16 +148,6 @@ struct rdma_event_channel
 	int fd; //文件描述符
 };  
 ```
-
-**注意事项**：
-
-事件通道用于在struct rdma_cm_id上定向所有事件。 对于许多客户端来说，单个事件通道可能就足够了，但是，在管理大量连接或cm_id时，用户可能会发现将不同cm_id的事件定向到不同事件通道进行处理很有用。
-
-所有创建的事件通道都必须通过调用rdma_destroy_event_channel进行销毁。 用户应调用rdma_get_cm_event检索事件通道上的事件。
-
-每个事件通道都映射到一个文件描述符。 可以像其他任何fd一样使用和操作关联的文件描述符，以更改其行为。 用户可以将fd设为非阻塞，poll或sellect 该fd，等。
-
-
 
 ### 2.1.2 rdma_destroy_event_channel
 
@@ -194,144 +190,141 @@ int rdma_create_id(struct rdma_event_channel *channel, struct rdma_cm_id **id,
 
 **描述**：创建用于跟踪通信信息的标识符。
 
+**注意事项**：
+
 对于RDMA通信，rdma_cm_id在概念上等效于套接字。区别在于RDMA通信需要在通信发生之前显式绑定到指定的RDMA设备，并且大多数操作天生就是异步的。通过关联的事件通道报告rdma_cm_id上的异步通信事件。 如果channel参数为NULL，则rdma_cm_id将被置于同步操作中。 在同步操作时，导致事件的调用将阻塞，直到操作完成。该事件将通过rdma_cm_id结构体返回给用户， 并且在另一个rdma_cm调用发生前，可以访问该事件。
 
 用户必须调用rdma_destroy_id来释放rdma_destroy_id。
 
 struct rdma_cm_id定义如下：
 ```c
-struct rdma_cm_id {
-        struct ibv_context      *verbs;			//设备上下文，详细信息见ibv_open_device
-        struct rdma_event_channel *channel;		//事件通道 ,详细信息见rdma_create_event_channel	
-        void              *context;		//用户定义上下文
-        struct ibv_qp           *qp;			//QP，详细信息见ibv_create_qp，ibv_modify_qp
-        struct rdma_route        route;			//路由，详细信息见下文
-        enum rdma_port_space     ps;			//端口空间，枚举值之一，详细信息见下文。
-        uint8_t                  port_num;      //端口号                                           
-        struct rdma_cm_event    *event; 		//事件，详细信息见rdma_get_cm_event
-        struct ibv_comp_channel *send_cq_channel;//发送完成通道，详细信息见ibv_create_comp_channel
-        struct ibv_cq           *send_cq;		 //发送完成，详细信息见ibv_create_cq
-        struct ibv_comp_channel *recv_cq_channel;//接收完成通道，详细信息见ibv_create_comp_channel
-        struct ibv_cq           *recv_cq; 		//接收完成，详细信息见ibv_create_cq
-        struct ibv_srq          *srq;			//共享接收队列，详细信息见ibv_create_srq
-        struct ibv_pd           *pd;			//保护域，详细信息见ibv_alloc_pd
-        enum ibv_qp_type        qp_type; 		//QP类型，枚举值之一，详细信息见ibv_create_qp
-};   
+struct rdma_cm_id
+{
+	struct ibv_context			*verbs;				//设备上下文，详细信息见ibv_open_device
+	struct rdma_event_channel	*channel;			//事件通道 ,详细信息见rdma_create_event_channel	
+	void						*context;			//用户定义上下文
+	struct ibv_qp				*qp;				//QP，详细信息见ibv_create_qp，ibv_modify_qp
+	struct rdma_route			route;				//路由，详细信息见下文
+	enum rdma_port_space		ps;					//端口空间，枚举值之一，详细信息见下文。
+	uint8_t						port_num;			//端口号
+	struct rdma_cm_event		*event;				//事件，详细信息见rdma_get_cm_event
+	struct ibv_comp_channel		*send_cq_channel;	//发送完成通道，详细信息见ibv_create_comp_channel
+	struct ibv_cq				*send_cq;			//发送完成队列，详细信息见ibv_create_cq
+	struct ibv_comp_channel		*recv_cq_channel;	//接收完成通道，详细信息见ibv_create_comp_channel
+	struct ibv_cq				*recv_cq;			//接收完成队列，详细信息见ibv_create_cq
+	struct ibv_srq				*srq;				//共享接收队列，详细信息见ibv_create_srq
+	struct ibv_pd				*pd;				//保护域，详细信息见ibv_alloc_pd
+	enum ibv_qp_type			qp_type;			//QP类型，枚举值之一，详细信息见ibv_create_qp
+};
 ```
 
 enum rdma_port_space定义如下：
 ```cpp
 enum rdma_port_space 
 {
-	RDMA_PS_IPOIB = 0x0002,
-	RDMA_PS_TCP   = 0x0106,	/*提供可靠的，有连接的QP通信。
-							不像TCP，RDMA端口空间提供基于消息的通信，而不是基于流*/
-	RDMA_PS_UDP   = 0x0111,	//提供不可靠的无连接QP通信， 支持数据报和多播通信
-	RDMA_PS_IB    = 0x013F,	//提供任何IB服务，提供任何IB服务（UD，UC，RC，XRC等）                                                                                                                                                    
-};  
+	RDMA_PS_IPOIB	=	0x0002,
+	RDMA_PS_TCP		=	0x0106,	/*提供可靠的，有连接的QP通信。
+								不像TCP，RDMA端口空间提供基于消息的通信，而不是基于流*/
+	RDMA_PS_UDP		=	0x0111,	//提供不可靠的无连接QP通信， 支持数据报和多播通信
+	RDMA_PS_IB		=	0x013F,	//提供任何IB服务，提供任何IB服务（UD，UC，RC，XRC等）
+};
 ```
 
 struct route定义如下：
 ```cpp
 struct rdma_route 
 {
-        struct rdma_addr         addr;
-        struct ibv_sa_path_rec  *path_rec;
-        int                      num_paths;
+	struct rdma_addr		addr;
+	struct ibv_sa_path_rec	*path_rec;
+	int						num_paths;
 }; 
-
 
 struct ibv_sa_path_rec 
 {
-        /* reserved */
-        /* reserved */
-        union ibv_gid dgid;
-        union ibv_gid sgid;
-        __be16        dlid;
-        __be16        slid;
-        int           raw_traffic;
-        /* reserved */
-        __be32        flow_label;
-        uint8_t       hop_limit;
-        uint8_t       traffic_class;
-        int           reversible;
-        uint8_t       numb_path;
-        __be16        pkey;
-        /* reserved */
-        uint8_t       sl;
-        uint8_t       mtu_selector;
-        uint8_t       mtu;
-        uint8_t       rate_selector;
-        uint8_t       rate;
-        uint8_t       packet_life_time_selector;
-        uint8_t       packet_life_time;
-        uint8_t       preference;
+	/* reserved */
+	/* reserved */
+	union ibv_gid	dgid;
+	union ibv_gid	sgid;
+	__be16			dlid;
+	__be16			slid;
+	int				raw_traffic;
+	/* reserved */
+	__be32			flow_label;
+	uint8_t			hop_limit;
+	uint8_t			traffic_class;
+	int				reversible;
+	uint8_t			numb_path;
+	__be16			pkey;
+	/* reserved */
+	uint8_t			sl;
+	uint8_t			mtu_selector;
+	uint8_t			mtu;
+	uint8_t			rate_selector;
+	uint8_t			rate;
+	uint8_t			packet_life_time_selector;
+	uint8_t			packet_life_time;
+	uint8_t			preference;
 }; 
-
 
 struct rdma_addr 
 {
-        union 
-		{
-                struct sockaddr         src_addr;//源地址
-                struct sockaddr_in      src_sin;//源地址，ipv4
-                struct sockaddr_in6     src_sin6;//源地址，ipv6
-                struct sockaddr_storage src_storage;
-        };     
-        union 
-		{
-                struct sockaddr         dst_addr;//源地址
-                struct sockaddr_in      dst_sin;//源地址，ipv4
-                struct sockaddr_in6     dst_sin6;//源地址，ipv6
-                struct sockaddr_storage dst_storage;
-        };     
-        union 
-		{
-                struct rdma_ib_addr     ibaddr;
-        } addr;
+	union 
+	{
+		struct sockaddr			src_addr;	//源地址
+		struct sockaddr_in		src_sin;	//源地址，ipv4
+		struct sockaddr_in6		src_sin6;	//源地址，ipv6
+		struct sockaddr_storage	src_storage;
+	};
+	union 
+	{
+		struct sockaddr			dst_addr;	//源地址
+		struct sockaddr_in		dst_sin;	//源地址，ipv4
+		struct sockaddr_in6		dst_sin6;	//源地址，ipv6
+		struct sockaddr_storage	dst_storage;
+	};
+	union 
+	{
+		struct rdma_ib_addr		ibaddr;
+	} addr;
 };  
-
 
 struct rdma_ib_addr 
 {
-        union ibv_gid   sgid;//源gid
-        union ibv_gid   dgid;//目标gid
-        __be16          pkey;//分区密钥
+	union ibv_gid	sgid;	//源gid
+	union ibv_gid	dgid;	//目标gid
+	__be16			pkey;	//分区密钥
 };
-
 
 typedef uint16_t sa_family_t;
 struct sockaddr 
 {
-	 sa_family_t sa_family; 		//地址族
-	 char        sa_data[14];		//14字节的协议地址，包含该 socket 的 IP 地址和端口号
+	sa_family_t		sa_family;		//地址族
+	char			sa_data[14];	//14字节的协议地址，包含该 socket 的 IP 地址和端口号
 };
-
 
 typedef uint16_t in_port_t;
 struct sockaddr_in 
 { 
-	sa_family_t sin_family; 		/*地址族*/ 
-	in_port_t sin_port; 			/*端口号，网络字节序*/ 
-	struct in_addr sin_addr; 		/*IP 地址，网络字节序*/ 
-	unsigned char sin_zero[8]; 		/*填充0 以保持与 struct sockaddr 同样大小*/ 
+	sa_family_t		sin_family;		/*地址族*/ 
+	in_port_t		sin_port;		/*端口号，网络字节序*/ 
+	struct in_addr	sin_addr;		/*IP 地址，网络字节序*/ 
+	unsigned char	sin_zero[8];	/*填充0 以保持与 struct sockaddr 同样大小*/ 
 }; 
-
 
 typedef uint32_t in_addr_t;
 struct in_addr 
 { 
-	in_addr_t s_addr; /*32 位IPv4 地址，网络字节序 */ 
+	in_addr_t		s_addr;			/*32 位IPv4 地址，网络字节序 */ 
 }; 
 
 
 struct sockaddr_in6
 {
-	sa_family_t sin6_family;  	/* 家族协议 */
-	in_port_t sin6_port;		/* 端口号 */
-	uint32_t sin6_flowinfo;		/* IPv6 flow information ipv6中的流标签字段 */
-	struct in6_addr sin6_addr;	/* ipv6的地址信息 */
-	uint32_t sin6_scope_id;		/* ipv6的接口范围 */
+	sa_family_t		sin6_family;  	/* 家族协议 */
+	in_port_t		sin6_port;		/* 端口号 */
+	uint32_t		sin6_flowinfo;	/* IPv6 flow information ipv6中的流标签字段 */
+	struct in6_addr	sin6_addr;		/* ipv6的地址信息 */
+	uint32_t		sin6_scope_id;	/* ipv6的接口范围 */
 };
 
 
@@ -345,7 +338,7 @@ struct in6_addr
 		uint32_t __u6_addr32[4];  // 32 bit
 #endif
 	} __in6_u;
-	#define s6_addr         __in6_u.__u6_addr8
+	#define s6_addr	 __in6_u.__u6_addr8
 #if defined __USE_MISC || defined __USE_GNU
 	# define s6_addr16      __in6_u.__u6_addr16
 	# define s6_addr32      __in6_u.__u6_addr32
@@ -422,8 +415,8 @@ level可取值定义如下：
 ```cpp
 enum 
 {   
-	RDMA_OPTION_ID          = 0,     //ID级别       
-	RDMA_OPTION_IB          = 1      //IB级别
+	RDMA_OPTION_ID	  = 0,     //ID级别       
+	RDMA_OPTION_IB	  = 1      //IB级别
 }; 
 ```
 
@@ -433,7 +426,7 @@ enum
 {   
 	RDMA_OPTION_ID_TOS       = 0,   /* 指定连接提供的服务质量。 optlen=sizeof（是uint8_t） */
 	RDMA_OPTION_ID_REUSEADDR = 1,   /* 将rdma_cm_id绑定到可重用地址。 这将允许其他用户绑定到相同的地址。
-	                                  optlen=sizeof（int） */
+					  optlen=sizeof（int） */
 									  
 	RDMA_OPTION_ID_AFONLY    = 2,   /*设置IPV6_V6ONLY套接字。 optlen=sizeof（int） */
 	RDMA_OPTION_ID_ACK_TIMEOUT = 3  /* 设置QP ACK超时。 根据公式4.096 * 2^ack_timeout 微秒计算。 */ 
@@ -844,16 +837,16 @@ struct rdma_conn_param的定义如下：
 
 struct rdma_conn_param 
 {
-        const void 	*private_data;		//用户控制的数据缓冲区.
-        uint8_t 	private_data_len;	//用户控制的数据缓冲区的大小
-        uint8_t 	responder_resources;//本地端接收的来自远程端的未完成的RDMA读取和原子操作的最大数量
-        uint8_t 	initiator_depth;	//本地端拥有的对远程端的未完成RDMA读取和原子操作的最大数量
-        uint8_t 	flow_control;		//指定硬件流控制是否可用
-        uint8_t 	retry_count;		//发生错误时在连接上重试数据传输操作的最大次数，接受连接时忽略。
-        uint8_t 	rnr_retry_count;	//收到RNR错误后，远程对等方应在连接上重试发送操作的最大次数。
+	const void 	*private_data;		//用户控制的数据缓冲区.
+	uint8_t 	private_data_len;	//用户控制的数据缓冲区的大小
+	uint8_t 	responder_resources;//本地端接收的来自远程端的未完成的RDMA读取和原子操作的最大数量
+	uint8_t 	initiator_depth;	//本地端拥有的对远程端的未完成RDMA读取和原子操作的最大数量
+	uint8_t 	flow_control;		//指定硬件流控制是否可用
+	uint8_t 	retry_count;		//发生错误时在连接上重试数据传输操作的最大次数，接受连接时忽略。
+	uint8_t 	rnr_retry_count;	//收到RNR错误后，远程对等方应在连接上重试发送操作的最大次数。
 										//如果QP是在rdma_cm_id上创建的，则忽略以下两项
-        uint8_t 	srq;  				//指定与连接关联的QP是否正在使用共享接收队列。
-        uint32_t 	qp_num; 			//指定与连接关联的QP编号。如果QP是在rdma_cm_id上创建的，则忽略它
+	uint8_t 	srq;  				//指定与连接关联的QP是否正在使用共享接收队列。
+	uint32_t 	qp_num; 			//指定与连接关联的QP编号。如果QP是在rdma_cm_id上创建的，则忽略它
 };       
 ```
 下面是struct rdma_conn_param 的完整描述：
@@ -1168,24 +1161,24 @@ int rdma_join_multicast_ex (struct rdma_cm_id *id,
  struct rdma_cm_join_mc_attr_ex定义如下：
  ```cpp
  struct rdma_cm_join_mc_attr_ex 
- {                                                                                                                                                       
-        uint32_t comp_mask;		/* enum rdma_cm_join_mc_attr_mask枚举值按位或得到，详细信息见下文 */
-        uint32_t join_flags;   	/* enum rdma_cm_mc_join_flags枚举值之一 ，详细信息见下文*/  
-        struct sockaddr *addr; 	/* 标识要加入的多播组的地址，见`man 2 bind` */
+ {																		       
+	uint32_t comp_mask;		/* enum rdma_cm_join_mc_attr_mask枚举值按位或得到，详细信息见下文 */
+	uint32_t join_flags;   	/* enum rdma_cm_mc_join_flags枚举值之一 ，详细信息见下文*/  
+	struct sockaddr *addr; 	/* 标识要加入的多播组的地址，见`man 2 bind` */
 };
 ```
 enum rdma_cm_join_mc_attr_mask定义如下：
 ```cpp
-enum rdma_cm_join_mc_attr_mask {                  
-        RDMA_CM_JOIN_MC_ATTR_ADDRESS    = 1 << 0, 
-        RDMA_CM_JOIN_MC_ATTR_JOIN_FLAGS = 1 << 1, 
-        RDMA_CM_JOIN_MC_ATTR_RESERVED   = 1 << 2, 
+enum rdma_cm_join_mc_attr_mask {		  
+	RDMA_CM_JOIN_MC_ATTR_ADDRESS    = 1 << 0, 
+	RDMA_CM_JOIN_MC_ATTR_JOIN_FLAGS = 1 << 1, 
+	RDMA_CM_JOIN_MC_ATTR_RESERVED   = 1 << 2, 
 };
  ```
  
  enum rdma_cm_mc_join_flags定义如下：
- ```cpp               
-enum rdma_cm_mc_join_flags {                      
+ ```cpp	       
+enum rdma_cm_mc_join_flags {		      
 	RDMA_MC_JOIN_FLAG_FULLMEMBER,  		   //创建多播组，向MCG发送多播消息，从MCG接收多播消息。       
 	RDMA_MC_JOIN_FLAG_SENDONLY_FULLMEMBER,  //创建多播组，将多播消息发送到MCG，不接收来自MCG的多播消息
 	RDMA_MC_JOIN_FLAG_RESERVED,   		   //保留的       
@@ -1263,15 +1256,15 @@ int rdma_get_cm_event (struct rdma_event_channel *channel, struct rdma_cm_event 
 struct rdma_cm_event定义如下：
 
 ```cpp
-struct rdma_cm_event {                                                                                                                                                                     
-        struct rdma_cm_id       *id;			//rdma ID
-        struct rdma_cm_id       *listen_id;		//监听ID
-        enum rdma_cm_event_type  event;			//事件类型，它是一个枚举值
-        int                      status;		//与事件关联的所有异步错误信息
-        union {
-                struct rdma_conn_param conn;	//与有连接的QP服务相关的事件参数
-                struct rdma_ud_param   ud;		//与不可靠数据报服务相关的事件参数
-        } param;
+struct rdma_cm_event {																				     
+	struct rdma_cm_id       *id;			//rdma ID
+	struct rdma_cm_id       *listen_id;		//监听ID
+	enum rdma_cm_event_type  event;			//事件类型，它是一个枚举值
+	int		      status;		//与事件关联的所有异步错误信息
+	union {
+		struct rdma_conn_param conn;	//与有连接的QP服务相关的事件参数
+		struct rdma_ud_param   ud;		//与不可靠数据报服务相关的事件参数
+	} param;
 };
 ```
 通信事件的详细信息在rdma_cm_event结构体中返回。该结构由体rdma_cm分配，并由rdma_ack_cm_event函数释放。
@@ -1290,16 +1283,16 @@ struct struct rdma_conn_param定义如下：
 
 ```cpp
 struct struct rdma_conn_param {   
-        const void *private_data;		//与事件关联的任何由用户指定的数据
-        uint8_t private_data_len;		//私有数据缓冲区的大小。
-        uint8_t responder_resources;	//接收者请求的响应者资源数量。
-        uint8_t initiator_depth;		//接收者的未完成的最大RDMA读/原子操作的最大值
-        uint8_t flow_control;			//发送方是否提供硬件级别的流控制。
-        uint8_t retry_count;            //接收者应重试发送操作的次数，接受连接时忽略
-        uint8_t rnr_retry_count;		//遇到RNR NACK错误，接收者应重 的次数。
+	const void *private_data;		//与事件关联的任何由用户指定的数据
+	uint8_t private_data_len;		//私有数据缓冲区的大小。
+	uint8_t responder_resources;	//接收者请求的响应者资源数量。
+	uint8_t initiator_depth;		//接收者的未完成的最大RDMA读/原子操作的最大值
+	uint8_t flow_control;			//发送方是否提供硬件级别的流控制。
+	uint8_t retry_count;	    //接收者应重试发送操作的次数，接受连接时忽略
+	uint8_t rnr_retry_count;		//遇到RNR NACK错误，接收者应重 的次数。
        									//如果QP在rdma_cm_id上创建，则被忽略下面两个字段|
-        uint8_t srq;					//指定发送者是否正在使用共享接收队列
-        uint32_t qp_num;				//连接的远程QP编号。
+	uint8_t srq;					//指定发送者是否正在使用共享接收队列
+	uint32_t qp_num;				//连接的远程QP编号。
 }; 
 ```
 与有连接的QP服务相关的事件参数：RDMA_PS_TCP。除非另有说明，否则与连接有关的事件数据对RDMA_CM_EVENT_CONNECT_REQUEST和RDMA_CM_EVENT_ESTABLISHED事件有效。
@@ -1321,11 +1314,11 @@ struct struct rdma_conn_param {
 struct rdma_ud_param定义如下：
 ```cpp
 struct rdma_ud_param {
-        const void *private_data;
-        uint8_t private_data_len;
-        struct ibv_ah_attr ah_attr;
-        uint32_t qp_num;
-        uint32_t qkey;
+	const void *private_data;
+	uint8_t private_data_len;
+	struct ibv_ah_attr ah_attr;
+	uint32_t qp_num;
+	uint32_t qkey;
 }; 
 ```
 与不可靠的数据报（UD）服务相关的事件参数：RDMA_PS_UDP和RDMA_PS_IPOIB。除非另有说明，否则UD事件数据对RDMA_CM_EVENT_ESTABLISHED和RDMA_CM_EVENT_MULTICAST_JOIN事件有效。
@@ -1813,22 +1806,22 @@ rdma_get_recv_comp为一个接收操作完成检索一个完成的工作请求�
 RDMA CM事件是enum rdma_cm_event_type的一个枚举值，它的定义如下：
 ```cpp
 enum rdma_cm_event_type {
-        RDMA_CM_EVENT_ADDR_RESOLVED,	//地址解析完成
-        RDMA_CM_EVENT_ADDR_ERROR,		//地址解析出错
-        RDMA_CM_EVENT_ROUTE_RESOLVED,	//路由解析完成
-        RDMA_CM_EVENT_ROUTE_ERROR,		//路由解析出错
-        RDMA_CM_EVENT_CONNECT_REQUEST,	//有新的连接请求，被动端
-        RDMA_CM_EVENT_CONNECT_RESPONSE,	//有新的连接响应，主动端
-        RDMA_CM_EVENT_CONNECT_ERROR,	//连接出错
-        RDMA_CM_EVENT_UNREACHABLE,		//无法访问，主动端
-        RDMA_CM_EVENT_REJECTED,			//连接被拒绝
-        RDMA_CM_EVENT_ESTABLISHED,		//已经建立连接
-        RDMA_CM_EVENT_DISCONNECTED,		//连接断开
-        RDMA_CM_EVENT_DEVICE_REMOVAL,	//RDMA设备移除
-        RDMA_CM_EVENT_MULTICAST_JOIN,	//加入多播组
-        RDMA_CM_EVENT_MULTICAST_ERROR,	//加入多播出错
-        RDMA_CM_EVENT_ADDR_CHANGE,		//地址改变
-        RDMA_CM_EVENT_TIMEWAIT_EXIT		//过了TimeWait状态，可以重用
+	RDMA_CM_EVENT_ADDR_RESOLVED,	//地址解析完成
+	RDMA_CM_EVENT_ADDR_ERROR,		//地址解析出错
+	RDMA_CM_EVENT_ROUTE_RESOLVED,	//路由解析完成
+	RDMA_CM_EVENT_ROUTE_ERROR,		//路由解析出错
+	RDMA_CM_EVENT_CONNECT_REQUEST,	//有新的连接请求，被动端
+	RDMA_CM_EVENT_CONNECT_RESPONSE,	//有新的连接响应，主动端
+	RDMA_CM_EVENT_CONNECT_ERROR,	//连接出错
+	RDMA_CM_EVENT_UNREACHABLE,		//无法访问，主动端
+	RDMA_CM_EVENT_REJECTED,			//连接被拒绝
+	RDMA_CM_EVENT_ESTABLISHED,		//已经建立连接
+	RDMA_CM_EVENT_DISCONNECTED,		//连接断开
+	RDMA_CM_EVENT_DEVICE_REMOVAL,	//RDMA设备移除
+	RDMA_CM_EVENT_MULTICAST_JOIN,	//加入多播组
+	RDMA_CM_EVENT_MULTICAST_ERROR,	//加入多播出错
+	RDMA_CM_EVENT_ADDR_CHANGE,		//地址改变
+	RDMA_CM_EVENT_TIMEWAIT_EXIT		//过了TimeWait状态，可以重用
 };  
 ```
 
