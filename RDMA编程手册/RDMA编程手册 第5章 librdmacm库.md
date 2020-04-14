@@ -965,8 +965,6 @@ void rdma_destroy_ep (struct rdma_cm_id *id);
 
 **描述**：rdma_destroy_ep销毁指定的rdma_cm_id和所有相关资源，包括与id关联的QP和SRQ。
 
-
-
 ## 2.7 地址和端口查询
 ### 2.7.1 rdma_get_src_port
 **原型**：
