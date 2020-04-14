@@ -742,9 +742,7 @@ InfiniBand规范：
 
 重试计数和RNR重试计数值为3比特位的值。
 
-用户提供的私有数据的长度对于RDMA_PS_TCP限制为56个字节，对于RDMA_PS_UDP限制为180个字节
 
-iWarp规范：当前，通过iWarp RDMA设备建立的连接要求连接的主动端（客户端）发送第一条消息。
 
 
 struct rdma_conn_param的定义如下：
@@ -789,7 +787,9 @@ InfiniBand规范：
 
 重试计数和RNR重试计数为3比特位的值。
 
-用户提供的私有数据的长度对于RDMA_PS_TCP限制为196个字节，对于RDMA_PS_UDP限制为136个字节.
+用户提供的私有数据的长度对于RDMA_PS_TCP限制为56个字节，对于RDMA_PS_UDP限制为180个字节
+
+iWarp规范：当前，通过iWarp RDMA设备建立的连接要求连接的主动端（客户端）发送第一条消息。
 
 ### 2.5.2  rdma_establish
 
