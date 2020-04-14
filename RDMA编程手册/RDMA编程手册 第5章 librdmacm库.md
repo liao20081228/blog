@@ -724,6 +724,45 @@ InfiniBand规范：
 
 iWarp规范：当前，通过iWarp RDMA设备建立的连接要求连接的主动端（客户端）发送第一条消息。
 
+
+struct rdma_conn_param的定义如下：
+
+``` cpp
+
+struct rdma_conn_param 
+{
+	const void	*private_data;		//用户控制的数据缓冲区.
+	uint8_t		private_data_len;	//用户控制的数据缓冲区的大小
+	uint8_t		responder_resources;//本地端接收的来自远程端的未完成的RDMA读取和原子操作的最大数量
+	uint8_t		initiator_depth;	//本地端拥有的对远程端的未完成RDMA读取和原子操作的最大数量
+	uint8_t		flow_control;		//指定硬件流控制是否可用
+	uint8_t		retry_count;		//发生错误时在连接上重试数据传输操作的最大次数，接受连接时忽略。
+	uint8_t		rnr_retry_count;	//收到RNR错误后，远程对等方应在连接上重试发送操作的最大次数。
+	//如果QP是在rdma_cm_id上创建的，则忽略以下两项
+	uint8_t		srq;  				//指定与连接关联的QP是否正在使用共享接收队列。
+	uint32_t	qp_num; 			//指定与连接关联的QP编号。如果QP是在rdma_cm_id上创建的，则忽略它
+};       
+```
+下面是struct rdma_conn_param 的完整描述：
+
+以下属性用于配置通信，并在接受连接请求或数据报通信请求时由conn_param参数指定。 用户在接受时应使用连接请求事件中报告的rdma_conn_param值来确定这些字段的适当值。 用户可以直接引用连接事件中的rdma_conn_param结构体，也可以引用自己的rdma_conn_param结构体。 如果引用了连接请求事件的rdma_conn_param结构体，则在此调用返回之前，该事件不能被确认。
+
+如果conn_param参数为NULL，则使用连接请求事件中报告的值，并根据本地硬件限制向下调整。
+
+|成员名|描述
+|:--|:--|
+|private_data|引用一个用户控制的数据缓冲区。缓冲区的内容被复制，并被作为通信请求的一部分透明地传递到远程端。如果不需要private_data，则可以为NULL。|
+|private_data_len|指定用户控制的数据缓冲区的大小。请注意，传输到远程端的实际数据量取决于传输，并且可能大于要求的数据量。|
+|responder_resources |本地端将接受的来自远程端的未完成的RDMA读和原子操作的最大数量。仅适用于RDMA_PS_TCP。此值必须小于或等于本地RDMA设备的属性max_qp_rd_atom，但最好大于或等于连接请求事件中报告的responder_resources值。|
+|Initiator_depth|本地端拥有的对远程端的未完成RDMA读取和原子操作的最大数量。 仅适用于RDMA_PS_TCP。 此值必须小于或等于本地RDMA设备属性max_qp_init_rd_atom和远程RDMA设备属性max_qp_rd_atom。 接受连接时，远程端点可以调整此值。|
+|flow_control |指定硬件流控制是否可用。该值与远程对等方交换，不用于配置QP。仅适用于RDMA_PS_TCP。
+|retry_count |发生错误时在连接上重试数据传输操作的最大次数。此设置控制发生超时时重试send，RDMA和原子操作的次数。仅适用于RDMA_PS_TCP。
+|rnr_retry_count |收到接收者未准备好（RNR）错误后，远程对等方应在连接上重试发送操作的最大次数。当发送请求到达时，而缓冲区还没有被发布以接收传入数据，将生成RNR错误。仅适用于RDMA_PS_TCP。
+|srq |指定与连接关联的QP是否正在使用共享接收队列。 如果在rdma_cm_id上创建了QP，则库将忽略此字段。 仅适用于RDMA_PS_TCP。|
+|qp_num|指定与连接关联的QP编号。 如果在rdma_cm_id上创建了QP，则库将忽略此字段。 仅适用于RDMA_PS_TCP。|
+
+
+
 ### 2.5.2  rdma_establish
 **原型**：
 ``` cpp
@@ -827,19 +866,6 @@ struct rdma_conn_param
 以下属性用于配置通信，并在接受连接请求或数据报通信请求时由conn_param参数指定。 用户在接受时应使用连接请求事件中报告的rdma_conn_param值来确定这些字段的适当值。 用户可以直接引用连接事件中的rdma_conn_param结构体，也可以引用自己的rdma_conn_param结构体。 如果引用了连接请求事件的rdma_conn_param结构体，则在此调用返回之前，该事件不能被确认。
 
 如果conn_param参数为NULL，则使用连接请求事件中报告的值，并根据本地硬件限制向下调整。
-
-|成员名|描述
-|:--|:--|
-|private_data|引用一个用户控制的数据缓冲区。缓冲区的内容被复制，并被作为通信请求的一部分透明地传递到远程端。如果不需要private_data，则可以为NULL。|
-|private_data_len|指定用户控制的数据缓冲区的大小。请注意，传输到远程端的实际数据量取决于传输，并且可能大于要求的数据量。|
-|responder_resources |本地端将接受的来自远程端的未完成的RDMA读和原子操作的最大数量。仅适用于RDMA_PS_TCP。此值必须小于或等于本地RDMA设备的属性max_qp_rd_atom，但最好大于或等于连接请求事件中报告的responder_resources值。|
-|Initiator_depth|本地端拥有的对远程端的未完成RDMA读取和原子操作的最大数量。 仅适用于RDMA_PS_TCP。 此值必须小于或等于本地RDMA设备属性max_qp_init_rd_atom和远程RDMA设备属性max_qp_rd_atom。 接受连接时，远程端点可以调整此值。|
-|flow_control |指定硬件流控制是否可用。该值与远程对等方交换，不用于配置QP。仅适用于RDMA_PS_TCP。
-|retry_count |发生错误时在连接上重试数据传输操作的最大次数。此设置控制发生超时时重试send，RDMA和原子操作的次数。仅适用于RDMA_PS_TCP。
-|rnr_retry_count |收到接收者未准备好（RNR）错误后，远程对等方应在连接上重试发送操作的最大次数。当发送请求到达时，而缓冲区还没有被发布以接收传入数据，将生成RNR错误。仅适用于RDMA_PS_TCP。
-|srq |指定与连接关联的QP是否正在使用共享接收队列。 如果在rdma_cm_id上创建了QP，则库将忽略此字段。 仅适用于RDMA_PS_TCP。|
-|qp_num|指定与连接关联的QP编号。 如果在rdma_cm_id上创建了QP，则库将忽略此字段。 仅适用于RDMA_PS_TCP。|
-
 
 |成员名|描述
 |:--|:--|
