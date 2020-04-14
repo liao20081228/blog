@@ -1061,7 +1061,6 @@ int rdma_create_srq (struct rdma_cm_id *id, struct ibv_pd *pd, struct ibv_srq_in
 * pd——共享接收队列（SRQ）的保护域（可选的）。结构体详细信息见ibv_alloc_pd。
 * attr——初始SRQ属性。结构体详细信息见ibv_create_srq。
 
-
 **输出参数**：attr——通过此结构体返回创建的SRQ的实际功能和属性。
 
 **返回值**：成功返回0，错误返回-1。 如果发生错误，将设置errno来指示失败原因。
