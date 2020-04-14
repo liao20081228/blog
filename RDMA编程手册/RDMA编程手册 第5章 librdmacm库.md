@@ -542,7 +542,7 @@ int rdma_bind_addr (struct rdma_cm_id *id, struct sockaddr *addr);
 **输入参数**：
 
 * id——RDMA标识符。结构体详细信息见rdma_create_id。
-* addr——本地地址信息。允许通配符。详细信息见rdma_create_id。
+* addr——本地地址信息。允许通配符。结构体详细信息见rdma_create_id。
 
 **输出参数**：无。
 
@@ -603,9 +603,8 @@ InfiniBand规范：此调用获取连接使用的路径记录。
 ### 2.4.4 rdma_getaddrinfo
 **原型**：
 ``` cpp
-int rdma_getaddrinfo (const char *node, const char *service, 
-									const struct rdma_addrinfo *hints, 
-									struct rdma_addrinfo **res)
+int rdma_getaddrinfo (const char *node, const char *service, const struct rdma_addrinfo *hints, 
+							struct rdma_addrinfo **res)
 ```
 **输入参数**：
 
@@ -694,7 +693,7 @@ void rdma_freeaddrinfo(struct rdma_addrinfo *res)
 
 **返回值**：无。
 
-**描述**：rdma_freeaddrinfo释放rdma_getaddrinfo例程返回的rdma_addrinfo（res）结构体。 请注意，如果ai_next不为NULL，则rdma_freeaddrinfo将释放addrinfo结构体的整个链表。
+**描述**：rdma_freeaddrinfo释放函数rdma_getaddrinfo返回的rdma_addrinfo（res）结构体。 请注意，如果ai_next不为NULL，则rdma_freeaddrinfo将释放addrinfo结构体的整个链表。
 
 
 
