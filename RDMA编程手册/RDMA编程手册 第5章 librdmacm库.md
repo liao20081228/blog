@@ -736,16 +736,6 @@ rdma_connect启动一个主动端（客户端）的连接请求。对于类型�
 
 调用这个函数之前，用户必须已经通过调用rdma_resolve_route或rdma_create_ep来解析到目标地址的路由。
 
-InfiniBand规范：
-
-除了上述定义的连接属性外，InfiniBand QP还配置了最小RNR NAK定时器和本地ACK超时值。 最小RNR NAK定时器值设置为0，延迟为655ms。 本地ACK超时值是根据包的生存期和本地HCA ACK 延时来计算的。 包的生存期由InfiniBand子网管理员决定，是连接主动端（服务端）获得的路由（路径记录）信息的一部分。 HCA ACK延时是本地使用的HCA的属性。
-
-重试计数和RNR重试计数为3比特位的值。
-
-用户提供的私有数据的长度对于RDMA_PS_TCP限制为56个字节，对于RDMA_PS_UDP限制为180个字节
-
-iWarp规范：当前，通过iWarp RDMA设备建立的连接要求连接的主动端（客户端）发送第一条消息。
-
 struct rdma_conn_param的定义如下：
 
 ``` cpp
@@ -782,7 +772,15 @@ struct rdma_conn_param
 |srq |指定与连接关联的QP是否正在使用共享接收队列。 如果在rdma_cm_id上创建了QP，则库将忽略此字段。 仅适用于RDMA_PS_TCP。|
 |qp_num|指定与连接关联的QP编号。 如果在rdma_cm_id上创建了QP，则库将忽略此字段。 仅适用于RDMA_PS_TCP。|
 
+InfiniBand规范：
 
+除了上述定义的连接属性外，InfiniBand QP还配置了最小RNR NAK定时器和本地ACK超时值。 最小RNR NAK定时器值设置为0，延迟为655ms。 本地ACK超时值是根据包的生存期和本地HCA ACK 延时来计算的。 包的生存期由InfiniBand子网管理员决定，是连接主动端（服务端）获得的路由（路径记录）信息的一部分。 HCA ACK延时是本地使用的HCA的属性。
+
+重试计数和RNR重试计数为3比特位的值。
+
+用户提供的私有数据的长度对于RDMA_PS_TCP限制为56个字节，对于RDMA_PS_UDP限制为180个字节
+
+iWarp规范：当前，通过iWarp RDMA设备建立的连接要求连接的主动端（客户端）发送第一条消息。
 
 ### 2.5.2  rdma_establish
 
