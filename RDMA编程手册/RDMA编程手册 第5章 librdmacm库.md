@@ -462,7 +462,7 @@ int rdma_create_qp (struct rdma_cm_id *id, struct ibv_pd *pd, struct ibv_qp_init
 
 创建的QP的实际功能和属性将通过qp_init_attr参数返回给用户。 rdma_cm_id只能与单个QP关联。
 
-### 2.3.2 rdma_create_qp_ex
+### 2.3.2 rdma_create_qp_ex（未完成）
 
 **原型**：
 ``` cpp
