@@ -286,7 +286,7 @@ struct rdma_addr
 	{
 		struct rdma_ib_addr		ibaddr;
 	} addr;
-};  
+};
 
 struct rdma_ib_addr 
 {
@@ -338,10 +338,10 @@ struct in6_addr
 		uint32_t __u6_addr32[4];  // 32 bit
 #endif
 	} __in6_u;
-	#define s6_addr	 __in6_u.__u6_addr8
+	#define s6_addr				__in6_u.__u6_addr8
 #if defined __USE_MISC || defined __USE_GNU
-	# define s6_addr16      __in6_u.__u6_addr16
-	# define s6_addr32      __in6_u.__u6_addr32
+	# define s6_addr16			__in6_u.__u6_addr16
+	# define s6_addr32			__in6_u.__u6_addr32
 #endif
 };
 ```
@@ -395,8 +395,8 @@ int rdma_set_option(struct rdma_cm_id *id, int level, int optname, void *optval,
 
 * id——RDMA通信标识符。结构体详细信息见rdma_create_id。
 * level——要设置的协议级别。取值为枚举值之一。详细信息见下文。
-* optname——要设置的选项名，与level有关，取值为枚举值之一。详细信息见见下文。
-* optval——对选项数据的引用。数据取决于level和optname。
+* optname——要设置的选项名，与level有关，取值为枚举值之一。详细信息见下文。
+* optval——指向选项的数据的指针。数据取决于level和optname。
 * optlen——选项数据(optval)缓冲区的大小。
 
 **输出参数**：无。
@@ -409,32 +409,29 @@ rdma_set_option设置rdma_cm_id的通信选项。 这个调用用于重写默认
 
 level可取值定义如下：
 ```cpp
-enum 
-{   
-	RDMA_OPTION_ID	  = 0,     //ID级别       
-	RDMA_OPTION_IB	  = 1      //IB级别
-}; 
+enum
+{
+	RDMA_OPTION_ID	  = 0,		//ID级别
+	RDMA_OPTION_IB	  = 1		//IB级别
+};
 ```
 
 optname的可取值定义如下：
 ```cpp
-enum 
-{   
-	RDMA_OPTION_ID_TOS       = 0,   /* 指定连接提供的服务质量。 optlen=sizeof（是uint8_t） */
-	RDMA_OPTION_ID_REUSEADDR = 1,   /* 将rdma_cm_id绑定到可重用地址。 这将允许其他用户绑定到相同的地址。
-					  optlen=sizeof（int） */
-									  
-	RDMA_OPTION_ID_AFONLY    = 2,   /*设置IPV6_V6ONLY套接字。 optlen=sizeof（int） */
-	RDMA_OPTION_ID_ACK_TIMEOUT = 3  /* 设置QP ACK超时。 根据公式4.096 * 2^ack_timeout 微秒计算。 */ 
-}; 
+enum
+{
+	RDMA_OPTION_ID_TOS			= 0,	/* 指定连接提供的服务质量。 optlen=sizeof（是uint8_t）*/
+	RDMA_OPTION_ID_REUSEADDR	= 1,	/* 将rdma_cm_id绑定到可重用地址。 这将允许其他用户绑定到相同的地址。
+										optlen=sizeof（int） */
+	RDMA_OPTION_ID_AFONLY		= 2,	/*设置IPV6_V6ONLY套接字。 optlen=sizeof（int） */
+	RDMA_OPTION_ID_ACK_TIMEOUT	= 3		/* 设置QP ACK超时。 根据公式4.096 * 2^ack_timeout 微秒计算。 */ 
+};
 
-enum 
-{   
-	RDMA_OPTION_IB_PATH      = 1    /*设置IB路径记录数据。optlen=sizeof（struct ibv_path_data []） */
-}; 
+enum
+{
+	RDMA_OPTION_IB_PATH			= 1		/*设置IB路径记录数据。optlen=sizeof（struct ibv_path_data []） */
+};
 ```
-
-
 
 ## 2.3 QP的创建和销毁
 
