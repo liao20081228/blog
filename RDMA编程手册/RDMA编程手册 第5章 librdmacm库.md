@@ -988,12 +988,9 @@ __be16 rdma_get_dst_port (struct rdma_cm_id *id);
 
 **输出参数**：无。
 
-**返回值**： 返回与对等端点关联的16位端口标识符。 如果rdma_cm_id未连接，则返回值为0。
-
+**返回值**： 返回与远程对等端点关联的16位端口标识符。 如果rdma_cm_id未连接，则返回值为0。
 **描述**：返回已绑定到远程地址的rdma_cm_id的远程端口号。如果rdma_cm_id id没有连接，则返回0。
-   
-
-
+  
 ### 2.7.3 rdma_get_local_addr
 **原型**：
 ``` cpp
@@ -1005,9 +1002,7 @@ struct sockaddr * rdma_get_local_addr (struct rdma_cm_id *id)
 
 **返回值**：返回一个指向rdma_cm_id的本地sockaddr地址的指针。 如果id未绑定到地址，则sockaddr结构体的内容将设置为全零。结构体详细信息见`man 2 bind`。
 
-**描述**：
-
-rdma_get_local_addr检索已绑定到本地设备的rdma_cm_id的本地IP地址。
+**描述**：rdma_get_local_addr返回已绑定到本地设备的rdma_cm_id的本地IP地址。
 
 ### 2.7.4 rdma_get_peer_addr
 **原型**：
@@ -1018,13 +1013,9 @@ struct sockaddr * rdma_get_peer_addr (struct rdma_cm_id *id)
 
 **输出参数**：无。
 
-**返回值**： 返回指向已连接对等方的sockaddr地址的指针。 如果rdma_cm_id未连接，则sockaddr结构的内容将设置为全零。结构体详细信息见`man 2 bind`
+**返回值**： 返回指向有连接对等方的sockaddr地址的指针。 如果rdma_cm_id未连接，则sockaddr结构的内容将设置为全零。结构体详细信息见`man 2 bind`
 
-**描述**：
-
-rdma_get_peer_addr检索绑定的rdma_cm_id的远程IP地址。
-
-
+**描述**：rdma_get_peer_addr返回rdma_cm_id关联的远程IP地址。
 
 ## 2.8 设备列表的获取和销毁
 
@@ -1033,7 +1024,7 @@ rdma_get_peer_addr检索绑定的rdma_cm_id的远程IP地址。
 ``` cpp
 struct ibv_context ** rdma_get_devices (int *num_devices)
 ```
-**输入参数**：num_devices——如果非NULL，则设置为返回的设备数。
+**输入参数**：num_devices——如果非NULL，则设置为返回的RDMA设备数量。
 
 **输出参数**：num_devices——当前可用的RDMA设备数量。
 
@@ -1043,10 +1034,8 @@ struct ibv_context ** rdma_get_devices (int *num_devices)
 
 返回以NULL终止的已打开的RDMA设备的数组。 调用者可以使用此函数在指定的RDMA设备上分配资源，这些设备将在多个rdma_cm_id之间共享。
 
- 加载librdmacm时，设备保持打开状态，必须通过调用rdma_free_devices释放返回的数组。
+加载librdmacm时，设备保持打开状态，必须通过调用rdma_free_devices释放返回的数组。
  
- 
-
 ### 2.8.2 rdma_free_devices
 **原型**：
 ``` cpp
@@ -1058,10 +1047,7 @@ void rdma_free_devices (struct ibv_context **list)
 
 **返回值**：无。
 
-**描述**： rdma_free_devices释放了rdma_get_devices返回的RDMA设备数组。
-
-
-
+**描述**： rdma_free_devices释放rdma_get_devices返回的RDMA设备数组。
 
 ## 2.9 创建和销毁SRQ
 ### 2.9.1 rdma_create_srq
