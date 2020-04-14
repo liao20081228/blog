@@ -712,7 +712,7 @@ int rdma_listen (struct rdma_cm_id *id, int backlog)
 
 **描述**：   
 
-启动监听传入的连接请求或数据报服务查找。监听将仅限于本地绑定的源地址。
+启动对传入的连接请求或数据报服务查找的监听。监听将仅限于本地绑定的源地址。
 
 请注意，在调用rdma_listen之前，必须先通过调用rdma_bind_addr来将rdma_cm_id绑定到本地地址。 如果rdma_cm_id绑定到指定的IP地址，则监听将限于该地址和关联的RDMA设备。 如果rdma_cm_id仅绑定到RDMA端口号，则监听将在所有RDMA设备上进行。
 
@@ -725,7 +725,6 @@ int rdma_connect (struct rdma_cm_id *id, struct rdma_conn_param *conn_param)
 
 * id——RDMA通信标识符。结构体详细信息见rdma_create_id。
 * conn_param——可选的连接参数。结构体详细信息见rdma_accept。
-
 
 **输出参数**：无。
 
