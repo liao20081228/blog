@@ -695,7 +695,28 @@ void rdma_freeaddrinfo(struct rdma_addrinfo *res)
 **描述**：rdma_freeaddrinfo释放函数rdma_getaddrinfo返回的rdma_addrinfo（res）结构体。 请注意，如果ai_next不为NULL，则rdma_freeaddrinfo将释放addrinfo结构体的整个链表。
 
 ## 2.5	连接的监听、连接、接受、拒绝、断开
-### 2.5.1 rdma_connect
+
+### 2.5.1 rdma_listen
+**原型**：
+``` cpp
+int rdma_listen (struct rdma_cm_id *id, int backlog)
+```
+**输入参数**：
+
+* id——RDMA标识符。结构体详细信息见rdma_create_id。
+* backlog——传入的连接请求的积压。
+
+**输出参数**：无。
+
+**返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
+
+**描述**：   
+
+启动对传入的连接请求或数据报服务查找的监听。监听将仅限于本地绑定的源地址。
+
+请注意，在调用rdma_listen之前，必须先通过调用rdma_bind_addr来将rdma_cm_id绑定到本地地址。 如果rdma_cm_id绑定到指定的IP地址，则监听将限于该地址和关联的RDMA设备。 如果rdma_cm_id仅绑定到RDMA端口号，则监听将在所有RDMA设备上进行。
+
+### 2.5.2 rdma_connect
 **原型**：
 ``` cpp
 int rdma_connect (struct rdma_cm_id *id, struct rdma_conn_param *conn_param)
@@ -765,6 +786,7 @@ struct rdma_conn_param
 
 
 ### 2.5.2  rdma_establish
+
 **原型**：
 ``` cpp
 int rdma_establish(struct rdma_cm_id *id)
@@ -787,25 +809,7 @@ rdma_ establish确认传入的连接响应事件并完成连接建立。
 
 译者注：通常用于不使用RDMA CM而用libibverbs来创建QP的情况，
 
-### 2.5.3 rdma_listen
-**原型**：
-``` cpp
-int rdma_listen (struct rdma_cm_id *id, int backlog)
-```
-**输入参数**：
 
-* id——RDMA标识符。结构体详细信息见rdma_create_id。
-* backlog——传入的连接请求的积压。
-
-**输出参数**：无。
-
-**返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
-
-**描述**：   
-
-启动对传入的连接请求或数据报服务查找的监听。监听将仅限于本地绑定的源地址。
-
-请注意，在调用rdma_listen之前，必须先通过调用rdma_bind_addr来将rdma_cm_id绑定到本地地址。 如果rdma_cm_id绑定到指定的IP地址，则监听将限于该地址和关联的RDMA设备。 如果rdma_cm_id仅绑定到RDMA端口号，则监听将在所有RDMA设备上进行。
 
 ### 2.5.4 rdma_get_request
 **原型**：
