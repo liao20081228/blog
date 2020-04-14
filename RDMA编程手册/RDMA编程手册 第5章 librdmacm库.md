@@ -346,7 +346,6 @@ struct in6_addr
 };
 ```
 
-
 ### 2.2.2 rdma_destroy_id
 
 **原型**：
@@ -364,8 +363,6 @@ int rdma_destroy_id (struct rdma_cm_id *id)
 销毁指定的rdma_cm_id并取消任何未完成的异步操作。
 
 在调用这个函数和确认相关事件之前，用户必须释放rdma_cm_id关联的任何QP。
-
-
 
 ### 2.2.3 rdma_migrate_id
 **原型**：
