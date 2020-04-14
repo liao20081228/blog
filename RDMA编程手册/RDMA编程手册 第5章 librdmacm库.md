@@ -855,7 +855,11 @@ struct rdma_conn_param
 
 InfiniBand规范：
 
+对于InfiniBand规范的连接，QP配置为最小的RNR NAK计时器和本地ACK值。 RNR NAK计时器的最小值设置为0，延迟655 ms。根据数据包生存期和本地HCA ACK延迟计算本地ACK超时。数据包生存期由InfiniBand子网管理员确定，它是已解析路由（路径记录）信息的一部分。 HCA ACK延迟是本地使用的HCA的一个属性。
 
+RNR重试计数为3比特位的值。
+
+用户提供的私有数据的长度对于RDMA_PS_TCP限制为196个字节，对于RDMA_PS_UDP限制为136个字节.
 
 ### 2.5.6 rdma_reject
 **原型**：
