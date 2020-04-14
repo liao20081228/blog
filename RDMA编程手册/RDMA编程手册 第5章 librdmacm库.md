@@ -530,8 +530,6 @@ rdma_init_qp_attr（）返回rdma_cm_id的qp属性。
 
 有关qp属性和qp属性掩码的信息是通过qp_attr和qp_attr_mask参数返回的。
 
-
-  
 ## 2.4 解析地址和路由
 ### 2.4.1 rdma_resolve_addr
 **原型**：
