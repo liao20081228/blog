@@ -1333,8 +1333,6 @@ struct rdma_ud_param
 ```cpp
 #define RDMA_UDP_QKEY 0x01234567
 ```
-
-
 ### 2.11.3 rdma_ack_cm_event
 **原型**：
 ``` cpp
