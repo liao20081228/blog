@@ -1156,35 +1156,36 @@ int rdma_join_multicast_ex (struct rdma_cm_id *id, struct rdma_cm_join_mc_attr_e
  struct rdma_cm_join_mc_attr_ex定义如下：
 
 ```cpp
-struct rdma_cm_join_mc_attr_ex 
+struct rdma_cm_join_mc_attr_ex
 {
-	uint32_t comp_mask;		/* enum rdma_cm_join_mc_attr_mask枚举值按位或得到，详细信息见下文 */
-	uint32_t join_flags;   	/* enum rdma_cm_mc_join_flags枚举值之一 ，详细信息见下文*/  
-	struct sockaddr *addr; 	/* 标识要加入的多播组的地址，见`man 2 bind` */
+	uint32_t		comp_mask;		/* enum rdma_cm_join_mc_attr_mask枚举值按位或得到，详细信息见下文 */
+	uint32_t		join_flags;		/* enum rdma_cm_mc_join_flags枚举值之一 ，详细信息见下文*/  
+	struct sockaddr	*addr;			/* 标识要加入的多播组的地址，见`man 2 bind` */
 };
 ```
 enum rdma_cm_join_mc_attr_mask定义如下：
 ```cpp
-enum rdma_cm_join_mc_attr_mask {		  
-	RDMA_CM_JOIN_MC_ATTR_ADDRESS    = 1 << 0, 
-	RDMA_CM_JOIN_MC_ATTR_JOIN_FLAGS = 1 << 1, 
-	RDMA_CM_JOIN_MC_ATTR_RESERVED   = 1 << 2, 
+enum rdma_cm_join_mc_attr_mask
+{
+	RDMA_CM_JOIN_MC_ATTR_ADDRESS		= 1 << 0,
+	RDMA_CM_JOIN_MC_ATTR_JOIN_FLAGS		= 1 << 1,
+	RDMA_CM_JOIN_MC_ATTR_RESERVED		= 1 << 2,
 };
  ```
- 
  enum rdma_cm_mc_join_flags定义如下：
- ```cpp	       
-enum rdma_cm_mc_join_flags {		      
+ ```cpp
+enum rdma_cm_mc_join_flags
+{
 	RDMA_MC_JOIN_FLAG_FULLMEMBER,  		   //创建多播组，向MCG发送多播消息，从MCG接收多播消息。       
 	RDMA_MC_JOIN_FLAG_SENDONLY_FULLMEMBER,  //创建多播组，将多播消息发送到MCG，不接收来自MCG的多播消息
 	RDMA_MC_JOIN_FLAG_RESERVED,   		   //保留的       
-};  
+};
 ```
 
-在InfiniBand上以“Send Only Full Member”身份启动MC加入需要SM支持，否则加入将失败。
+在InfiniBand上以“只发送成员”身份启动多播组加入需要子网管理器支持，否则加入将失败。
 
-在RoCEv2/ETH上以“Send Only  Full Membe”身份发起MC加入不会像正式成员MC加入那样发送任何IGMP消息。 使用“仅发送”时，QP将不会添加到MCG。
-  
+在RoCEv2/ETH上以“只发送成员”身份发起多播组加入不会像正式成员加入多播组那样发送任何IGMP消息。 使用“只发送成员”时，QP将不会添加到MCG。
+
 ### 2.10.3 rdma_leave_multicast
 **原型**：
 ``` cpp
@@ -1236,7 +1237,7 @@ int rdma_get_cm_event (struct rdma_event_channel *channel, struct rdma_cm_event 
 
 * chanel——要查找的事件通道。结构体详细信息见rdma_create_event_channel。
 
-**输出参数**：event——与下一个通信事件相关的已分配信息。结构体详细信息见下文。
+**输出参数**：event——下一个通信事件相关的已分配信息。结构体详细信息见下文。
 
 **返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
 
@@ -1244,20 +1245,22 @@ int rdma_get_cm_event (struct rdma_event_channel *channel, struct rdma_cm_event 
 
 检索通信事件。如果没有待处理的事件，则默认情况下，该调用将一直阻塞，直到收到事件为止。
 
-可以通过修改与给定通道关联的文件描述符来更改此函数的默认同步行为。必须通过调用rdma_ack_cm_event确认所有报告的事件。 rdma_cm_id的销毁将阻塞，直到确认了相关事件为止。
+可以通过修改与给定通道关联的文件描述符来更改此函数的默认同步行为。必须通过调用rdma_ack_cm_event确认所有报告的事件。 rdma_cm_id的销毁将阻塞直到确认了相关事件为止。
 
 
 struct rdma_cm_event定义如下：
 
 ```cpp
-struct rdma_cm_event {																				     
-	struct rdma_cm_id       *id;			//rdma ID
-	struct rdma_cm_id       *listen_id;		//监听ID
-	enum rdma_cm_event_type  event;			//事件类型，它是一个枚举值
-	int		      status;		//与事件关联的所有异步错误信息
-	union {
-		struct rdma_conn_param conn;	//与有连接的QP服务相关的事件参数
-		struct rdma_ud_param   ud;		//与不可靠数据报服务相关的事件参数
+struct rdma_cm_event
+{
+	struct rdma_cm_id			*id;			//rdma ID
+	struct rdma_cm_id			*listen_id;		//监听ID
+	enum rdma_cm_event_type		event;			//事件类型，它是一个枚举值
+	int							status;			//与事件关联的所有异步错误信息
+	union
+	{
+		struct rdma_conn_param	conn;			//与有连接的QP服务相关的事件参数
+		struct rdma_ud_param	ud;				//与不可靠数据报服务相关的事件参数
 	} param;
 };
 ```
@@ -1267,10 +1270,10 @@ struct rdma_cm_event {
 |成员名|描述|
 |:--|:--|
 |id|与事件关联的rdma_cm标识符。如果事件类型为RDMA_CM_EVENT_CONNECT_REQUEST，则它引用该通信的新ID。|
-|listen_id  |对于RDMA_CM_EVENT_CONNECT_REQUEST事件类型，这引用了相应的监听请求标识符。
+|listen_id|对于RDMA_CM_EVENT_CONNECT_REQUEST事件类型，这引用了相应的监听请求标识符。
 |event|指定发生的通信事件的类型。它是enum rdma_cm_event_type的一个枚举值。见下面第4节RDMA CM事件详细描述。|
 | status|返回与事件关联的所有异步错误信息。如果操作成功，则状态为零，否则状态值为非零，并且设置为errno或传输的特定值。有关传输特定状态值的详细信息，请参阅下面的事件类型信息。|
-|  param  |根据事件类型提供其他详细信息。用户应基于与事件关联的rdma_cm_id的rdma_port_space选择conn或ud子字段。请参阅下面的struct rdma_conn_param 和 struct rdma_ud_param|。
+|param|根据事件类型提供其他详细信息。用户应基于与事件关联的rdma_cm_id的rdma_port_space来选择conn或ud子字段。请参阅下面的struct rdma_conn_param 和 struct rdma_ud_param|。
 
 
 struct struct rdma_conn_param定义如下：
@@ -1289,33 +1292,33 @@ struct struct rdma_conn_param {
 	uint32_t qp_num;				//连接的远程QP编号。
 }; 
 ```
-与有连接的QP服务相关的事件参数：RDMA_PS_TCP。除非另有说明，否则与连接有关的事件数据对RDMA_CM_EVENT_CONNECT_REQUEST和RDMA_CM_EVENT_ESTABLISHED事件有效。
+与有连接的QP服务RDMA_PS_TCP相关的事件参数。除非另有说明，否则与连接有关的事件数据对RDMA_CM_EVENT_CONNECT_REQUEST和RDMA_CM_EVENT_ESTABLISHED事件有效。
 
-下面是struct struct rdma_conn_param 的完整描述：
+下面是struct rdma_conn_param 的完整描述：
 |成员名|描述|
 |:--|:--|
 | private_data|引用与事件关联的任何由用户指定的数据。调用rdma_connect或rdma_accept时，此字段引用的数据与远程端指定的数据匹配。如果事件不包含私有数据，则此字段为NULL。调用rdma_ack_cm_event时，将释放此指针引用的缓冲区。|
-|private_data_len| 私有数据缓冲区的大小。用户应注意，专用数据缓冲区的大小可能大于对端发送的专用数据量。缓冲区中的任何其他空间将被清零。|
+|private_data_len| 私有数据缓冲区的大小。用户应注意，私有数据缓冲区的大小可能大于对端发送的私有数据量。缓冲区中的任何其他空间将被清零。|
 |responder_resources|接收者请求的响应者资源数量。调用rdma_connect和rdma_accept时，此字段匹配远程节点指定的发起者深度。|
 |initiator_depth|接收者的未完成的最大RDMA读/原子操作的最大值。调用rdma_connect和rdma_accept时，此字段与远程节点指定的响应者资源匹配。|
 | flow_control|指示发送方是否提供硬件级别的流控制。|
 | retry_count |仅对于RDMA_CM_EVENT_CONNECT_REQUEST事件，指示接收者应重试发送操作的次数。|
-| rnr_retry_count| 遇到RNR NACK错误，接收者应重 的次数。|
-|  srq|指定发送者是否正在使用共享接收队列。
-|  qp_num|指示连接的远程QP编号。|
-
+|rnr_retry_count| 遇到RNR NACK错误，接收者应重试的次数。|
+|srq|指定发送者是否正在使用共享接收队列。
+|qp_num|指示连接的远程QP编号。|
 
 struct rdma_ud_param定义如下：
 ```cpp
-struct rdma_ud_param {
-	const void *private_data;
-	uint8_t private_data_len;
-	struct ibv_ah_attr ah_attr;
-	uint32_t qp_num;
-	uint32_t qkey;
+struct rdma_ud_param
+{
+	const void			*private_data;
+	uint8_t				private_data_len;
+	struct ibv_ah_attr	ah_attr;
+	uint32_t			qp_num;
+	uint32_t			qkey;
 }; 
 ```
-与不可靠的数据报（UD）服务相关的事件参数：RDMA_PS_UDP和RDMA_PS_IPOIB。除非另有说明，否则UD事件数据对RDMA_CM_EVENT_ESTABLISHED和RDMA_CM_EVENT_MULTICAST_JOIN事件有效。
+与不可靠的数据报（UD）服务RDMA_PS_UDP和RDMA_PS_IPOIB相关的事件参数。除非另有说明，否则UD事件数据对RDMA_CM_EVENT_ESTABLISHED和RDMA_CM_EVENT_MULTICAST_JOIN事件有效。
 
 下面是struct rdma_ud_param完整描述：
 |成员名|描述|
@@ -1325,10 +1328,6 @@ struct rdma_ud_param {
 |ah_attr |将数据发送到远程端点所需的地址信息。 用户分配地址句柄时应使用此结构体。|
 |  qp_num   |  远程端点或多播组的QP号。|
 |qkey       |将数据发送到远程端点需要的Qkey|
-
-
-
-
 
 ### 2.11.3 rdma_ack_cm_event
 **原型**：
@@ -1342,8 +1341,6 @@ int rdma_ack_cm_event (struct rdma_cm_event *event)
 **返回值**：成功时为0，失败返回-1并设置errno以指示失败的原因。
 
 **描述**：rdma_ack_cm_event释放通信事件。 必须释放由rdma_get_cm_event分配的所有事件，成功的get和acks之间应该一一对应。 此调用将释放事件结构体及其引用的任何内存。
-
-
 
 ### 2.11.4 rdma_event_str
 **原型**：
