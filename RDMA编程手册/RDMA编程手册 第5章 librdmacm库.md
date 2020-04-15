@@ -1856,7 +1856,106 @@ enum rdma_cm_event_type {
 **RDMA_CM_EVENT_TIMEWAIT_EXIT**
 此事件表示：与连接关联的QP已退出其timewait状态，现在可以重新使用了。断开QP后，它会保持在timewait状态，以允许任何飞行中的数据包退出网络。 timewait状态完成后，rdma_cm将报告此事件。
 
-# 5 rsocket
+# 5 Rsocket
+**原型**：
+``` cpp
+int rsocket(int domain, int type, int protocol);
+
+int rbind(int socket, const struct sockaddr *addr, socklen_t addrlen);
+int rlisten(int socket, int backlog);
+int raccept(int socket, struct sockaddr *addr, socklen_t *addrlen);
+int rconnect(int socket, const struct sockaddr *addr, socklen_t addrlen);
+
+int rshutdown(int socket, int how);
+int rclose(int socket);
+
+ssize_t rrecv(int socket, void *buf, size_t len, int flags);
+ssize_t rrecvfrom(int socket, void *buf, size_t len, int flags,
+					struct sockaddr *src_addr, socklen_t *addrlen);
+ssize_t rrecvmsg(int socket, struct msghdr *msg, int flags);
+
+ssize_t rsend(int socket, const void *buf, size_t len, int flags);
+ssize_t rsendto(int socket, const void *buf, size_t len, int flags,
+				const struct sockaddr *dest_addr, socklen_t addrlen);
+ssize_t rsendmsg(int socket, const struct msghdr *msg, int flags);
+
+ssize_t rread(int socket, void *buf, size_t count);
+ssize_t rreadv(int socket, const struct iovec *iov, int iovcnt);
+ssize_t rwrite(int socket, const void *buf, size_t count);
+ssize_t rwritev(int socket, const struct iovec *iov, int iovcnt);
+
+int rpoll(struct pollfd *fds, nfds_t nfds, int timeout);
+int rselect(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
+
+int rgetpeername(int socket, struct sockaddr *addr, socklen_t *addrlen);
+int rgetsockname(int socket, struct sockaddr *addr, socklen_t *addrlen);
+
+#define SOL_RDMA 0x10000
+enum
+{
+	RDMA_SQSIZE,
+	RDMA_RQSIZE,
+	RDMA_INLINE,
+	RDMA_IOMAPSIZE, 
+	RDMA_ROUTE
+};
+
+int rsetsockopt(int socket, int level, int optname, const void *optval, socklen_t optlen);
+int rgetsockopt(int socket, int level, int optname, void *optval, socklen_t *optlen);
+int rfcntl(int socket, int cmd, ... /* arg */ );
+
+off_t riomap(int socket, void *buf, size_t len, int prot, int flags, off_t offset);
+int riounmap(int socket, void *buf, size_t len);                                 
+size_t riowrite(int socket, const void *buf, size_t count, off_t offset, int flags);
+
+```
+
+**描述**：
+
+Rsocket是一个基于RDMA的支持套接字级的协议。除非另有说明，否则Rsocket API旨在匹配相应套接字函数的行为。 Rsocket函数与套接字函数的名称和函数签名匹配，不同之处在于所有函数均以“r”作为前缀。
+
+下列函数被定义：
+
+rsocket
+
+rbind, rlisten, raccept, rconnect
+
+rshutdown, rclose
+
+rrecv, rrecvfrom, rrecvmsg, rread, rreadv
+
+rsend, rsendto, rsendmsg, rwrite, rwritev
+
+rpoll, rselect
+
+rgetpeername, rgetsockname
+
+rsetsockopt, rgetsockopt, rfcntl
+
+
+函数使用与同名套接字函数相同的参数。 目前支持以下功能和标志：
+
+PF_INET, PF_INET6, SOCK_STREAM, SOCK_DGRAM
+
+SOL_SOCKET - SO_ERROR, SO_KEEPALIVE (支持，但忽略), SO_LINGER, SO_OOBINLINE, SO_RCVBUF, SO_REUSEADDR, SO_SNDBUF
+
+IPPROTO_TCP - TCP_NODELAY, TCP_MAXSEG
+
+IPPROTO_IPV6 - IPV6_V6ONLY
+
+MSG_DONTWAIT, MSG_PEEK, O_NONBLOCK
+
+
+Rsockets提供了超出普通套接字函数的扩展，这些扩展允许将数据直接放置到应用程序的缓冲区中。 这也称为零拷贝支持，因为直接发送和接收数据，所以无需拷贝到网络控制缓冲区。 以下调用和选项支持直接数据放置。
+
+riomap, riounmap, riowrite
+
+riomap向与rsocket关联的RDMA硬件注册应用程序缓冲区。 缓冲区注册为仅本地访问（PROT_NONE）或远程写访问（PROT_WRITE）。 当注册用于远程访问时，缓冲区将映射到给定的偏移量。 偏移量由用户提供，或者如果用户选择-1作为偏移量，则rsockets选择一个偏移。 远程对等方可以通过指定正确的偏移量直接访问被映射的缓冲区。 直到远程对等方收到riomap完成之后启动的数据传输，才能保证该映射可用。
+
+为了能够在rsocket上使用远程IO映射调用，应用程序必须设置可用于远程对等方的IO映射数。 这可以使用rsetsockopt RDMA_IOMAPSIZE选项来完成。 默认情况下，rsocket不支持远程IO映射。 
+
+
+
 
 
 ------
