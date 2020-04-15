@@ -1905,7 +1905,7 @@ int rgetsockopt(int socket, int level, int optname, void *optval, socklen_t *opt
 int rfcntl(int socket, int cmd, ... /* arg */ );
 
 off_t riomap(int socket, void *buf, size_t len, int prot, int flags, off_t offset);
-int riounmap(int socket, void *buf, size_t len);                                 
+int riounmap(int socket, void *buf, size_t len);
 size_t riowrite(int socket, const void *buf, size_t count, off_t offset, int flags);
 
 ```
