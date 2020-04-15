@@ -1077,7 +1077,7 @@ rdma_create_srq分配与指定的rdma_cm_id相关的SRQ。
 
 创建的SRQ的实际功能和属性将通过attr参数返回给用户。 一个rdma_cm_id只能与一个SRQ关联。
 
-### 2.9.2 rdma_create_srq_ex（未完成）
+### 2.9.2 rdma_create_srq_ex
 
 **原型**：
 ``` cpp
@@ -1086,9 +1086,9 @@ int rdma_create_srq_ex(struct rdma_cm_id *id, struct ibv_srq_init_attr_ex *attr)
 **输入参数**：
 
 * id——RDMA通信标识符。结构体详细信息见rdma_create_id。
-* attr——初始SRQ属性（扩展的）。结构体详细信息见ibv_create_srq。
+* attr——初始SRQ属性（扩展的）。结构体详细信息见ibv_create_srq_ex。
 
-**输出参数**：无。
+**输出参数**：attr——SRQ的实际功能和属性（扩展的）
 
 **返回值**：无。
 
@@ -1203,11 +1203,9 @@ enum rdma_cm_mc_join_flags {
 
 离开多播组，并从该组分离关联的QP。
 
-在完全加入一个多播组之前调用此函数会导致加入操作被取消。 用户应注意，从多播组接收到的消息在离开多播组后可能仍会排队等待完成处理。 销毁rdma_cm_id将自动离开所有多播组。
+在完全加入一个多播组之前调用此函数会导致加入操作被取消。 用户应注意，从多播组接收到的消息在离开多播组后可能仍会排队等待立即的完成处理。 销毁rdma_cm_id将自动离开所有多播组。
 
 ## 2.11 事件的通知、获取、确认
-
-
 ### 2.11.1 rdma_notify
 **原型**：
 ``` cpp
