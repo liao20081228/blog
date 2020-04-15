@@ -1297,7 +1297,7 @@ struct struct rdma_conn_param {
 下面是struct rdma_conn_param 的完整描述：
 |成员名|描述|
 |:--|:--|
-| private_data|引用与事件关联的任何由用户指定的数据。调用rdma_connect或rdma_accept时，此字段引用的数据与远程端指定的数据匹配。如果事件不包含私有数据，则此字段为NULL。调用rdma_ack_cm_event时，将释放此指针引用的缓冲区。|
+| private_data|引用与事件关联的任何由用户指定的数据。此字段引用的数据与远程端调用rdma_connect或rdma_accept时指定的数据匹配。如果事件不包含私有数据，则此字段为NULL。调用rdma_ack_cm_event时，将释放此指针引用的缓冲区。|
 |private_data_len| 私有数据缓冲区的大小。用户应注意，私有数据缓冲区的大小可能大于对端发送的私有数据量。缓冲区中的任何其他空间将被清零。|
 |responder_resources|接收者请求的响应者资源数量。调用rdma_connect和rdma_accept时，此字段匹配远程节点指定的发起者深度。|
 |initiator_depth|接收者的未完成的最大RDMA读/原子操作的最大值。调用rdma_connect和rdma_accept时，此字段与远程节点指定的响应者资源匹配。|
@@ -1323,7 +1323,7 @@ struct rdma_ud_param
 下面是struct rdma_ud_param完整描述：
 |成员名|描述|
 |:--|:--|
-|private_data|引用与RDMA_CM_EVENT_CONNECT_REQUEST或RDMA_CM_EVENT_ESTABLISHED事件关联的任何由用户指定的数据。 调用rdma_connect或rdma_accept时，此字段引用的数据与远程端指定的数据匹配。 如果事件不包含私有数据，则此字段为NULL。 调用rdma_ack_cm_event时，将释放此指针引用的缓冲区。|
+|private_data|引用与RDMA_CM_EVENT_CONNECT_REQUEST或RDMA_CM_EVENT_ESTABLISHED事件关联的任何由用户指定的数据。此字段引用的数据与远程端调用rdma_connect或rdma_accept时指定的数据匹配。 如果事件不包含私有数据，则此字段为NULL。 调用rdma_ack_cm_event时，将释放此指针引用的缓冲区。|
 |private_data_len|私有数据缓冲区的大小。 用户应注意，私有数据缓冲区的大小可能大于远端发送的私有数据量。 缓冲区中的任何其他空间将被清零。|
 |ah_attr |将数据发送到远程端点所需的地址信息。 用户分配地址句柄时应使用此结构体。|
 |  qp_num   |  远程端点或多播组的QP号。|
