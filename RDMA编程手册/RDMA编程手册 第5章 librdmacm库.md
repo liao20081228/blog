@@ -1950,13 +1950,53 @@ Rsockets提供了超出普通套接字函数的扩展，这些扩展允许将数
 
 riomap, riounmap, riowrite
 
-riomap向与rsocket关联的RDMA硬件注册应用程序缓冲区。 缓冲区注册为仅本地访问（PROT_NONE）或远程写访问（PROT_WRITE）。 当注册用于远程访问时，缓冲区将映射到给定的偏移量。 偏移量由用户提供，或者如果用户选择-1作为偏移量，则rsockets选择一个偏移。 远程对等方可以通过指定正确的偏移量直接访问被映射的缓冲区。 直到远程对等方收到riomap完成之后启动的数据传输，才能保证该映射可用。
+riomap向与rsocket关联的RDMA硬件注册应用程序缓冲区。 缓冲区注册为仅本地访问（PROT_NONE）或远程写访问（PROT_WRITE）。 当注册用于远程访问时，缓冲区将映射到给定的偏移量offset。 偏移量offset由用户提供，当用户选择-1作为偏移量时rsockets自动选择一个偏移。 远程对等方可以通过指定正确的偏移量直接访问被映射的缓冲区。 直到远程对等方收到riomap完成之后启动的数据传输，才能保证该映射可用。
 
 为了能够在rsocket上使用远程IO映射调用，应用程序必须设置可用于远程对等方的IO映射数。 这可以使用rsetsockopt RDMA_IOMAPSIZE选项来完成。 默认情况下，rsocket不支持远程IO映射。 
 
+Riowrite允许应用程序通过rsocket将数据直接传输到远程映射的缓冲区中。 远程缓冲区是通过offset参数指定的，该参数对应于远程IO映射缓冲区。 从发送者的角度来看，riowrite的行为类似于rwrite。 从接收者的角度来看，riowrite传输被静默重定向到预定的数据缓冲区中。 数据会自动接收，并且不会通知接收方。 但是，iowrite数据仍然被认为是数据流的一部分，因此iowrite数据将在接收后续传输之前被写入。 在启动iowrite之后立即发送的消息可用于通知接收方iowrite。
 
+除了标准的套接字选项外，rsockets还支持特定于RDMA设备和协议的选项。 这些选项可通过rsetsockopt使用SOL_RDMA选项级别进行访问。
 
+RDMA_SQSIZE——基础发送队列的大小，整数。
 
+RDMA_RQSIZE——基础接收队列的大小，整数。
+
+RDMA_INLINE——内联数据的大小，整数。
+
+RDMA_IOMAPSIZE——支持的远程IO映射的数，整数。
+
+RDMA_ROUTE——用于连接的路径记录的struct ibv_path_data。
+
+请注意，不能将rsockets fd传递给非rsocket调用。 对于必须将rsocket fd与标准套接字fd或打开的文件混合使用的应用程序，rpoll和rselect支持轮询rsockets和普通fd。
+
+现有的应用程序可以通过使用预加载库来使用rsockets。 因为rsockets实现了端到端协议，所以连接的两端都必须使用rsockets。 rdma_cm库提供了这样的预加载库librspreload。 为了减少预加载库在用户不了解的情况下侦听（拦截）调用的机会，librspreload库安装在`％libdir％/rsocket`子目录中。
+
+通过在运行时设置LD_PRELOAD可以使用预加载库。 请注意，并非所有应用程序都可以使用rsockets。 支持情况取决于应用程序使用的套接字选项。 对fork()的支持是受限的，但是可用。 要将rsockets与preload库一起用于调用fork的应用程序，用户必须在连接的客户端和服务器端都设置环境变量`RDMAV_FORK_SAFE = 1`。 通常，fork支持接受连接的服务器应用程序，然后派生一个进程来处理新连接。
+
+rsockets使用配置文件`/etc/rdma/rsocket`，管理员可以通过这些配置文件来控制rsockets使用的默认设置。如下所示：
+
+mem_default——接收缓冲区的默认大小
+
+wmem_default——发送缓冲区的默认大小
+
+sqsize_default——发送队列的默认大小
+
+rqsize_default——接收队列的默认大小
+
+inline_default——内联数据的默认大小
+
+iomap_size——远程iomapping表的默认大小
+
+polling_time——等待之前轮询数据的默认微秒数
+
+ake_up_interval——阻止轮询的最大毫秒数。 该值用于防止rpoll（）中潜在的应用程序挂起。
+
+所有配置文件应包含单个整数值。 可以通过发出类似于以下示例的命令来设置值。
+
+`echo 1000000 > /etc/rdma/rsocket/mem_default`
+
+如果配置文件不可用，rsockets将使用内部默认值。 应用程序可以通过rsetsockopt函数以编程方式覆盖默认值。
 
 ------
 
