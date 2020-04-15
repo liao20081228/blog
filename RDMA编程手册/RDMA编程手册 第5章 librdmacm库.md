@@ -763,9 +763,9 @@ struct rdma_conn_param
 |private_data|引用一个用户控制的数据缓冲区。缓冲区的内容被复制，并被作为通信请求的一部分透明地传递到远程端。如果不需要private_data，则可以为NULL。|
 |private_data_len|指定用户控制的数据缓冲区的大小。请注意，传输到远程端的实际数据量取决于传输，并且可能大于要求的数据量。|
 |responder_resources |本地端将接受的来自远程端的未完成的RDMA读和原子操作的最大数量。仅适用于RDMA_PS_TCP。此值必须小于或等于本地RDMA设备的属性max_qp_rd_atom和远程RDMA设备属性max_qp_init_rd_atom。接受连接时，远端可以调整此值|
-|Initiator_depth|本地端发出的对远程端的未完成RDMA读取和原子操作的最大数量。 仅适用于RDMA_PS_TCP。 此值必须小于或等于本地RDMA设备属性max_qp_init_rd_atom和远程RDMA设备属性max_qp_rd_atom。 接受连接时，远程端点可以调整此值。|
-|flow_control |指定硬件流控制是否可用。该值与远程对等方交换，不用于配置QP。仅适用于RDMA_PS_TCP。
-|retry_count |发生错误时在连接上重试数据传输操作的最大次数。此设置控制发生超时时重试send，RDMA读写和原子操作的次数。仅适用于RDMA_PS_TCP。
+|initiator_depth|本地端发出的对远程端的未完成RDMA读取和原子操作的最大数量。 仅适用于RDMA_PS_TCP。 此值必须小于或等于本地RDMA设备属性max_qp_init_rd_atom和远程RDMA设备属性max_qp_rd_atom。 接受连接时，远程端点可以调整此值。|
+|flow_control |指定硬件流控制是否可用。该值与远程对等方交换，不用于配置QP。仅适用于RDMA_PS_TCP。|
+|retry_count |发生错误时在连接上重试数据传输操作的最大次数。此设置控制发生超时时重试send，RDMA读写和原子操作的次数。仅适用于RDMA_PS_TCP。|
 |rnr_retry_count |收到接收者未准备好（RNR）错误后，远程对等方应在连接上重试发送操作的最大次数。当发送请求到达时，而缓冲区还没有被发布以接收传入数据，将生成RNR错误。仅适用于RDMA_PS_TCP。
 |srq |指定与连接关联的QP是否正在使用共享接收队列。 如果在rdma_cm_id上创建了QP，则库将忽略此字段。 仅适用于RDMA_PS_TCP。|
 |qp_num|指定与连接关联的QP编号。 如果在rdma_cm_id上创建了QP，则库将忽略此字段。 仅适用于RDMA_PS_TCP。|
@@ -779,6 +779,15 @@ InfiniBand规范：
 用户提供的私有数据的长度对于RDMA_PS_TCP限制为56个字节，对于RDMA_PS_UDP限制为180个字节
 
 iWarp规范：当前，通过iWarp RDMA设备建立的连接要求连接的主动端（客户端）发送第一条消息。
+
+responder_resources和initiator_depth的最大值定义为：
+```cpp
+enum
+{
+	RDMA_MAX_RESP_RES = 0xFF,	//responder_resources最大值
+	RDMA_MAX_INIT_DEPTH = 0xFF //initiator_depth最大值
+};
+```
 
 ### 2.5.3 rdma_establish
 
@@ -1329,7 +1338,7 @@ struct rdma_ud_param
 |  qp_num   |  远程端点或多播组的QP号。|
 |qkey       |将数据发送到远程端点需要的Qkey|
 
-默认UDP Qkey定义为：
+RDMA CM为默认UDP QP和多播组创建的全局QKEY定义为：
 ```cpp
 #define RDMA_UDP_QKEY 0x01234567
 ```
@@ -1822,30 +1831,29 @@ enum rdma_cm_event_type {
 
 下面是enum rdma_cm_event_type的完整描述：
 
-
 **RDMA_CM_EVENT_ADDR_RESOLVED——客户端事件**
 地址解析（rdma_resolve_addr）成功完成。在客户端（主动）端响应rdma_resolve_addr()时生成此事件。当系统能够解析客户端提供的服务器地址时，将产生该事件。
 
 **RDMA_CM_EVENT_ADDR_ERROR——客户端事件**
-地址解析（rdma_resolve_addr）失败。此事件在客户端（主动）端生成。在发生错误的情况下，它是响应rdma_resolve_addr（）而生成的。例如，如果找不到设备（例如，用户提供了不正确的设备），则可能会发生这种情况。具体来说，如果远程设备同时具有以太网和IB接口，并且客户端提供了以太网设备名称而不是服务器端的IB设备名称，则将生成RDMA_CM_EVENT_ADDR_ERROR。
+地址解析（rdma_resolve_addr）失败。此事件在客户端（主动）端生成。在发生错误的情况下，它是响应rdma_resolve_addr()而生成的。例如，如果找不到设备（例如，用户提供了不正确的设备），则可能会发生这种情况。具体来说，如果远程设备同时具有以太网和IB接口，并且客户端提供了以太网设备名称而不是服务器端的IB设备名称，则将生成RDMA_CM_EVENT_ADDR_ERROR。
 
 **RDMA_CM_EVENT_ROUTE_RESOLVED——客户端事件**
-路由解析（rdma_resolve_route）成功完成。在客户端（主动）端响应rdma_resolve_route（）时生成此事件。 当系统能够解析客户端提供的服务器地址时，将产生该事件。
+路由解析（rdma_resolve_route）成功完成。在客户端（主动）端响应rdma_resolve_route()时生成此事件。 当系统能够解析客户端提供的服务器地址时，将产生该事件。
 
 **RDMA_CM_EVENT_ROUTE_ERROR——客户端事件**
-路由解析（rdma_resolve_route）失败。rdma_resolve_route（）失败时，将生成此事件。
+路由解析（rdma_resolve_route）失败。rdma_resolve_route()失败时，将生成此事件。
 
 **RDMA_CM_EVENT_CONNECT_REQUEST——服务端事件**
 在被动端生成，以通知用户新的连接请求。它表示已收到一个连接请求。
 
 **RDMA_CM_EVENT_CONNECT_RESPONSE——客户端事件**
-在主动端侧生成，以通知用户连接请求已经成功。它仅在没有关联QP的rdma_cm_id上生成。
+在主动端侧生成，以通知用户对被动端对连接请求的成功响应。它仅在没有关联QP的rdma_cm_id上生成。
 
 **RDMA_CM_EVENT_CONNECT_ERROR——两端事件**
-表示尝试建立连接时发生错误。可能在连接的主动或被动端生成。
+表示尝试建立连接(rdma_establish)或发起连接(rdma_connect)时发生错误。可能在连接的主动或被动端生成。
 
 **RDMA_CM_EVENT_UNREACHABLE——客户端事件**
-在主动端生成，通知用户远程服务器不可访问或无法响应连接请求。如果响应InfiniBand上的UD QP解析请求而生成此事件，则事件status字段将包含errno（如果为负数）或IB CM SIDR REP消息中携带的状态结果。
+在主动端生成，通知用户远程服务器不可访问或无法响应连接请求。如果响应InfiniBand上的UD QP解析请求时生成此事件，则事件status字段将包含errno（如果为负数）或IB CM SIDR REP消息中携带的状态结果。
 
 **RDMA_CM_EVENT_REJECTED——客户端事件**
 此事件可能在客户端（主动）端生成，表示连接请求或响应被远程设备拒绝。事件status字段将包含传输指定的拒绝原因（如果有）。例如，如果尝试与错误端口上的远程端点进行连接，则可能会发生这种情况。在InfiniBand下，这是IB CM REJ消息中携带的拒绝原因。
@@ -1866,7 +1874,7 @@ enum rdma_cm_event_type {
 此事件表示，企图加入多播组或连接现有多播组（如果已加入该组）时发生错误。当事件发生时，指定的多播组不再可访问，如果需要，应重新加入。
 
 **RDMA_CM_EVENT_ADDR_CHANGE**
-此事件表示，通过地址解析与此ID关联的网络设备更改了其HW地址，例如在绑定故障转移之后。对于希望把用于其RDMA会话的链接与网络堆栈对齐的应用程序，此事件可以作为提示。
+此事件表示，通过地址解析与此ID关联的网络设备更改了其硬件地址，例如在绑定故障转移之后。对于希望把用于其RDMA会话的链接与网络堆栈对齐的应用程序，此事件可以作为提示。
 
 **RDMA_CM_EVENT_TIMEWAIT_EXIT**
 此事件表示：与连接关联的QP已退出其timewait状态，现在可以重新使用了。断开QP后，它会保持在timewait状态，以允许任何飞行中的数据包退出网络。 timewait状态完成后，rdma_cm将报告此事件。
