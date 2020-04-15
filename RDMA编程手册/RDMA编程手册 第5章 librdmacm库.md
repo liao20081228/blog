@@ -483,7 +483,7 @@ int rdma_create_qp_ex(struct rdma_cm_id *id, struct ibv_qp_init_attr_ex *qp_init
 
 在调用此函数之前，必须将rdma_cm_id绑定到本地RDMA设备，并且保护域必须用于同一设备。 分配给rdma_cm_id的QP的状态将被librdmacm在其状态间自动转换。分配后，QP将准备好处理发布接收请求。如果QP不是面向连接，它将准备发布发送请求。
 
-如果未提供保护域（pd参数为NULL），则将使用默认保护域创建rdma_cm_id。每个RDMA设备分配一个默认的保护域。
+如果扩展属性中未提供保护域，则将使用默认保护域创建rdma_cm_id。每个RDMA设备分配一个默认的保护域。
 
 初始QP属性由qp_init_attr参数指定。 ibv_qp_init_attr中的send_cq和recv_cq字段是可选的。如果未指定发送或接收完成队列，则rdma_cm将为QP分配CQ以及相应的完成通道。 rdma_cm创建的完成通道和CQ数据通过rdma_cm_id结构体向用户公开。
 
