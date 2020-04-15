@@ -1409,7 +1409,7 @@ RMDA动词API实际上基本都是在设置一些参数后直接调用IB verbs A
 
 **描述**：
 
-注册用于发送/接收消息或RDMA操作的内存缓冲区数组。 使用rdma_reg_msgs注册的内存缓冲区可以使用rdma_post_send或rdma_post_recv发布到rdma_cm_id，或者指定为RDMA读取操作的目标或RDMA写入请求的源。
+注册用于发送/接收消息或RDMA操作的内存缓冲区数组。 使用rdma_reg_msgs注册的内存缓冲区可以使用rdma_post_send或rdma_post_recv发布到rdma_cm_id，或者指定为RDMA读取操作的目标或RDMA写入请求的来源。
 
 rdma_reg_msgs用于注册数据缓冲区数组，该缓冲区数组将用于在与rdma_cm_id关联的QP上发送或接收消息。 内存缓冲区被注册到与标识符相关联的保护域。 数据缓冲区数组的起始地址是通过addr参数指定的，而数组的总大小由length给出。
 
@@ -1432,7 +1432,7 @@ struct ibv_mr * rdma_reg_read (struct rdma_cm_id *id, void *addr, size_t length)
 
 **描述**：
 
-注册一个将由远程RDMA 读取操作访问的内存缓冲区。 使用rdma_reg_read注册的内存缓冲区可以作为RDMA读取请求或类似调用的目标，从而允许在RDMA连接的远程端将缓冲区指定为rdma_post_read的remote_addr。
+注册一个将由远程RDMA 读取操作访问的内存缓冲区。 使用rdma_reg_read注册的内存缓冲区可以作为RDMA读取请求的目标，允许在RDMA连接的远程端将缓冲区指定为rdma_post_read或类似调用的remote_addr。
 
 rdma_reg_read用于在与rdma_cm_id关联的队列对上注册一个数据缓冲区，该缓冲区将是RDMA读取操作的目标。内存缓冲区被注册到与标识符相关联的保护域。 数据缓冲区数组的起始地址是通过addr参数指定的，而数组的总大小由length给出。 
 
@@ -1455,7 +1455,7 @@ struct ibv_mr * rdma_reg_write (struct rdma_cm_id *id, void *addr, size_t length
 
 **描述**：
 
-注册一个将由远程RDMA 写入操作访问的内存缓冲区。 使用rdma_reg_write注册的内存缓冲区可以作为RDMA写入请求或类似调用的目标，从而允许在RDMA连接的远程端将缓冲区指定为rdma_post_write的remote_addr。
+注册一个将由远程RDMA写入操作访问的内存缓冲区。 使用rdma_reg_write注册的内存缓冲区可以作为RDMA写入请求的目标，从而允许在RDMA连接的远程端将缓冲区指定为rdma_post_write或类似调用的remote_addr。
 
 rdma_reg_write用于在与rdma_cm_id关联的队列对上注册一个数据缓冲区，该缓冲区将是RDMA写入操作的目标。内存缓冲区被注册到与标识符相关联的保护域。 数据缓冲区数组的起始地址是通过addr参数指定的，而数组的总大小由length给出。 
 
@@ -1474,10 +1474,9 @@ rdma_reg_write用于在与rdma_cm_id关联的队列对上注册一个数据缓�
 
 **描述**：
 
-注销已为RDMA或消息操作注册的内存缓冲区。 用户应在销毁rdma_cm_id之前为与rdma_cm_id关联的所有已注册内存调用rdma_dereg_mr。
+注销已注册为RDMA 读写或消息操作的内存缓冲区。 用户应在销毁rdma_cm_id之前为与rdma_cm_id关联的所有已注册内存调用rdma_dereg_mr。
 
 向rdma_cm_id注册的所有内存都被关联到与该ID关联的保护域。 用户必须先注销所有注册的内存，然后才能销毁保护域。
-
 
 ## 3.2 主动队列对操作
 
