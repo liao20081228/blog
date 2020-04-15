@@ -1759,10 +1759,9 @@ int rdma_get_send_comp (struct rdma_cm_id *id, struct ibv_wc *wc)
 
 **描述**：
 
-rdma_get_send_comp为一个发送操作、RDMA读取操作或RDMA写入操作检索一个完成的工作请求。 通过wc参数返回有关已完成请求的信息，并将wr_id设置为请求的上下文。 有关工作完成结构体ibv_wc的详细信息，请参见ibv_poll_cq。
+rdma_get_send_comp为一个发送操作、RDMA读取操作或RDMA写入操作检索一个完成的工作请求。 通过wc参数返回有关已完成工作请求的相关信息，并将wr_id设置为请求的上下文。 有关工作完成结构体ibv_wc的详细信息，请参见ibv_poll_cq。
 
-请注意，此调用轮询与rdma_cm_id关联的发送完成队列。 如果未找到完成，则调用将阻塞，直到请求完成为止。 因此，这意味着仅应在不与其他rdma_cm_id共享CQ的rdma_cm_id上使用该调用，并为发送和接收完成维护单独的CQ。
-
+请注意，此调用轮询与rdma_cm_id关联的发送完成队列。 如果未找到完成，则调用将阻塞，直到工作请求完成为止。 因此，这意味着仅应在不与其他rdma_cm_id共享CQ的rdma_cm_id上使用该调用，并为发送和接收完成维护单独的CQ。
 
 ### 3.2.11 rdma_get_recv_comp
 **原型**：
@@ -1780,12 +1779,9 @@ int rdma_get_recv_comp (struct rdma_cm_id *id, struct ibv_wc *wc)
 
 **描述**：
 
-rdma_get_recv_comp为一个接收操作完成检索一个完成的工作请求。 通过wc参数返回有关已完成请求的信息，并将wr_id设置为请求的上下文。 有关工作完成结构体ibv_wc的详细信息，请参见ibv_poll_cq。
+rdma_get_recv_comp为一个接收操作完成检索一个完已完成的工作请求。 通过wc参数返回有关已完成的工作请求的相关信息，并将wr_id设置为请求的上下文。 有关工作完成结构体ibv_wc的详细信息，请参见ibv_poll_cq。
 
 请注意，此调用轮询与rdma_cm_id关联的接收完成队列。 如果未找到完成，则调用将阻塞，直到请求完成为止。 因此，这意味着仅应在不与其他rdma_cm_id共享CQ的rdma_cm_id上使用该调用，并为发送和接收完成维护单独的CQ。
-
-
-
 # 4  RDMA CM事件
 
 RDMA CM事件是enum rdma_cm_event_type的一个枚举值，它的定义如下：
