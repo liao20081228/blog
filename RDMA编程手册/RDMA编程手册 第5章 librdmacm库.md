@@ -1434,7 +1434,7 @@ struct ibv_mr * rdma_reg_read (struct rdma_cm_id *id, void *addr, size_t length)
 
 注册一个将由远程RDMA 读取操作访问的内存缓冲区。 使用rdma_reg_read注册的内存缓冲区可以作为RDMA读取请求的目标，允许在RDMA连接的远程端将缓冲区指定为rdma_post_read或类似调用的remote_addr。
 
-rdma_reg_read用于在与rdma_cm_id关联的队列对上注册一个数据缓冲区，该缓冲区将是RDMA读取操作的目标。内存缓冲区被注册到与标识符相关联的保护域。 数据缓冲区数组的起始地址是通过addr参数指定的，而数组的总大小由length给出。 
+rdma_reg_read用于在与rdma_cm_id关联的QP上注册一个数据缓冲区，该缓冲区将是RDMA读取操作的目标。内存缓冲区被注册到与标识符相关联的保护域。 数据缓冲区数组的起始地址是通过addr参数指定的，而数组的总大小由length给出。 
 
 所有数据缓冲区被作为工作请求发布之前，应先对其进行注册。 用户必须通过调用rdma_dereg_mr取消注册所有已注册的内存。
 
@@ -1457,7 +1457,7 @@ struct ibv_mr * rdma_reg_write (struct rdma_cm_id *id, void *addr, size_t length
 
 注册一个将由远程RDMA写入操作访问的内存缓冲区。 使用rdma_reg_write注册的内存缓冲区可以作为RDMA写入请求的目标，从而允许在RDMA连接的远程端将缓冲区指定为rdma_post_write或类似调用的remote_addr。
 
-rdma_reg_write用于在与rdma_cm_id关联的队列对上注册一个数据缓冲区，该缓冲区将是RDMA写入操作的目标。内存缓冲区被注册到与标识符相关联的保护域。 数据缓冲区数组的起始地址是通过addr参数指定的，而数组的总大小由length给出。 
+rdma_reg_write用于在与rdma_cm_id关联的QP上注册一个数据缓冲区，该缓冲区将是RDMA写入操作的目标。内存缓冲区被注册到与标识符相关联的保护域。 数据缓冲区数组的起始地址是通过addr参数指定的，而数组的总大小由length给出。 
 
 所有数据缓冲区被作为工作请求发布之前，应先对其进行注册。 用户必须通过调用rdma_dereg_mr取消注册所有已注册的内存。
 
@@ -1499,11 +1499,11 @@ int rdma_post_recvv (struct rdma_cm_id *id, void *context, struct ibv_sge *sgl, 
 
 **描述**：
 
-发布单个工作请求到与rdma_cm_id关联的队列对的接收队列中。 被发布的缓冲区将排队等待接收远程对等方发送的传入消息。
+发布单个工作请求到与rdma_cm_id关联的QP的接收队列中。 被发布的缓冲区将排队等待接收远程对等方发送的传入消息。
 
 请注意，这个函数支持多分散聚合条目。用户负责确保在对等方发布相应的发送消息之前已发布了接收请求，并且总缓冲区空间足以容纳所有已发送的数据。消息缓冲区在发布之前必须已被注册，并且缓冲区必须保持注册直到接收完成。
 
-仅在将队列对与消息关联后，才可以将消息发布到rdma_cm_id。 如果使用rdma_create_id分配了rdma_cm_id，则在调用rdma_create_ep或rdma_create_qp之后，一个队列对将绑定到rdma_cm_id。
+仅在将QP与rdma_cm_id关联后，才可以将消息发布到rdma_cm_id。 如果使用rdma_create_id分配了rdma_cm_id，则在调用rdma_create_ep或rdma_create_qp之后，一个QP将绑定到rdma_cm_id。
 
 与接收请求关联的用户定义上下文将通过工作完成的wr_id（工作请求标识符）字段返回给用户。
 
@@ -1526,11 +1526,11 @@ int rdma_post_sendv (struct rdma_cm_id *id, void *context, struct ibv_sge *slg, 
 
 **描述**：
 
-发布工作请求到与rdma_cm_id关联的队列对的发送队列中。 被发布缓冲区的内容将发送到连接的远程对等方。
+发布工作请求到与rdma_cm_id关联的QP的发送队列中。 被发布缓冲区的内容将发送到连接的远程对等方。
 
 用户负责确保在发出发送操作之前，远程对等方已将接收请求排队（即已经发布接收请求）。 有关支持的标志的列表，请参见ibv_post_send。 除非发送请求使用内联数据，否则消息缓冲区在发布之前必须已注册，并且缓冲区必须保持注册状态直到发送完成。
 
-在建立连接之前，发送操作可能不会被发布到rdma_cm_id或相应的队列对。
+在建立连接之前，发送操作可能不会被发布到rdma_cm_id或相应的QP。
 
 与发送请求关联的用户定义上下文将通过工作完成wr_id（工作请求标识符）字段返回给用户。
 
@@ -1556,11 +1556,11 @@ int rdma_post_readv (struct rdma_cm_id *id, void *context, struct ibv_sge *sgl,
 
 **描述**：
 
-rdma_post_readv将工作请求发布到与rdma_cm_id关联的队列对的发送队列中。 remote_addr中远程存储区域的内容将被读取到sgl数组中给定的本地数据缓冲区中。
+rdma_post_readv将工作请求发布到与rdma_cm_id关联的QP的发送队列中。 remote_addr中远程存储区域的内容将被读取到sgl数组中给定的本地数据缓冲区中。
 
 有关支持的标志的列表，请参见ibv_post_send。 在发出读取操作之前，远程和本地数据缓冲区必须已注册，并且缓冲区必须保持注册状态直到读取完成。
 
-在建立连接之前，可能无法将读取操作发布到rdma_cm_id或相应的队列对。
+在建立连接之前，可能无法将读取操作发布到rdma_cm_id或相应的QP。
 
 与读取请求关联的用户定义上下文将通过工作完成wr_id（工作请求标识符）字段返回给用户。
 
@@ -1586,11 +1586,11 @@ int rdma_post_writev (struct rdma_cm_id *id, void *context, struct ibv_sge *sgl,
 
 **描述**：
 
-rdma_post_writev将工作请求发布到与rdma_cm_id关联的队列对的发送队列中。 sgl数组中本地数据缓冲区的内容将被写入remote_addr的远程内存区域。
+rdma_post_writev将工作请求发布到与rdma_cm_id关联的QP的发送队列中。 sgl数组中本地数据缓冲区的内容将被写入remote_addr的远程内存区域。
 
 有关支持的标志的列表，请参见ibv_post_send。除非使用内联数据，否则，在发出写入操作之前，本地数据数据缓冲区必须已注册，并且缓冲区必须保持注册状态直到写入完成。远程缓冲区必须始终已注册。
 
-在建立连接之前，可能无法将写入操作发布到rdma_cm_id或相应的队列对。
+在建立连接之前，可能无法将写入操作发布到rdma_cm_id或相应的QP。
 
 与写入请求关联的用户定义上下文将通过工作完成wr_id（工作请求标识符）字段返回给用户。
 
@@ -1613,11 +1613,11 @@ int rdma_post_recv (struct rdma_cm_id *id, void *context, void *addr, size_t len
 
 **描述**：
 
-将工作请求发布到与rdma_cm_id关联的队列对的接收队列中。被发布的缓冲区将排队等待接收远程对等方发送的传入消息。
+将工作请求发布到与rdma_cm_id关联的QP的接收队列中。被发布的缓冲区将排队等待接收远程对等方发送的传入消息。
 
 用户负责确保在对等方发布相应的发送消息之前，已布了一个接收缓冲区并且其大小足以容纳所有已发送的数据。消息缓冲区在发布之前必须已注册，并且mr参数引用了该注册区域。缓冲区必须保持注册状态，直到接收完成。
 
-仅在将队列对与rdma_cm_id关联后，才可以将消息发布到rdma_cm_id。如果使用rdma_create_id分配了rdma_cm_id，则在调用rdma_create_ep或rdma_create_qp之后，一个队列对将绑定到rdma_cm_id。
+仅在将QP与rdma_cm_id关联后，才可以将消息发布到rdma_cm_id。如果使用rdma_create_id分配了rdma_cm_id，则在调用rdma_create_ep或rdma_create_qp之后，一个QP将绑定到rdma_cm_id。
 
 与接收请求关联的用户定义上下文将通过工作完成wr_id（工作请求标识符）字段返回给用户。
 
@@ -1644,11 +1644,11 @@ int rdma_post_send (struct rdma_cm_id *id, void *context,
 
 **描述**：
 
-rdma_post_send将工作请求发布到与rdma_cm_id关联的队列对的发送队列中。被发布的缓冲区中的内容将发送到连接的远程对等方。
+rdma_post_send将工作请求发布到与rdma_cm_id关联的QP的发送队列中。被发布的缓冲区中的内容将发送到连接的远程对等方。
 
 用户负责确保在发出发送操作之前，远程对等方已将接收请求排队（发布了接收请求）。另外，除非发送请求使用内联数据，否则消息缓冲区在发布之前必须已经注册，并且mr参数引用该注册区域。缓冲区必须保持注册状态直到发送完成。
 
-在建立连接之前，发送操作可能不会发布到rdma_cm_id或相应的队列对中。
+在建立连接之前，发送操作可能不会发布到rdma_cm_id或相应的QP中。
 
 与发送请求关联的用户定义上下文将通过工作完成wr_id（工作请求标识符）字段返回给用户。
 
@@ -1675,11 +1675,11 @@ int rdma_post_read (struct rdma_cm_id *id, void *context, void *addr, size_t len
 
 **描述**：
 
-rdma_post_read将工作请求发布到与rdma_cm_id关联的队列对的发送队列中。远程内存区的内容将被读入本地数据缓冲区。
+rdma_post_read将工作请求发布到与rdma_cm_id关联的QP的发送队列中。远程内存区的内容将被读入本地数据缓冲区。
 
 有关支持的标志的列表，请参见ibv_post_send。用户必须确保在发出读取之前，远程和本地数据缓冲区必须已注册，并且缓冲区必须保持注册状态直到读取完成。
 
-在连接建立之前，可能无法将读取操作发布到rdma_cm_id或相应的队列对。
+在连接建立之前，可能无法将读取操作发布到rdma_cm_id或相应的QP。
 
 与读取请求关联的用户定义上下文将通过工作完成wr_id（工作请求标识符）字段返回给用户。
 
@@ -1706,13 +1706,13 @@ int rdma_post_write (struct rdma_cm_id *id, void *context, void *addr, size_t le
 
 **描述**：
 
-rdma_post_write发布一个工作请求到与rdma_cm_id关联的队列对的发送队列中。本地数据缓冲区的内容将被写入远程内存区。
+rdma_post_write发布一个工作请求到与rdma_cm_id关联的QP的发送队列中。本地数据缓冲区的内容将被写入远程内存区。
 
 有关支持的标志的列表，请参见ibv_post_send。除非指定内联数据，否则在发出写入之前必须已注册本地数据缓冲区，并且缓冲区必须保持注册状态，直到写入完成。远程缓冲区必须始终被注册。。
 
 除非指定内联数据，否则在发出写入之前必须已注册本地数据缓冲区，并且缓冲区必须保持注册状态，直到写入完成。远程缓冲区必须始终被注册。
 
-在建立连接之前，写操作可能不会发布到rdma_cm_id或相应的队列对中。
+在建立连接之前，写操作可能不会发布到rdma_cm_id或相应的QP中。
 
 与写请求关联的用户定义上下文将通过工作完成wr_id（工作请求标识符）字段返回给用户。
 
@@ -1731,7 +1731,7 @@ int rdma_post_ud_send (struct rdma_cm_id *id, void *context, void *addr, size_t 
 * mr——与发布的缓冲区关联的注册内存区域（可选的）。结构体详细信息见ibv_reg_mr。
 * flags——用于控制发送操作的标志（可选的）。结构体详细信息见ibv_post_send。
 * ah——描述远程节点地址的地址句柄。结构体详细信息见ibv_create_ah。
-* remote_qpn——目标队列对的编号。
+* remote_qpn——目标QP的编号。
 
 **输出参数**：无。
 
@@ -1739,7 +1739,7 @@ int rdma_post_ud_send (struct rdma_cm_id *id, void *context, void *addr, size_t 
 
 **描述**：
 
-rdma_post_ud_send将工作请求发布到与rdma_cm_id关联的队列对的发送队列中。已发布缓冲区的内容将发送到指定的目标队列对。
+rdma_post_ud_send将工作请求发布到与rdma_cm_id关联的QP的发送队列中。已发布缓冲区的内容将发送到指定的目标队列对。
 
 用户负责确保在发出发送操作之前，目标队列对已将接收请求排队。除非发送请求使用内联数据，否则消息缓冲区必须在发布之前已注册，且mr参数引用该注册区域。缓冲区必须保持注册状态，直到发送完成。
 
