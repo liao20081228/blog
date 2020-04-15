@@ -1315,7 +1315,7 @@ struct rdma_ud_param
 	uint8_t				private_data_len;
 	struct ibv_ah_attr	ah_attr;
 	uint32_t			qp_num;
-	uint32_t			qkey;
+	uint32_t			qkey; //默认为#define RDMA_UDP_QKEY 0x01234567
 }; 
 ```
 与不可靠的数据报（UD）服务RDMA_PS_UDP和RDMA_PS_IPOIB相关的事件参数。除非另有说明，否则UD事件数据对RDMA_CM_EVENT_ESTABLISHED和RDMA_CM_EVENT_MULTICAST_JOIN事件有效。
@@ -1328,6 +1328,12 @@ struct rdma_ud_param
 |ah_attr |将数据发送到远程端点所需的地址信息。 用户分配地址句柄时应使用此结构体。|
 |  qp_num   |  远程端点或多播组的QP号。|
 |qkey       |将数据发送到远程端点需要的Qkey|
+
+默认UDP Qkey定义为：
+```cpp
+#define RDMA_UDP_QKEY 0x01234567
+```
+
 
 ### 2.11.3 rdma_ack_cm_event
 **原型**：
