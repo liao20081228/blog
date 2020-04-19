@@ -117,6 +117,12 @@ rdma_cm支持libibverbs库提供的所有动词。 但是，它也为一些更�
 #include <rdma/rdma_verbs.h>
 ```
 
+对于rsocket，源代码中必须包含头文件rsocket:
+
+```cpp
+#include <rdma/rsocket.h>
+```
+
 # 2 RDMA连接管理API
 ## 2.1 事件通道的创建和销毁
 ### 2.1.1 rdma_create_event_channel
