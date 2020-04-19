@@ -103,7 +103,7 @@ rdma_cm支持libibverbs库提供的所有动词。 但是，它也为一些更�
 在与ENOMEM，ENODEV，ENODATA，EINVAL和EADDRNOTAVAIL相关的某些情况下，该库的早先版本将返回-errno而不是设置errno。想要检查这些错误代码并与以前的库版本兼容的应用程序必须将errno手动设置为返回码的负数（如果它<-1）。
 
 
-## 1.6 库API
+## 1.6 头文件
 库中的函数应该声明为函数，有些函数可以声明为宏。
 为了使用librdmacm的连接管理函数，源代码中必须包含头文件rdma_cma.h:
 
