@@ -117,12 +117,6 @@ rdma_cm支持libibverbs库提供的所有动词。 但是，它也为一些更�
 #include <rdma/rdma_verbs.h>
 ```
 
-对于rsocket，源代码中必须包含头文件rsocket:
-
-```cpp
-#include <rdma/rsocket.h>
-```
-
 # 2 RDMA连接管理API
 ## 2.1 事件通道的创建和销毁
 ### 2.1.1 rdma_create_event_channel
@@ -1864,7 +1858,17 @@ enum rdma_cm_event_type {
 此事件表示：与连接关联的QP已退出其timewait状态，现在可以重新使用了。断开QP后，它会保持在timewait状态，以允许任何飞行中的数据包退出网络。 timewait状态完成后，rdma_cm将报告此事件。
 
 # 5 Rsocket
-**原型**：
+## 5.1 概述
+
+Rsocket是一个基于RDMA的支持套接字级的协议Rsocket API旨在匹配相应套接字函数的行为。 Rsocket函数与套接字函数的名称和函数签名匹配，不同之处在于所有函数均以“r”作为前缀。
+
+## 5.2 头文件
+对于rsocket，源代码中必须包含头文件rsocket:
+
+```cpp
+#include <rdma/rsocket.h>
+```
+##　5.４ 原型
 ``` cpp
 int rsocket(int domain, int type, int protocol);
 
@@ -1917,7 +1921,7 @@ size_t riowrite(int socket, const void *buf, size_t count, off_t offset, int fla
 
 ```
 
-**描述**：
+## 5.4 描述
 
 Rsocket是一个基于RDMA的支持套接字级的协议。除非另有说明，否则Rsocket API旨在匹配相应套接字函数的行为。 Rsocket函数与套接字函数的名称和函数签名匹配，不同之处在于所有函数均以“r”作为前缀。
 
