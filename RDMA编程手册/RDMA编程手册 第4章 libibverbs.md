@@ -42,11 +42,11 @@ libibverbs是Infiniband（根据Infiniband规范）和iWARP（根据iWARP动词�
 
  ## 1.6 静态链接
 
-如果libibverbs静态链接到应用程序，则所有供应商驱动程序也必须静态链接。 使用静态链接时，该库不会加载动态链接的供应商驱动程序。
+如果libibverbs被静态链接到应用程序，则所有供应商驱动程序也必须被静态链接。 使用静态链接时，该库不会加载动态链接的供应商驱动程序。
 
-要链接供应商驱动程序，请在编译应用程序时，将RDMA_STATIC_PROVIDERS定义为所需供应商程序的逗号分隔列表。 特殊关键字“ all”将静态链接所有受支持的libibverbs供应商驱动程序。
+要静态链接供应商驱动程序，请在编译应用程序时，将RDMA_STATIC_PROVIDERS定义设置为所需供应商程序的逗号分隔列表。 特殊关键字“all”将静态链接所有受支持的libibverbs供应商驱动程序。
 
-它旨在与pkg-config（1）一起使用，以为libibverbs链接设置适当的标志。
+它旨在与pkg-config(1)一起使用，用来为libibverbs链接设置适当的标志。
 
  如果不这样做，那么ibv_get_device_list将始终返回一个空列表。
 
