@@ -12,7 +12,7 @@ tags: RDMA
 # 1 libibverbs介绍
 ## 1.1 概述
 
-libibverbs是Infiniband（根据Infiniband规范）和iWARP（iWARP动词规范）的RDMA动词的一种实现。它处理创建、修改、查询和销毁资源的控制路径（control path），例如保护域（PD），完成队列（CQ），队列对（QP），共享接收队列（SRQ），地址句柄（AH），内存区域（MR）。它还处理被发布到QP和SRQ的发送数据和接收数据，并使用轮询和完成事件从CQ中获取工作完成。
+libibverbs是Infiniband（根据Infiniband规范）和iWARP（根据iWARP动词规范）的RDMA动词的一种实现。它处理创建、修改、查询和销毁资源的控制路径（control path），例如保护域（PD），完成队列（CQ），队列对（QP），共享接收队列（SRQ），地址句柄（AH），内存区域（MR）。它还处理被发布到QP和SRQ的发送数据和接收数据，并使用轮询和完成事件从CQ中获取工作完成。
 
 控制路径是通过对uverbs内核模块的系统调用来实现的，该模块进一步调用了底层硬件驱动程序。数据路径是通过对底层硬件库进行调用来实现的，在大多数情况下，这些库与硬件直接交互，从而提供了内核和网络堆栈旁路（保存上下文/模式切换）以及零拷贝和异步I/O模型。
 
