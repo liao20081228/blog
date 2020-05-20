@@ -104,7 +104,7 @@ int ibv_fork_init(void)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0，失败返回errno（表示错误原因）。
+**返回值：** 成功，返回0；失败，返回errno（表示错误原因）。
 
 * EINVAL——调用函数太晚。
 * ENOMEM——内存不足，无法完成操作。
@@ -233,18 +233,19 @@ struct ibv_device定义为：
 ```cpp
 struct ibv_device
 {
-	struct	_ibv_device_ops			ops;							//设备操作函数
-	enum	ibv_node_type			node_type;						//节点类型，一个枚举值，详细信息见下文
-	enum	ibv_transport_type		transport_type;					//传输层类型，一个枚举值，详细信息见下文	
-	char							name[IBV_SYSFS_NAME_MAX];		//内核设备名如“mthca0”
-	char							dev_name[IBV_SYSFS_NAME_MAX];	//uverb设备名如“uverbs0”
-	char							dev_path[IBV_SYSFS_PATH_MAX];	//向sysfs中infiniband_verb类设备的路径
-	char							ibdev_path[IBV_SYSFS_PATH_MAX]; //在sysfs中到infiniband类设备的路径
+	struct	_ibv_device_ops		ops;							//设备操作函数
+	enum	ibv_node_type		node_type;						//节点类型，一个枚举值，详细信息见下文
+	enum	ibv_transport_type	transport_type;					//传输层类型，一个枚举值，详细信息见下文	
+	char						name[IBV_SYSFS_NAME_MAX];		//内核设备名如“mthca0”
+	char						dev_name[IBV_SYSFS_NAME_MAX];	//uverb设备名如“uverbs0”
+	char						dev_path[IBV_SYSFS_PATH_MAX];	//向sysfs中infiniband_verb类设备的路径
+	char						ibdev_path[IBV_SYSFS_PATH_MAX];	//在sysfs中到infiniband类设备的路径
 };
 ```
 
 ```cpp
-enum {
+enum
+{
 	IBV_SYSFS_NAME_MAX	= 64,
 	IBV_SYSFS_PATH_MAX	= 256
 };
@@ -253,7 +254,8 @@ enum {
 struct \_ibv_device_ops定义如下：
 
 ```cpp
-struct _ibv_device_ops {
+struct _ibv_device_ops
+{
 	struct ibv_context	*(*_dummy1)(struct ibv_device *device, int cmd_fd);
 	void				 (*_dummy2)(struct ibv_context *context);
 };
@@ -262,7 +264,8 @@ struct _ibv_device_ops {
 enum ibv_node_type定义如下：
 
 ```cpp
-enum ibv_node_type {
+enum ibv_node_type
+{
 	IBV_NODE_UNKNOWN	= -1,	//未知类型
 	IBV_NODE_CA			= 1,	//通道适配器
 	IBV_NODE_SWITCH,			//交换机
@@ -275,7 +278,8 @@ enum ibv_node_type {
 
 enum ibv_transport_type定义如下：
 ```cpp
-enum ibv_transport_type {
+enum ibv_transport_type
+{
 	IBV_TRANSPORT_UNKNOWN	= -1,		//未知类型
 	IBV_TRANSPORT_IB		= 0,		//IB
 	IBV_TRANSPORT_IWARP,				//IWARP
@@ -292,11 +296,10 @@ Q：我调用了ibv_get_device_list()，它返回NULL，这是什么意思?
 A：这是一个不应该失败的基本动词，请检查是否加载了ib_uverb模块。
 
 Q：我调用了ibv_get_device_list()，它根本没有找到任何RDMA设备(空列表)，这是什么意思?
-
 A：驱动程序找不到任何RDMA设备。
-* 如果您的机器中有任何RDMA设备，检查lspci。
-* 使用lsmod检查RDMA设备的低级驱动程序是否已加载。
-* 检查dmesg/var/log/messages是否有错误。
+* 如果您的机器中有任何RDMA设备，使用`lspci`检查。
+* 使用`lsmod`检查RDMA设备的低级驱动程序是否已加载。
+* 检查`dmesg/var/log/messages`是否有错误。
 
 ## 3.2 ibv_free_device_list
 **函数原型：**
@@ -311,7 +314,7 @@ void ibv_free_device_list(struct ibv_device **list)
 
 **返回值：** 无，表示此函数总是成功的。
 
-**说明：** ibv_free_device_list释放由ibv_get_device_list提供的ibv_device结构体数组。 在调用此命令之前，应打开任何所需的设备。 释放驻足后，数组上的所有ibv_device结构体都将无效，无法再使用。
+**说明：** ibv_free_device_list释放由ibv_get_device_list提供的ibv_device结构体数组。 一旦数组被释放，指向没有使用ibv_open_device()打开的设备的指针不在有效。 释放数组后，数组上的所有struct ibv_device结构体都将无效，无法再使用。
 
 **示例：** 参见ibv_query_port。
 
@@ -328,7 +331,7 @@ const char *ibv_get_device_name(struct ibv_device *device)
 
 **输出参数：** 无
 
-**返回值：** 成功返回指向的设备名称的字符串指针，失败返回NULL。
+**返回值：** 成功，返回指向的设备名称的字符串指针；失败，返回NULL。
 
 **说明：**
 
@@ -345,7 +348,7 @@ ibv_get_device_name返回指向ibv_device结构体中包含的设备名称的指
 
 此名称在特定机器内是唯一的(同一名称不能分配给多个设备)。
 
-然而，这个名字在InfiniBand结构中并不是唯一的(这个名字可以在不同的机器中找到)。
+然而，这个名字在InfiniBand网络中并不是唯一的(这个名字可以在不同的机器中找到)。
 
 当计算机中有多个RDMA设备时，更改计算机中设备的位置（即在PCI总线中）可能会导致与设备关联的名称发生更改。 为了区分设备，建议使用由ibv_get_device_guid()返回的设备GUID。
 
@@ -361,7 +364,7 @@ __be64 ibv_get_device_guid(struct ibv_device *device)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回64位GUID。失败返回0。
+**返回值：** 成功，返回64位GUID，失败返回0并设置errno来指示失败原因。EMFILE——这个进程打开了太多的文件。
 
 **说明：**
 
@@ -369,7 +372,7 @@ ibv_get_device_guid以网络字节顺序返回RDMA设备的64位全局惟一标�
 
 这个GUID在制造过程中由其供应商分配给这个设备，它是唯一的，可以用作RDMA设备的标识符。
 
-从RDMA设备GUID的前缀，可以使用[IEEE OUI](http://standards.ieee.org/develop/regauth/oui/oui.txt)查询谁是该设备的供应商。
+从RDMA设备GUID的前缀，可以谁是该设备的供应商，使用[IEEE OUI](http://standards.ieee.org/develop/regauth/oui/oui.txt)查询。
 
 **示例：** 参见ibv_query_port。
 
@@ -379,11 +382,11 @@ ibv_get_device_guid以网络字节顺序返回RDMA设备的64位全局惟一标�
 ```cpp
 struct ibv_context *ibv_open_device(struct ibv_device *device)
 ```
-**输入参数：** device——RMDA设备，由ibv_get_device_list()返回的struct ibv_device数组元素。
+**输入参数：** device——RMDA设备，由ibv_get_device_list()返回的struct ibv_device数组的元素。
 
 **输出参数：** 无。
 
-**返回值：** 成功返回动词上下文，可用于设备上的未来操作，失败返回NULL。
+**返回值：** 成功，返回指向设备上下文的指针，可用于设备上的未来操作；失败，返回NULL。
 
 **说明：**
 
@@ -391,11 +394,12 @@ ibv_open_device()为RDMA设备设备创建一个上下文。 该上下文稍后�
 
 与动词名称不同，它实际上并没有打开设备，该设备是由内核低级驱动程序打开的，并且可以由其他用户/内核级代码使用。 该动词仅打开上下文，以允许用户级别的应用程序使用它。
 
-设置环境变量RDMAV_ALLOW_DISASSOC_DESTROY可以使该库成功将EIO与destroy命令相关联，因为已经释放了内核资源。 这是为了防止在解除设备关联时用户空间区域中的内存泄漏。 当调用与对象销毁函数的同时，使用此标志的应用程序不能调用ibv_get_cq_event或ibv_get_async_event。
+当内核资源已被释放时，设置环境变量**RDMAV_ALLOW_DISASSOC_DESTROY**可以告诉该库将destroy命令中的EIO关联为成功。 这是为了防止在解除设备关联时用户空间区域中的内存泄漏。 当调用与对象销毁函数的同时，使用此标志的应用程序不能在调用对象销毁函数的同时调用ibv_get_cq_event或ibv_get_async_event。
 
 struct ibv_context定义如下：
 ```cpp
-struct ibv_context {
+struct ibv_context
+{
 	struct ibv_device		*device;			//RDMA设备结构体，详细信息见ibv_get_device_list
 	struct ibv_context_ops	ops;				//设备上下文操作函数，详细信息见下文
 	int						cmd_fd;	
@@ -408,9 +412,10 @@ struct ibv_context {
 
 struct ibv_context_ops定义如下：
 ```cpp
-struct ibv_context_ops {
+struct ibv_context_ops
+{
 	void *(*_compat_query_device)(void);//查询设备
-	int		(*_compat_query_port)(struct ibv_context *context,uint8_t port_num,
+	int	  (*_compat_query_port)(struct ibv_context *context,uint8_t port_num,
 				struct _compat_ibv_port_attr *port_attr);	//查询端口，port_attr详细信息见下文
 	void *(*_compat_alloc_pd)(void);		//分配PD
 	void *(*_compat_dealloc_pd)(void);		//释放PD
@@ -419,12 +424,12 @@ struct ibv_context_ops {
 	void *(*_compat_dereg_mr)(void);		//注销MR
 	
 	struct ibv_mw *(*alloc_mw)(struct ibv_pd *pd, enum ibv_mw_type type);					//分配MW
-	int  (*bind_mw)(struct ibv_qp *qp, struct ibv_mw *mw, struct ibv_mw_bind *mw_bind);	//绑定MW
-	int  (*dealloc_mw)(struct ibv_mw *mw);													//释放MW
+	int	  (*bind_mw)(struct ibv_qp *qp, struct ibv_mw *mw, struct ibv_mw_bind *mw_bind);	//绑定MW
+	int	  (*dealloc_mw)(struct ibv_mw *mw);													//释放MW
 	
 	void *(*_compat_create_cq)(void);												//创建CQ
-	int		(*poll_cq)(struct ibv_cq *cq, int num_entries, struct ibv_wc *wc);	//轮询CQ
-	int		(*req_notify_cq)(struct ibv_cq *cq, int solicited_only);				//通知CQ
+	int	  (*poll_cq)(struct ibv_cq *cq, int num_entries, struct ibv_wc *wc);	//轮询CQ
+	int	  (*req_notify_cq)(struct ibv_cq *cq, int solicited_only);				//通知CQ
 	void *(*_compat_cq_event)(void);												//
 	void *(*_compat_resize_cq)(void);												//修改CQ的容量
 	void *(*_compat_destroy_cq)(void);												//销毁CQ
@@ -432,17 +437,17 @@ struct ibv_context_ops {
 	void *(*_compat_create_srq)(void);		//创建SRQ
 	void *(*_compat_modify_srq)(void);		//修改SRQ
 	void *(*_compat_query_srq)(void);		//查询SRQ
-	void *(*_compat_destroy_srq)(void);	//销毁SRQ
-	int		(*post_srq_recv)(struct ibv_srq *srq, struct ibv_recv_wr *recv_wr,
+	void *(*_compat_destroy_srq)(void);		//销毁SRQ
+	int	  (*post_srq_recv)(struct ibv_srq *srq, struct ibv_recv_wr *recv_wr,
 								struct ibv_recv_wr **bad_recv_wr);		//发布RR到SRQ
 
 	void *(*_compat_create_qp)(void);		//创建QP
 	void *(*_compat_query_qp)(void);		//查询QP
 	void *(*_compat_modify_qp)(void);		//修改QP
 	void *(*_compat_destroy_qp)(void);		//销毁QP
-	int		(*post_send)(struct ibv_qp *qp, struct ibv_send_wr *wr,
+	int	  (*post_send)(struct ibv_qp *qp, struct ibv_send_wr *wr,
 							struct ibv_send_wr **bad_wr);		//发布WR到SQ
-	int		(*post_recv)(struct ibv_qp *qp, struct ibv_recv_wr *wr,
+	int	  (*post_recv)(struct ibv_qp *qp, struct ibv_recv_wr *wr,
 							struct ibv_recv_wr **bad_wr);		//发布WR到RQ
 									
 	void *(*_compat_create_ah)(void);		//创建AH
@@ -457,28 +462,29 @@ struct ibv_context_ops {
 ```
 struct \_compat_ibv_port_attr 定义如下：
 ```cpp
-struct _compat_ibv_port_attr {
+struct _compat_ibv_port_attr
+{
 	enum ibv_port_state		state;
-	enum ibv_mtu				max_mtu;
-	enum ibv_mtu				active_mtu;
-	int							gid_tbl_len;
-	uint32_t					port_cap_flags;
-	uint32_t					max_msg_sz;
-	uint32_t					bad_pkey_cntr;
-	uint32_t					qkey_viol_cntr;
-	uint16_t					pkey_tbl_len;
-	uint16_t					lid;
-	uint16_t					sm_lid;
-	uint8_t						lmc;
-	uint8_t						max_vl_num;
-	uint8_t						sm_sl;
-	uint8_t						subnet_timeout;
-	uint8_t						init_type_reply;
-	uint8_t						active_width;
-	uint8_t						active_speed;
-	uint8_t						phys_state;
-	uint8_t						link_layer;
-	uint8_t						flags;
+	enum ibv_mtu			max_mtu;
+	enum ibv_mtu			active_mtu;
+	int						gid_tbl_len;
+	uint32_t				port_cap_flags;
+	uint32_t				max_msg_sz;
+	uint32_t				bad_pkey_cntr;
+	uint32_t				qkey_viol_cntr;
+	uint16_t				pkey_tbl_len;
+	uint16_t				lid;
+	uint16_t				sm_lid;
+	uint8_t					lmc;
+	uint8_t					max_vl_num;
+	uint8_t					sm_sl;
+	uint8_t					subnet_timeout;
+	uint8_t					init_type_reply;
+	uint8_t					active_width;
+	uint8_t					active_speed;
+	uint8_t					phys_state;
+	uint8_t					link_layer;
+	uint8_t					flags;
 };
 ```
 
@@ -495,7 +501,7 @@ int ibv_close_device(struct ibv_context *context)
 
 **输出参数：** 无
 
-**返回值：** 成功返回0；出错返回-1。
+**返回值：** 成功，返回0；出错返回-1。
 
 **说明：**
 
@@ -520,11 +526,11 @@ int ibv_query_device(struct ibv_context *context, struct ibv_device_attr *device
 
 **输出参数：** device_attr——表示设备属性的。结构体详细信息见下文。
 
-**返回值：** 成功返回0；失败返回errno指示失败的原因。ENOMEM，内存不足。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。ENOMEM，内存不足。
 
 **说明：**
 
-ibv_query_device检索与设备关联的各种属性。 用户应malloc一个struct ibv_device_attr，并将其传递给该命令，在成功返回后它将被填充。 ***用户负责释放此结构体***。
+ibv_query_device检索与设备关联的各种属性。 用户应malloc一个struct ibv_device_attr，并将其传递给该命令，在成功，返回后它将被填充。 ***用户负责释放此结构体***。
 
 由ibv_query_device()返回的RDMA设备属性是恒定的，不会被设备或SM更改，因此程序可以调用此动词并将其保存以备后面使用。
 
@@ -691,7 +697,7 @@ A：不能。 当前RDMA堆栈不支持此功能。
 
 **输出参数：** attr——RDMA设备的扩展属性。结构体详细信息见下文。
 
-**返回值：** 成功返回0；失败返回errno，指示失败的原因。
+**返回值：** 成功，返回0；失败返回errno，指示失败的原因。
 
 **说明：**
 
@@ -875,14 +881,14 @@ int ibv_query_port(struct ibv_context *context, uint8_t port_num, struct ibv_por
 
 **输出参数：** port_attr——表示端口属性的。结构体详细信息见下文。
 
-**返回值：** 成功返回0；出错返回errno，指示失败的原因。
+**返回值：** 成功，返回0；出错返回errno，指示失败的原因。
 
 * EINVAL——port_num无效
 * ENOMEM——内存不足
 
 **说明：**
 
-ibv_query_port检索与端口关联的各种属性。 用户应分配一个struct ibv_port_attr，并将其传递给命令，在成功返回后它将被填充。 ***用户负责释放此结构体***。
+ibv_query_port检索与端口关联的各种属性。 用户应分配一个struct ibv_port_attr，并将其传递给命令，在成功，返回后它将被填充。 ***用户负责释放此结构体***。
 
 bv_query_port()返回的大多数端口属性不是恒定的，可能会更改，主要是通过SM（在InfiniBand中）或由硬件更改。 强烈建议避免保存此查询的结果，或在新的SM（重新）配置子网时刷新它们。
 
@@ -1185,14 +1191,14 @@ int ibv_query_gid(struct ibv_context *context, uint8_t port_num, int index, unio
 
 **输出参数：** gid——包含gid信息的union ibv_gid。联合体详细信息见下文。
 
-**返回值：** 成功返回0；失败返回errno指示失败的原因。EMFILE	，该进程打开太多文件。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。EMFILE	，该进程打开太多文件。
 
 **说明：**
 
 ibv_query_gid在端口的全局标识符（GID）表中检索条目。 子网管理器（SM）为每个端口分配至少一个GID。 GID是有效的IPv6地址，由全球唯一标识符（GUID）和SM分配的前缀组成。 GID [0]是唯一的，并且包含端口的GUID，它是RDMA设备制造商的卖方提供的恒定值。
 
 仅当port_attr.state为IBV_PORT_ARMED或IBV_PORT_ACTIVE时，GID表的内容才有效。 对于端口的其他状态，GID表的值不确定。
-用户应分配一个union ibv_gid，并将其传递给命令，在成功返回后它将被填充。 ***用户负责释放该联合体***。
+用户应分配一个union ibv_gid，并将其传递给命令，在成功，返回后它将被填充。 ***用户负责释放该联合体***。
 
 union ibv_gid的定义如下：
 
@@ -1242,7 +1248,7 @@ int ibv_query_pkey(struct ibv_context *context, uint8_t port_num, int index, uin
 
 **输出参数：** pkey——期望的pkey。
 
-**返回值：** 成功返回0；失败返回errno指示失败的原因。EMFILE	，该进程打开太多文件。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。EMFILE	，该进程打开太多文件。
 
 **说明：**
 
@@ -1302,7 +1308,7 @@ struct ibv_comp_channel *ibv_create_comp_channel(struct ibv_context *context)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向创建的CC的指针，失败返回NULL。并设置errno指示失败原因：
+**返回值：** 成功，返回指向创建的CC的指针；失败，返回NULL。并设置errno指示失败原因：
 * EMFILE——该进程打开太多文件。
 * ENOMEM——没有足够的内存。
 
@@ -1348,7 +1354,7 @@ int ibv_destroy_comp_channel(struct ibv_comp_channel *channel)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0；失败返回errno指示失败的原因。EBUSY——CQs仍然与这个完成事件通道相关联。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。EBUSY——CQs仍然与这个完成事件通道相关联。
 
 **说明：** ibv_destroy_comp_channel释放完成通道。 如果仍然有任何完成队列（CQ）与该完成通道关联，则此命令将失败。
 
@@ -1393,7 +1399,7 @@ struct ibv_cq *ibv_create_cq(struct ibv_context *context, int cqe, void *cq_cont
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向创建的CQ的指针，失败返回NULL。并设置errno指示失败原因.
+**返回值：** 成功，返回指向创建的CQ的指针；失败，返回NULL。并设置errno指示失败原因.
 
 * EINVAL——cqe，channel，comp_vector无效。
 * ENOMEM——内存不足。
@@ -1484,7 +1490,7 @@ struct ibv_cq_ex *ibv_create_cq_ex(struct ibv_context *context, struct ibv_cq_in
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向创建的CQ_ex的指针，失败返回NULL。并设置errno指示失败原因。ENOSYS——RDMA设备不支持扩展CQ。
+**返回值：** 成功，返回指向创建的CQ_ex的指针；失败，返回NULL。并设置errno指示失败原因。ENOSYS——RDMA设备不支持扩展CQ。
 
 **说明：**
 
@@ -1705,7 +1711,7 @@ static inline struct ibv_cq *ibv_cq_ex_to_cq(struct ibv_cq_ex *cq)
 
 **输出参数：** 无。‘
 
-**返回值：** 成功返回说明WC状态的字符串。失败返回NULL。
+**返回值：** 成功，返回说明WC状态的字符串。失败返回NULL。
 
 **说明：** 将扩展cq转为普通cq。
 
@@ -1721,7 +1727,7 @@ int ibv_resize_cq(struct ibv_cq *cq, int cqe)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0；失败返回errno指示失败的原因。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。
 * EINVAL——无效的cqe。
 * ENOMEM——内存不足。
 * ENOSYS——设备不支持调整CQ大小。
@@ -1773,7 +1779,7 @@ int ibv_modify_cq(struct ibv_cq *cq, struct ibv_modify_cq_attr *cq_attr。)
 
 **输出参数：** cq_attr——cq属性。CQ修改后的实际属性。
 
-**返回值：** 成功返回0；失败返回errno指示失败的原因。ENOSYS——设备不支持修改CQ属性。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。ENOSYS——设备不支持修改CQ属性。
 
 **说明：**
 
@@ -1812,7 +1818,7 @@ int ibv_destroy_cq(struct ibv_cq *cq)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0；失败返回errno指示失败的原因。EBUSY——一个或多个WQ仍然与此CQ关联。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。EBUSY——一个或多个WQ仍然与此CQ关联。
 
 **说明：**
 
@@ -1872,7 +1878,7 @@ struct ibv_pd *ibv_alloc_pd(struct ibv_context *context)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向创建的保护域的指针，失败返回NULL。
+**返回值：** 成功，返回指向创建的保护域的指针；失败，返回NULL。
 
 **说明：**
 
@@ -1904,7 +1910,7 @@ int ibv_dealloc_pd(struct ibv_pd *pd)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0；失败返回errno，指示失败的原因。
+**返回值：** 成功，返回0；失败返回errno，指示失败的原因。
 * EINVAL，PD的设备上下文无效。
 * EBUSY，还有RDMA资源与PD关联。	
 
@@ -1947,7 +1953,7 @@ struct ibv_dm *ibv_alloc_dm(struct ibv_context *context, struct ibv_alloc_dm_att
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向ibv_dm结构体的指针，失败返回NULL。并设置errno显示失败原因。
+**返回值：** 成功，返回指向ibv_dm结构体的指针；失败，返回NULL。并设置errno显示失败原因。
 
 **说明：**
 
@@ -1992,7 +1998,7 @@ struct ibv_dm {
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0，失败返回errno以显示错误原因。
+**返回值：** 成功，返回0；失败，返回errno以显示错误原因。
 
 **说明：** 释放设备内存。如果如果任何其他资源（例如MR）仍然与DM关联，则调用失败。
 
@@ -2010,7 +2016,7 @@ struct ibv_td *ibv_alloc_td(struct ibv_context *context, struct ibv_td_init_attr
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向struct ibv_td的指针，失败返回NULL，并设置errno显示失败原因。
+**返回值：** 成功，返回指向struct ibv_td的指针；失败，返回NULL，并设置errno显示失败原因。
 
 **说明：**
 
@@ -2046,7 +2052,7 @@ int ibv_dealloc_td(struct ibv_td *td)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0，失败返回errno以显示失败原因。
+**返回值：** 成功，返回0；失败，返回errno以显示失败原因。
 
 **说明：** ibv_dealloc_td()将取消分配线程域td。 在取消分配td之前，应销毁使用td创建的所有资源。
 
@@ -2063,7 +2069,7 @@ struct ibv_xrcd *ibv_open_xrcd(struct ibv_context *context, struct ibv_xrcd_init
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向struct ibv_xrcd的指针，失败返回NULL。
+**返回值：** 成功，返回指向struct ibv_xrcd的指针；失败，返回NULL。
 
 **说明：**
 
@@ -2109,7 +2115,7 @@ int ibv_close_xrcd(struct ibv_xrcd *xrcd)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0，失败返回errno以显示失败原因。
+**返回值：** 成功，返回0；失败，返回errno以显示失败原因。
 
 **说明：**
 
@@ -2132,7 +2138,7 @@ struct ibv_counters *ibv_create_counters(struct ibv_context *context,
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向struct ibv_counters的指针，失败返回NULL，并设置errno显示错误原因。
+**返回值：** 成功，返回指向struct ibv_counters的指针；失败，返回NULL，并设置errno显示错误原因。
 
 * ENOSYS——当前设备不支持ibv_create_counters。
 * ENOMEM——没有足够的内存。
@@ -2172,7 +2178,7 @@ int ibv_destroy_counters(struct ibv_counters *counters)
 
 **输出参数**
 
-**返回值：** 成功返回0，失败返回errno显失败原因。EINVAL——参数非法。
+**返回值：** 成功，返回0；失败，返回errno显失败原因。EINVAL——参数非法。
 
 **说明：** ibv_destroy_counters()释放了计数器句柄，用户应在销毁计数器对象之前将其分离。
 ## 5.9 创建、修改、销毁WQ（差mojo）
@@ -2188,7 +2194,7 @@ struct ibv_wq *ibv_create_wq(struct ibv_context *context, struct ibv_wq_init_att
 
 **输出参数：** wq_init_attr——WQ的真实属性。
 
-**返回值：** 成功返回指向struct ibv_wq的指针，失败返回NULL。
+**返回值：** 成功，返回指向struct ibv_wq的指针；失败，返回NULL。
 
 **说明：** 
 
@@ -2282,7 +2288,7 @@ int ibv_destroy_wq(struct ibv_wq *wq)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0，失败返回errno显示错误原因。
+**返回值：** 成功，返回0；失败，返回errno显示错误原因。
 
 **说明：** 销毁已存在的wq。
 
@@ -2300,7 +2306,7 @@ struct ibv_rwq_ind_table *ibv_create_rwq_ind_table(struct ibv_context *context,
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向RWQ IND TABLE的指针，失败返回NULL。
+**返回值：** 成功，返回指向RWQ IND TABLE的指针；失败，返回NULL。
 
 **描述：** 
 
@@ -2345,7 +2351,7 @@ int ibv_destroy_rwq_ind_table(struct ibv_rwq_ind_table *rwq_ind_table)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0，失败返回errno显示失败原因。
+**返回值：** 成功，返回0；失败，返回errno显示失败原因。
 
 **描述：** 销毁接收工作队列间接表（RWQ IND TBL）。
 
@@ -2364,7 +2370,7 @@ struct ibv_srq *ibv_create_srq(struct ibv_pd *pd, struct ibv_srq_init_attr *srq_
 
 **输出参数：** srq_init_attr——RQ的真实属性值。
 
-**返回值：** 成功返回指向创建的SRQ的指针，失败返回NULL，并设置errno指示错误原因。
+**返回值：** 成功，返回指向创建的SRQ的指针；失败，返回NULL，并设置errno指示错误原因。
 
 * EINVAL——无效pd 或 max_wr或max_sge中提供的值无效。
 * ENOMEM——没有足够的资源来完成此操作。
@@ -2437,7 +2443,7 @@ struct ibv_srq *ibv_create_srq_ex(struct ibv_context *context,
 
 **输出参数：** srq_init_attr_ex——srq实际扩展属性。
 
-**返回值：** 成功返回创建的SRQ的指针；失败返回NULL。如果调用失败，将设置errno来指示失败的原因。ENOSYS——设备不支持。
+**返回值：** 成功，返回创建的SRQ的指针；失败返回NULL。如果调用失败，将设置errno来指示失败的原因。ENOSYS——设备不支持。
 
 **说明：**
 
@@ -2500,7 +2506,7 @@ int ibv_modify_srq (struct ibv_srq *srq, struct ibv_srq_attr *srq_attr, int srq_
 
 **输出参数：** srq_attr——struct ibv_srq_attr返回更新后的值。
 
-**返回值：** 成功返回0；失败返回errno来指示失败的原因。
+**返回值：** 成功，返回0；失败返回errno来指示失败的原因。
 
 * EINVAL——max_wr、max_sge或srq_limit中提供的值无无效。
 * ENOMEM——没有足够的资源来完成这个操作。
@@ -2574,7 +2580,7 @@ A：是的你可以。 只需使用不同的SRQ限制值来调用ibv_modify_srq(
 **输出参数：** srq_attr——SRQ的属性。详细信息见ibv_modify_srq。
 
 
-**返回值：** 成功返回0；出错返回-1。如果调用失败，将设置errno来指示失败的原因。
+**返回值：** 成功，返回0；出错返回-1。如果调用失败，将设置errno来指示失败的原因。
 
 * ENOMEM——没有足够的资源来完成这个操作。
 * ENOSYS——此RDMA设备不支持查询共享接收队列。
@@ -2611,7 +2617,7 @@ int ibv_destroy_srq(struct ibv_srq *srq)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0；出错返回-1。如果调用失败，将设置errno来指示失败的原因。EBUSY——一个或多个QPs仍然与SRQ关联。
+**返回值：** 成功，返回0；出错返回-1。如果调用失败，将设置errno来指示失败的原因。EBUSY——一个或多个QPs仍然与SRQ关联。
 
 **说明：**
 
@@ -2689,7 +2695,7 @@ struct ibv_qp *ibv_create_qp(struct ibv_pd *pd, struct ibv_qp_init_attr *qp_init
 
 **输出参数：** qp_init_attr——队列对的实际属性。
 
-**返回值：** 成功返回指向QP的指针，失败返回NULL。并设置errno只是失败原因：
+**返回值：** 成功，返回指向QP的指针；失败，返回NULL。并设置errno只是失败原因：
 
 * EINVAl——pd, send_cq, recv_cq, srq非法，或者max_send_wr, max_recv_wr, max_send_sge, max_recv_sge 或 max_inline_data非法。
 * ENOMEM——内存不足。
@@ -2840,7 +2846,7 @@ struct ibv_qp *ibv_create_qp_ex(struct ibv_context *context,
 
 **输出参数：** qp_init_attr——队列对的真实扩展属性。
 
-**返回值：** 成功返回指向QP的指针，失败返回NULL。并设置errno只是失败原因。检查返回的QP中的QP编号（qp_num）。
+**返回值：** 成功，返回指向QP的指针；失败，返回NULL。并设置errno只是失败原因。检查返回的QP中的QP编号（qp_num）。
 
 
 **说明：**
@@ -2970,7 +2976,7 @@ struct ibv_qp_ex *ibv_qp_to_qp_ex(struct ibv_qp *qp);
 **输出参数：** 无。
 
 
-**返回值：** 成功返回指向ibv_qp_ex的指针；失败返回NULL，并设置errno来指示失败的原因。
+**返回值：** 成功，返回指向ibv_qp_ex的指针；失败返回NULL，并设置errno来指示失败的原因。
 
 
 **说明：** ibv_qp_to_qp_ex将qp转为对应的qp_ex。
@@ -3033,7 +3039,7 @@ int ibv_query_qp(struct ibv_qp *qp, struct ibv_qp_attr *attr,
 * attr——将被请求的属性填充的struct ibv_qp_attr。
 * init_attr——将被初始属性填充的struct ibv_qp_init_attr。详细信息见ibv_create_qp。
 
-**返回值：** 成功返回0；失败返回errno指示失败的原因。ENOMEM——内存不足。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。ENOMEM——内存不足。
 
 **说明：**
 ibv_query_qp获取通过队列对（QP）的各种属性，并通过attr和init_attr返回。
@@ -3044,7 +3050,7 @@ ibv_query_qp获取通过队列对（QP）的各种属性，并通过attr和init_
 
 多次调用ibv_query_qp()可能会导致以下属性的返回值有所不同：qp_state，path_mig_state，sq_draining，ah_attr（如果启用了APM）。
 
-用户应分配一个struct ibv_qp_attr和一个struct ibv_qp_init_attr，并将它们传递给命令。 成功返回后，将填充这些结构体。 ***用户负责释放这些结构体***。
+用户应分配一个struct ibv_qp_attr和一个struct ibv_qp_init_attr，并将它们传递给命令。 成功，返回后，将填充这些结构体。 ***用户负责释放这些结构体***。
 
 struct ibv_qp_attr 定义如下：
 
@@ -3272,7 +3278,7 @@ int ibv_modify_qp(struct ibv_qp *qp, struct ibv_qp_attr *attr, enum ibv_qp_attr_
 
 **输出参数：** attr——如果QP属性被修改，则attr中保存修改后的实际属性。
 
-**返回值：** 成功返回0；失败返回errno指示失败的原因。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。
 
 * EINVAL——attr和或attr_mask中有非法参数。
 * ENOMEM——内存不足。
@@ -3328,7 +3334,7 @@ struct ibv_qp *ibv_open_qp(struct ibv_context *context,struct ibv_qp_open_attr *
 
 **输出参数：** 无。
 
-**返回值：**   成功返回指向打开的QP的指针，如果请求失败，则返回NULL。 检查返回的QP中的QP编号（qp_num）。
+**返回值：**   成功，返回指向打开的QP的指针，如果请求失败，则返回NULL。 检查返回的QP中的QP编号（qp_num）。
 
 **描述：** 
 
@@ -3369,7 +3375,7 @@ int ibv_destroy_qp(struct ibv_qp *qp)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0；失败返回errno指示失败的原因。EBUSY——QP仍然添加到一个或多个多播组。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。EBUSY——QP仍然添加到一个或多个多播组。
 
 **说明：**
 
@@ -3520,7 +3526,7 @@ struct ibv_mr *ibv_reg_mr(struct ibv_pd *pd, void *addr, size_t length, enum ibv
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向创建的内存区的指针；失败返回NULL，并设置error指示错误原因：
+**返回值：** 成功，返回指向创建的内存区的指针；失败返回NULL，并设置error指示错误原因：
 * EINVAL——非法的访问权限。
 * ENOMEM——没有足够的资源(在操作系统或RDMA设备中)来完成此操作。
 
@@ -3650,7 +3656,7 @@ int ibv_rereg_mr(struct ibv_mr *mr, int  flags,struct ibv_pd * pd,
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0；出错返回错误代码enum ibv_rereg_mr_err_code来指示失败的原因。
+**返回值：** 成功，返回0；出错返回错误代码enum ibv_rereg_mr_err_code来指示失败的原因。
 ```cpp
 enum ibv_rereg_mr_err_code {
 	IBV_REREG_MR_ERR_INPUT					= -1,	//原始MR有效，libibverbs检测到输入错误
@@ -3690,7 +3696,7 @@ int ibv_dereg_mr(struct ibv_mr *mr)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0；出错返回错误码，并设置errno来指示失败的原因。
+**返回值：** 成功，返回0；出错返回错误码，并设置errno来指示失败的原因。
 * EINVAL——MR上下文非法。
 * EBUSY——MW仍然与该MR关联。
 
@@ -3745,7 +3751,7 @@ struct ibv_ah *ibv_create_ah(struct ibv_pd *pd, struct ibv_ah_attr *attr)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向创建的地址句柄(AH)的指针，失败返回NULL，并设置errno表示失败原因:
+**返回值：** 成功，返回指向创建的地址句柄(AH)的指针；失败，返回NULL，并设置errno表示失败原因:
 
 * EINVAL——无效的pd，或attr中提供的值无效。
 * ENOMEM——没有足够的资源来完成这个操作。
@@ -3846,7 +3852,7 @@ int ibv_init_ah_from_wc(struct ibv_context *context, uint8_t port_num,
 
 **输出参数：** ah_attr——将被填充的地址句柄属性的结构体。
 
-**返回值：** 成功返回0；出错返回-1。如果在端口的port_num GID表中找不到GRH中的DGID，则此动词可能失败。
+**返回值：** 成功，返回0；出错返回-1。如果在端口的port_num GID表中找不到GRH中的DGID，则此动词可能失败。
 
 **说明：**
 
@@ -3927,7 +3933,7 @@ struct ibv_ah *ibv_create_ah_from_wc(struct ibv_pd *pd, struct ibv_wc *wc,
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向新分配的地址句柄的指针；出错返回NULL并设置errno来指示失败的原因。
+**返回值：** 成功，返回指向新分配的地址句柄的指针；出错返回NULL并设置errno来指示失败的原因。
 
 * EINVAL——pd无效，或提供的属性无效。
 * ENOMEM——没有足够的资源来完成这个操作。
@@ -3981,7 +3987,7 @@ int ibv_destroy_ah(struct ibv_ah *ah)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0；出错返回errno来指示失败的原因。EINVAL——AH上下文非法。
+**返回值：** 成功，返回0；出错返回errno来指示失败的原因。EINVAL——AH上下文非法。
 
 **说明：**
 
@@ -4039,7 +4045,7 @@ struct ibv_mw *ibv_alloc_mw(struct ibv_pd *pd,enum ibv_mw_type type)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向struct ibv_mw的指针，失败返回NULL。
+**返回值：** 成功，返回指向struct ibv_mw的指针；失败，返回NULL。
 
 **说明：**
 
@@ -4089,7 +4095,7 @@ int ibv_bind_mw(struct ibv_qp *qp, struct ibv_mw *mw, struct ibv_mw_bind *mw_bin
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0，失败返回errno以显示失败原因。如果成功，则绑定后的内存窗口的R_key将在mw_bind-> mw-> rkey字段中返回。
+**返回值：** 成功，返回0；失败，返回errno以显示失败原因。如果成功，则绑定后的内存窗口的R_key将在mw_bind-> mw-> rkey字段中返回。
 
 **说明：**
 
@@ -4141,7 +4147,7 @@ int ibv_dealloc_mw(struct ibv_mw *mw)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0，失败返回errno以显示失败原因。
+**返回值：** 成功，返回0；失败，返回errno以显示失败原因。
 
 **说明：** ibv_dealloc_mw()取消之前绑定绑定的MR，并取消分配内存窗口。
 
@@ -4398,7 +4404,7 @@ int ibv_attach_mcast(struct ibv_qp *qp, const union ibv_gid *gid, uint16_t lid)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0，失败errno来指示失败的原因。
+**返回值：** 成功，返回0，失败errno来指示失败的原因。
 
 **说明：**
 ibv_attach_mcast 向多播GID为gid，多播LID为lid的多播组中添加队列对qp。
@@ -4421,7 +4427,7 @@ int ibv_detach_mcast(struct ibv_qp *qp, const union ibv_gid *gid, uint16_t lid)
 * lid——主机字节顺序的多播组LID。
 **输出参数：** 无。
 
-**返回值：** 成功返回0，失败返回errno来指示失败的原因。
+**返回值：** 成功，返回0；失败，返回errno来指示失败的原因。
 
 **说明：** ibv_detach_mcast 从多播组GID是gid，多播LID是lid的多播组中移除队列对qp。
 
@@ -4438,7 +4444,7 @@ struct ibv_flow *ibv_create_flow(struct ibv_qp *qp, struct ibv_flow_attr *flow)
 
 **输出参数：** 无。
 
-**返回值：** 成功发返回指向struct ibv_flow的指针，失败返回NULL并设置errno显示失败原因。
+**返回值：** 成功发返回指向struct ibv_flow的指针；失败，返回NULL并设置errno显示失败原因。
 
 * EINVAL——流规范、QP或优先级无效。
 * ENOMEM——没有足够内存。
@@ -4705,7 +4711,7 @@ int ibv_destroy_flow(struct ibv_flow *flow_id)
 
 **输出参数**
 
-**返回值：** 成功发返回0，失败返回errno显示失败原因。EINVAL——flowid无效。
+**返回值：** 成功发返回0；失败，返回errno显示失败原因。EINVAL——flowid无效。
 
 **说明：** ibv_destroy_flow销毁指定的流。
 
@@ -4723,7 +4729,7 @@ int ibv_post_recv(struct ibv_qp *qp, struct ibv_recv_wr *wr, struct ibv_recv_wr 
 
 **输出参数：** bad_wr——指向第一个被拒绝的WR的指针。
 
-**返回值：** 成功返回0；出错返回errno来指示失败的原因。
+**返回值：** 成功，返回0；出错返回errno来指示失败的原因。
 
 **说明：**
 ibv_post_recv将以wr开始的工作请求（WR）链表发布到队列对qp的接收队列中。 至少一个接收缓冲区应发布到接收队列，以将QP状态转换为RTR。 远程对等方执行SEND，带立即数SEND和带立即数RDMA WRITE入时，将消耗接收缓冲区。 接收缓冲区不用于其他RDMA操作。 在出现第一个错误时，将停止处理WR列表，并通过bad_wr中返回失败的WR。
@@ -4764,7 +4770,7 @@ int ibv_post_send(struct ibv_qp *qp, struct ibv_send_wr *wr, struct ibv_send_wr 
 
 **输出参数：** bad_wr——指向第一个被拒绝的WR的指针。
 
-**返回值：** 成功返回0；失败返回errno来指示失败的原因。
+**返回值：** 成功，返回0；失败返回errno来指示失败的原因。
 
 **说明：**
 ibv_post_send将以wr开始的工作请求（WR）的链表发布到队列对qp的发送队列中。 此操作用于启动所有通信，包括RDMA操作。 在出现第一个错误时，将停止处理WR列表（这可以在发布WRs时立即检测到），并通过bad_wr中返回失败的WR。
@@ -4886,7 +4892,7 @@ int ibv_post_srq_recv(struct ibv_srq *srq, struct ibv_recv_wr *recv_wr, struct i
 
 **输出参数：** bad_wr——指向第一个被拒绝的WR的指针。
 
-**返回值：** 成功返回0，失败返回errno来指示失败的原因。
+**返回值：** 成功，返回0；失败，返回errno来指示失败的原因。
 
 **说明：**
 ibv_post_srq_recv将以wr开始的工作请求链表发布到指定的SRQ srq中。 它在第一次失败时停止处理此列表中的WR（可以在发布请求时立即检测到该WR），并通过bad_wr参数返回失败的WR。
@@ -4909,7 +4915,7 @@ int ibv_get_cq_event(struct ibv_comp_channel *channel, struct ibv_cq **cq, void 
 * cq——指向与事件关联的完成队列(CQ)的指针。
 * cq_context——用户在ibv_create_cq中提供的上下文。
 
-**返回值：** 成功返回0；出错返回-1。如果调用失败，将设置errno来指示失败的原因。
+**返回值：** 成功，返回0；出错返回-1。如果调用失败，将设置errno来指示失败的原因。
 
 **说明：**
 ibv_get_cq_event等待完成通道chnnel上的下一个完成事件， 并用事件的CQ和CQ上下文填充cq和cq_context。 请注意，这是一个阻塞操作。 用户应分配一个指向struct ibv_cq的指针和一个void指针，以传递给函数。 返回时将使用适当的值填充它们。 ***用户负责释放这些指针***。
@@ -5058,7 +5064,7 @@ int ibv_get_async_event(struct ibv_context *context, struct ibv_async_event *eve
 
 **输出参数：** event——指向寻找到的异步事件的指针。
 
-**返回值：** 成功返回0，失败返回-1，并设置errno显示失败原因。
+**返回值：** 成功，返回0；失败，返回-1，并设置errno显示失败原因。
 
 **说明：** 
 
@@ -5180,7 +5186,7 @@ int ibv_req_notify_cq(struct ibv_cq *cq, int solicited_only)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回0；失败返回errno来指示失败的原因。
+**返回值：** 成功，返回0；失败返回errno来指示失败的原因。
 
 **说明：**
 ibv_req_notify_cq在完成队列cq上请求一个完成通知。在向cq添加新的CQ条目（CQE）后，完成事件将添加到与CQ关联的完成通道。 如果该CQ中已经有一个CQE，则不会为此事件生成一个事件。 如果设置了solicited_only标志，则只有设置了solicited标志的WR的CQE才会触发通知。
@@ -5202,7 +5208,7 @@ int ibv_poll_cq(struct ibv_cq *cq, int num_entries, struct ibv_wc *wc)
 
 **输出参数：** wc——CQE数组。
 
-**返回值：** 成功返回数组wc中的CQE数量，失败返回-1。
+**返回值：** 成功，返回数组wc中的CQE数量；失败，返回-1。
 
 **说明：**
 ibv_poll_cq轮询完成队列cq并返回前num_entries个CQE（当CQ中的CQE少于num_entries时，则返回所有可用的CQE）。 用户应分配一个struct ibv_wc数组，并将其传递给调用的wc。
@@ -5484,7 +5490,7 @@ int ibv_memcpy_from_dm(void *host_addr, struct ibv_dm *dm,uint64_t dm_offset, si
 
 **输出参数：** host_addr——主机内存起始地址。
 
-**返回值：** 成功返回0，失败返回errno显示失败原因。
+**返回值：** 成功，返回0；失败，返回errno显示失败原因。
 
 **描述：** 读取设备内存，并写入主机内存中。
 ### 13.1.2 ibv_memcpy_to_dm
@@ -5499,7 +5505,7 @@ int ibv_memcpy_to_dm(struct ibv_dm *dm, uint64_t dm_offset,void *host_addr, size
 
 **输出参数：** dm——设备内存。来及ibv_alloc_dm。
 
-**返回值：** 成功返回0，失败返回errno显示失败原因。
+**返回值：** 成功，返回0；失败，返回errno显示失败原因。
 
 **描述：** 读取主机内存，并写入设备内存中。
 
@@ -5519,7 +5525,7 @@ struct ibv_mr *ibv_reg_dm_mr(struct ibv_pd *pd, struct ibv_dm *dm,
 
 **输出参数：** 无。
 
-**返回值：** 成功返回指向struct ibv_mr的指针，失败返回NULL。
+**返回值：** 成功，返回指向struct ibv_mr的指针；失败，返回NULL。
 
 **描述：** 
 
@@ -5555,7 +5561,7 @@ const char *ibv_port_state_str (enum ibv_port_state port_state)
 
 **说明：**
 
-成功返回一个说明逻辑端口状枚举值的字符串。**说明：** 成功返回一个说明逻辑端口状枚举值的字符串，则失败返回“unknown”。
+成功，返回一个说明逻辑端口状枚举值的字符串。**说明：** 成功，返回一个说明逻辑端口状枚举值的字符串，则失败返回“unknown”。
 
 enum ibv_port_state 定义参见ibv_query_port。
 
@@ -5575,7 +5581,7 @@ const char *ibv_wc_status_str(enum ibv_wc_status status)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回说明WC状态的字符串。失败返回NULL。
+**返回值：** 成功，返回说明WC状态的字符串。失败返回NULL。
 
 **说明：** 返回说明WC状态的字符串。
 
@@ -5588,6 +5594,6 @@ const char *ibv_event_type_str(enum ibv_event_type event)
 
 **输出参数：** 无。
 
-**返回值：** 成功返回说明event类型的字符串。失败返回NULL。
+**返回值：** 成功，返回说明event类型的字符串。失败返回NULL。
 
 **说明：** 返回说明event状态的字符串。
