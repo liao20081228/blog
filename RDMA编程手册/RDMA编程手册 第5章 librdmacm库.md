@@ -1,5 +1,5 @@
 ---
-title: RDMA编程手册 第5章 librdmacm
+title: RDMA编程手册 第5章 librdmacm库
 tags: RDMA
 ---
 
