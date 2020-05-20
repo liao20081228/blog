@@ -73,9 +73,9 @@ libibverbs是Infiniband（根据Infiniband规范）和iWARP（根据iWARP动词�
   * 解决办法：卸载用户空间底层驱动程序和libibverb，并从一致的源安装它们，或者使用相同的参数重新编译所有库。
 
 **libibverbs: Warning: fork()-safety requested but init failed**
-* 原因：libibverbs尝试根据用户的请求在fork（）安全模式下工作，但失败了。
+* 原因：libibverbs尝试根据用户的请求在fork()安全模式下工作，但失败了。
 * 来源：这通常发生在旧的Linux内核中(比2.6.12更老)
-* 解决办法：迁移到更新的Linux内核或禁用fork（）请求环境变量/动词。
+* 解决办法：迁移到更新的Linux内核或禁用fork()请求环境变量/动词。
 
 **libibverbs: Warning: no userspace device-specific driver found**
 * 原因：libibverb未能找到特定RDMA设备的用户空间低级驱动程序。
@@ -114,25 +114,25 @@ int ibv_fork_init(void)
 
 在调用libibverb中的任何其他函数之前，应该先调用ibv_fork_init()。
 
-ibv_fork_init初始化libibverbs的数据结构以安全地处理fork（）函数，并避免数据损坏，无论fork（）是显式调用还是隐式调用，（例如在 system(), popen(),调用中）。
+ibv_fork_init初始化libibverbs的数据结构以安全地处理fork()函数，并避免数据损坏，无论fork()是显式调用还是隐式调用，（例如在 system(), popen(),调用中）。
 
-在RDMA技术中，RDMA设备知道虚拟地址<->物理地址映射。 当进程显式或隐式调用fork（）函数时，由于Linux内核的“写时复制”策略，父进程和子进程虚拟页面都将映射到相同的物理内存页面。 当其中一个进程（第一个）写入这样的页面时，它将获得一个具有相同内容的新物理页面。 RDMA设备不知道对于该进程虚拟地址->物理地址的转换已经更改，因此可能会尝试访问旧的物理地址（该地址现在甚至可以由其他进程或内核使用）。 这可能导致数据损坏甚至更糟——内核崩溃。
+在RDMA技术中，RDMA设备知道虚拟地址<->物理地址映射。 当进程显式或隐式调用fork()函数时，由于Linux内核的“写时复制”策略，父进程和子进程虚拟页面都将映射到相同的物理内存页面。 当其中一个进程（第一个）写入这样的页面时，它将获得一个具有相同内容的新物理页面。 RDMA设备不知道对于该进程虚拟地址->物理地址的转换已经更改，因此可能会尝试访问旧的物理地址（该地址现在甚至可以由其他进程或内核使用）。 这可能导致数据损坏甚至更糟——内核崩溃。
 
-为了防止此问题的发生，libibverbs添加了fork（）保护支持。 它指示Linux内核将原始物理页面保持映射到父进程，而不管两个进程中的哪个首先写入页面。
+为了防止此问题的发生，libibverbs添加了fork()保护支持。 它指示Linux内核将原始物理页面保持映射到父进程，而不管两个进程中的哪个首先写入页面。
 
-libibverbs中的fork（）支持并不完整，它假定只有父进程会执行RDMA操作。 如果子进程之一将尝试执行RDMA操作，则可能会遇到各种问题。
+libibverbs中的fork()支持并不完整，它假定只有父进程会执行RDMA操作。 如果子进程之一将尝试执行RDMA操作，则可能会遇到各种问题。
 
-如果所有父进程线程始终被阻塞，直到所有子进程结束或通过exec（）操作更改地址空间，则不必调用ibv_fork_init。
+如果所有父进程线程始终被阻塞，直到所有子进程结束或通过exec()操作更改地址空间，则不必调用ibv_fork_init。
 
-如果将在不调用ibv_fork_init（）的情况下使用fork（），则可能会遇到数据损坏，段错误，缺少工作请求完成或任何其他现象的情况。
+如果将在不调用ibv_fork_init()的情况下使用fork()，则可能会遇到数据损坏，段错误，缺少工作请求完成或任何其他现象的情况。
 
-此函数在支持madvise（）的MADV_DONTFORK标志的Linux内核上起作用（2.6.17及更高版本）。
+此函数在支持madvise()的MADV_DONTFORK标志的Linux内核上起作用（2.6.17及更高版本）。
 
-将环境变量RDMAV_FORK_SAFE或IBV_FORK_SAFE设置为任何值都具有与调用ibv_fork_init（）相同的效果。
+将环境变量RDMAV_FORK_SAFE或IBV_FORK_SAFE设置为任何值都具有与调用ibv_fork_init()相同的效果。
 
 将环境变量RDMAV_HUGEPAGES_SAFE设置为任何值都会告诉该库检查内核用于内存区域的基础页面大小。如果通过libhugetlbfs之类的库直接或间接地创建页面，则需要这样做。
 
-调用ibv_fork_init（）会降低性能，这是因为每个内存注册都要进行额外的系统调用，以及分配给跟踪内存区域的额外内存。确切的性能影响取决于工作负载，通常不会很明显。
+调用ibv_fork_init()会降低性能，这是因为每个内存注册都要进行额外的系统调用，以及分配给跟踪内存区域的额外内存。确切的性能影响取决于工作负载，通常不会很明显。
 
 没有任何函数调用与设置环境变量RDMAV_HUGEPAGES_SAFE具有相同的效果。
 
@@ -152,20 +152,20 @@ A：没有，任何值都可以。
 Q：我使用的页面很大，并且只启用了RDMAV_FORK_SAFE，fork可以工作吗？
 A：不能，任何值也应被设置给环境变量RDMAV_HUGEPAGES_SAFE。
 
-Q：我不知道是否需要fork（）支持，为了安全起见，是否可以启用fork（）支持？
+Q：我不知道是否需要fork()支持，为了安全起见，是否可以启用fork()支持？
 A：是的,你可以。只需注意，在启用fork支持时将消耗额外的内存
 
-Q：我没有显式调用fork（），仅调用了可能会调用fork（）的其他系统调用，我是否仍需要启用fork（）支持？
-A：是的，您需要启用fork（）支持，无论是直接调用fork（）还是任何其他系统调用隐式调用fork（）。
+Q：我没有显式调用fork()，仅调用了可能会调用fork()的其他系统调用，我是否仍需要启用fork()支持？
+A：是的，您需要启用fork()支持，无论是直接调用fork()还是任何其他系统调用隐式调用fork()。
 
 Q：我只向我的客户提供一个库，他调用fork()，仍然需要fork()支持吗？
-A：是的，如果进程调用fork（），则需要启用fork（）支持，无论调用它的人是谁都没关系。 如果用户有时会使用fork（），则可以设置环境变量RDMAV_FORK_SAFE。
+A：是的，如果进程调用fork()，则需要启用fork()支持，无论调用它的人是谁都没关系。 如果用户有时会使用fork()，则可以设置环境变量RDMAV_FORK_SAFE。
 
 Q：我调用了ibv fork init()，它失败了，这是什么意思呢？
-A：这意味着您的内核不支持madvise（），您应该咨询支持或更新您的内核。
+A：这意味着您的内核不支持madvise()，您应该咨询支持或更新您的内核。
 
 Q：调用fork()后能否继承RDMA资源？
-A：libibverbs有几个文件说明符，在调用fork（）之后，它们仍可在子进程中使用。 但是，强烈建议不要尝试使用它们，因为这可能会导致不良后果。
+A：libibverbs有几个文件说明符，在调用fork()之后，它们仍可在子进程中使用。 但是，强烈建议不要尝试使用它们，因为这可能会导致不良后果。
 
 **示例：**
 
@@ -219,9 +219,9 @@ struct ibv_device **ibv_get_device_list(int *num_devices)
 
 在调用libibverb中的任何其他函数之前，应该先调用ibv fork init()。
 
-ibv_get_device_list（）返回当前可用的RDMA设备的以NULL终止的数组。数组中每个条目都是指向struct ibv_device的指针。应使用ibv_free_device_list（）释放该数组。
+ibv_get_device_list()返回当前可用的RDMA设备的以NULL终止的数组。数组中每个条目都是指向struct ibv_device的指针。应使用ibv_free_device_list()释放该数组。
 
-数组条目不应直接访问。 相反，它们应与以下服务动词一起使用：ibv_get_device_name（），ibv_get_device_guid（）和ibv_open_device（）。
+数组条目不应直接访问。 相反，它们应与以下服务动词一起使用：ibv_get_device_name()，ibv_get_device_guid()和ibv_open_device()。
 
 在调用 ibv_free_device_list()之前，用户代码应该用ibv_open_device() 打开所有它打算的使用的设备。一旦使用 ibv_free_device_list()释放设备数组，则只有打开的设备才能使用，指向未打开设备的指针不再合法。
 
@@ -304,7 +304,7 @@ A：驱动程序找不到任何RDMA设备。
 void ibv_free_device_list(struct ibv_device **list)
 ```
 
-**输入参数：** list——ibv_get_device_list（）返回的RDMA设备数组。
+**输入参数：** list——ibv_get_device_list()返回的RDMA设备数组。
 
 **输出参数：** 无。
 
@@ -346,7 +346,7 @@ ibv_get_device_name返回指向ibv_device结构体中包含的设备名称的指
 
 然而，这个名字在InfiniBand结构中并不是唯一的(这个名字可以在不同的机器中找到)。
 
-当计算机中有多个RDMA设备时，更改计算机中设备的位置（即在PCI总线中）可能会导致与设备关联的名称发生更改。 为了区分设备，建议使用由ibv_get_device_guid（）返回的设备GUID。
+当计算机中有多个RDMA设备时，更改计算机中设备的位置（即在PCI总线中）可能会导致与设备关联的名称发生更改。 为了区分设备，建议使用由ibv_get_device_guid()返回的设备GUID。
 
 **示例：** 参见ibv_query_port。
 
@@ -386,7 +386,7 @@ struct ibv_context *ibv_open_device(struct ibv_device *device)
 
 **说明：**
 
-ibv_open_device（）为RDMA设备设备创建一个上下文。 该上下文稍后将用于查询其资源或用于创建资源，并且应使用ibv_close_device（）释放。
+ibv_open_device()为RDMA设备设备创建一个上下文。 该上下文稍后将用于查询其资源或用于创建资源，并且应使用ibv_close_device()释放。
 
 与动词名称不同，它实际上并没有打开设备，该设备是由内核低级驱动程序打开的，并且可以由其他用户/内核级代码使用。 该动词仅打开上下文，以允许用户级别的应用程序使用它。
 
@@ -500,7 +500,7 @@ int ibv_close_device(struct ibv_context *context)
 
 ibv_close_device关闭先前使用ibv_open_device打开的动词上下文。
 
-ibv_close_device（）不会释放与此上下文关联的资源。 用户在调用该动词之前释放它们，以防止资源（例如内存，文件说明符，RDMA对象编号）泄漏。 使用这些孤立资源可能会导致段错误。
+ibv_close_device()不会释放与此上下文关联的资源。 用户在调用该动词之前释放它们，以防止资源（例如内存，文件说明符，RDMA对象编号）泄漏。 使用这些孤立资源可能会导致段错误。
 
 但是，当该进程结束时，这些资源将由操作系统自动清除。
 
@@ -525,9 +525,9 @@ int ibv_query_device(struct ibv_context *context, struct ibv_device_attr *device
 
 ibv_query_device检索与设备关联的各种属性。 用户应malloc一个struct ibv_device_attr，并将其传递给该命令，在成功返回后它将被填充。 ***用户负责释放此结构体***。
 
-由ibv_query_device（）返回的RDMA设备属性是恒定的，不会被设备或SM更改，因此程序可以调用此动词并将其保存以备后面使用。
+由ibv_query_device()返回的RDMA设备属性是恒定的，不会被设备或SM更改，因此程序可以调用此动词并将其保存以备后面使用。
 
-ibv_query_device（）返回的最大值是设备支持的资源的上限。 但是，可能无法使用这些最大值，因为可以创建的任何资源的实际数量可能会受到计算机配置，主机内存量，用户权限以及其他用户或进程已经在使用的资源量的限制。
+ibv_query_device()返回的最大值是设备支持的资源的上限。 但是，可能无法使用这些最大值，因为可以创建的任何资源的实际数量可能会受到计算机配置，主机内存量，用户权限以及其他用户或进程已经在使用的资源量的限制。
 
 struct ibv_device_attr的定义如下:
 
@@ -582,7 +582,7 @@ struct ibv_device_attr{
 |成员名|说明|
 |:--|:--|
 fw_ver|	NULL终止的字符串，说明RDMA设备的固件版本。|
-|node_guid|	与RDMA设备关联的GUID（以网络字节顺序）。 这与ibv_get_device_guid（）返回的GUID相同。|
+|node_guid|	与RDMA设备关联的GUID（以网络字节顺序）。 这与ibv_get_device_guid()返回的GUID相同。|
 |sys_image_guid|与此RDMA设备和作为单个系统一部分的其他设备相关联的GUID(按网络字节顺序)。例如:同一个核心交换机中有多个交换芯片。|
 |max_mr_size|此设备可以注册的最大连续内存块的大小（以字节为单位）。|
 |page_size_cap|	内存页大小。|
@@ -665,8 +665,8 @@ enum ibv_atomic_cap {
 
 **常见问题：**
 
-Q：ibv_query_device（）显示我可以从资源创建X个元素，但是我只能创建Y（其中Y小于X），这对吗？
-A：是的，可能会发生这种情况，因为ibv_query_device（）报告的值是设备支持的上限。 如果任何其他进程/模块也从该资源创建了元素，则该资源的可用数量将减少。
+Q：ibv_query_device()显示我可以从资源创建X个元素，但是我只能创建Y（其中Y小于X），这对吗？
+A：是的，可能会发生这种情况，因为ibv_query_device()报告的值是设备支持的上限。 如果任何其他进程/模块也从该资源创建了元素，则该资源的可用数量将减少。
 
 Q：我可以知道一个资源有多少个元素可以创建吗？
 A：不能。这个值取决于很多因素。
@@ -694,7 +694,7 @@ A：不能。 当前RDMA堆栈不支持此功能。
 
 **说明：**
 
-ibv_query_device_ex（）获取设备的属性，用户应分配一个 struct ibv_device_attr_ex ，并传入函数，他将在成功调用时被填充。***用户负责释放此结构体***。
+ibv_query_device_ex()获取设备的属性，用户应分配一个 struct ibv_device_attr_ex ，并传入函数，他将在成功调用时被填充。***用户负责释放此结构体***。
 
 该函数返回的最大值是设备支持的资源上限。 但是，可能无法使用这些最大值，因为可以创建的任何资源的实际数量可能会受到计算机配置，主机内存量，用户权限以及已被其他用户/进程使用的资源量的限制。
 
@@ -883,7 +883,7 @@ int ibv_query_port(struct ibv_context *context, uint8_t port_num, struct ibv_por
 
 ibv_query_port检索与端口关联的各种属性。 用户应分配一个struct ibv_port_attr，并将其传递给命令，在成功返回后它将被填充。 ***用户负责释放此结构体***。
 
-bv_query_port（）返回的大多数端口属性不是恒定的，可能会更改，主要是通过SM（在InfiniBand中）或由硬件更改。 强烈建议避免保存此查询的结果，或在新的SM（重新）配置子网时刷新它们。
+bv_query_port()返回的大多数端口属性不是恒定的，可能会更改，主要是通过SM（在InfiniBand中）或由硬件更改。 强烈建议避免保存此查询的结果，或在新的SM（重新）配置子网时刷新它们。
 
 struct ibv_port_attr定义如下：
 
@@ -933,7 +933,7 @@ struct ibv_port_attr
 |lmc|IB|此端口的端口LID掩码（用于多路径），仅在状态为IBV_PORT_ARMED或IBV_PORT_ACTIVE时有效|
 |max_vl_num|IB|此端口支持的最大虚拟连接数。该值不是枚举值，数值见下面详述|
 |sm_sl|IB|管理这个端口的SM的服务级别|
-|subnet_timeout|IB|指定期望的到达子网中的任何其他端口的最大子网传播延迟，该延迟取决于交换机的配置，并且还用于确定SubnTrap（）从该端口可以发送的最大速率。持续时间的计算基于：4.096\*2^subnet_timeout^
+|subnet_timeout|IB|指定期望的到达子网中的任何其他端口的最大子网传播延迟，该延迟取决于交换机的配置，并且还用于确定SubnTrap()从该端口可以发送的最大速率。持续时间的计算基于：4.096\*2^subnet_timeout^
 |init_type_reply|IB|如果设备支持，则在将端口状态更改为IBV_PORT_ACTIVE或IBV_PORT_ARMED状态之前由SM配置的值，表示执行的初始化类型（在dev_cap.device_cap_flags中设置了IBV_DEVICE_INIT_TYPE）|
 |active_width|	IB/RoCE/iWARP|该端口的激活链路宽度。 此值不是枚举值，数值见下面详述|
 |active_speed|IB/RoCE/iWARP|该端口的激活链路速度。 此值不是枚举值，数值见下面详述|
@@ -1161,13 +1161,13 @@ out:
 ```
 **常见问题：**
 
-Q：我正在使用iWarp / RoCE，是否需要ibv_query_port（）返回的所有值？
+Q：我正在使用iWarp / RoCE，是否需要ibv_query_port()返回的所有值？
 A:  不。检查协议列，以了解哪些属性与您相关。
 
 Q：我使用的是IB，是否需要ibv_query_port()返回的所有值？
 A：不。有些字段您会经常使用（例如state），某些字段可能在调试问题时使用（计数器），而某些字段对于其他服务很有帮助。
 
-Q：当我需要端口属性时，每次调用ibv_query_port（）都会花费一些时间，我可以缓存某些属性吗？
+Q：当我需要端口属性时，每次调用ibv_query_port()都会花费一些时间，我可以缓存某些属性吗？
 A：	是。 表示端口支持的属性（例如，支持的表长度和功能）的属性不会更改，但是由SM配置的其他属性可能会更改，例如state和计数器。如果需要，可以在InfiniBand中缓存返回的结构，并仅在发生无关的异步事件时查询它（稍后将在章节讨论）。
 
 
@@ -1178,7 +1178,7 @@ int ibv_query_gid(struct ibv_context *context, uint8_t port_num, int index, unio
 ```
 **输入参数：**
 
-* context——RDMA设备上下文，由ibv_open_device（）返回。
+* context——RDMA设备上下文，由ibv_open_device()返回。
 * port_num——物理端口号，1是第一个端口。
 * index——返回GID表中的哪一项（0是第一个）
 
@@ -1235,7 +1235,7 @@ A：实际上,是的。GID表是由SM配置的，SM可以在初始配置之后�
 int ibv_query_pkey(struct ibv_context *context, uint8_t port_num, int index, uint16_t *pkey)
 ```
 **输入参数：**
-* context——RDMA设备上下文，由ibv_open_device（）返回。
+* context——RDMA设备上下文，由ibv_open_device()返回。
 * port_num——物理端口号，1是第一个端口。
 * index——返回pkey表中的哪一项（0是第一个）
 
@@ -1249,7 +1249,7 @@ ibv_query_pkey在端口的分区密钥（pkey）表中检索条目。 子网管�
 
 仅当port_attr.state为IBV_PORT_ARMED或IBV_PORT_ACTIVE时，P_Key表的内容才有效。 对于端口的其他状态，分区表的值取决于实现。
 
-配置该表的实体是SM，因此ibv_query_pkey（）仅与InfiniBand相关。
+配置该表的实体是SM，因此ibv_query_pkey()仅与InfiniBand相关。
 
 用户传入一个指向uint16的指针，该指针将被请求的pkey填充。 ***用户有释放释放此uint16***。
 
@@ -1287,7 +1287,7 @@ A：P_Key允许在物理网络上创建虚拟网络(就像以太网中的vlan)�
 Q：我正在使用iWARP / IBoE，会使用这个动词吗？
 A：不。这个动词只与IB有关。
 
-Q：当我需要P_Key索引的值时每次调用ibv_query_pkey（）都会花费时间，我可以缓存该值吗？
+Q：当我需要P_Key索引的值时每次调用ibv_query_pkey()都会花费时间，我可以缓存该值吗？
 A：是。 P_Key表是由SM配置的，SM可以更改它，但是大多数时候不是。 如果缓存P_Key表的值，则在发生IBV_EVENT_PKEY_CHANGE事件的情况下，应刷新这些值。
 
 ## 5.2 创建和销毁CC
@@ -1728,7 +1728,7 @@ int ibv_resize_cq(struct ibv_cq *cq, int cqe)
 **说明：**
 ibv_resize_cq调整完成队列（CQ）的大小。
 
-如果CQ为空或包含尚未由ibv_poll_cq（）轮询的工作完成，则可以调整CQ的大小。 如果在创建任何通知事件之前使用ibv_req_notify_cq（）请求了通知请求，则可以调整其大小。 如果一个或多个QP与之关联或没关联，则可以调整它的大小。
+如果CQ为空或包含尚未由ibv_poll_cq()轮询的工作完成，则可以调整CQ的大小。 如果在创建任何通知事件之前使用ibv_req_notify_cq()请求了通知请求，则可以调整其大小。 如果一个或多个QP与之关联或没关联，则可以调整它的大小。
 
 如果要减小CQ大小，则新大小会有一些限制：
 
@@ -1737,27 +1737,27 @@ ibv_resize_cq调整完成队列（CQ）的大小。
 
 用户可以定义CQ的最小大小。 实际大小可以等于或大于此值。 cq的cqe成员将更新为实际大小。
 
-ibv_resize_cq（）可以分配大于或等于请求的大小的CQ大小。因此，调用ibv_resize_cq（）可能不会做任何事情，因为此动词仅保证将CQ调整为至少与请求的大小一样大的大小。
+ibv_resize_cq()可以分配大于或等于请求的大小的CQ大小。因此，调用ibv_resize_cq()可能不会做任何事情，因为此动词仅保证将CQ调整为至少与请求的大小一样大的大小。
 
 
 **示例：** 见ibv_destroy_cq。
 
 **常见问题：**
 
-Q：ibv_resize_cq（）失败，与此相关的QP会发生什么？
+Q：ibv_resize_cq()失败，与此相关的QP会发生什么？
 A：没事 您可以继续使用，而不会产生任何副作用。
 
-Q：ibv_resize_cq（）失败，我可以知道此CQ中存在多少工作完成吗？
+Q：ibv_resize_cq()失败，我可以知道此CQ中存在多少工作完成吗？
 A：不，RDMA堆栈没有这个功能(它在规范中没有定义)。
 
 Q：我可以调整其中包含工作完成的CQ的大小吗？
 A：是的，可以。
 
 
-Q：我在CQ上调用了ibv_req_notify_cq（），但没有得到任何完成事件。 我可以调整该CQ的大小吗？
+Q：我在CQ上调用了ibv_req_notify_cq()，但没有得到任何完成事件。 我可以调整该CQ的大小吗？
 A：是的，只要新的尺寸不小于该CQ中当前的工作完成数量即可。
 
-Q：我调用了ibv_resize_cq（）并尝试减小CQ大小，但是CQ大小没有改变。 发生了什么？
+Q：我调用了ibv_resize_cq()并尝试减小CQ大小，但是CQ大小没有改变。 发生了什么？
 A：这可能发生。 规则是用户可以定义CQ的最小大小，并且实际大小可以等于或大于此值。 尝试减小CQ大小可能会导致无济于事。 这取决于（低级驱动程序的）实现。
 
 ### 5.3.5 ibv_modify_cq
@@ -1817,9 +1817,9 @@ int ibv_destroy_cq(struct ibv_cq *cq)
 
 ibv_destroy_cq释放完成队列（CQ）。 如果有任何队列对（QP）仍与指定的CQ关联，则此命令将失败。
 
-如果使用ibv_get_async_event（）读取了该CQ上的任何关联异步事件，但仍未使用ibv_ack_async_event（）进行确认，则在确认该事件之前，对ibv_destroy_cq（）的调用将永远不会结束。
+如果使用ibv_get_async_event()读取了该CQ上的任何关联异步事件，但仍未使用ibv_ack_async_event()进行确认，则在确认该事件之前，对ibv_destroy_cq()的调用将永远不会结束。
 
-如果CQ为空或包含ibv_poll_cq（）尚未轮询的工作完成，则可以销毁CQ。 如果在创建任何通知事件之前使用ibv_req_notify_cq（）请求了通知请求，则也可以销毁它。
+如果CQ为空或包含ibv_poll_cq()尚未轮询的工作完成，则可以销毁CQ。 如果在创建任何通知事件之前使用ibv_req_notify_cq()请求了通知请求，则也可以销毁它。
 
 **示例：**
 
@@ -1845,20 +1845,20 @@ if (ibv_destroy_cq(cq)) {
 
 **常见问题：**
 
-Q：ibv_destroy_cq（）失败，与此相关的QP会发生什么？
+Q：ibv_destroy_cq()失败，与此相关的QP会发生什么？
 A：没事 您可以继续使用，而不会产生任何副作用。
 
-Q：ibv_destroy_cq（）失败，我可以知道哪些QP与之相关并导致了此失败吗？
+Q：ibv_destroy_cq()失败，我可以知道哪些QP与之相关并导致了此失败吗？
 A：不，目前RDMA堆栈没有这个功能。
 
 Q：我可以销毁带有工作完成的CQ吗？
 A：是的，你可以。当CQ被摧毁时，它是否包含工作完成并不重要。
 
-Q：我在CQ上调用了ibv_req_notify_cq（），但没有得到任何完成事件。 我可以销毁该CQ吗？
+Q：我在CQ上调用了ibv_req_notify_cq()，但没有得到任何完成事件。 我可以销毁该CQ吗？
 A：是的，你可以。
 
 
-Q：我调用了ibv_destroy_cq（），但是它没有结束。 发生了什么？
+Q：我调用了ibv_destroy_cq()，但是它没有结束。 发生了什么？
 A：该CQ上至少有一个关联的异步事件被读取，但没有确认。
 
 ## 5.4 分配和释放PD
@@ -1929,9 +1929,9 @@ if (ibv_dealloc_pd(pd)) {
 **常见问题：**
 
 Q：我可以通过一个动词调用销毁PD和与其相关的所有RDMA资源吗？
-A：不，libibverbs不支持它。 如果用户希望取消分配PD，则需要在调用ibv_dealloc_pd（）之前销毁与之关联的所有RDMA资源。
+A：不，libibverbs不支持它。 如果用户希望取消分配PD，则需要在调用ibv_dealloc_pd()之前销毁与之关联的所有RDMA资源。
 
-Q：ibv_dealloc_pd（）失败，我可以知道分配了哪些RDMA资源并导致此失败吗？
+Q：ibv_dealloc_pd()失败，我可以知道分配了哪些RDMA资源并导致此失败吗？
 A：不可以，目前RDMA堆栈不具备此功能。
 
 ## 5.5 分配和释放DM
@@ -1950,7 +1950,7 @@ struct ibv_dm *ibv_alloc_dm(struct ibv_context *context, struct ibv_alloc_dm_att
 
 **说明：**
 
-ibv_alloc_dm（）为RMDA设备上下文context分配一个设备内存缓冲区。
+ibv_alloc_dm()为RMDA设备上下文context分配一个设备内存缓冲区。
 
 struct ibv_alloc_dm_attr定义如下：
 
@@ -1966,7 +1966,7 @@ struct ibv_alloc_dm_attr {
 
 在这种情况下，用户可以使用分配属性结构体中的log_align_req参数指定设备内存的起始地址对齐方式。
 
-如果设备没有剩余的可用设备内存，则ibv_alloc_dm（）可能会失败，其中最大的已分配内存量是由ibv_device_attr_ex结构中的max_dm_size属性提供的。
+如果设备没有剩余的可用设备内存，则ibv_alloc_dm()可能会失败，其中最大的已分配内存量是由ibv_device_attr_ex结构中的max_dm_size属性提供的。
 
 
 struct ibv_dm定义如下：
@@ -2019,7 +2019,7 @@ ibv_alloc_td()为RDMA设备上下文context分配一个线程域。
 
 如果指定了ibv_td对象，则在该线程域下创建的所有对象都将禁用内部锁，该内部锁定旨在防止多个用户线程同时访问该对象。 默认情况下，无论是否指定线程域，所有动词对象都可安全用于多线程访问。
 
-可以通过ibv_alloc_parent_domain（）将struct ibv_td添加到父域中，然后可以使用父域来创建动词对象。
+可以通过ibv_alloc_parent_domain()将struct ibv_td添加到父域中，然后可以使用父域来创建动词对象。
 
 struct ibv_td_init_attr定义如下：
 
@@ -2047,7 +2047,7 @@ int ibv_dealloc_td(struct ibv_td *td)
 
 **返回值：** 成功返回0，失败返回errno以显示失败原因。
 
-**说明：** ibv_dealloc_td（）将取消分配线程域td。 在取消分配td之前，应销毁使用td创建的所有资源。
+**说明：** ibv_dealloc_td()将取消分配线程域td。 在取消分配td之前，应销毁使用td创建的所有资源。
 
 ## 5.7 打开和关闭XRCD（差mojo）
 ### 5.7.1 ibv_open_xrcd
@@ -2142,7 +2142,7 @@ ibv_create_counters为RDMA设备上下文创建一个新的计数器句柄。
 
 ibv_一个counters句柄在创建时可以静态添加到动词资源（例如：QP，WQ，Flow）。
 
-例如，在创建新的流期间，通过调用ibv_create_flow（）将ibv_counters静态添加到流中（struct ibv_flow）上。
+例如，在创建新的流期间，通过调用ibv_create_flow()将ibv_counters静态添加到流中（struct ibv_flow）上。
 
 计数器在创建时清空，并且值将单调增加。
 
@@ -2173,7 +2173,7 @@ int ibv_destroy_counters(struct ibv_counters *counters)
 
 **返回值：** 成功返回0，失败返回errno显失败原因。EINVAL——参数非法。
 
-**说明：** ibv_destroy_counters（）释放了计数器句柄，用户应在销毁计数器对象之前将其分离。
+**说明：** ibv_destroy_counters()释放了计数器句柄，用户应在销毁计数器对象之前将其分离。
 ## 5.9 创建、修改、销毁WQ（差mojo）
 ### 5.9.1 ibv_create_wq
 **函数原型：** 
@@ -2305,9 +2305,9 @@ struct ibv_rwq_ind_table *ibv_create_rwq_ind_table(struct ibv_context *context,
 
 创建一个RWQ IND TBL， 并与设备上下文context关联。
 
-函数ibv_create_rwq_ind_table（）将创建一个包含一个接收工作队列表的RWQ IND TBL。
+函数ibv_create_rwq_ind_table()将创建一个包含一个接收工作队列表的RWQ IND TBL。
 
-创建的对象应用作ibv_create_qp_ex（）的一部分，以启用基于某些RX哈希配置的传入数据包的分派。
+创建的对象应用作ibv_create_qp_ex()的一部分，以启用基于某些RX哈希配置的传入数据包的分派。
 
 struct ibv_rwq_ind_table 定义如下：
 ```cpp
@@ -2372,7 +2372,7 @@ struct ibv_srq *ibv_create_srq(struct ibv_pd *pd, struct ibv_srq_init_attr *srq_
 **说明：**
 ibv_create_srq创建与保护域PD关联的共享接收队列（SRQ）。 读取srq_attr-> max_wr和srq_attr-> max_sge以确定所需的SRQ大小，并将其设置为返回时分配的实际值。 如果ibv_create_srq成功，则max_wr和max_sge将至少与请求的值一样大。
 
-函数ibv_create_srq（）将使用创建的SRQ的原始值更新srq_init_attr结构体。 max_wr和max_sge的值将大于或等于请求的值。
+函数ibv_create_srq()将使用创建的SRQ的原始值更新srq_init_attr结构体。 max_wr和max_sge的值将大于或等于请求的值。
 
 这个SRQ稍后将在调用ibv_create_qp()时使用，表示该QP的RQ与其他QP共享。
 
@@ -2440,9 +2440,9 @@ struct ibv_srq *ibv_create_srq_ex(struct ibv_context *context,
 
 **说明：**
 
-ibv_create_srq_ex（）创建支持基本模式和xrc模式的共享接收队列（SRQ）。
+ibv_create_srq_ex()创建支持基本模式和xrc模式的共享接收队列（SRQ）。
 
-函数ibv_create_srq_ex（）将使用创建的SRQ的原始值更新srq_init_attr_ex结构体。 max_wr和max_sge的值将大于或等于请求的值。
+函数ibv_create_srq_ex()将使用创建的SRQ的原始值更新srq_init_attr_ex结构体。 max_wr和max_sge的值将大于或等于请求的值。
 
 struct ibv_srq_init_attr_ex定义如下：
 ```cpp
@@ -2556,11 +2556,11 @@ enum ibv_srq_attr_mask {
 
 **常见问题：**
 
-Q：ibv_modify_srq（）失败，该SRQ的属性现在是什么？
-A：与调用ibv_modify_srq（）之前完全相同，未对SRQ进行任何更改。
+Q：ibv_modify_srq()失败，该SRQ的属性现在是什么？
+A：与调用ibv_modify_srq()之前完全相同，未对SRQ进行任何更改。
 
 Q：我用值X武装了SRQ。可以将此值更改为Y吗？
-A：是的你可以。 只需使用不同的SRQ限制值来调用ibv_modify_srq（）。
+A：是的你可以。 只需使用不同的SRQ限制值来调用ibv_modify_srq()。
 
 ### 6.1.4 ibv_query_srq
 
@@ -2616,9 +2616,9 @@ int ibv_destroy_srq(struct ibv_srq *srq)
 
 ibv_destroy_srq销毁特定的SRQ。如果有任何QP与该SRQ关联则会失败。
 
-如果使用ibv_get_async_event（）读取了该SRQ上的任何关联异步事件，但仍未使用ibv_ack_async_event（）进行确认，则对ibv_destroy_srq（）的调用将永远不会结束，直到该事件被确认为止。
+如果使用ibv_get_async_event()读取了该SRQ上的任何关联异步事件，但仍未使用ibv_ack_async_event()进行确认，则对ibv_destroy_srq()的调用将永远不会结束，直到该事件被确认为止。
 
-如果SRQ为空或包含未完成的未完成工作请求，则可以销毁SRQ。 同样，如果在生成关联的异步事件IBV_EVENT_SRQ_LIMIT_REACHED之前使用ibv_modify_srq（）在该SRQ上请求了限制事件，则可以销毁它。
+如果SRQ为空或包含未完成的未完成工作请求，则可以销毁SRQ。 同样，如果在生成关联的异步事件IBV_EVENT_SRQ_LIMIT_REACHED之前使用ibv_modify_srq()在该SRQ上请求了限制事件，则可以销毁它。
 
 
 **示例：**
@@ -2662,7 +2662,7 @@ if (ibv_destroy_srq(srq)) {
 Q：ibv_destroy_srq()失败，与它相关的QPs会发生什么变化?
 A：没事，您可以继续使用，而不会产生任何副作用。
 
-Q：ibv_destroy_srq（）失败，我可以知道哪些QP与之相关并导致了此失败吗？
+Q：ibv_destroy_srq()失败，我可以知道哪些QP与之相关并导致了此失败吗？
 A：不，目前RDMA堆栈没有这个功能。
 
 Q：我可以销毁拥有未完成工作请求的SRQ吗？
@@ -2701,9 +2701,9 @@ ibv_create_qp创建一个与保护域pd关联的QP。当一个QP被创建时，�
 
 用户可以定义QP的最小属性：发送/接收队列的工作请求数量和每个工作请求的分散/收集条目数。 函数使用实际值更新qp_init_attr->cap结构体，因此实际属性可以等于或高于请求的值。
 
-如果要求创建与SRQ关联的IBV_QPT_RC或IBV_QPT_UD以外的其他类型的QP，则ibv_create_qp（）将失败。
+如果要求创建与SRQ关联的IBV_QPT_RC或IBV_QPT_UD以外的其他类型的QP，则ibv_create_qp()将失败。
 
-如果要将QP与SRQ关联，则ibv_create_qp（）将忽略属性max_recv_wr和max_recv_sge。
+如果要将QP与SRQ关联，则ibv_create_qp()将忽略属性max_recv_wr和max_recv_sge。
 
 struct ibv_qp_init_attr定义如下：
 ```cpp
@@ -2848,11 +2848,11 @@ ibv_create_qp_ex创建一个与保护域pd关联的QP。
 
 函数ibv_create_qp_ex将使用创建的QP的实际QP值更新qp_init_attr_ex-> cap结构。该值将大于或等于请求的值。
 
-如果要将QP与SRQ关联，则ibv_create_qp_ex（）将忽略属性max_recv_wr和max_recv_sge。
+如果要将QP与SRQ关联，则ibv_create_qp_ex()将忽略属性max_recv_wr和max_recv_sge。
 
 仅在UD QP上支持属性source_qpn，没有流量控制RX应该是不可能的。
 
-当QP创建属性IBV_QP_INIT_ATTR_SEND_OPS_FLAGS时，请使用ibv_qp_to_qp_ex（）获取用于访问send ops迭代器接口的ibv_qp_ex。
+当QP创建属性IBV_QP_INIT_ATTR_SEND_OPS_FLAGS时，请使用ibv_qp_to_qp_ex()获取用于访问send ops迭代器接口的ibv_qp_ex。
 
 
 struct ibv_qp_init_attr_ex定义如下：
@@ -3037,11 +3037,11 @@ int ibv_query_qp(struct ibv_qp *qp, struct ibv_qp_attr *attr,
 **说明：**
 ibv_query_qp获取通过队列对（QP）的各种属性，并通过attr和init_attr返回。
 
-参数attr_mask是一个提示，它指定要检索的最小属性列表。 某些RDMA设备可能会返回未请求的其他属性，例如，如果可以低代价地返回该值。 该格式与ibv_modify_qp（）中的格式相同。
+参数attr_mask是一个提示，它指定要检索的最小属性列表。 某些RDMA设备可能会返回未请求的其他属性，例如，如果可以低代价地返回该值。 该格式与ibv_modify_qp()中的格式相同。
 
-如果使用ibv_modify_qp（）设置了属性值，则这些属性值有效。 有效属性的确切列表取决于QP状态。
+如果使用ibv_modify_qp()设置了属性值，则这些属性值有效。 有效属性的确切列表取决于QP状态。
 
-多次调用ibv_query_qp（）可能会导致以下属性的返回值有所不同：qp_state，path_mig_state，sq_draining，ah_attr（如果启用了APM）。
+多次调用ibv_query_qp()可能会导致以下属性的返回值有所不同：qp_state，path_mig_state，sq_draining，ah_attr（如果启用了APM）。
 
 用户应分配一个struct ibv_qp_attr和一个struct ibv_qp_init_attr，并将它们传递给命令。 成功返回后，将填充这些结构体。 ***用户负责释放这些结构体***。
 
@@ -3066,7 +3066,7 @@ struct ibv_qp_attr {
 	uint16_t			pkey_index;				/* 主 P_Key索引 */
 	uint16_t			alt_pkey_index;			/* 备用 P_Key索引*/
 	uint8_t				en_sqd_async_notify;	/* 启用SQD。耗尽异步通知（仅在qp_state为SQD时有效） */
-	uint8_t				sq_draining;			/* QP正在排尽吗？与ibv_modify_qp（）不相关 */
+	uint8_t				sq_draining;			/* QP正在排尽吗？与ibv_modify_qp()不相关 */
 	uint8_t				max_rd_atomic;			/* 目标QP上未完成的RDMA读取和原子操作的数量（仅对RC QP有效）*/
 	uint8_t				max_dest_rd_atomic;		/*用于处理传入RDMA读取和原子操作的响应器资源数量（仅对RC QP有效）*/
 	uint8_t				min_rnr_timer;			/* 最小RNR NAK计时器（仅对RC QP有效），详细信息见下文*/
@@ -3096,7 +3096,7 @@ struct ibv_qp_attr的完整说明如下：
 |alt_ah_attr|备用路径的地址向量，说明到远程QP的路径信息，详细信息见ibv_create_ah。仅当设备支持时才可以使用（在dev_cap.device_cap_flags中设置了IBV_DEVICE_AUTO_PATH_MIG）
 |pkey_index|主P_Key索引。 从这个QP发出的数据包将与P_Key表中的条目的值一起发送，而到这个QP的传入数据包将在主路径中得到验证
 |alt_pkey_index|备用P_Key索引。 从这个QP发出的数据包将与P_Key表中的条目的值一起发送，而到这个QP的传入数据包将在备用路径中得到验证
-|en_sqd_async_notify|如果不为零，则在QP状态变为SQD时生成关联的异步事件IBV_EVENT_SQ_DRAINED。耗尽，例如发送队列被耗尽。 与ibv_query_qp（）无关。
+|en_sqd_async_notify|如果不为零，则在QP状态变为SQD时生成关联的异步事件IBV_EVENT_SQ_DRAINED。耗尽，例如发送队列被耗尽。 与ibv_query_qp()无关。
 |sq_draining|如果设置，则表示发送队列正在耗尽。仅当QP处于SQD状态时才相关
 |max_rd_atomic|作为发起方，在任意时刻，此QP可以处理的RDMA读取和原子操作的数量。 仅与RC QP相关|
 |max_dest_rd_atomic|作为目的地，在任意时刻，此QP可以处理的RDMA读取和原子操作的数量。仅与RC QP相关|
@@ -3247,9 +3247,9 @@ if (ibv_query_qp(qp, &attr,IBV_QP_STATE, &init_attr)) {
 
 **常见问题：**
 Q：当我需要QP属性时，每次调用ibv_query_qp()都需要花费一些时间，我可以缓存一些属性吗?
-A：实际是可以的。 除非使用ibv_modify_qp（）对其进行了更改，否则大多数属性都是常量。 QP属性结构中的以下字段可能会更改：qp_state，path_mig_state，sq_draining，ah_attr，pkey_index，port_num，timeout。
+A：实际是可以的。 除非使用ibv_modify_qp()对其进行了更改，否则大多数属性都是常量。 QP属性结构中的以下字段可能会更改：qp_state，path_mig_state，sq_draining，ah_attr，pkey_index，port_num，timeout。
 
-Q：我可以确切指定ibv_query_qp（）填充哪些属性吗？
+Q：我可以确切指定ibv_query_qp()填充哪些属性吗？
 A：不可以。参数attr_mask只是一个提示，RDMA设备的底层驱动程序可能会（并且在大多数情况下）会填充比attr_mask中请求的属性更多的属性。
 
 Q：所有QP属性都有效吗？
@@ -3300,7 +3300,7 @@ ibv_modify_qp根据attr_mask更改QP属性，这些属性之一有可能是QP状
 
 **常见问题：**
 Q：为什么需要调用ibv_modify_qp()?
-A：您需要调用ibv_modify_qp（）才能将QP修改为可以接收和发送数据的状态。
+A：您需要调用ibv_modify_qp()才能将QP修改为可以接收和发送数据的状态。
 
 Q：我可以将QP移到RTR状态并保持在该状态吗？
 A：是的你可以。 如果QP只是接收者。
@@ -3308,10 +3308,10 @@ A：是的你可以。 如果QP只是接收者。
 Q：我如何知道要用哪些属性配置QP ?
 A：在Infiniband中，应该执行到SA的路径查询，或者使用CM或CMA；在iWARP中，应该使用CMA。
 
-Q：ibv_modify_qp（）失败了，该QP的属性现在是什么？
-A：与调用ibv_modify_qp（）之前完全相同，未对QP进行任何更改。 尽管故障可能是由于错误导致RDMA设备将QP状态转移至SQE或ERROR状态引起的。
+Q：ibv_modify_qp()失败了，该QP的属性现在是什么？
+A：与调用ibv_modify_qp()之前完全相同，未对QP进行任何更改。 尽管故障可能是由于错误导致RDMA设备将QP状态转移至SQE或ERROR状态引起的。
 
-Q：在基于ROCE的有连接QP中，ibv_modify_qp（）进行INIT-> RTR转换失败，这是什么原因？
+Q：在基于ROCE的有连接QP中，ibv_modify_qp()进行INIT-> RTR转换失败，这是什么原因？
 A：使用RoCE时，必须配置GRH。在有连接的QP中：作为QP属性的一部分。在UD QP中：作为地址句柄属性的一部分。
 
 ### 6.2.6 ibv_open_qp
@@ -3333,9 +3333,9 @@ struct ibv_qp *ibv_open_qp(struct ibv_context *context,struct ibv_qp_open_attr *
 
 打开与扩展保护域xrcd关联的已有队列对（QP）。
 
-如果要求ibv_open_qp（）打开指定xrcd中不存在的qp_num和qp_type的QP，它将失败。
+如果要求ibv_open_qp()打开指定xrcd中不存在的qp_num和qp_type的QP，它将失败。
   
-ibv_destroy_qp（）关闭打开的QP并销毁基础QP（如果没有其他引用）。
+ibv_destroy_qp()关闭打开的QP并销毁基础QP（如果没有其他引用）。
   
 struct ibv_qp_open_attr定义如下：
 ```cpp
@@ -3382,11 +3382,11 @@ ibv_destroy_qp释放一个队列对。
 * 等待关联事件IBV_EVENT_QP_LAST_WQE_REACHED
 * 要么，通过调用ibv_poll_cq来排空CQ，然后等待CQ为空或轮询CQ操作数已超过CQ容量大小。
 * 要么，发布另一个将在同一CQ上完成的工作请求，并等待该工作请求作为工作完成返回
-* 通过调用ibv_destroy_qp（）销毁QP
+* 通过调用ibv_destroy_qp()销毁QP
 
 如果不可靠的数据报队列对仍然被添加到多播组，则销毁该QP将失败。
 
-如果使用ibv_get_async_event（）在该QP上读取了任何关联的异步事件，但仍未使用ibv_ack_async_event（）进行确认，则对ibv_destroy_qp（）的调用将永远不会结束，直到该事件被确认为止。
+如果使用ibv_get_async_event()在该QP上读取了任何关联的异步事件，但仍未使用ibv_ack_async_event()进行确认，则对ibv_destroy_qp()的调用将永远不会结束，直到该事件被确认为止。
 
 QP可以在任何状态下被销毁。
 
@@ -3490,10 +3490,10 @@ if (!qp) {
 ```
 
 **常见问题：**
-Q：ibv_destroy_qp（）失败，此QP附加到的多播组会发生什么？
+Q：ibv_destroy_qp()失败，此QP附加到的多播组会发生什么？
 A：没事，您可以继续使用，而不会产生任何副作用。
 
-Q：ibv_destroy_qp（）失败，我可以知道它连接到哪个多播组并导致此失败吗？
+Q：ibv_destroy_qp()失败，我可以知道它连接到哪个多播组并导致此失败吗？
 A：不，目前RDMA堆栈没有这个功能。
 
 Q：我可以销毁拥有未完成工作请求的QP吗？
@@ -3728,7 +3728,7 @@ A：这样做可能会导致段错误。
 Q：如果我在注销MR之后使用与MR关联的密钥（密钥），将会发生什么？
 A：这样做将导致带有错误的工作完成，因为这些密钥无效。 在注销此MR之前，应确保没有使用这些密钥的任何本地工作请求或远程操作请求。
 
-Q：ibv_dereg_mr（）失败，我可以知道分配了哪个MW并导致此失败吗？
+Q：ibv_dereg_mr()失败，我可以知道分配了哪个MW并导致此失败吗？
 A：不，目前RDMA堆栈没有这个功能。
 
 ## 6.4 创建和销毁AH
@@ -3817,12 +3817,12 @@ struct ibv_global_route完整定义如下：
 **常见问题：**
 
 Q：AH有什么好处？
-A：当对UD QP调用ibv_post_send（）时使用AH。 该对象说明了从请求方到响应方的路径。
+A：当对UD QP调用ibv_post_send()时使用AH。 该对象说明了从请求方到响应方的路径。
 
 Q：我可以将一个AH与不同的QP一起使用吗？
 A：是。 只要所有这些QP和AH与相同的PD关联，就可以完成此操作。
 
-Q：调用ibv_create_ah（）时如何获得AH所需的信息？
+Q：调用ibv_create_ah()时如何获得AH所需的信息？
 A：获取这些信息有几种方法:
 
 * 向子网管理员(SA)执行路径查询
@@ -3851,9 +3851,9 @@ int ibv_init_ah_from_wc(struct ibv_context *context, uint8_t port_num,
 
 ibv_init_ah_from_wc使用端口号port_num以及来自工作完成wc和全局路由头（GRH）结构体grh中的属性为RDMA设备上下文context初始化地址句柄（AH）属性结构体ah_attr。
 
-从ibv_init_ah_from_wc（）返回的结构体ah_attr可用于ibv_create_ah（）创建新的AH。
+从ibv_init_ah_from_wc()返回的结构体ah_attr可用于ibv_create_ah()创建新的AH。
 
-当希望将响应发送回不可靠数据报（UD）QP接收到的消息的发送者时，这很有用。 wc是使用ibv_poll_cq（）从CQ轮询的该消息的工作完成。 此工作完成必须成功并且属于单播消息。
+当希望将响应发送回不可靠数据报（UD）QP接收到的消息的发送者时，这很有用。 wc是使用ibv_poll_cq()从CQ轮询的该消息的工作完成。 此工作完成必须成功并且属于单播消息。
 
 grh是(可能)包含接收消息的grh的缓冲区(发送到接收队列以指定消息保存位置的接收请求缓冲区的前40个字节)。
 
@@ -3903,7 +3903,7 @@ if (ibv_destroy_ah(ah)) {
 **常见问题：**
 
 Q：我可以使用任何工作完成来填充AH属性结构体吗？
-A：否。调用ibv_init_ah_from_wc（）时可以使用的工作完成有几点限制：
+A：否。调用ibv_init_ah_from_wc()时可以使用的工作完成有几点限制：
 
 * 工作完成必须是单播消息，而不是多播消息。
 * 如果在wc_flags中设置了IBV_WC_GRH，即传入消息具有GRH，则必须提供grh。
@@ -3919,7 +3919,7 @@ struct ibv_ah *ibv_create_ah_from_wc(struct ibv_pd *pd, struct ibv_wc *wc,
 ```
 **输入参数：**
 
-* pd——从ibv_alloc_pd（）返回的保护域，该域与接收到消息的RDMA设备上下文相关联。
+* pd——从ibv_alloc_pd()返回的保护域，该域与接收到消息的RDMA设备上下文相关联。
 * wc——使用ibv_poll_cq()读取的工作完成。
 * grh——到UD QP的传入消息的GRH缓冲区。 除非工作完成表明GRH有效，否则将忽略此值
 * port_num——收到的消息到达的端口号。
@@ -3933,9 +3933,9 @@ struct ibv_ah *ibv_create_ah_from_wc(struct ibv_pd *pd, struct ibv_wc *wc,
 
 **说明：**
 
-ibv_create_ah_from_wc（）使用port_num、工作完成和全局路由头（GRH）缓冲区来创建地址句柄（AH）。
+ibv_create_ah_from_wc()使用port_num、工作完成和全局路由头（GRH）缓冲区来创建地址句柄（AH）。
 
-当希望将响应发送回不可靠数据报（UD）QP接收到的消息的发送者时，这很有用。 wc是使用ibv_poll_cq（）从CQ轮询的该消息的工作完成。 此工作完成必须成功并且属于单播消息。
+当希望将响应发送回不可靠数据报（UD）QP接收到的消息的发送者时，这很有用。 wc是使用ibv_poll_cq()从CQ轮询的该消息的工作完成。 此工作完成必须成功并且属于单播消息。
 
 grh是(可能)包含接收消息的grh的缓冲区(发送到接收队列以指定消息保存位置的接收请求缓冲区的前40个字节)。
 
@@ -3965,7 +3965,7 @@ if (ibv_destroy_ah(ah)) {
 **常见问题：**
 
 Q：我可以使用任何工作完成来填充AH属性结构体吗？
-A：否。调用ibv_init_ah_from_wc（）时可以使用的工作完成有几点限制：
+A：否。调用ibv_init_ah_from_wc()时可以使用的工作完成有几点限制：
 
 * 工作完成必须是单播消息，而不是多播消息。
 * 如果在wc_flags中设置了IBV_WC_GRH，即传入消息具有GRH，则必须提供grh。
@@ -4092,7 +4092,7 @@ int ibv_bind_mw(struct ibv_qp *qp, struct ibv_mw *mw, struct ibv_mw_bind *mw_bin
 
 **说明：**
 
-ibv_bind_mw（）根据mw_bind中的详细信息向队列对qp发送一个绑定内存窗口mw的请求。
+ibv_bind_mw()根据mw_bind中的详细信息向队列对qp发送一个绑定内存窗口mw的请求。
 
 函数返回时，绑定不会完成-它只是发布到QP。如果绑定操作的后续CQE指示失败，则用户应保留旧R_key的副本，并修复mw结构。用户可以在同一QP上使用发送请求安全地发送R_key（基于QP排序规则：始终对同一QP的绑定请求之后的发送进行排序），但在读取到成功的CQE之前，不得以任何其他方式将其传输到远程。
 
@@ -4142,7 +4142,7 @@ int ibv_dealloc_mw(struct ibv_mw *mw)
 
 **返回值：** 成功返回0，失败返回errno以显示失败原因。
 
-**说明：** ibv_dealloc_mw（）取消之前绑定绑定的MR，并取消分配内存窗口。
+**说明：** ibv_dealloc_mw()取消之前绑定绑定的MR，并取消分配内存窗口。
 
 
 # 7 基于队列对的操作
@@ -4729,7 +4729,7 @@ ibv_post_recv将以wr开始的工作请求（WR）链表发布到队列对qp的�
 
 WR使用的缓冲区只有在WR完全执行了请求，并且已经从相应的完成队列（CQ）中检索到工作完成之后，才能安全地重用。
 
-如果QP qp与一个SRQ关联，则必须使用函数ibv_post_srq_recv（），而不是ibv_post_recv（），因为不会使用QP自己的接收队列。
+如果QP qp与一个SRQ关联，则必须使用函数ibv_post_srq_recv()，而不是ibv_post_recv()，因为不会使用QP自己的接收队列。
 
 如果将WR发布到UD QP，则传入消息的全局路由头（GRH）将放置在分散列表中缓冲区的前40个字节中。 如果传入消息中不存在GRH，则前几个字节将不确定。 这意味着在所有情况下，对于UD QP，传入消息的实际数据将以40个字节的偏移量开始进入分散列表中的缓冲区。
 
@@ -5063,7 +5063,7 @@ int ibv_get_async_event(struct ibv_context *context, struct ibv_async_event *eve
 
 ibv_get_async_event获取RDMA设备上下文context的下一个异步事件，并通过指针event返回它，它是一个ibv_async_event结构体。 最后必须通过ibv_ack_async_event确认由ibv_get_async_event返回的所有异步事件。为避免竞争，销毁对象（CQ，SRQ或QP）将等待所有相关事件被确认。 这样可以避免应用程序在销毁相应对象之后检索关联事件。
 
-ibv_get_async_event（）是一个阻塞函数。 如果多个线程同时调用此函数，则在发生异步事件时，只有一个线程将接收该函数，并且无法预测哪个线程将接收它。
+ibv_get_async_event()是一个阻塞函数。 如果多个线程同时调用此函数，则在发生异步事件时，只有一个线程将接收该函数，并且无法预测哪个线程将接收它。
 
 struct ibv_async_event定义如下：
 ```cpp
@@ -5188,7 +5188,7 @@ ibv_req_notify_cq在完成队列cq上请求一个完成通知。在向cq添加�
 
 用户应使用ibv_get_cq_event操作接收这个通知。
 
-一个请求仅可用于一个通知。每次调用ibv_req_notify_cq（）只会生成一个完成事件。
+一个请求仅可用于一个通知。每次调用ibv_req_notify_cq()只会生成一个完成事件。
 
 ## 10.2 ibv_poll_cq(差mojo)
 **函数原型：**
@@ -5332,23 +5332,23 @@ void	ibv_wr_set_xrc_srqn(struct ibv_qp_ex *qp, uint32_t remote_srqn);
 
 应用程序应以不会造成失败的方式使用此API。 各个API不会返回失败指示以避免分支。
 
-如果在操作过程中检测到失败，例如由于参数无效，那么ibv_wr_complete（）将返回失败，并且整个发布将被中止。
+如果在操作过程中检测到失败，例如由于参数无效，那么ibv_wr_complete()将返回失败，并且整个发布将被中止。
 
 **说明：**
 
-动词 工作请求API（ibv_wr_\*）允许使用函数调用代替基于ibv_post_send（）方案的架构，将工作高效地发布到发送队列中。 此方法旨在最大程度地减少发布过程中的CPU分支和锁定。
+动词 工作请求API（ibv_wr_\*）允许使用函数调用代替基于ibv_post_send()方案的架构，将工作高效地发布到发送队列中。 此方法旨在最大程度地减少发布过程中的CPU分支和锁定。
 
-这些API旨在用于访问ibv_post_send（）提供的功能之外的其他功能。
+这些API旨在用于访问ibv_post_send()提供的功能之外的其他功能。
 
-ibv_post_send（）批处理的WR和这些API批处理的WR可以相互交错，只要它们不在彼此的关键区域内发布。这些API中的关键区域由ibv_wr_start（）和ibv_wr_complete（）/ibv_wr_abort（）形成。
+ibv_post_send()批处理的WR和这些API批处理的WR可以相互交错，只要它们不在彼此的关键区域内发布。这些API中的关键区域由ibv_wr_start()和ibv_wr_complete()/ibv_wr_abort()形成。
 
 ***用法***
 
-要使用这些API，必须使用ibv_create_qp_ex（）创建QP，这个函数允许在comp_mask中设置IBV_QP_INIT_ATTR_SEND_OPS_FLAGS。 send_ops_flags应该设置为将发布到QP的工作请求类型的OR运算。
+要使用这些API，必须使用ibv_create_qp_ex()创建QP，这个函数允许在comp_mask中设置IBV_QP_INIT_ATTR_SEND_OPS_FLAGS。 send_ops_flags应该设置为将发布到QP的工作请求类型的OR运算。
 
 如果QP不支持所有请求的工作请求类型，则QP创建将失败。
 
-将工作请求发布到QP是在ibv_wr_start（）和ibv_wr_complete（）/ibv_wr_abort（）形成的关键区域内完成的（请参见下面的注意事项）。
+将工作请求发布到QP是在ibv_wr_start()和ibv_wr_complete()/ibv_wr_abort()形成的关键区域内完成的（请参见下面的注意事项）。
 
 每个工作请求都是通过调用WR构建函数（请参见下面的表WR Builder）来创建的，以开始创建工作请求，然后再调用下文所述的允许/需要的设置函数。
 
@@ -5365,11 +5365,11 @@ ibv_wr_set_sge(qpx, lkey, &data, sizeof(data));
 ```
 “工作请求”部分详细描述了各种WR构建函数和设置函数。
 
-通过调用ibv_wr_complete（）或ibv_wr_abort（）完成发布工作。 在ibv_wr_complete（）返回成功之前，不会对队列执行任何工作。 ibv_wr_abort（）将丢弃自ibv_wr_start（）以来准备的所有工作。
+通过调用ibv_wr_complete()或ibv_wr_abort()完成发布工作。 在ibv_wr_complete()返回成功之前，不会对队列执行任何工作。 ibv_wr_abort()将丢弃自ibv_wr_start()以来准备的所有工作。
 
 ***工作请求***
 
-许多操作与ibv_post_send（）可用的操作码匹配。 每个操作都有一个WR构建函数，一个允许的设置函数列表，一个标志位，这个标志位用于请求struct ibv_qp_init_attr_ex中send_ops_flags的操作（请参见下面的示例）。
+许多操作与ibv_post_send()可用的操作码匹配。 每个操作都有一个WR构建函数，一个允许的设置函数列表，一个标志位，这个标志位用于请求struct ibv_qp_init_attr_ex中send_ops_flags的操作（请参见下面的示例）。
 
 |操作|WR构建器|支持的QP类型|设置器
 |:--|:--|:--|:--|
@@ -5387,40 +5387,40 @@ ibv_wr_set_sge(qpx, lkey, &data, sizeof(data));
 
 
 * **原子操作**：原子操作仅是原子操作，只要所有对内存的写操作仅通过同一RDMA硬件进行即可。 由CPU或系统中其他RDMA硬件执行的写操作的不是原子的。
-  * `ibv_wr_atomic_cmp_swp（）`
+  * `ibv_wr_atomic_cmp_swp()`
 如果rkey和remote_addr指定的远程64位内存位置等于compare，则将其设置为swap。
-  * `ibv_wr_atomic_fetch_add（）`
+  * `ibv_wr_atomic_fetch_add()`
 将add添加到rkey和remote_addr的指定的64位内存位置。
 * **内存窗口**：内存窗口类2 操作（有关ibv_alloc_mw的信息，请参见手册页）。
-  * `ibv_wr_bind_mw（）`
+  * `ibv_wr_bind_mw()`
 绑定由mw指定的MW类型2，设置一个新的rkey并通过bind_info设置其属性。
-  * `ibv_wr_local_inv（）`
+  * `ibv_wr_local_inv()`
 使与rkey关联的MW类型2无效。
 * **RDMA**
-  * `ibv_wr_rdma_read（）`
+  * `ibv_wr_rdma_read()`
 从rkey和remote_addr指定的远程内存位置读取。读取的字节数以及存储数据的本地位置由此调用后设置的DATA缓冲区确定。
-  * `ibv_wr_rdma_write（），ibv_wr_rdma_write_imm（）`
+  * `ibv_wr_rdma_write()，ibv_wr_rdma_write_imm()`
 写入rkey和remote_addr指定的远程内存位置。写入的字节数以及写入数据的本地位置由此调用后设置的DATA缓冲区确定。\_imm版本使远程端获得包含32位立即数据的IBV_WC_RECV_RDMA_WITH_IMM，
 * **消息发送**
-  * `ibv_wr_send（），ibv_wr_send_imm（）`
+  * `ibv_wr_send()，ibv_wr_send_imm()`
 发送消息。发送的字节数以及获取数据的本地位置由此调用后设置的DATA缓冲区确定。\_imm版本使远程端获取包含32位立即数据的IBV_WC_RECV_RDMA_WITH_IMM。
-  * `ibv_wr_send_inv（）`
-数据传输与`ibv_wr_send（）`相同，但是在传递完成之前，远程端将使invalidate_rkey指定的MR无效。
-  * `ibv_wr_send_tso（）`
+  * `ibv_wr_send_inv()`
+数据传输与`ibv_wr_send()`相同，但是在传递完成之前，远程端将使invalidate_rkey指定的MR无效。
+  * `ibv_wr_send_tso()`
 使用TCP Segmentation Offload产生多个SEND消息。 SGE指向TCP流缓冲区，该缓冲区将分成MSS大小的SEND。 hdr包含直到（包括）TCP头的整个网络头，并在每个分段之前添加前缀。
 * **QP特定设置器**： 某些QP类型要求每个发布都必须有额外的设置器，这些设置器对于上表中列出的QP设置群器的任何操作都是强制的。
   * UD QP
- 必须调用`ibv_wr_set_ud_addr（）`来设置工作的目标地址。
+ 必须调用`ibv_wr_set_ud_addr()`来设置工作的目标地址。
   * XRC_SEND QP
-必须调用`ibv_wr_set_xrc_srqn（）`来设置SRQN字段。
+必须调用`ibv_wr_set_xrc_srqn()`来设置SRQN字段。
 * **数据传输设置器**：对于需要传输数据的工作，应在WR构建器之后调用以下设置器之一：
-  * `ibv_wr_set_sge（）`
-传输数据 到/自 由lkey，addr和length给定的单个缓冲区。这等效于具有单个元素的`ibv_wr_set_sge_list（）`。
-  * `ibv_wr_set_sge_list（）`
+  * `ibv_wr_set_sge()`
+传输数据 到/自 由lkey，addr和length给定的单个缓冲区。这等效于具有单个元素的`ibv_wr_set_sge_list()`。
+  * `ibv_wr_set_sge_list()`
 传输数据 到/自 逻辑上串联在一起的缓冲区列表。每个缓冲区由struct ibv_sge数组中的一个元素指定。内联设置器将在设置器中复制发送的数据，并允许调用方立即重新使用缓冲区。此行为与IBV_SEND_INLINE标志相同。通常，此副本以优化SEND延迟的方式完成，并且适合于小消息。驱动程序将限制在单个操作中可以支持的数据量。在strcut ibv_qp_init_attr的max_inline_data成员中请求此限制。仅对SEND和RDMA_WRITE有效。
-  * `ibv_wr_set_inline_data（）`
-从addr和length给定的单个缓冲区中复制发送数据。这等效于具有单个元素的`ibv_wr_set_inline_data_list（）`。
-  * `ibv_wr_set_inline_data_list（）`
+  * `ibv_wr_set_inline_data()`
+从addr和length给定的单个缓冲区中复制发送数据。这等效于具有单个元素的`ibv_wr_set_inline_data_list()`。
+  * `ibv_wr_set_inline_data_list()`
 从逻辑上串联在一起的缓冲区列表中复制发送数据。每个缓冲区由struct ibv_inl_data数组中的一个元素指定。
 * **flags**： 可以在wr_flags中指定标志的位掩码，以控制工作请求的行为。定义见ibv_post_send
   * `IBV_SEND_FENCE`
@@ -5434,7 +5434,7 @@ ibv_wr_set_sge(qpx, lkey, &data, sizeof(data));
 
 ***并发性***
 
-驱动程序将提供锁以确保ibv_wr_start（）和ibv_wr_complete（）/abort（）形成每个QP关键部分，其他线程无法进入该部分。
+驱动程序将提供锁以确保ibv_wr_start()和ibv_wr_complete()/abort()形成每个QP关键部分，其他线程无法进入该部分。
 
 如果在QP创建期间提供了ibv_td，则不会执行锁定，并且由调用者决定一次只能在关键区域内有一个线程。
 
