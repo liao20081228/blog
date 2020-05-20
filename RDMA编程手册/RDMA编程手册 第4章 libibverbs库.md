@@ -39,7 +39,7 @@ libibverbs是Infiniband（根据Infiniband规范）和iWARP（根据iWARP动词�
 ```
 ## 1.5 资源创建依赖
 
-![图1](https://gitee.com/liao20081228/blog_pictures/raw/master/RDMA编程手册_第4章_libibverbs/图1.jpg#pic_center)
+![图1](https://gitee.com/liao20081228/blog_pictures/raw/master/RDMA编程手册_第4章_libibverbs库/图1.jpg#pic_center)
 
  ## 1.6 静态链接
 
@@ -139,7 +139,7 @@ libibverbs是Infiniband（根据Infiniband规范）和iWARP（根据iWARP动词�
 ## 2.1 ibv_fork_init
 **函数原型：**
 
-```text
+```cpp
 int ibv_fork_init(void)
 ```
 
@@ -230,7 +230,7 @@ A：libibverbs有几个文件说明符，在调用fork（）之后，它们仍�
 ```
 在C源代码中为fork()保护调用函数:
 
-```text
+```cpp
 int rc;
 
 rc = ibv_fork_init()
@@ -244,7 +244,7 @@ if (rc)
 
 **函数原型：**
 
-```text
+```cpp
 struct ibv_device **ibv_get_device_list(int *num_devices)
 ```
 
@@ -273,7 +273,7 @@ ibv_get_device_list（）返回当前可用的RDMA设备的以NULL终止的数�
 ibv_device结构体的数组将保持有效，直到该数组被释放。 调用ibv_get_device_list之后，用户应打开任何所需的设备，并通过ibv_free_device_list命令迅速释放数组。
 
 struct ibv_device定义为：
-```text
+```cpp
 struct ibv_device {
 	struct	_ibv_device_ops			ops;							//设备操作函数
 	enum	ibv_node_type			node_type;						//节点类型，一个枚举值，详细信息见下文
@@ -285,7 +285,7 @@ struct ibv_device {
 };
 ```
 
-```text
+```cpp
 enum {
 	IBV_SYSFS_NAME_MAX	= 64,
 	IBV_SYSFS_PATH_MAX	= 256
@@ -294,7 +294,7 @@ enum {
 
 struct \_ibv_device_ops定义如下：
 
-```text
+```cpp
 struct _ibv_device_ops {
 	struct ibv_context	*(*_dummy1)(struct ibv_device *device, int cmd_fd);
 	void				 (*_dummy2)(struct ibv_context *context);
@@ -303,7 +303,7 @@ struct _ibv_device_ops {
 
 enum ibv_node_type定义如下：
 
-```text
+```cpp
 enum ibv_node_type {
 	IBV_NODE_UNKNOWN	= -1,	//未知类型
 	IBV_NODE_CA			= 1,	//通道适配器
@@ -316,7 +316,7 @@ enum ibv_node_type {
 ```
 
 enum ibv_transport_type定义如下：
-```text
+```cpp
 enum ibv_transport_type {
 	IBV_TRANSPORT_UNKNOWN	= -1,		//未知类型
 	IBV_TRANSPORT_IB		= 0,		//IB
@@ -343,7 +343,7 @@ A：驱动程序找不到任何RDMA设备。
 ## 3.2 ibv_free_device_list
 **函数原型：**
 
-```text
+```cpp
 void ibv_free_device_list(struct ibv_device **list)
 ```
 
@@ -362,7 +362,7 @@ void ibv_free_device_list(struct ibv_device **list)
 ### 4.1.1 ibv_get_device_name
 
 **函数原型：**
-```text
+```cpp
 const char *ibv_get_device_name(struct ibv_device *device)
 ```
 **输入参数：** device——RDMA设备，由ibv_get_device_list()返回的struct ibv_device数组元素。
@@ -396,7 +396,7 @@ ibv_get_device_name返回指向ibv_device结构体中包含的设备名称的指
 ### 4.1.2 ibv_get_device_guid
 
 **函数原型：**
-```text
+```cpp
 __be64 ibv_get_device_guid(struct ibv_device *device)
 ```
 **输入参数：** device——ibv_get_device_list()返回的struct ibv_device数组元素。
@@ -418,7 +418,7 @@ ibv_get_device_guid以网络字节顺序返回RDMA设备的64位全局惟一标�
 ## 4.2 打开和关闭设备
 ### 4.2.1 ibv_open_device
 **函数原型：**
-```text
+```cpp
 struct ibv_context *ibv_open_device(struct ibv_device *device)
 ```
 **输入参数：** device——RMDA设备，由ibv_get_device_list()返回的struct ibv_device数组元素。
@@ -436,7 +436,7 @@ ibv_open_device（）为RDMA设备设备创建一个上下文。 该上下文稍
 设置环境变量RDMAV_ALLOW_DISASSOC_DESTROY可以使该库成功将EIO与destroy命令相关联，因为已经释放了内核资源。 这是为了防止在解除设备关联时用户空间区域中的内存泄漏。 当调用与对象销毁函数的同时，使用此标志的应用程序不能调用ibv_get_cq_event或ibv_get_async_event。
 
 struct ibv_context定义如下：
-```text
+```cpp
 struct ibv_context {
 	struct ibv_device		*device;			//RDMA设备结构体，详细信息见ibv_get_device_list
 	struct ibv_context_ops	ops;				//设备上下文操作函数，详细信息见下文
@@ -449,7 +449,7 @@ struct ibv_context {
 ```
 
 struct ibv_context_ops定义如下：
-```text
+```cpp
 struct ibv_context_ops {
 	void *(*_compat_query_device)(void);//查询设备
 	int		(*_compat_query_port)(struct ibv_context *context,uint8_t port_num,
@@ -498,7 +498,7 @@ struct ibv_context_ops {
 
 ```
 struct \_compat_ibv_port_attr 定义如下：
-```text
+```cpp
 struct _compat_ibv_port_attr {
 	enum ibv_port_state		state;
 	enum ibv_mtu				max_mtu;
@@ -529,7 +529,7 @@ struct _compat_ibv_port_attr {
 ### 4.2.2 ibv_close_device
 
 **函数原型：**
-```text
+```cpp
 int ibv_close_device(struct ibv_context *context)
 ```
 **输入参数：** context——ibv_open_device()返回的RDMA设备上下文。
@@ -555,7 +555,7 @@ ibv_close_device（）不会释放与此上下文关联的资源。 用户在调
 
 ###  5.1.1 ibv_query_device
 **函数原型：**
-```text
+```cpp
 int ibv_query_device(struct ibv_context *context, struct ibv_device_attr *device_attr)
 ```
 **输入参数：** context——RDMA设备上下文，由ibv_open_device()返回。
@@ -574,7 +574,7 @@ ibv_query_device（）返回的最大值是设备支持的资源的上限。 但
 
 struct ibv_device_attr的定义如下:
 
-```text
+```cpp
 struct ibv_device_attr{
 	char					fw_ver[64];					//固件版本
 	__be64					node_guid;					//节点全局唯一标识符(GUID)
@@ -667,7 +667,7 @@ fw_ver|	NULL终止的字符串，说明RDMA设备的固件版本。|
 
 enum ibv_device_cap_flags定义如下：
 
-```text
+```cpp
 enum ibv_device_cap_flags {
 	IBV_DEVICE_RESIZE_MAX_WR			= 1,			//设备支持修改QP的未完成工作请求的最大数量
 	IBV_DEVICE_BAD_PKEY_CNTR			= 1 <<  1,	//设备支持每个端口的错误P_Key计数
@@ -698,7 +698,7 @@ enum ibv_device_cap_flags {
 
 enum ibv_atomic_cap定义如下：
 
-```text
+```cpp
 enum ibv_atomic_cap {
 	IBV_ATOMIC_NONE,	//根本不支持原子操作
 	IBV_ATOMIC_HCA,		//仅在此设备上的QP之间保证原子性
@@ -721,7 +721,7 @@ A：不能。 当前RDMA堆栈不支持此功能。
 ### 5.1.2 ibv_query_device_ex
 
 **函数原型：**
-```text
+```cpp
  int ibv_query_device_ex(struct ibv_context *context, const struct ibv_query_device_ex_input *input,
 							struct ibv_device_attr_ex *attr);
 ```
@@ -742,14 +742,14 @@ ibv_query_device_ex（）获取设备的属性，用户应分配一个 struct ib
 该函数返回的最大值是设备支持的资源上限。 但是，可能无法使用这些最大值，因为可以创建的任何资源的实际数量可能会受到计算机配置，主机内存量，用户权限以及已被其他用户/进程使用的资源量的限制。
 
  struct ibv_query_device_ex_input 定义如下：
- ```text
+ ```cpp
 struct ibv_query_device_ex_input {
 	uint32_t	comp_mask;				//可扩展的输入结构，用于将来可能的扩展
 };
 ```
 
  struct ibv_device_attr_ex 定义如下：
- ```text
+ ```cpp
 struct ibv_device_attr_ex {
 	struct ibv_device_attr			orig_attr;					//设备属性，结构体详细信息见 ibv_query_device
 	uint32_t						comp_mask;					//兼容性掩码，定义以下哪些字段有效，当前未定义
@@ -771,7 +771,7 @@ struct ibv_device_attr_ex {
 ```
  struct ibv_odp_caps定义如下:
 
-```text
+```cpp
 struct ibv_odp_caps {
 	uint64_t general_odp_caps;			//一般的按需分页功能，使用枚举ibv_odp_general_caps
 	struct {
@@ -782,7 +782,7 @@ struct ibv_odp_caps {
 };
 ```
 enum ibv_odp_general_cap_bits定义如下：
-```text
+```cpp
 enum ibv_odp_general_caps {
 	IBV_ODP_SUPPORT				= 1 << 0,	/* 支持按需分页功能 */
 	IBV_ODP_SUPPORT_IMPLICIT	= 1 << 1,	/* 支持隐式的按需分页功能 */
@@ -790,7 +790,7 @@ enum ibv_odp_general_caps {
 ```
 
 enum ibv_odp_transport_cap_bits定义如下：
-```text
+```cpp
 enum ibv_odp_transport_cap_bits {
 	IBV_ODP_SUPPORT_SEND		= 1 << 0,	/* Send操作支持按需分页 */
 	IBV_ODP_SUPPORT_RECV		= 1 << 1,	/* Receive操作支持按需分页*/
@@ -802,7 +802,7 @@ enum ibv_odp_transport_cap_bits {
 
 ```
 struct ibv_tso_caps定义如下：
-```text
+```cpp
 struct ibv_tso_caps {
 	uint32_t max_tso;			/* TSO引擎的分段的最大负载（以字节为单位）*/
 	uint32_t supported_qpts;	/* 位图显示哪些QP类型支持TOS */
@@ -810,7 +810,7 @@ struct ibv_tso_caps {
 
 ```
  struct ibv_rss_caps定义如下：
-```text
+```cpp
 struct ibv_rss_caps {
 	uint32_t supported_qpts;					/* 位图显示哪些QP类型支持RSS */
 	uint32_t max_rwq_indirection_tables;		/* 最大接收工作队列间接表* / */
@@ -827,7 +827,7 @@ struct ibv_rss_caps {
 struct ibv_packet_pacing_caps 定义如下：
 
 
-```text
+```cpp
 struct ibv_packet_pacing_caps {
 	uint32_t qp_rate_limit_min;	/* 最小速率限制， kbps */
 	uint32_t qp_rate_limit_max;	/* 最大速率限制， kbps */
@@ -836,7 +836,7 @@ struct ibv_packet_pacing_caps {
 
 ```
 enum ibv_raw_packet_caps定义如下：
-```text
+```cpp
 enum ibv_raw_packet_caps {
 	IBV_RAW_PACKET_CAP_CVLAN_STRIPPING	= 1 << 0,	/* 支持 CVLAN stripping  */
 	IBV_RAW_PACKET_CAP_SCATTER_FCS		= 1 << 1,	/* 支持FCS scattering */
@@ -847,7 +847,7 @@ enum ibv_raw_packet_caps {
 
  struct ibv_tm_caps 定义如下：
 
-```text
+```cpp
  struct ibv_tm_caps {
 	uint32_t	max_rndv_hdr_size;	/* 集合请求标头的最大大小 */
 	uint32_t	max_num_tags;		/* TM-SRQ匹配列表中标记缓冲区的最大数量 */
@@ -858,14 +858,14 @@ enum ibv_raw_packet_caps {
 ```
 enum ibv_tm_cap_flags 定义如下：
 
-```text
+```cpp
 enum ibv_tm_cap_flags {
 	IBV_TM_CAP_RC   = 1 << 0,	/* 支持RC传输上的标签匹配 */
 };
 ```
 
 struct ibv_cq_moderation_caps定义如下：
-```text
+```cpp
 struct	ibv_cq_moderation_caps {
 	uint16_t	max_cq_count;
 	uint16_t	max_cq_period; //usec
@@ -873,7 +873,7 @@ struct	ibv_cq_moderation_caps {
 ```
 
  struct ibv_pci_atomic_caps定义如下：
-```text
+```cpp
 struct ibv_pci_atomic_caps {
 	uint16_t fetch_add;		/* 原子获取和添加操作支持的大小，使用enum ibv_pci_atomic_op_size */
 	uint16_t swap;				/* 原子无条件交换操作支持的大小，使用enum ibv_pci_atomic_op_size  */
@@ -882,7 +882,7 @@ struct ibv_pci_atomic_caps {
 ```
 
 enum ibv_pci_atomic_op_size定义如下：
-```text
+```cpp
 enum ibv_pci_atomic_op_size {
 	IBV_PCI_ATOMIC_OPERATION_4_BYTE_SIZE_SUP	= 1 << 0,
 	IBV_PCI_ATOMIC_OPERATION_8_BYTE_SIZE_SUP	= 1 << 1,
@@ -891,7 +891,7 @@ enum ibv_pci_atomic_op_size {
 ```
 
 扩展设备功能标志（device_cap_flags_ex）：
-```text
+```cpp
 #define IBV_DEVICE_PCI_WRITE_END_PADDING (1ULL << 36)
 ```
 
@@ -907,7 +907,7 @@ enum ibv_pci_atomic_op_size {
 
 ### 5.1.3 ibv_query_port
 **函数原型：**
-```text
+```cpp
 int ibv_query_port(struct ibv_context *context, uint8_t port_num, struct ibv_port_attr *port_attr)
 ```
 **输入参数：**
@@ -930,7 +930,7 @@ bv_query_port（）返回的大多数端口属性不是恒定的，可能会更�
 
 struct ibv_port_attr定义如下：
 
-```text
+```cpp
 struct ibv_port_attr
 {
 	enum ibv_port_state	state;				//逻辑端口状态， enum ibv_port_state枚举值之一
@@ -986,7 +986,7 @@ struct ibv_port_attr
 |port_cap_flags2||端口支持功能 。 其值enum ibv_port_cap_flags2中的枚举值按位或。见下面详述
 
  enum ibv_port_state定义如下：
-```text
+```cpp
 enum ibv_port_state {
 	IBV_PORT_NOP				= 0,	//保留
 	IBV_PORT_DOWN				= 1,	//逻辑链路中断
@@ -1010,7 +1010,7 @@ enum ibv_port_state {
 
  enum ibv_mtu定义如下：
 
-```text
+```cpp
 enum ibv_mtu {
 	IBV_MTU_256		= 1,	//MTU 是256 bytes
 	IBV_MTU_512		= 2,	//MTU 是512 bytes
@@ -1021,7 +1021,7 @@ enum ibv_mtu {
 ```
 
 enum ibv_port_cap_flags定义如下：
-```text
+```cpp
 enum ibv_port_cap_flags {
 	IBV_PORT_SM							= 1 <<  1,	//管理子网的SM从该端口发送数据包
 	IBV_PORT_NOTICE_SUP					= 1 <<  2,
@@ -1095,7 +1095,7 @@ phys_state的完整说明如下：
 
 link_layer的定义如下：
 
-```text
+```cpp
 enum {
 	IBV_LINK_LAYER_UNSPECIFIED,		//遗留值，用于表示链路层协议是InfiniBand
 	IBV_LINK_LAYER_INFINIBAND,		//链路层协议是InfiniBand
@@ -1113,7 +1113,7 @@ enum {
 
  enum ibv_port_cap_flags2定义如下：
 
-```text
+```cpp
 enum ibv_port_cap_flags2 {
 	IBV_PORT_SET_NODE_DESC_SUP				= 1 << 0,
 	IBV_PORT_INFO_EXT_SUP					= 1 << 1,
@@ -1126,7 +1126,7 @@ enum ibv_port_cap_flags2 {
 
 **示例：**
 
-```text
+```cpp
 #include <stdio.h>
 #include <infiniband/verbs.h>
 
@@ -1216,7 +1216,7 @@ A：	是。 表示端口支持的属性（例如，支持的表长度和功能�
 
 ### 5.1.4 ibv_query_gid
 **函数原型：**
-```text
+```cpp
 int ibv_query_gid(struct ibv_context *context, uint8_t port_num, int index, union ibv_gid *gid)
 ```
 **输入参数：**
@@ -1238,7 +1238,7 @@ ibv_query_gid在端口的全局标识符（GID）表中检索条目。 子网管
 
 union ibv_gid的定义如下：
 
-```text
+```cpp
 union ibv_gid {
 	uint8_t raw[16];
 	struct {
@@ -1249,7 +1249,7 @@ union ibv_gid {
 ```
 **示例：**
 
-```text
+```cpp
 union ibv_gid gid;
 
 rc = ibv_query_gid(ctx, 1, 2, &gid);
@@ -1274,7 +1274,7 @@ A：实际上,是的。GID表是由SM配置的，SM可以在初始配置之后�
 
 ### 5.1.5 ibv_query_pkey
 **函数原型：**
-```text
+```cpp
 int ibv_query_pkey(struct ibv_context *context, uint8_t port_num, int index, uint16_t *pkey)
 ```
 **输入参数：**
@@ -1298,7 +1298,7 @@ ibv_query_pkey在端口的分区密钥（pkey）表中检索条目。 子网管�
 
 **示例：**
 
-```text
+```cpp
 uint16_t pkey;
 
 rc = ibv_query_pkey(ctx, 1, 2, &pkey);
@@ -1337,7 +1337,7 @@ A：是。 P_Key表是由SM配置的，SM可以更改它，但是大多数时候
 
 ### 5.2.1 ibv_create_comp_channel
 **函数原型：**
-```text
+```cpp
 struct ibv_comp_channel *ibv_create_comp_channel(struct ibv_context *context)
 ```
 **输入参数：** context——来自ibv_open_device的struct ibv_context。
@@ -1357,7 +1357,7 @@ ibv_create_comp_channel为RMDA设备上下文创建一个完成事件通道。
 一个或多个完成队列可以与同一完成事件通道关联。
 
 struct ibv_comp_channel 定义如下：
-```text
+```cpp
 struct ibv_comp_channel {
 	struct ibv_context	*context;	//上下文
 	int					fd;			//文件说明符
@@ -1383,7 +1383,7 @@ A：您可以将具有相同优先级的所有CQ与相同的完成事件通道�
 
 ### 5.2.2 ibv_destroy_comp_channel
 **函数原型：**
-```text
+```cpp
 int ibv_destroy_comp_channel(struct ibv_comp_channel *channel)
 ```
 **输入参数：** channel——来自 ibv_create_comp_channel的struct ibv_comp_channel。
@@ -1396,7 +1396,7 @@ int ibv_destroy_comp_channel(struct ibv_comp_channel *channel)
 
 **示例：**
 
-```text
+```cpp
 struct ibv_comp_channel *event_channel;
 
 event_channel = ibv_create_comp_channel(context);
@@ -1422,7 +1422,7 @@ A：不，目前RDMA堆栈没有这个功能。
 
 ###  5.3.1 ibv_create_cq
 **函数原型：**
-```text
+```cpp
 struct ibv_cq *ibv_create_cq(struct ibv_context *context, int cqe, void *cq_context,
 					struct ibv_comp_channel *channel, int comp_vector)
 ```
@@ -1456,7 +1456,7 @@ ibv_create_cq创建完成队列（CQ）。完成队列包含完成队列条目�
 
 参数comp_vector用于指定用于通知完成事件的完成向量。它必须是0~context->num_comp_vectors。
 
-```text
+```cpp
 struct ibv_cq {
 	struct ibv_context			*context;				//设备上下文，由ibv_create_cq传入
 	struct ibv_comp_channel	*channel;				//事件通道，由ibv_create_cq传入
@@ -1470,7 +1470,7 @@ struct ibv_cq {
 };
 ```
 pthread_mutex_t定义如下:
-```text
+```cpp
 //位于<bits/pthreadtypes.h>
 typedef union {
 	struct __pthread_mutex_s	__data;
@@ -1480,7 +1480,7 @@ typedef union {
 ```
 pthread_cond_t定义如下:
 
-```text
+```cpp
 //位于<bits/pthreadtypes.h>
 typedef union {
 	struct __pthread_cond_s			__data;
@@ -1516,7 +1516,7 @@ A：由于cq_context为void*，因此您可以输入所需的任何值。
 ### 5.3.2 ibv_create_cq_ex
 
 **函数原型：**
-```text
+```cpp
 struct ibv_cq_ex *ibv_create_cq_ex(struct ibv_context *context, struct ibv_cq_init_attr_ex *cq_attr)
 ```
 **输入参数：**
@@ -1534,7 +1534,7 @@ ibv_create_cq_ex根据cq_attr请求的属性为RDMA设备山西该文context创�
 
 struct ibv_cq_init_attr_ex定义如下：
 
-```text
+```cpp
 struct ibv_cq_init_attr_ex {
 	int							cqe;			/* CQ的CQE的最小数量*/
 	void						*cq_context;	/* 完成事件返回的用户定义上下文 */
@@ -1552,7 +1552,7 @@ struct ibv_cq_init_attr_ex {
 
 enum ibv_create_cq_wc_flags定义如下：
 
-```text
+```cpp
 enum ibv_create_cq_wc_flags {
 	IBV_WC_EX_WITH_BYTE_LEN							= 1 << 0,		/* 在WC中需要字节长度 */
 	IBV_WC_EX_WITH_IMM								= 1 << 1,		/* 在WC中需要立即数据 */
@@ -1589,7 +1589,7 @@ enum {
 ```
 enum ibv_cq_init_attr_mask定义如下：
 
-```text
+```cpp
 enum ibv_cq_init_attr_mask {
 	IBV_CQ_INIT_ATTR_MASK_FLAGS = 1 << 0,
 };
@@ -1597,7 +1597,7 @@ enum ibv_cq_init_attr_mask {
 
 enum ibv_create_cq_attr_flags定义如下：
 
-```text
+```cpp
 enum ibv_create_cq_attr_flags {
 	IBV_CREATE_CQ_ATTR_SINGLE_THREADED	= 1 << 0,	//此CQ是单线程使用的，因此不需要锁定
 	IBV_CREATE_CQ_ATTR_IGNORE_OVERRUN	= 1 << 1,	/*如果溢出，此CQ不会进入错误状态，CQE始终将写入下一个条目
@@ -1607,7 +1607,7 @@ enum ibv_create_cq_attr_flags {
 
 struct ibv_cq_ex定义如下：
 
-```text
+```cpp
 struct ibv_cq_ex {
 	struct ibv_context			*context;			//设备上下午文，来自ibv_
 	struct ibv_comp_channel	*channel;
@@ -1646,7 +1646,7 @@ struct ibv_cq_ex {
 
   enum ibv_wc_status 定义如下：
 
-```text
+```cpp
 enum ibv_wc_status {
 	IBV_WC_SUCCESS,
 	IBV_WC_LOC_LEN_ERR,
@@ -1725,14 +1725,14 @@ enum ibv_wc_status {
       从当前完成中获取标签匹配信息。
 	
 struct ibv_wc_tm_info 定义如下：
-```text
+```cpp
 struct ibv_wc_tm_info {
 	uint64_t tag;		/* 来自TMH的标签 */
 	uint32_t priv;		/* 来自TMH的不透明用户数据 */
 };
 ```
 struct ibv_poll_cq_attr 定义如下
-```text
+```cpp
 struct ibv_poll_cq_attr {
 	uint32_t comp_mask;
 };
@@ -1740,7 +1740,7 @@ struct ibv_poll_cq_attr {
 ### 5.3.3 ibv_cq_ex_to_cq
   **函数原型：**
  **
-```text
+```cpp
 static inline struct ibv_cq *ibv_cq_ex_to_cq(struct ibv_cq_ex *cq)
 ```
 **输入参数：** cq——扩展cq。由ibv_create_cq_ex返回。
@@ -1753,7 +1753,7 @@ static inline struct ibv_cq *ibv_cq_ex_to_cq(struct ibv_cq_ex *cq)
 
 ### 5.3.4 ibv_resize_cq
 **函数原型：**
-```text
+```cpp
 int ibv_resize_cq(struct ibv_cq *cq, int cqe)
 ```
 **输入参数：**
@@ -1805,7 +1805,7 @@ A：这可能发生。 规则是用户可以定义CQ的最小大小，并且实�
 
 ### 5.3.5 ibv_modify_cq
 **函数原型：**
-```text
+```cpp
 int ibv_modify_cq(struct ibv_cq *cq, struct ibv_modify_cq_attr *cq_attr。)
 ```
 **输入参数：**
@@ -1823,14 +1823,14 @@ ibv_modify_cq基于cq_attr->attr_mask修改CQ属性。
 
 struct ibv_modify_cq_attr定义如下：
 
-```text
+```cpp
 struct ibv_modify_cq_attr {
 	uint32_t				attr_mask ;	//要修改的属性的掩码，使用enum ibv_cq_attr_mask，详细信息见下文.
 	struct ibv_moderate_cq	moderate;
 };
 ```
 struct ibv_moderate_cq定义如下：
-```text
+```cpp
 struct ibv_moderate_cq {
 	uint16_t cq_count;		//CQ计数
 	uint16_t cq_period;	//CQ周期，微秒
@@ -1838,7 +1838,7 @@ struct ibv_moderate_cq {
 
 ```
 enum ibv_cq_attr_mask定义如下：
-```text
+```cpp
 enum ibv_cq_attr_mask {
 	IBV_CQ_ATTR_MODERATE	= 1 << 0,
 	IBV_CQ_ATTR_RESERVED	= 1 << 1,
@@ -1847,7 +1847,7 @@ enum ibv_cq_attr_mask {
 
 ### 5.3.6 ibv_destroy_cq
 **函数原型：**
-```text
+```cpp
 int ibv_destroy_cq(struct ibv_cq *cq)
 ```
 **输入参数：** cq，将要销毁的CQ。
@@ -1866,7 +1866,7 @@ ibv_destroy_cq释放完成队列（CQ）。 如果有任何队列对（QP）仍�
 
 **示例：**
 
-```text
+```cpp
 struct ibv_cq *cq;
 
 cq = ibv_create_cq(context, 100, NULL, NULL, 0);
@@ -1907,7 +1907,7 @@ A：该CQ上至少有一个关联的异步事件被读取，但没有确认。
 ## 5.4 分配和释放PD
 ###  5.4.1 ibv_alloc_pd
 **函数原型：**
-```text
+```cpp
 struct ibv_pd *ibv_alloc_pd(struct ibv_context *context)
 ```
 **输入参数：** context——来自ibv_open_device的struct ibv_context。
@@ -1923,7 +1923,7 @@ ibv_alloc_pd创建保护域（PD）。创建的PD被用于：创建 AH, SRQ, QP�
 PD限制了哪些队列对（QP）可以访问哪些内存区域，从而提供了一定程度的保护，防止未经授权的访问。 用户必须创建至少一个PD才能使用VPI动词
 
 
-```text
+```cpp
 struct ibv_pd {
 	struct ibv_context		*context;	//设备上下文
 	uint32_t				handle;		//句柄
@@ -1939,7 +1939,7 @@ A：PD是一种保护手段，可帮助您创建可以一起工作的一组对�
 
 ### 5.4.2 ibv_dealloc_pd
 **函数原型：**
-```text
+```cpp
 int ibv_dealloc_pd(struct ibv_pd *pd)
 ```
 **输入参数：** pd——来自ibv_dealloc_pd的struct ibv_pd。
@@ -1953,7 +1953,7 @@ int ibv_dealloc_pd(struct ibv_pd *pd)
 **说明：** ibv_dealloc_pd释放保护域（PD）。 如果当前有任何其他对象与指定的PD相关联，则该命令将失败。可以关联的资源有：AH、QP、SRQ、MW、MR。
 
 **示例：**
-```text
+```cpp
 struct ibv_context *context;
 struct ibv_pd *pd;
 
@@ -1980,7 +1980,7 @@ A：不可以，目前RDMA堆栈不具备此功能。
 ## 5.5 分配和释放DM
 ### 5.5.1 ibv_adlloc_dm
 **函数原型：**
-```text
+```cpp
 struct ibv_dm *ibv_alloc_dm(struct ibv_context *context, struct ibv_alloc_dm_attr *attr)
 ```
 **输入参数：**
@@ -1997,7 +1997,7 @@ ibv_alloc_dm（）为RMDA设备上下文context分配一个设备内存缓冲区
 
 struct ibv_alloc_dm_attr定义如下：
 
-```text
+```cpp
 struct ibv_alloc_dm_attr {
 	size_t		length;			/*期望的设备内存缓冲区的长度 */
 	uint32_t	log_align_req;	/*与log2地址对齐要求的 log 2*/
@@ -2014,7 +2014,7 @@ struct ibv_alloc_dm_attr {
 
 struct ibv_dm定义如下：
 
-```text
+```cpp
 struct ibv_dm {
 	struct ibv_context	*context;													//动词上下文
 	int					(*memcpy_to_dm)(struct ibv_dm *dm, uint64_t dm_offset,
@@ -2027,7 +2027,7 @@ struct ibv_dm {
 
 ### 5.5.2 ibv_dealloc_dm
 **函数原型：**
-```text
+```cpp
  int ibv_free_dm(struct ibv_dm *dm)
 ```
 **输入参数：** ibv_dm——设备内存，来自ibv_alloc_dm。
@@ -2042,7 +2042,7 @@ struct ibv_dm {
 
 ### 5.6.1 ibv_alloc_td
 **函数原型：**
-```text
+```cpp
 struct ibv_td *ibv_alloc_td(struct ibv_context *context, struct ibv_td_init_attr *init_attr);
 ```
 **输入参数：**
@@ -2066,14 +2066,14 @@ ibv_alloc_td()为RDMA设备上下文context分配一个线程域。
 
 struct ibv_td_init_attr定义如下：
 
-```text
+```cpp
 struct ibv_td_init_attr {
 	uint32_t comp_mask;	//兼容性掩码
 }
 ```
 
 struct ibv_td定义如下：
-```text
+```cpp
 struct ibv_td {
 	struct ibv_context *context;	//设备上下文
 };
@@ -2081,7 +2081,7 @@ struct ibv_td {
 
 ### 5.6.2 ibv_dealloc_td
 **函数原型：**
-```text
+```cpp
 int ibv_dealloc_td(struct ibv_td *td)
 ```
 **输入参数：** td——线程域，来自ibv_alloc_td。
@@ -2095,7 +2095,7 @@ int ibv_dealloc_td(struct ibv_td *td)
 ## 5.7 打开和关闭XRCD（差mojo）
 ### 5.7.1 ibv_open_xrcd
 **函数原型：**
-```text
+```cpp
 struct ibv_xrcd *ibv_open_xrcd(struct ibv_context *context, struct ibv_xrcd_init_attr *xrcd_init_attr)
 ```
 **输入参数：**
@@ -2113,7 +2113,7 @@ ibv_open_xrcd为RDMA设备上下文context打开一个XRC域。xrcd_init_attr是
 
 struc ibv_xrcd_init_attr定义如下：
 
-```text
+```cpp
 struct ibv_xrcd_init_attr {
 	uint32_t	comp_mask;	//兼容性掩码，用于标识有效字段。enum ibv_xrcd_init_attr_mask按位或
 	int			fd;			//与XRCD关联的文件描述符。0或以下值按位或得到。
@@ -2127,7 +2127,7 @@ struct ibv_xrcd_init_attr {
 };
 ```
 enum ibv_xrcd_init_attr_mask定义如下：
-```text
+```cpp
 enum ibv_xrcd_init_attr_mask {
 	IBV_XRCD_INIT_ATTR_FD		= 1 << 0,	//fd字段有效
 	IBV_XRCD_INIT_ATTR_OFLAGS	= 1 << 1,	//oflags字段有效
@@ -2136,7 +2136,7 @@ enum ibv_xrcd_init_attr_mask {
 ```
 
 struct ibv_xrcd定义如下：
-```text
+```cpp
 struct ibv_xrcd {
 	struct ibv_context	*context;	//设备上下文
 };
@@ -2144,7 +2144,7 @@ struct ibv_xrcd {
 ### 5.7.2 ibv_close_xrcd
 **函数原型：**
 
-```text
+```cpp
 int ibv_close_xrcd(struct ibv_xrcd *xrcd)
 ```
 **输入参数：** xrcd——来自ibv_opend_xrcd。
@@ -2190,14 +2190,14 @@ ibv_一个counters句柄在创建时可以静态添加到动词资源（例如�
 计数器在创建时清空，并且值将单调增加。
 
 struct ibv_counters_init_attr定义如下：
-```text
+```cpp
 struct ibv_counters_init_attr {
 	uint32_t	comp_mask;	//有效字段掩码
 };
 ```
 
 struct ibv_counters定义如下：
-```text
+```cpp
 struct ibv_counters {
 	struct ibv_context	*context;	//设备上下文，详细信息见ibv_open_device
 };
@@ -2239,7 +2239,7 @@ ibv_create_wq创建一个WQ并与设备上下文context关联。成功创建后�
 
 struct ibv_wq的定义如下：
 
-```text
+```cpp
 struct ibv_wq {
 	struct ibv_context		*context;			//设备上下文,详细信息见ibv_open_device
 	void					*wq_context;		//自定义上下文
@@ -2267,7 +2267,7 @@ IBV_WQT_RQ类型的WQ：
 
 enum ibv_wq_state定义如下：
 
-```text
+```cpp
 enum ibv_wq_state {
 	IBV_WQS_RESET,
 	IBV_WQS_RDY,
@@ -2277,14 +2277,14 @@ enum ibv_wq_state {
 ```
 enum ibv_wq_type定义如下：
 
-```text
+```cpp
 enum ibv_wq_type {
 	IBV_WQT_RQ
 };
 ```
 struct ibv_wq_init_attr定义如下：
 
-```text
+```cpp
 struct ibv_wq_init_attr {
 	void				*wq_context;	//与WQ关联的上下文
 	enum ibv_wq_type	wq_type;		//WQ类型，详细信息见ibv_create_wq
@@ -2297,14 +2297,14 @@ struct ibv_wq_init_attr {
 };
 ```
 enum ibv_wq_init_attr_mask定义如下：
-```text
+```cpp
 enum ibv_wq_init_attr_mask {
 	IBV_WQ_INIT_ATTR_FLAGS			= 1 << 0,
 	IBV_WQ_INIT_ATTR_RESERVED		= 1 << 1,
 }; 
 ```
 enum ibv_wq_flags定义如下：
-```text
+```cpp
 enum ibv_wq_flags {
 	IBV_WQ_FLAGS_CVLAN_STRIPPING		= 1 << 0,	//CVLAN字段将从传入数据包中剥离
 	IBV_WQ_FLAGS_SCATTER_FCS			= 1 << 1,	//FCS字段将分散到主机内存中
@@ -2331,7 +2331,7 @@ int ibv_destroy_wq(struct ibv_wq *wq)
 ## 5.10 创建和销毁RWQ IND TBL
 ### 5.10.1 ibv_create_rwq_ind_table
 **函数原型：** 
-```text
+```cpp
 struct ibv_rwq_ind_table *ibv_create_rwq_ind_table(struct ibv_context *context,
 													struct ibv_rwq_ind_table_init_attr *init_attr)
 ```
@@ -2353,7 +2353,7 @@ struct ibv_rwq_ind_table *ibv_create_rwq_ind_table(struct ibv_context *context,
 创建的对象应用作ibv_create_qp_ex（）的一部分，以启用基于某些RX哈希配置的传入数据包的分派。
 
 struct ibv_rwq_ind_table 定义如下：
-```text
+```cpp
 struct ibv_rwq_ind_table {
 	struct ibv_context	*context;
 	int					ind_tbl_handle;
@@ -2363,7 +2363,7 @@ struct ibv_rwq_ind_table {
 ```
 
 struct ibv_rwq_ind_table_init_attr定义如下：
-```text
+```cpp
 struct ibv_rwq_ind_table_init_attr {
 	uint32_t		log_ind_tbl_size;	//间接表日志大小，2的n次方|
 	struct ibv_wq	**ind_tbl;			//每个元素都是指向接收工作队列的指针。
@@ -2373,14 +2373,14 @@ struct ibv_rwq_ind_table_init_attr {
 
 enum ibv_ind_table_init_attr_mask定义如下：
 
-```text
+```cpp
 enum ibv_ind_table_init_attr_mask {
 	IBV_CREATE_IND_TABLE_RESERVED	= (1 << 0)
 };
 ```
 ### 5.10.2 ibv_destroy_rwq_ind_table
 **函数原型：** 
-```text
+```cpp
 int ibv_destroy_rwq_ind_table(struct ibv_rwq_ind_table *rwq_ind_table)
 ```
 **输入参数：** rwq_ind_tablet——要销毁的接收工作队列间接表。来自ibv_create_rwq_ind_table。
@@ -2397,7 +2397,7 @@ int ibv_destroy_rwq_ind_table(struct ibv_rwq_ind_table *rwq_ind_table)
 ## 6.1 创建、查询、修改、销毁SRQ
 ### 6.1.1 ibv_create_srq
 **函数原型：**
-```text
+```cpp
 struct ibv_srq *ibv_create_srq(struct ibv_pd *pd, struct ibv_srq_init_attr *srq_init_attr)
 ```
 **输入参数：**
@@ -2424,7 +2424,7 @@ ibv_create_srq创建与保护域PD关联的共享接收队列（SRQ）。 读取
 用户可以定义SRQ的最小属性：工作请求的数量和每个工作请求的分散/收集条目数。 实际属性可以等于或高于这些值。
 
 struct ibv_srq_init_attr 说明了新创建的srq的请求属性。定义如下：
-```text
+```cpp
 struct ibv_srq_init_attr {
 	void	*srq_context;		//(可选的)SRQ关联的上下文，用户定义值，在srq->srq_context中可用
 	struct	ibv_srq_attrattr;	//共享接收队列的属性，详细信息见ibv_modify_srq
@@ -2432,7 +2432,7 @@ struct ibv_srq_init_attr {
 ```
 
 struct ibv_srq定义如下：
-```text
+```cpp
 struct ibv_srq {
 	struct ibv_context	*context;		//来自ibv_open_device的struct ibv_context。
 	void				*srq_context;	//用户定义SRQ上下文
@@ -2469,7 +2469,7 @@ A：因为srq上下文是一个void \*，所以您可以输入任何您想要的
 
 ### 6.1.2 ibv_create_srq_ex
 **函数原型：**
-```text
+```cpp
 struct ibv_srq *ibv_create_srq_ex(struct ibv_context *context,
 						struct ibv_srq_init_attr_ex *srq_init_attr_ex);
 ```
@@ -2488,7 +2488,7 @@ ibv_create_srq_ex（）创建支持基本模式和xrc模式的共享接收队列
 函数ibv_create_srq_ex（）将使用创建的SRQ的原始值更新srq_init_attr_ex结构体。 max_wr和max_sge的值将大于或等于请求的值。
 
 struct ibv_srq_init_attr_ex定义如下：
-```text
+```cpp
 struct ibv_srq_init_attr_ex {
 	void					*srq_context;	// SRQ的关联上下文
 	struct ibv_srq_attr	attr;			// SRQ属性 ，详细信息见ibv_create_srq
@@ -2502,7 +2502,7 @@ struct ibv_srq_init_attr_ex {
 ```
 
 struct ibv_srq_type定义如下：
-```text
+```cpp
 enum ibv_srq_type {
 	IBV_SRQT_BASIC,
 	IBV_SRQT_XRC,
@@ -2511,7 +2511,7 @@ enum ibv_srq_type {
 
 ```
 enum ibv_srq_init_attr_mask定义如下：
-```text
+```cpp
 enum ibv_srq_init_attr_mask {
 	IBV_SRQ_INIT_ATTR_TYPE		= 1 << 0,
 	IBV_SRQ_INIT_ATTR_PD		= 1 << 1,
@@ -2523,7 +2523,7 @@ enum ibv_srq_init_attr_mask {
 ```
 
 struct ibv_tm_cap 定义如下：
-```text
+```cpp
 struct ibv_tm_cap {
 	uint32_t	max_num_tags;	/* 标签匹配列表大小 */
 	uint32_t	max_ops;		/* 未完成的标记列表操作的数量 */
@@ -2532,7 +2532,7 @@ struct ibv_tm_cap {
 
 ### 6.1.3 ibv_modify_srq
 **函数原型：**
-```text
+```cpp
 int ibv_modify_srq (struct ibv_srq *srq, struct ibv_srq_attr *srq_attr, int srq_attr_mask)
 ```
 **输入参数：**
@@ -2557,7 +2557,7 @@ ibv_modify_srq基于掩码srq_attr_mask使用srq_attr中的的属性值来修改
 
 struct ibv_srq_attr定义如下：
 
-```text
+```cpp
 struct ibv_srq_attr {
 	uint32_t	max_wr;		/* SRQ中请求的未完成工作请求（WR）的最大数量 */
 	uint32_t	max_sge;	/* 请求的每个WR散点元素的最大数量 */
@@ -2576,7 +2576,7 @@ srq_attr_mask指定要修改的SRQ属性。它是0或位或一个或多个以下
 
 enum ibv_srq_attr_mask定义如下：
 	  **
-```text
+```cpp
 enum ibv_srq_attr_mask {
 	IBV_SRQ_MAX_WR	= 1 << 0,   /*调整SRQ大小 。字段srq_attr-> max_wr和srq_attr-> max_sge将被使用。
 										仅当设备支持此操作时才可以调整SRQ的大小（在
@@ -2608,7 +2608,7 @@ A：是的你可以。 只需使用不同的SRQ限制值来调用ibv_modify_srq�
 ### 6.1.4 ibv_query_srq
 
 **函数原型：**
-```text
+```cpp
  int ibv_query_srq(struct ibv_srq *srq, struct ibv_srq_attr *srq_attr)
 ```
 **输入参数：** srq——共享接收队列，来自ibv_create_srq。
@@ -2625,7 +2625,7 @@ A：是的你可以。 只需使用不同的SRQ限制值来调用ibv_modify_srq�
 
 
 **示例：**
-```text
+```cpp
 struct ibv_srq *srq;
 struct ibv_srq_attr srq_attr;
 
@@ -2646,7 +2646,7 @@ A：实际上,可以。指示SRQ大小(即max_wr和max_sge)的属性不会更改
 ### 6.1.5 ibv_destroy_srq
 
 **函数原型：**
-```text
+```cpp
 int ibv_destroy_srq(struct ibv_srq *srq)
 ```
 **输入参数：** srq，要销毁的SRQ。来自ibv_create_srq或ibv_create_srq_ex。
@@ -2666,7 +2666,7 @@ ibv_destroy_srq销毁特定的SRQ。如果有任何QP与该SRQ关联则会失败
 
 **示例：**
 
-```text
+```cpp
 struct ibv_pd *pd;
 struct ibv_srq *srq;
 struct ibv_srq_init_attr srq_init_attr;
@@ -2721,7 +2721,7 @@ A：SRQ上，至少有个关联的异步事件被读取，但没有确认。
 ## 6.2 创建、查询、修改、打开、销毁QP
 ### 6.2.1 ibv_create_qp
 **函数原型：**
-```text
+```cpp
 struct ibv_qp *ibv_create_qp(struct ibv_pd *pd, struct ibv_qp_init_attr *qp_init_attr)
 ```
 **输入参数：**
@@ -2749,7 +2749,7 @@ ibv_create_qp创建一个与保护域pd关联的QP。当一个QP被创建时，�
 如果要将QP与SRQ关联，则ibv_create_qp（）将忽略属性max_recv_wr和max_recv_sge。
 
 struct ibv_qp_init_attr定义如下：
-```text
+```cpp
 struct ibv_qp_init_attr {
 	void				*qp_context;	//(可选)用户定义的值，将在qp->qp_context中可用
 	struct ibv_cq		*send_cq;		//与SQ关联的CQ。必须在调用ibv_create_qp之前创建。由ibv_create_cq返回
@@ -2770,7 +2770,7 @@ RC和UD QP始终可以与SRQ相关联。 有些RDMA设备也允许UC QP与SRQ关
 
 
 struct ibv_qp_cap的定义如下:
-```text
+```cpp
 struct ibv_qp_cap {
 	uint32_t max_send_wr;		//发送队列中未完成的最大发送请求数
 	uint32_t max_recv_wr;		//接收队列中未完成的最大发送请求数
@@ -2792,7 +2792,7 @@ struct ibv_qp_cap的完整说明如下:
 
 
 enum ibv_qp_type定义如下：
-```text
+```cpp
 enum ibv_qp_type {
 	IBV_QPT_RC			= 2,		//rc
 	IBV_QPT_UC,						//uc
@@ -2814,7 +2814,7 @@ sq_sig_all取值定义如下：
 
 struct ibv_qp的定义如下：
 
-```text
+```cpp
 struct ibv_qp {
 	struct ibv_context	*context;			//动词上下文，详细信息见ibv_open_divece
 	void				*qp_context;
@@ -2871,7 +2871,7 @@ A：dev_cap.max_sge和dev_cap.max_qp_wr中的值报告任何工作队列（发�
 ### 6.2.2 ibv_create_qp_ex
 
 **函数原型：**
-```text
+```cpp
 struct ibv_qp *ibv_create_qp_ex(struct ibv_context *context,
 						struct ibv_qp_init_attr_ex *qp_init_attr);
 ```
@@ -2900,7 +2900,7 @@ ibv_create_qp_ex创建一个与保护域pd关联的QP。
 
 struct ibv_qp_init_attr_ex定义如下：
 
-```text
+```cpp
 struct ibv_qp_init_attr_ex {
 	void						*qp_context;	/* QP管理的上下文 */
 	struct ibv_cq				*send_cq;		/* 要与SQ关联的CQ，详细信息见ibv_create_cq */
@@ -2926,7 +2926,7 @@ struct ibv_qp_init_attr_ex {
 ```
 
  enum ibv_qp_init_attr_mask定义如下：
-```text 
+```cpp 
 enum ibv_qp_init_attr_mask {
 	IBV_QP_INIT_ATTR_PD					= 1 << 0,
 	IBV_QP_INIT_ATTR_XRCD				= 1 << 1,
@@ -2940,7 +2940,7 @@ enum ibv_qp_init_attr_mask {
 
 
 enum ibv_qp_create_flags定义如下：
-```text
+```cpp
 enum ibv_qp_create_flags {
 	IBV_QP_CREATE_BLOCK_SELF_MCAST_LB	= 1 << 1,		/* 防止自多播回路 */
 	IBV_QP_CREATE_SCATTER_FCS			= 1 << 8,		/* FCS字段将分散到主机内存中*/
@@ -2951,7 +2951,7 @@ enum ibv_qp_create_flags {
 ```
 
 struct ibv_rx_hash_conf 定义如下：
-```text
+```cpp
 struct ibv_rx_hash_conf {
 	uint8_t		rx_hash_function;		/* RX哈希函数，使用enum ibv_rx_hash_function_flags */
 	uint8_t		rx_hash_key_len;		/* RX哈希密钥长度 */
@@ -2962,13 +2962,13 @@ struct ibv_rx_hash_conf {
 ```
 enum ibv_rx_hash_function_flags定义如下：
 
-```textpp
+```cpppp
 enum ibv_rx_hash_function_flags {
 	IBV_RX_HASH_FUNC_TOEPLITZ	= 1 << 0,
 };
 ```
  enum ibv_rx_hash_fields 定义如下：
-```text
+```cpp
  enum ibv_rx_hash_fields {
 	IBV_RX_HASH_SRC_IPV4		= 1 << 0,
 	IBV_RX_HASH_DST_IPV4		= 1 << 1,
@@ -2985,7 +2985,7 @@ enum ibv_rx_hash_function_flags {
 };
 ```
  struct ibv_qp_create_send_ops_flags 定义如下：
-```text
+```cpp
 struct ibv_qp_create_send_ops_flags {
 	IBV_QP_EX_WITH_RDMA_WRITE			= 1 << 0,
 	IBV_QP_EX_WITH_RDMA_WRITE_WITH_IMM	= 1 << 1,
@@ -3004,7 +3004,7 @@ struct ibv_qp_create_send_ops_flags {
 
 ### 6.2.3 ibv_qp_to_qp_ex
 **函数原型：**
-```text
+```cpp
 struct ibv_qp_ex *ibv_qp_to_qp_ex(struct ibv_qp *qp);
 ```
 **输入参数：** qp——来自ibv_create_qp的队列对。
@@ -3019,7 +3019,7 @@ struct ibv_qp_ex *ibv_qp_to_qp_ex(struct ibv_qp *qp);
 
 struct ibv_qp_ex定义如下：
 
-```text
+```cpp
 struct ibv_qp_ex {
 	struct ibv_qp	qp_base;
 	uint64_t		comp_mask; 
@@ -3063,7 +3063,7 @@ struct ibv_qp_ex {
 
 ### 6.2.4 ibv_query_qp
 **函数原型：**
-```text
+```cpp
 int ibv_query_qp(struct ibv_qp *qp, struct ibv_qp_attr *attr, 
 					enum ibv_qp_attr_mask attr_mask, struct ibv_qp_init_attr *init_attr)
 ```
@@ -3090,7 +3090,7 @@ ibv_query_qp获取通过队列对（QP）的各种属性，并通过attr和init_
 
 struct ibv_qp_attr 定义如下：
 
-```text
+```cpp
 struct ibv_qp_attr {
 	enum ibv_qp_state	qp_state;				/* 要转移的QP状态，使用enum ibv_qp_state，详细信息见下文 */
 	enum ibv_qp_state	cur_qp_state;			/* 假设这是当前的QP状态，使用enum ibv_qp_state，详细信息见下文*/
@@ -3160,7 +3160,7 @@ struct ibv_qp_attr的完整说明如下：
 
 enum ibv_qp_state 定义如下：
 
-```text
+```cpp
 enum ibv_qp_state {
 	IBV_QPS_RESET,		//重置状态
 	IBV_QPS_INIT,		//初始化状态
@@ -3174,7 +3174,7 @@ enum ibv_qp_state {
 ```
 enum ibv_mig_state定义如下：
 
-```text
+```cpp
 enum ibv_mig_state {
 	IBV_MIG_MIGRATED,	//Migrated状态，即迁移的初始状态已经完成
 	IBV_MIG_REARM,		//Rarmed状态，即尝试尝试协调远程RC QP以将本地QP和远程QP都移入Armed状态|
@@ -3208,7 +3208,7 @@ timeout取值说明如下：
 
 
  enum ibv_qp_attr_mask定义如下：
-```text
+```cpp
 enum ibv_qp_attr_mask {
 	IBV_QP_STATE				= 1 <<  0,	//填充attr->qp_state
 	IBV_QP_CUR_STATE			= 1 <<  1,	//填充 attr->cur_qp_state
@@ -3277,7 +3277,7 @@ enum ibv_qp_attr_mask {
 
  **示例：**
 
-```text
+```cpp
 struct ibv_qp *qp;
 struct ibv_qp_attr attr;
 struct ibv_qp_init_attr init_attr;
@@ -3304,7 +3304,7 @@ A：至少应该使用IBV_QP_STATE设置标志来调用ibv_query_qp()。
 
 ### 6.2.5 ibv_modify_qp
 **函数原型：**
-```text
+```cpp
 int ibv_modify_qp(struct ibv_qp *qp, struct ibv_qp_attr *attr, enum ibv_qp_attr_mask attr_mask)
 ```
 **输入参数：**
@@ -3359,7 +3359,7 @@ A：使用RoCE时，必须配置GRH。在有连接的QP中：作为QP属性的�
 
 ### 6.2.6 ibv_open_qp
 **函数原型：** 
-```text
+```cpp
 struct ibv_qp *ibv_open_qp(struct ibv_context *context,struct ibv_qp_open_attr *qp_open_attr);
 
 ```
@@ -3381,7 +3381,7 @@ struct ibv_qp *ibv_open_qp(struct ibv_context *context,struct ibv_qp_open_attr *
 ibv_destroy_qp（）关闭打开的QP并销毁基础QP（如果没有其他引用）。
   
 struct ibv_qp_open_attr定义如下：
-```text
+```cpp
 struct ibv_qp_open_attr {
 	uint32_t			comp_mask;		//标识有效字段，使用enum ibv_qp_open_attr_mask
 	uint32_t			qp_num;			//QP编号
@@ -3391,7 +3391,7 @@ struct ibv_qp_open_attr {
 };  
 ```
 enum ibv_qp_open_attr_mask定义如下
-```text
+```cpp
 enum ibv_qp_open_attr_mask {
 	IBV_QP_OPEN_ATTR_NUM		= 1 << 0,
 	IBV_QP_OPEN_ATTR_XRCD		= 1 << 1,
@@ -3403,7 +3403,7 @@ enum ibv_qp_open_attr_mask {
 
 ### 6.2.7 ibv_destroy_qp
 **函数原型：**
-```text
+```cpp
 int ibv_destroy_qp(struct ibv_qp *qp)
 ```
 **输入参数：** qp，来自ibv_create_qp的struct ibv_qp。
@@ -3434,7 +3434,7 @@ ibv_destroy_qp释放一个队列对。
 QP可以在任何状态下被销毁。
 
 **示例：**
-```text
+```cpp
 //创建一个发送和接收队列具有相同CQ的QP并将其销毁：
 struct ibv_pd *pd;
 struct ibv_cq *cq;
@@ -3551,7 +3551,7 @@ A：该QP上至少有一个关联的异步事件被读取，但没有确认。
 ## 6.3 注册、分配、建议、注销MR
 ### 6.3.1 ibv_reg_mr
 **函数原型：**
-```text
+```cpp
 struct ibv_mr *ibv_reg_mr(struct ibv_pd *pd, void *addr, size_t length, enum ibv_access_flags access)
 ```
 **输入参数：**
@@ -3590,7 +3590,7 @@ MR的起始地址为addr，大小为length。 可以注册的块的最大大小�
 
 enum ibv_access_flags 定义如下：
 
-```text
+```cpp
 enum ibv_access_flags {
 	IBV_ACCESS_LOCAL_WRITE		= 1,		//允许本地写
 	IBV_ACCESS_REMOTE_WRITE		= (1<<1),	//允许在这个QP上传入RDMA 写
@@ -3629,7 +3629,7 @@ enum ibv_access_flags 的完整定义如下：
 请注意，队列对（QP）属性还必须具有正确的权限，否则操作将失败。
 
 struct ibv_mr定义如下：
-```text
+```cpp
 struct ibv_mr	{
 	struct ibv_context		*context;
 	struct ibv_pd			*pd;
@@ -3676,7 +3676,7 @@ A：如果您使用的是ConnectX HCAs家族中的一个，这是一个配置问
 
 ### 6.3.2 ibv_rereg_mr
 **函数原型：**
-```text
+```cpp
 int ibv_rereg_mr(struct ibv_mr *mr, int  flags,struct ibv_pd * pd,
 			void  *addr,size_t  length, int  access);
 ```
@@ -3693,7 +3693,7 @@ int ibv_rereg_mr(struct ibv_mr *mr, int  flags,struct ibv_pd * pd,
 **输出参数：** 无。
 
 **返回值：** 成功返回0；出错返回错误代码enum ibv_rereg_mr_err_code来指示失败的原因。
-```text
+```cpp
 enum ibv_rereg_mr_err_code {
 	IBV_REREG_MR_ERR_INPUT					= -1,	//原始MR有效，libibverbs检测到输入错误
 	IBV_REREG_MR_ERR_DONT_FORK_NEW			= -2,	//原始MR有效，但由于未在新的地址范围上fork而失败。
@@ -3710,7 +3710,7 @@ ibv_rereg_mr()修改一个已经存在的内存区域（MR）mr的属性。从�
 即使失败了，用户仍然需要在此MR上调用ibv_dereg_mr 进行注销。
 
  enum ibv_rereg_mr_flags定义如下：
-```text
+```cpp
 enum ibv_rereg_mr_flags {
 	IBV_REREG_MR_CHANGE_TRANSLATION	= (1 << 0),	//更改位置和长度，参数addr和length有效。
 	IBV_REREG_MR_CHANGE_PD			= (1 << 1),	//更改保护域，参数pd有效。
@@ -3725,7 +3725,7 @@ enum ibv_rereg_mr_flags {
 
 ### 6.3.5 ibv_dereg_mr
 **函数原型：**
-```text
+```cpp
 int ibv_dereg_mr(struct ibv_mr *mr)
 ```
 **输入参数：** mr——来自ibv_reg_mr的struct ibv_mr。
@@ -3748,7 +3748,7 @@ ibv_dereg_mr()注销一个内存区域，并在与之关联的RDMA设备中释�
 
 **示例：**
 
-```text
+```cpp
 struct ibv_pd *pd;
 struct ibv_mr *mr;
 
@@ -3778,7 +3778,7 @@ A：不，目前RDMA堆栈没有这个功能。
 
 ### 6.4.1 ibv_create_ah
 **函数原型：**
-```text
+```cpp
 struct ibv_ah *ibv_create_ah(struct ibv_pd *pd, struct ibv_ah_attr *attr)
 ```
 **输入参数：**
@@ -3804,7 +3804,7 @@ struct ibv_ah_attr { .is_global	 1; .grh	 {...}; }
 ```
 
 struct ibv_ah定义如下：
-```text
+```cpp
 struct ibv_ah {
 	struct ibv_context		*context;	//设备上下文，来自ibv_open_device
 	struct ibv_pd			*pd;		//保护域，来自ibv_alloc_pd
@@ -3813,7 +3813,7 @@ struct ibv_ah {
 ```
 
 struct ibv_ah_attr定义如下：
-```text
+```cpp
 struct ibv_ah_attr {
 	struct ibv_global_route	grh;			//全局路由头GRH属性，定义见下文
 	uint16_t					dlid;			//目的地lid
@@ -3837,7 +3837,7 @@ struct ibv_ah_attr完整定义如下：
 
 
 struct ibv_global_route的定义如下：
-```text
+```cpp
 struct ibv_global_route {
 	union		ibv_gid dgid;	//目的地GID（参见ibv_query_gid）或MGID
 	uint32_t	flow_label;		//流标签
@@ -3875,7 +3875,7 @@ A：获取这些信息有几种方法:
 
 ### 6.4.2 ibv_init_ah_from_wc
 **函数原型：**
-```text
+```cpp
 int ibv_init_ah_from_wc(struct ibv_context *context, uint8_t port_num,
 							struct ibv_wc *wc, struct ibv_grh *grh,struct ibv_ah_attr *ah_attr);
 ```
@@ -3901,7 +3901,7 @@ ibv_init_ah_from_wc使用端口号port_num以及来自工作完成wc和全局路
 grh是(可能)包含接收消息的grh的缓冲区(发送到接收队列以指定消息保存位置的接收请求缓冲区的前40个字节)。
 
 struct ibv_grh定义如下：
-```text
+```cpp
   struct ibv_grh {
 	__be32			version_tclass_flow;
 	__be16			paylen;
@@ -3915,7 +3915,7 @@ struct ibv_grh定义如下：
 
 **示例：**
 
-```text
+```cpp
 struct ibv_context *context;
 struct ibv_pd *pd;
 struct ibv_ah *ah;
@@ -3956,7 +3956,7 @@ A：否。调用ibv_init_ah_from_wc（）时可以使用的工作完成有几点
 ### 6.4.3 ibv_create_ah_from_wc
 
 **函数原型：**
-```text
+```cpp
 struct ibv_ah *ibv_create_ah_from_wc(struct ibv_pd *pd, struct ibv_wc *wc,
 										struct ibv_grh *grh, uint8_t port_num);
 ```
@@ -3986,7 +3986,7 @@ grh是(可能)包含接收消息的grh的缓冲区(发送到接收队列以指�
 
 **示例：**
 
-```text
+```cpp
 struct ibv_pd *pd;
 struct ibv_ah *ah;
 struct ibv_wc wc;
@@ -4016,7 +4016,7 @@ A：否。调用ibv_init_ah_from_wc（）时可以使用的工作完成有几点
 
 ### 6.4.4 ibv_destroy_ah
 **函数原型：**
-```text
+```cpp
 int ibv_destroy_ah(struct ibv_ah *ah)
 ```
 **输入参数：** ah，来自ibv_create_ah的struct ibv_ah。
@@ -4033,7 +4033,7 @@ ibv_destroy_ah释放地址句柄（AH）。一旦AH被销毁，它不能再用�
 
 **示例：**
 
-```text
+```cpp
 struct ibv_pd *pd;
 struct ibv_ah *ah;
 struct ibv_ah_attr ah_attr;
@@ -4071,7 +4071,7 @@ A：有两个选择：
 ### 6.5.1 ibv_alloc_mw
 **函数原型：**
 
-```text
+```cpp
 struct ibv_mw *ibv_alloc_mw(struct ibv_pd *pd,enum ibv_mw_type type)
 ```
 **输入参数：** 
@@ -4096,7 +4096,7 @@ MW创建时未绑定，如果要使用MW，则必须通过ibv_bind_mw（type为1
 远程密钥（R_Key）字段被远程进程用来执行Atomic和RDMA操作。 绑定操作期间此密钥将被改变。 远程进程将此rkey放置为传递到ibv_post_send函数的struct ibv_send_wr的rkey字段。
 
 struct ibv_mw定义如下：
-```text
+```cpp
  struct ibv_mw {
 	struct ibv_context	*context;	//设备上下文，来自ibv_open_device
 	struct ibv_pd		*pd;		//保护域，来自ibv_alloc_pd
@@ -4108,7 +4108,7 @@ struct ibv_mw定义如下：
 ```
 enum ibv_mw_type 定义如下：
 
-```text
+```cpp
 enum ibv_mw_type {
 	IBV_MW_TYPE_1	= 1,
 	IBV_MW_TYPE_2	= 2
@@ -4119,7 +4119,7 @@ enum ibv_mw_type {
 ### 6.5.2 ibv_bind_mw
 **函数原型：**
 
-```text
+```cpp
 int ibv_bind_mw(struct ibv_qp *qp, struct ibv_mw *mw, struct ibv_mw_bind *mw_bind)
 ```
 
@@ -4142,7 +4142,7 @@ ibv_bind_mw（）根据mw_bind中的详细信息向队列对qp发送一个绑定
 请注意，对于类型2的MW，应该使用ibv_post_send直接发布绑定WR到QP。
 
 struct ibv_mw_bind定义如下：
-```text
+```cpp
 struct ibv_mw_bind {
 	uint64_t					wr_id;			/* 用户定义的WR IDUser defined WR ID */
 	int							send_flags;		/* 使用enum ibv_send_flags，见ibv_post_send */
@@ -4152,7 +4152,7 @@ struct ibv_mw_bind {
 ```
 
 struct ibv_mw_bind_info定义如下：
-```text
+```cpp
 struct ibv_mw_bind_info {
 	struct ibv_mr	*mr;				//要绑定到MW的MR，详细信息见ibv_reg_mr
 	uint64_t		addr;				//MW应该的起始地址
@@ -4176,7 +4176,7 @@ struct ibv_mw_bind_info {
 ### 6.5.3 ibv_dealloc_mw
 **函数原型：**
 
-```text
+```cpp
 int ibv_dealloc_mw(struct ibv_mw *mw)
 ```
 **输入参数：** mw——内存窗口。来自ibv_alloc_mw。
@@ -4261,7 +4261,7 @@ INIT->RTR|	IBV_QP_STATE，<br /> IBV_QP_AV，<br /> IBV_QP_PATH_MTU，<br /> IBV
 
 
 ### 7.1.4 示例
-```text
+```cpp
 //将UD QP从Reset状态修改为RTS状态:
 //假设变量my_port, my_psn已声明并用有效值初始化**
 struct ibv_qp *qp;
@@ -4430,7 +4430,7 @@ if (ibv_modify_qp(qp, &attr,
 ## 7.2 加入和离开多播组（差mojo）
 ### 7.2.1 ibv_attach_mcast
 **函数原型：**
-```text
+```cpp
 int ibv_attach_mcast(struct ibv_qp *qp, const union ibv_gid *gid, uint16_t lid)
 ```
 **输入参数：**
@@ -4454,7 +4454,7 @@ ibv_attach_mcast 向多播GID为gid，多播LID为lid的多播组中添加队列
 
 ### 7.2.2 ibv_detach_mcast
 **函数原型：**
-```text
+```cpp
 int ibv_detach_mcast(struct ibv_qp *qp, const union ibv_gid *gid, uint16_t lid)
 ```
 **输入参数：**
@@ -4504,7 +4504,7 @@ IBV_FLOW_ATTR_SNIFFER规则类型不需要任何规范。
 当设置了IBV_FLOW_ATTR_FLAGS_EGRESS标志时，qp参数仅用作获取设备的手段。
 
 struct ibv_flow定义如下：
-```text
+```cpp
 struct ibv_flow {
 	uint32_t			comp_mask;
 	struct ibv_context	*context;	//设备上下文，来自ibv_open_deivce
@@ -4513,7 +4513,7 @@ struct ibv_flow {
 ```
 
 struct ibv_flow_attr定义如下：
-```text
+```cpp
 struct ibv_flow_attr {
 	uint32_t					comp_mask;		/* 未来的可扩展性 */
 	enum ibv_flow_attr_type	type;			/* 规则类型，详细信息见下文 */
@@ -4530,7 +4530,7 @@ struct ibv_flow_attr {
 ```
 enum ibv_flow_attr_type定义如下：
 
-```text
+```cpp
 enum ibv_flow_attr_type {
 	IBV_FLOW_ATTR_NORMAL		= 0x0,	/* 根据规则的规范进行定向 */
 	IBV_FLOW_ATTR_ALL_DEFAULT	= 0x1,	/* 默认单播和多播规则-接收所有未定向到任何QP的Eth流量 */
@@ -4541,7 +4541,7 @@ enum ibv_flow_attr_type {
 ```
 
 enum ibv_flow_flags定义如下：
-```text
+```cpp
 enum ibv_flow_flags {
 	IBV_FLOW_ATTR_FLAGS_ALLOW_LOOP_BACK	= 1 << 0,	/* 将规则应用于从添加的QP通过环回发送的数据包 */
 	IBV_FLOW_ATTR_FLAGS_DONT_TRAP		= 1 << 1,	/* 规则不捕获接收到的数据包，从而允许它们匹配优先级较低的规则 */
@@ -4550,7 +4550,7 @@ enum ibv_flow_flags {
 
 ```
 enum ibv_flow_spec_type定义如下：
-```text
+```cpp
 enum ibv_flow_spec_type {
 	IBV_FLOW_SPEC_ETH			= 0x20,	/* L2头部的流规范 */
 	IBV_FLOW_SPEC_IPV4			= 0x30,	/* IPv4头部的流规范 */
@@ -4571,7 +4571,7 @@ enum ibv_flow_spec_type {
 ```
 
 struct ibv_flow_spec_xxx定义如下：
-```text
+```cpp
 struct ibv_flow_spec_xxx {	//xxx可以为：eth、ipv4、ipv4_ext、ipv6、esp、tcp_udp、gre、mpls、tunnel
 	enum ibv_flow_spec_type	type;	/* 流规范类型，详细信息见ibv_create_flow */
 	uint16_t					size;	/* 流规范大小= sizeof（struct ibv_flow_spec_xxx */
@@ -4581,7 +4581,7 @@ struct ibv_flow_spec_xxx {	//xxx可以为：eth、ipv4、ipv4_ext、ipv6、esp�
 
 ```
 struct ibv_flow_xxx_filter定义如下：
-```text
+```cpp
 struct ibv_flow_eth_filter {
 	uint8_t			dst_mac[6];
 	uint8_t			src_mac[6];
@@ -4689,7 +4689,7 @@ IB动词具有较高的优先级域。
 
 如果此规则有命中，则意味着接收到的数据包具有目标mac：66：11：22：33：44：55和源ip：0x0B86C806，该数据包将被定向到其附加的qp
 
-```text
+```cpp
 struct raw_eth_flow_attr {
 	struct ibv_flow_attr		attr;
 	struct ibv_flow_spec_eth	spec_eth;
@@ -4755,7 +4755,7 @@ int ibv_destroy_flow(struct ibv_flow *flow_id)
 ## 8.1 发布WR到QP
 ### 8.1.1 ibv_post_recv（差mojo）
 **函数原型：**
-```text
+```cpp
 int ibv_post_recv(struct ibv_qp *qp, struct ibv_recv_wr *wr, struct ibv_recv_wr **bad_wr)
 ```
 **输入参数：**
@@ -4777,7 +4777,7 @@ WR使用的缓冲区只有在WR完全执行了请求，并且已经从相应的�
 如果将WR发布到UD QP，则传入消息的全局路由头（GRH）将放置在分散列表中缓冲区的前40个字节中。 如果传入消息中不存在GRH，则前几个字节将不确定。 这意味着在所有情况下，对于UD QP，传入消息的实际数据将以40个字节的偏移量开始进入分散列表中的缓冲区。
 
 struct ibv_recv_wr定义如下:
-```text
+```cpp
 struct ibv_recv_wr {
 	uint64_t			wr_id;		//用户分配的工作请求ID
 	struct ibv_recv_wr	*next;		//指向下一个WR的指针，如果最后一个,则为空。
@@ -4787,7 +4787,7 @@ struct ibv_recv_wr {
 ```
 struct ibv_sge定义如下:
 
-```text
+```cpp
 struct ibv_sge {
 	uint64_t addr;		//本地内存缓冲区的起始地址，或地址是IBV_ZERO_BASED的MR的数量
 	uint32_t length;	//缓冲区长度
@@ -4797,7 +4797,7 @@ struct ibv_sge {
 
 ### 8.1.2 ibv_post_send（差mojo）
 **函数原型：**
-```text
+```cpp
 int ibv_post_send(struct ibv_qp *qp, struct ibv_send_wr *wr, struct ibv_send_wr **bad_wr)
 ```
 **输入参数：**
@@ -4817,7 +4817,7 @@ ibv_post_send将以wr开始的工作请求（WR）的链表发布到队列对qp�
 
 
 struct ibv_send_wr定义如下：
-```text
+```cpp
 struct ibv_send_wr {
 	uint64_t							wr_id;			//用户分配的WR ID
 	struct ibv_send_wr					*next;			//指向下一个WR的指针，如果最后一个,则为NULL
@@ -4867,7 +4867,7 @@ struct ibv_send_wr {
 ```
 
 enum ibv_send_flags定义如下：
-```text
+```cpp
 enum ibv_send_flags {
 	IBV_SEND_FENCE		= 1 << 0, //设置栅栏指示器。仅对IBV_QPT_RC的QP有效
 	IBV_SEND_SIGNALED	= 1 << 1, //设置完成通知指示器。 仅当使用sq_sig_all= 0创建QP时相关
@@ -4879,7 +4879,7 @@ enum ibv_send_flags {
   };
 ```
 enum ibv_wr_opcode的定义如下：
-```text
+```cpp
 enum ibv_wr_opcode {
 	IBV_WR_RDMA_WRITE,				//写
 	IBV_WR_RDMA_WRITE_WITH_IMM,		//带立即数的写
@@ -4919,7 +4919,7 @@ struct ibv_mw_bind_info定义如下：
 
 ### 8.2.1 ibv_post_srq_recv（差mojo）
 **函数原型：**
-```text
+```cpp
 int ibv_post_srq_recv(struct ibv_srq *srq, struct ibv_recv_wr *recv_wr, struct ibv_recv_wr **bad__wr)
 ```
 **输入参数：**
@@ -4941,7 +4941,7 @@ WR使用的缓冲区只有在WR完全执行了请求并且已经从相应的完�
 ## 9.1 获取和确认事件
 ### 9.1.1 ibv_get_cq_event（差mojo）
 **函数原型：**
-```text
+```cpp
 int ibv_get_cq_event(struct ibv_comp_channel *channel, struct ibv_cq **cq, void **cq_context)
 ```
 **输入参数：**
@@ -4966,7 +4966,7 @@ ibv_get_cq_event等待完成通道chnnel上的下一个完成事件， 并用事
 
 ### 9.1.2 ibv_ack_cq_events（差mojo）
 **函数原型：**
-```text
+```cpp
 void ibv_ack_cq_events(struct ibv_cq *cq, unsigned int nevents)
 ```
 **输入参数：**
@@ -4996,7 +4996,7 @@ ibv_ack_cq_events确认从ibv_get_cq_event接收到的事件。 尽管从ibv_get
 注意，可能会触发额外事件，而在CQ中不具有相应的完成条目。 如果将一个CQE添加到步骤4和步骤5之间的CQ，然后在步骤5中清空（轮询）CQ，则会发生这种情况。
 
 
-```text
+```cpp
 cq	 ibv_create_cq(ctx, 1, ev_ctx, channel, 0);
 if (!cq) {
 	fprintf(stderr, "Failed to create CQ\n");
@@ -5052,7 +5052,7 @@ do {
 2. 轮询事件通道知道有一个完成事件
 3. 获取事件并确认
 
-```text
+```cpp
 /* change the blocking mode of the completion channel */
 flags	 fcntl(channel->fd, F_GETFL);
 rc	 fcntl(channel->fd, F_SETFL, flags | O_NONBLOCK);
@@ -5109,7 +5109,7 @@ ibv_get_async_event获取RDMA设备上下文context的下一个异步事件，�
 ibv_get_async_event（）是一个阻塞函数。 如果多个线程同时调用此函数，则在发生异步事件时，只有一个线程将接收该函数，并且无法预测哪个线程将接收它。
 
 struct ibv_async_event定义如下：
-```text
+```cpp
 struct ibv_async_event {
 	union {							/* 结构体成员element的哪一个成员将是有效的，具体取决于结构体成员event_type */
 		struct ibv_cq		*cq;		/* 获得事件的CQ，详细信息见ibv_create_cq */
@@ -5124,7 +5124,7 @@ struct ibv_async_event {
 ```
 enum ibv_event_type定义如下：
 
-```text
+```cpp
 enum ibv_event_type {
 	IBV_EVENT_CQ_ERR,				//CP事件，CQ错误，CQ溢出
 	IBV_EVENT_QP_FATAL,				//QP事件，QP发生错误，并转换为Error状态
@@ -5173,7 +5173,7 @@ void ibv_ack_async_event(struct ibv_async_event *event);
 2. 轮询队列，直到发生异步事件
 3. 获取异步事件并确认
 
-```text
+```cpp
 /* change the blocking mode of the async event queue */
 flags = fcntl(ctx->async_fd, F_GETFL);
 rc = fcntl(ctx->async_fd, F_SETFL, flags | O_NONBLOCK);
@@ -5213,7 +5213,7 @@ ibv_ack_async_event(&async_event);
 # 10 通知和轮询完成队列
 ### 10.1  ibv_req_notify_cq（差mojo）
 **函数原型：**
-```text
+```cpp
 int ibv_req_notify_cq(struct ibv_cq *cq, int solicited_only)
 ```
 **输入参数：**
@@ -5235,7 +5235,7 @@ ibv_req_notify_cq在完成队列cq上请求一个完成通知。在向cq添加�
 
 ## 10.2 ibv_poll_cq(差mojo)
 **函数原型：**
-```text
+```cpp
 int ibv_poll_cq(struct ibv_cq *cq, int num_entries, struct ibv_wc *wc)
 ```
 **输入参数：**
@@ -5256,7 +5256,7 @@ wc中可容纳的条目数应在num_entries中传递。 ***用户负责释放该
 必须定期对CQs进行轮询，以防止超出。 如果发生超限，将关闭CQ并发送异步事件IBV_EVENT_CQ_ERR。
 
 struct ibv_wc定义如下：
-```text
+```cpp
 struct ibv_wc {
 	uint64_t			wr_id;				//已完成的WR的iD
 	enum ibv_wc_status	status;				//操作的状态, 详细信息见ibv_create_cq_ex
@@ -5279,7 +5279,7 @@ struct ibv_wc {
 
 enum ibv_wc_opcode定义如下：
 
-```text
+```cpp
 enum ibv_wc_opcode {
 	IBV_WC_SEND,		//几乎与ibv_wr_opcode对应
 	IBV_WC_RDMA_WRITE,
@@ -5305,7 +5305,7 @@ enum ibv_wc_opcode {
  };
 ```
 
-```text
+```cpp
 enum ibv_wc_flags {
 	IBV_WC_GRH				= 1 << 0,	//存在GRH（仅UD QP有效）
 	IBV_WC_WITH_IMM			= 1 << 1,	//立即数据有效
@@ -5331,7 +5331,7 @@ enum {
 
 # 11 基于扩展QP的操作
 **函数原型：**
-```text
+```cpp
 void	ibv_wr_abort(struct ibv_qp_ex *qp);
 int		ibv_wr_complete(struct ibv_qp_ex *qp);
 void	ibv_wr_start(struct ibv_qp_ex *qp);
@@ -5400,7 +5400,7 @@ ibv_post_send（）批处理的WR和这些API批处理的WR可以相互交错，
 每个WR构建函数将使用struct ibv_qp_ex的wr_id成员来设置要在完成时返回的值。 一些操作还将使用wr_flags成员影响操作（请参见下面的标志）。 这些值应在调用WR构建函数之前设置。
 
 例如，一个简单的发送可以形成，如下：
-```text
+```cpp
 qpx->wr_id = 1;
 ibv_wr_send(qpx);
 ibv_wr_set_sge(qpx, lkey, &data, sizeof(data));
@@ -5482,7 +5482,7 @@ ibv_wr_set_sge(qpx, lkey, &data, sizeof(data));
 如果在QP创建期间提供了ibv_td，则不会执行锁定，并且由调用者决定一次只能在关键区域内有一个线程。
 
 **示例：**
-```text
+```cpp
 /* create RC QP type and specify the required send opcodes */
 qp_init_attr_ex.qp_type = IBV_QPT_RC;
 qp_init_attr_ex.comp_mask |= IBV_QP_INIT_ATTR_SEND_OPS_FLAGS;
@@ -5515,7 +5515,7 @@ ret = ibv_wr_complete(qpx);
 ## 13.1 拷贝数据
 ### 13.1.1 ibv_memcpy_from_dm
 **函数原型：** 
-```text
+```cpp
 int ibv_memcpy_from_dm(void *host_addr, struct ibv_dm *dm,uint64_t dm_offset, size_t length)
 ```
 **输入参数：** 
@@ -5531,7 +5531,7 @@ int ibv_memcpy_from_dm(void *host_addr, struct ibv_dm *dm,uint64_t dm_offset, si
 **描述：** 读取设备内存，并写入主机内存中。
 ### 13.1.2 ibv_memcpy_to_dm
 **函数原型：** 
-```text
+```cpp
 int ibv_memcpy_to_dm(struct ibv_dm *dm, uint64_t dm_offset,void *host_addr, size_t length)
 ```
 **输入参数：** 
@@ -5548,7 +5548,7 @@ int ibv_memcpy_to_dm(struct ibv_dm *dm, uint64_t dm_offset,void *host_addr, size
 ## 13.2 注册设备内存
 ### 13.2.1 ibv_reg_dm_mr
 **函数原型：** 
-```text
+```cpp
 struct ibv_mr *ibv_reg_dm_mr(struct ibv_pd *pd, struct ibv_dm *dm, 
 								uint64_t dm_offset, size_t length, uint32_t access)
 ```
@@ -5570,7 +5570,7 @@ struct ibv_mr *ibv_reg_dm_mr(struct ibv_pd *pd, struct ibv_dm *dm,
 ## 15.1 ibv_node_type_str
 
 **函数原型：**
-```text
+```cpp
 const char *ibv_node_type_str (enum ibv_node_type node_type)
 ```
 **输入参数：** node_type——enum ibv_node_type枚举值，可以是HCA, Switch,Router, RNIC or Unknown。枚举的详细信息见ibv_get_device_list。
@@ -5586,7 +5586,7 @@ const char *ibv_node_type_str (enum ibv_node_type node_type)
 
 ## 15.2 ibv_port_state_str
 **函数原型：**
-```text
+```cpp
 const char *ibv_port_state_str (enum ibv_port_state port_state)
 ```
 **输入参数：** port_state——请求说明的逻辑端口状态枚举值。枚举详细信息见ibv_query_port。
@@ -5603,14 +5603,14 @@ enum ibv_port_state 定义参见ibv_query_port。
 
 **示例：**
 
-```text
+```cpp
 const char *descr;
 descr = ibv_port_state_str(IBV_PORT_ACTIVE);
 printf("The description of the enumerated value %d is %s\n", IBV_PORT_ACTIVE,descr);
 ```
 ## 15.3 ibv_wc_status_str
   **函数原型：**
-```text
+```cpp
 const char *ibv_wc_status_str(enum ibv_wc_status status)
 ```
 **输入参数：** status——wc状态，详细信息见ibv_create_cq_ex。
@@ -5623,7 +5623,7 @@ const char *ibv_wc_status_str(enum ibv_wc_status status)
 
 ## 15.4 ibv_event_type_str
   **函数原型：**
-```text
+```cpp
 const char *ibv_event_type_str(enum ibv_event_type event)
 ```
 **输入参数：** event——事件类型，详细信息见ibv_get_async_event。
