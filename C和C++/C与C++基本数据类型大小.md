@@ -40,11 +40,6 @@ tags: C和C++
 |***长双精度浮点型***|long double|long double|	16B|
 |指针和sizeof|32位4B<br />64位8B|
 
-
-
-
-
-
 ------
 
 ***<font color=blue>版权声明</font>：<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
