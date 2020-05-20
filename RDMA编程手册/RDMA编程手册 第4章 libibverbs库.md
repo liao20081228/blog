@@ -68,28 +68,28 @@ libibverbs是Infiniband（根据Infiniband规范）和iWARP（根据iWARP动词�
  * 解决办法：卸载当前的RDMA包，并安装一个新的OFED发行版或Linux发行版中的包。
 
 **libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'**
-  * 原因：libibverb未能打开保存已安装的用户空间低级驱动程序库信息的目录。
-  * 来源：这通常是在使用与用户空间低级驱动程序库不同的参数（为“ configure”提供--sysconfdir）配置和编译libibverbs时发生。
-  * 解决办法：卸载用户空间底层驱动程序和libibverb，并从一致的源安装它们，或者使用相同的参数重新编译所有库。
+* 原因：libibverb未能打开保存有已安装的用户空间低级驱动程序库信息的目录。
+* 来源：这通常是在使用了与用户空间低级驱动程序库不同的参数（为“ configure”提供--sysconfdir）配置和编译libibverbs时发生。
+* 解决办法：卸载用户空间底层驱动程序和libibverb，并从一致的源安装它们，或者使用相同的参数重新编译所有库。
 
 **libibverbs: Warning: fork()-safety requested but init failed**
-* 原因：libibverbs尝试根据用户的请求在fork()安全模式下工作，但失败了。
+* 原因：根据用户的请求，libibverbs尝试在fork()安全模式下工作，但失败了。
 * 来源：这通常发生在旧的Linux内核中(比2.6.12更老)
 * 解决办法：迁移到更新的Linux内核或禁用fork()请求环境变量/动词。
 
 **libibverbs: Warning: no userspace device-specific driver found**
 * 原因：libibverb未能找到特定RDMA设备的用户空间低级驱动程序。
 * 来源：缺少此RDMA设备的用户空间低级驱动程序。
-* 解决办法：根据计算机中存在的HW安装丢失的低级驱动程序(lspci可能很方便)。
+* 解决办法：根据计算机中存在的硬件安装丢失的低级驱动程序(lspci可能很方便)。
 
 **libibverbs Warning: couldn't load driver**
 * 原因：libibverb未能加载特定RDMA设备的用户空间低级驱动程序库。
-* 来源：这通常发生在RDMA设备的用户空间低级驱动程序库(.so文件）丢失了，损坏了或者与libibverbs不一致(就支持的特性而言)。
+* 来源：这通常发生在RDMA设备的用户空间低级驱动程序库(.so文件）丢失了、损坏了或者与libibverbs不一致(就支持的特性而言)。
 * 解决办法：如果这个RDMA设备的用户空间底层驱动程序库丢失:安装它。如果已经安装了，卸载并从libibverb的相同源重新安装它。
 
 **libibverbs: Warning: RLIMIT_MEMLOCK is 32768 bytes**
  * 原因：libibverb验证了正在运行的进程可以锁定的内存量，并检测到该值为32KB或更少。。
- * 来源：使用RDMA需要锁定系统内存。当创建完成队列、队列对、共享接收队列或内存区域时，低的可被锁定的内存量会导致失败。
+ * 来源：使用RDMA需要固定（即锁定）系统内存。当创建完成队列、队列对、共享接收队列或内存区域时，低的可被锁定的内存量会导致失败。
  * 解决办法：增加可被任何进程锁定的内存量到一个更高的值(“unlimited”是首选)。
 
 # 2 初始化
