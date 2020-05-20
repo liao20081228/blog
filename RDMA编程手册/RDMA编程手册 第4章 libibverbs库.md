@@ -55,51 +55,6 @@ libibverbs是Infiniband（根据Infiniband规范）和iWARP（根据iWARP动词�
 
 ## 1.7 典型错误消息
 
-以下是执行libibverb应用程序时可能打印到<u>stderr</u>的典型错误消息以及解决方法:
-
-**libibverbs: Fatal: couldn't read uverbs abi version**
-
-* 原因：libibverb内核和libibverbs之间找不到表示ABI(应用程序二进制接口)版本的文件(/sys/class/infiniband_verb/abi_version)。
-* 起因：这通常发生在模块ib_uverb未加载时。
-* 解决办法：如果安装了RDMA包(OFED)，则重新启动计算机。否则，使用适当的服务文件加载RDMA堆栈驱动程序。
-
-**libibverbs: Fatal: kernel ABI version X doesn't match library version Y**
-
-* 原因：可用的RDMA内核堆栈不被libibverbs支持(这是ABI错误)。
-* 起因：这通常发生在内核部分和libibverbs不是来自同一个源(例如，OFED/inbox/built手动安装)时。
-* 解决办法：卸载当前的RDMA包，并安装一个新的OFED发行版或Linux发行版中的包。
-
-**libibverbs: Warning: couldn't open config directory '/etc/libibverbs.d'**
-
-* 原因：libibverb不能打开存有已安装用户空间低级驱动程序库信息的目录。
-* 起因：在使用与用户空间低级驱动程序库不同的参数（为“configure”提供--sysconfdir）配置和编译libibverbs时，这通常发生。
-* 解决办法：卸载用户空间底层驱动程序和libibverb，并从一致的源安装它们，或者使用相同的参数重新编译这些库。
-
-**libibverbs: Warning: fork()-safety requested but init failed**
-
-* 原因：根据用户的请求，libibverbs尝试在fork()安全模式下工作，但失败了。
-* 起因：这通常发生在旧的Linux内核中(比2.6.12更老)
-* 解决办法：迁移到更新的Linux内核或禁用fork()请求环境变量/动词。
-
-**libibverbs: Warning: no userspace device-specific driver found**
-
-* 原因：libibverb未能找到特定RDMA设备的用户空间低级驱动程序。
-* 起因：缺少此RDMA设备的用户空间低级驱动程序。
-* 解决办法：根据计算机中存在的硬件安装缺少的低级驱动程序(lspci可能很方便)。
-
-**libibverbs Warning: couldn't load driver**
-
-* 原因：libibverb未能加载特定RDMA设备的用户空间低级驱动程序库。
-* 起因：这通常发生在RDMA设备的用户空间低级驱动程序库(.so文件）缺失，损坏或者与libibverbs不一致(就支持的特性而言)时。
-* 解决办法：如果这个RDMA设备的用户空间底层驱动程序库丢失，则安装它。如果已经安装了，则卸载并从与libibverb的相同的源中重新安装。
-
-**libibverbs: Warning: RLIMIT_MEMLOCK is 32768 bytes**
- * 原因：libibverb验证了正在运行的进程可以锁定的内存大小，并检测到该值为32KB或更少。
- * 起因：使用RDMA需要固定系统内存。当创建CQ、QP、SRQ列或MR时，较少的可被锁定内存会导致失败。
- * 解决办法：将可被任何进程锁定的内存大小增加到一个更高的值(首选“unlimited”)。
-
-## 1.7 典型错误消息
-
 以下是执行libibverb应用程序时可能打印到stderr的典型错误消息列表，以及解决方法:
 
  **libibverbs: Fatal: couldn't read uverbs abi version**
