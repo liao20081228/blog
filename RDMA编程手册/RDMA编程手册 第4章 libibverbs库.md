@@ -223,15 +223,16 @@ ibv_get_device_list()返回当前可用的RDMA设备的以NULL终止的数组。
 
 数组条目不应直接访问。 相反，它们应与以下服务动词一起使用：ibv_get_device_name()，ibv_get_device_guid()和ibv_open_device()。
 
-在调用 ibv_free_device_list()之前，用户代码应该用ibv_open_device() 打开所有它打算的使用的设备。一旦使用 ibv_free_device_list()释放设备数组，则只有打开的设备才能使用，指向未打开设备的指针不再合法。
+在调用ibv_free_device_list()之前，用户代码应该用ibv_open_device()打开所有它打算的使用的RDMA设备。一旦使用 ibv_free_device_list()释放设备数组，则只有打开的设备才能使用，指向未打开设备的指针不再合法。
 
-如果发现内核动词设备但未找到相应的用户空间驱动程序时，设置环境变量IBV_SHOW_WARNINGS将导致在向stderr发出警告。
+如果发现内核动词设备但未找到相应的用户空间驱动程序时，设置环境变量**IBV_SHOW_WARNINGS**将导致在向stderr发出警告。
 
 ibv_device结构体的数组将保持有效，直到该数组被释放。 调用ibv_get_device_list之后，用户应打开任何所需的设备，并通过ibv_free_device_list命令迅速释放数组。
 
 struct ibv_device定义为：
 ```cpp
-struct ibv_device {
+struct ibv_device
+{
 	struct	_ibv_device_ops			ops;							//设备操作函数
 	enum	ibv_node_type			node_type;						//节点类型，一个枚举值，详细信息见下文
 	enum	ibv_transport_type		transport_type;					//传输层类型，一个枚举值，详细信息见下文	
