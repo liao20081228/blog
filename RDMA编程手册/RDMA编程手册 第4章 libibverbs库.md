@@ -526,11 +526,11 @@ int ibv_query_device(struct ibv_context *context, struct ibv_device_attr *device
 
 **输出参数：** device_attr——表示设备属性的。结构体详细信息见下文。
 
-**返回值：** 成功，返回0；失败返回errno指示失败的原因。ENOMEM，内存不足。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。ENOMEM——内存不足。
 
 **说明：**
 
-ibv_query_device检索与设备关联的各种属性。 用户应malloc一个struct ibv_device_attr，并将其传递给该命令，在成功，返回后它将被填充。 ***用户负责释放此结构体***。
+ibv_query_device检索与设备关联的各种属性。 用户应malloc一个struct ibv_device_attr，并将其传递给该命令，在成功返回后它将被填充。 ***用户负责释放此结构体***。
 
 由ibv_query_device()返回的RDMA设备属性是恒定的，不会被设备或SM更改，因此程序可以调用此动词并将其保存以备后面使用。
 
@@ -539,44 +539,45 @@ ibv_query_device()返回的最大值是设备支持的资源的上限。 但是�
 struct ibv_device_attr的定义如下:
 
 ```cpp
-struct ibv_device_attr{
+struct ibv_device_attr
+{
 	char					fw_ver[64];					//固件版本
-	__be64					node_guid;					//节点全局唯一标识符(GUID)
-	__be64					sys_image_guid;				//系统映像GUID
+	__be64					node_guid;					//节点全局唯一标识符(GUID，网络字节序)
+	__be64					sys_image_guid;				//系统映像GUID（网络字节序）
 	uint64_t				max_mr_size;				//可以注册的最大的连续内存块
 	uint64_t				page_size_cap;				//支持的页面大小
 	uint32_t				vendor_id;					//供应商ID，根据IEEE
 	uint32_t				vendor_part_id;				//供应商提供的部件ID
 	uint32_t				hw_ver;						//硬件版本
 	int						max_qp;						//队列对(QP)的最大数量
-	int						max_qp_wr;					//任意队列未完成工作请求(WR)的最大数量
+	int						max_qp_wr;					//任意工作队列未完成工作请求(WR)的最大数量
 	unsigned int			device_cap_flags;			//HCA功能掩码，enum ibv_device_cap_flags的枚举值按位或得到
-	int						max_sge;					//非RD QPs的每个WR的分散/聚合条目（SGE）的最大值
-	int						max_sge_rd;					//RD QPs的每个WR的SGE
-	int						max_cq;						//支持的CQ的最大值
-	int						max_cqe;					//每个CQ的CQE的最大值
-	int						max_mr;						//支持的MR的最大值
-	int						max_pd;						//支持的保护域（PD）的最大值
-	int						max_qp_rd_atom;				//每个QP未完成RDMA读和原子操作的最大值
-	int						max_ee_rd_atom;				//每个端到端上下文(RD)的最大未完成RDMA读和原子操作
-	int						max_res_rd_atom;			//用于即将来临的RDMA读和原子操作的最大资源值
-	int						max_qp_init_rd_atom;		//每个QP可以启动的RDMA读和原子操作的最大值
-	int						max_ee_init_rd_atom;		//每个EE可以启动的RDMA读和原子操作的最大值
-	enum ibv_atomic_cap	atomic_cap;					//原子操作支持级别，详细信息见下文
-	int						max_ee;						//支持的EE上下文的最大值
-	int						max_rdd;					//支持的RD域的最大值
-	int						max_mw;						//支持的内存窗口（MW）的最大值
-	int						max_raw_ipv6_qp;			//支持的原始IPv6数据报QPs的最大值
-	int						max_raw_ethy_qp;			//支持的以太网数据QPS的最大值
+	int						max_sge;					//非RDMA read QP的RQ和SQ中的每个WR的 分散/聚合条目（SGE）的最大数量
+	int						max_sge_rd;					//RRDMA read QP的每个WR的SGE的最大数量
+	int						max_cq;						//支持的CQ的最大数量
+	int						max_cqe;					//每个CQ的CQE的最大数量
+	int						max_mr;						//支持的MR的最大数量
+	int						max_pd;						//支持的保护域（PD）的最大数量
+	int						max_qp_rd_atom;				//每个QP的未完成的RDMA读取和原子操作的最大数量
+	int						max_ee_rd_atom;				//每个EEC的未完成的RDMA读取和原子操作的最大数量
+	int						max_res_rd_atom;			//此HCA作为目标用于RDMA读取和原子操作的最大资源数
+	int						max_qp_init_rd_atom;		//用于发起RDMA读和原子操作的每个QP的最大深度
+	int						max_ee_init_rd_atom;		//用于发起RDMA读和原子操作的每个EEC的最大深度
+	enum ibv_atomic_cap		atomic_cap;					//原子操作支持级别，详细信息见下文
+	int						max_ee;						//支持的EE上下文的最大数量
+	int						max_rdd;					//支持的RD域的最大数量
+	int						max_mw;						//支持的内存窗口（MW）的最大数量
+	int						max_raw_ipv6_qp;			//支持的原始IPv6数据报QP的最大数量
+	int						max_raw_ethy_qp;			//支持的以太网数据报QP的最大数量
 	int						max_mcast_grp;				//支持的多播组的最大数量
-	int						max_mcast_qp_attach;		//每个多播组可以附加的QPs的最大值
-	int						max_total_mcast_qp_attach;	//多播组可以附加的QPs的总和的最大数
-	int						max_ah;						//支持的地址句柄（AH）的最大值
-	int						max_fmr;					//支持的快速内存注册（FMR）的最大值
-	int						max_map_per_fmr;			//需要unmap操作之前，每个FMR的最大重新映射数
-	int						max_srq;					//支持的共享接收队列（SRQ）的最大值
-	int						max_srq_wr;					//每个SRQ的WR的最大值
-	int						max_srq_sge;				//每个SRQ的SGE的最大值
+	int						max_mcast_qp_attach;		//每个多播组可以附加的QP的最大数量
+	int						max_total_mcast_qp_attach;	//可以附加到多播组的QP的最大数量
+	int						max_ah;						//支持的地址句柄（AH）的最大数量
+	int						max_fmr;					//支持的快速内存注册（FMR）的最大数量
+	int						max_map_per_fmr;			//需要unmap操作之前，每个FMR的（重）映射的最大数量
+	int						max_srq;					//支持的共享接收队列（SRQ）的最大数量
+	int						max_srq_wr;					//每个SRQ的WR的最大数量
+	int						max_srq_sge;				//每个SRQ的SGE的最大数量
 	uint16_t				max_pkeys;					//分区的最大数量
 	uint8_t					local_ca_ack_delay;			//本地CA ack延迟
 	uint8_t					phys_port_cnt;				//物理端口数
@@ -588,64 +589,65 @@ struct ibv_device_attr{
 
 |成员名|说明|
 |:--|:--|
-fw_ver|	NULL终止的字符串，说明RDMA设备的固件版本。|
-|node_guid|	与RDMA设备关联的GUID（以网络字节顺序）。 这与ibv_get_device_guid()返回的GUID相同。|
-|sys_image_guid|与此RDMA设备和作为单个系统一部分的其他设备相关联的GUID(按网络字节顺序)。例如:同一个核心交换机中有多个交换芯片。|
-|max_mr_size|此设备可以注册的最大连续内存块的大小（以字节为单位）。|
-|page_size_cap|	内存页大小。|
-|vendor_id|IEEE分配的设备供应商ID。|
-|vendor_part_id|Devic的部件ID，由供应商提供。|
-|hw_ver	|设备的硬件版本，由供应商提供。|}
-|max_qp|UD/UC/RC传输类型下，QP的最大数量。|
-|max_qp_wr|任意发送或接收队列上的未完成工作请求的最大数量。|
-|device_cap_flags|设备支持的功能，由enum ibv_device_cap_flags的枚举值按位或得到，见下面详细叙述。|
-|max_sge|除RD之外，在QP中，每个发送或接收工作请求的最大分散/收集条目数|
-|max_sge_rd|在RD QP中，每个发送或接收工作请求的最大分散/收集条目数，如果不支持RD，则值为0。|	
-|max_cq	|CQ的最大数量。|
-|max_cqe|每个CQ的CQE的最大数量。|
-|max_mr	|MR的最大数量|
-|max_pd|PD的最大数量|
+fw_ver|一个NULL终止的字符串，用于RDMA设备的固件版本|
+|node_guid|与RDMA设备关联的GUID（以网络字节顺序）。 这与ibv_get_device_guid()返回的GUID相同|
+|sys_image_guid|与此RDMA设备和作为单个系统一部分的其他设备相关联的GUID(按网络字节顺序)。例如:同一个核心交换机中有多个交换芯片|
+|max_mr_size|此设备可以注册的最大连续内存块的大小（以字节为单位）|
+|page_size_cap|该设备支持的内存页大。|
+|vendor_id|IEEE分配的设备供应商I。|
+|vendor_part_id|设备的部件ID，由供应商提供|
+|hw_ver	|设备的硬件版本，由供应商提供|
+|max_qp|UD/UC/RC传输类型下，QP的最大数量|
+|max_qp_wr|任意发送或接收队列上的未完成工作请求的最大数量|
+|device_cap_flags|设备支持的功能，由enum ibv_device_cap_flags的枚举值按位或得到，见下面详细叙述|
+|max_sge|非RDMA read QP中，每个发送或接收工作请求的分散/收集条目的最大数量|
+|max_sge_rd|RDMA read QP中，每个发送或接收工作请求的最大分散/收集条目数，如果不支持RDMA read，则值为0|
+|max_cq|此设备支持的CQ的最大数量|
+|max_cqe|此设备支持的每个CQ的CQE的最大数量|
+|max_mr|此设备支持的MR的最大数量|
+|max_pd|此设备支持的PD的最大数量|
 |max_qp_rd_atom|以此设备为目标的每个QP中的未完成的RDMA读取和原子操作的最大数量（如果支持的话）|
 |max_ee_rd_atom|以此设备为目标的每个EEC中的未完成的RDMA读取和原子操作的最大数量（如果支持的话）|
 |max_res_rd_atom|以此设备为目标的，用于RDMA读取和原子操作的资源的最大总数（如果支持的话）|
-|max_qp_init_rd_atom|每个QP用于启动RDMA读和原子操作的的最大深度(如果支持的话)|
-|max_ee_init_rd_atom|每个EEC用于启动RDMA读和原子操作的的最大深度(如果支持的话)|
-|atomic_cap	|设备支持的原子操作级别。值为enum ibv_atomic_cap中定义的枚举值之一。见下面详细叙述|
-|max_ee|EE上下文的最大数量，如果此设备不支持RD，则值为0 |
-|max_rdd|RDD的最大数量，如果此设备不支持RD，则值为0 |
-|max_mw|MW的最大数量。如果此设备不支持MW，则值为0.|
-|max_raw_ipv6_qp	|原始IPv6数据报QP的最大数量。如果该设备不支持原始IPv6数据报QP，则值为0。
-|max_raw_ethy_qp|原始以太网数据报QP的最大数量。如果该设备不支持原始原始以太网数据报QP，则值为0。|
-|max_mcast_grp|多播组的最大数量。如果此设备不支持不可靠的多播，则值为0。|
-|max_mcast_qp_attach|每个组播组的可添加的QP的最大数量。 如果此设备不支持不可靠的多播，则值为0。|
-|max_total_mcast_qp_attach	|可添加到此设备的多播组的QP的最大总数。如果此设备不支持不可靠的多播，则此值为0。|
-|max_ah|AH的最大数量
-|max_fmr|FMR的最大数量。如果该设备不支持FMR，则该值为0。|
+|max_qp_init_rd_atom|用于通过此设备发起RDMA读和原子操作的每个QP的最大深度(如果支持的话)|
+|max_ee_init_rd_atom|用于通过此设备发起RDMA读和原子操作的每个EEC的最大深度(如果支持的话)|
+|atomic_cap|设备支持的原子操作级别。值为enum ibv_atomic_cap中定义的枚举值之一。见下面详细叙述|
+|max_ee|此设备支持的EE上下文的最大数量，如果此设备不支持RD，则值为0 |
+|max_rdd|此设备支持的RD域的最大数量，如果此设备不支持RD，则值为0 |
+|max_mw|此设备支持的MW的最大数量。如果此设备不支持MW，则值为0.|
+|max_raw_ipv6_qp|此设备支持的原始IPv6数据报QP的最大数量。如果该设备不支持原始IPv6数据报QP，则值为0。
+|max_raw_ethy_qp|此设备支持的原始以太网数据报QP的最大数量。如果该设备不支持原始原始以太网数据报QP，则值为0。|
+|max_mcast_grp|此设备支持的多播组的最大数量。如果此设备不支持不可靠的多播，则值为0。|
+|max_mcast_qp_attach|每个多播组的可添加的QP的最大数量。 如果此设备不支持不可靠的多播，则值为0。|
+|max_total_mcast_qp_attach|此设备可添加到多播组的QP的最大总数。如果此设备不支持不可靠多播，则此值为0。|
+|max_ah|此设备支持的AH的最大数量
+|max_fmr|此设备支持的FMR的最大数量。如果该设备不支持FMR，则该值为0。|
 |max_map_per_fmr|每个FMR映射的最大数量。如果该设备不支持FMR，则该值为0。|
-|max_srq|SRQ的最大数量。 如果此设备不支持SRQ，则该值为0|
-|max_srq_wr	|SRQ中未完成工作请求的最大数量|
-|max_srq_sge|在一个SRQ中，每个接收工作请求的最大散点条目数|
-|max_pkeys|	分区的最大数量|
-|local_ca_ack_delay|本地CA ACK延迟。此值指定本地设备接收到消息与传输关联的ACK或NAK之间的最大预期时间间隔。
+|max_srq|此设备支持的SRQ的最大数量。如果此设备不支持SRQ，则该值为0|
+|max_srq_wr|SRQ中未完成工作请求的最大数量|
+|max_srq_sge|在一个SRQ中，每个接收工作请求的分散数据区的最大数量|
+|max_pkeys|此设备支持的分区的最大数量|
+|local_ca_ack_delay|本地CA ACK延迟。此值指定在本地设备接收到消息与传输关联的ACK或NAK之间的最大预期时间间隔。
 |phys_port_cnt|此设备上的物理端口数|
 
 enum ibv_device_cap_flags定义如下：
 
 ```cpp
-enum ibv_device_cap_flags {
-	IBV_DEVICE_RESIZE_MAX_WR			= 1,			//设备支持修改QP的未完成工作请求的最大数量
+enum ibv_device_cap_flags
+{
+	IBV_DEVICE_RESIZE_MAX_WR			= 1,		//设备支持修改QP的未完成工作请求的最大数量
 	IBV_DEVICE_BAD_PKEY_CNTR			= 1 <<  1,	//设备支持每个端口的错误P_Key计数
 	IBV_DEVICE_BAD_QKEY_CNTR			= 1 <<  2,	//设备支持每个端口的无效Q_Key计数
 	IBV_DEVICE_RAW_MULTI				= 1 <<  3,	//设备支持原始数据包多播
 	IBV_DEVICE_AUTO_PATH_MIG			= 1 <<  4,	//设备支持自动路径迁移
 	IBV_DEVICE_CHANGE_PHY_PORT			= 1 <<  5,	//设备支持从SQD状态转换到SQD状态时更改QP的主端口号
-	IBV_DEVICE_UD_AV_PORT_ENFORCE		= 1 <<  6,	//设备支持 强制使用AH端口号
+	IBV_DEVICE_UD_AV_PORT_ENFORCE		= 1 <<  6,	//设备支持AH端口号强制
 	IBV_DEVICE_CURR_QP_STATE_MOD		= 1 <<  7,	//设备支持调用ibv_modify_qp()修改当前QP状态
 	IBV_DEVICE_SHUTDOWN_PORT			= 1 <<  8,	//设备支持关闭端口
-	IBV_DEVICE_INIT_TYPE				= 1 <<  9,	//设备支持 设置 InitType 和 InitTypeReply
-	IBV_DEVICE_PORT_ACTIVE_EVENT		= 1 << 10,	//设备支持 产生IBV_EVENT_PORT_ACTIVE事件
-	IBV_DEVICE_SYS_IMAGE_GUID			= 1 << 11,	//设备支持 System Image GUID
-	IBV_DEVICE_RC_RNR_NAK_GEN			= 1 << 12,	//设备支持 为RC QPs生成RNR-NAK
+	IBV_DEVICE_INIT_TYPE				= 1 <<  9,	//设备支持设置InitType和InitTypeReply
+	IBV_DEVICE_PORT_ACTIVE_EVENT		= 1 << 10,	//设备支持IBV_EVENT_PORT_ACTIVE事件产生
+	IBV_DEVICE_SYS_IMAGE_GUID			= 1 << 11,	//设备支持System Image GUID
+	IBV_DEVICE_RC_RNR_NAK_GEN			= 1 << 12,	//设备支持为RC QPs生成RNR-NAK
 	IBV_DEVICE_SRQ_RESIZE				= 1 << 13,	//设备支持修改SRQ的未完成工作请求的最大数量
 	IBV_DEVICE_N_NOTIFY_CQ				= 1 << 14,	//设备支持当向CQ添加N个完成(而不是一个)时生成一个请求完成通知
 	IBV_DEVICE_MEM_WINDOW				= 1 << 17,	//
@@ -656,14 +658,15 @@ enum ibv_device_cap_flags {
 	IBV_DEVICE_MEM_WINDOW_TYPE_2B		= 1 << 24,	//
 	IBV_DEVICE_RC_IP_CSUM				= 1 << 25,	//
 	IBV_DEVICE_RAW_IP_CSUM				= 1 << 26,	//
-	IBV_DEVICE_MANAGED_FLOW_STEERING	= 1 << 29//
+	IBV_DEVICE_MANAGED_FLOW_STEERING	= 1 << 29	//
 };
 ```
 
 enum ibv_atomic_cap定义如下：
 
 ```cpp
-enum ibv_atomic_cap {
+enum ibv_atomic_cap
+{
 	IBV_ATOMIC_NONE,	//根本不支持原子操作
 	IBV_ATOMIC_HCA,		//仅在此设备上的QP之间保证原子性
 	IBV_ATOMIC_GLOB		//保证此设备与任何其他组件（例如CPU，IO设备和其他RDMA设备）之间的原子性
@@ -679,7 +682,7 @@ Q：我可以知道一个资源有多少个元素可以创建吗？
 A：不能。这个值取决于很多因素。
 
 Q：我可以知道资源的多少元素是由其他进程/模块创建的吗？
-A：不能。 当前RDMA堆栈不支持此功能。
+A：不能。当前RDMA堆栈不支持此功能。
 
 
 ### 5.1.2 ibv_query_device_ex
