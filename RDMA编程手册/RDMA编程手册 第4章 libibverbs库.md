@@ -21,7 +21,7 @@ libibverbs是Infiniband（根据Infiniband规范）和iWARP（根据iWARP动词�
 
 ## 1.2 线程安全
 
-该库是线程安全的库，动词可以被进程中的每个线程调用，甚至可以从不同的线程处理相同的资源（保证操作的原子性）。 但是，由用户决定在资源被销毁后（由同一线程或任何其他线程）停止使用资源，否则可能导致段错误。
+该库是线程安全的库，动词可以被进程中的每个线程调用，甚至相同资源可以被不同的线程处理（保证操作的原子性）。 但是，在资源被销毁(由同一线程或任何其他线程销毁)之后，由用户决定停止使用该资源，不这样做可能会导致分段错误。
 
 ## 1.3 fork安全
 
@@ -54,7 +54,8 @@ libibverbs是Infiniband（根据Infiniband规范）和iWARP（根据iWARP动词�
  强烈建议对libibverbs应用程序只使用动态链接。
 
 ## 1.7 典型错误消息
-以下是执行libibverb应用程序时可能打印到stderr的典型错误消息以及解决方法:
+
+以下是执行libibverb应用程序时可能打印到<u>stderr</u>的典型错误消息以及解决方法:
 
 **libibverbs: Fatal: couldn't read uverbs abi version**
 
