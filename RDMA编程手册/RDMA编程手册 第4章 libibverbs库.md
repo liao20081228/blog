@@ -722,39 +722,42 @@ struct ibv_query_device_ex_input
 ```cpp
 struct ibv_device_attr_ex
 {
-	struct ibv_device_attr			orig_attr;					//设备属性，结构体详细信息见 ibv_query_device
+	struct ibv_device_attr			orig_attr;					//设备原始属性，结构体详细信息见 ibv_query_device
 	uint32_t						comp_mask;					//兼容性掩码，定义以下哪些字段有效，当前未定义
-	struct ibv_odp_caps			odp_caps;					//按需分页功能
-	uint64_t						completion_timestamp_mask;	//完成时间戳掩码，0 =不支持
-	uint64_t						hca_core_clock;				//HCA的频率，以kHZ为单位，0 =不支持
+	struct ibv_odp_caps				odp_caps;					//按需分页功能
+	uint64_t						completion_timestamp_mask;	//完成时间戳掩码，0=不支持
+	uint64_t						hca_core_clock;				//HCA的频率，以kHZ为单位，0=不支持
 	uint64_t						device_cap_flags_ex;		//扩展设备功能标志，当前未定义
-	struct ibv_tso_caps			tso_caps;					//TCP 分段卸载功能
-	struct ibv_rss_caps			rss_caps;					//RSS功能
+	struct ibv_tso_caps				tso_caps;					//TCP分段卸载功能
+	struct ibv_rss_caps				rss_caps;					//RSS功能
 	uint32_t						max_wq_type_rq;				//RQ类型的最大工作队列
-	struct ibv_packet_pacing_caps	packet_pacing_caps;			//packet pacing capabilities
+	struct ibv_packet_pacing_caps	packet_pacing_caps;			//数据包步调功能
 	uint32_t						raw_packet_caps;			//原始数据包功能，使用枚举ibv_raw_packet_caps
 	struct ibv_tm_caps				tm_caps;					//标签匹配功能
 	struct ibv_cq_moderation_caps	cq_mod_caps;				//CQ moderation max capabilities
 	uint64_t						max_dm_size;				//可分配的最大设备内存大小，以字节为单位
 	struct ibv_pci_atomic_cap		spci_atomic_caps;			//PCI原子操作功能，使用枚举ibv_pci_atomic_op_size
-	uint32_t						xrc_odp_caps;				//支持的功能，枚举ibv_odp_transport_cap_bits按位或
+	uint32_t						xrc_odp_caps;				//支持的操作，枚举ibv_odp_transport_cap_bits按位或
 };
 ```
  struct ibv_odp_caps定义如下:
 
 ```cpp
-struct ibv_odp_caps {
+struct ibv_odp_caps
+{
 	uint64_t general_odp_caps;			//一般的按需分页功能，使用枚举ibv_odp_general_caps
-	struct {
-		uint32_t rc_odp_caps;			//RC的按需分页功能，使用枚举 ibv_odp_transport_cap_bits
-		uint32_t uc_odp_caps;			//UC的按需分页功能，使用枚举 ibv_odp_transport_cap_bits
-		uint32_t ud_odp_caps;			//UD的按需分页功能，使用枚举 ibv_odp_transport_cap_bits
+	struct
+	{
+		uint32_t rc_odp_caps;			//RC的按需分页支持的操作，使用枚举 ibv_odp_transport_cap_bits
+		uint32_t uc_odp_caps;			//UC的按需分页支持的操作，使用枚举 ibv_odp_transport_cap_bits
+		uint32_t ud_odp_caps;			//UD的按需分页支持的操作，使用枚举 ibv_odp_transport_cap_bits
 	} per_transport_caps;
 };
 ```
 enum ibv_odp_general_cap_bits定义如下：
 ```cpp
-enum ibv_odp_general_caps {
+enum ibv_odp_general_caps
+{
 	IBV_ODP_SUPPORT				= 1 << 0,	/* 支持按需分页功能 */
 	IBV_ODP_SUPPORT_IMPLICIT	= 1 << 1,	/* 支持隐式的按需分页功能 */
 };
@@ -762,7 +765,8 @@ enum ibv_odp_general_caps {
 
 enum ibv_odp_transport_cap_bits定义如下：
 ```cpp
-enum ibv_odp_transport_cap_bits {
+enum ibv_odp_transport_cap_bits
+{
 	IBV_ODP_SUPPORT_SEND		= 1 << 0,	/* Send操作支持按需分页 */
 	IBV_ODP_SUPPORT_RECV		= 1 << 1,	/* Receive操作支持按需分页*/
 	IBV_ODP_SUPPORT_WRITE		= 1 << 2,	/* RDMA-Write 操作支持按需分页 */
@@ -774,7 +778,8 @@ enum ibv_odp_transport_cap_bits {
 ```
 struct ibv_tso_caps定义如下：
 ```cpp
-struct ibv_tso_caps {
+struct ibv_tso_caps
+{
 	uint32_t max_tso;			/* TSO引擎的分段的最大负载（以字节为单位）*/
 	uint32_t supported_qpts;	/* 位图显示哪些QP类型支持TOS */
 };
@@ -782,8 +787,9 @@ struct ibv_tso_caps {
 ```
  struct ibv_rss_caps定义如下：
 ```cpp
-struct ibv_rss_caps {
-	uint32_t supported_qpts;					/* 位图显示哪些QP类型支持RSS */
+struct ibv_rss_caps
+{
+	uint32_t supported_qpts;					/* 显示哪些QP类型支持RSS的位图 */
 	uint32_t max_rwq_indirection_tables;		/* 最大接收工作队列间接表* / */
 	uint32_t max_rwq_indirection_table_size;	/* 最大接收工作队列间接表大小 */
 	uint64_t rx_hash_fields_mask;				/* 哪个输入数据包的字段可以参与RX哈希，
@@ -808,10 +814,11 @@ struct ibv_packet_pacing_caps {
 ```
 enum ibv_raw_packet_caps定义如下：
 ```cpp
-enum ibv_raw_packet_caps {
+enum ibv_raw_packet_caps
+{
 	IBV_RAW_PACKET_CAP_CVLAN_STRIPPING	= 1 << 0,	/* 支持 CVLAN stripping  */
-	IBV_RAW_PACKET_CAP_SCATTER_FCS		= 1 << 1,	/* 支持FCS scattering */
-	IBV_RAW_PACKET_CAP_IP_CSUM			= 1 << 2,	/* 支持IP CSUM offload */
+	IBV_RAW_PACKET_CAP_SCATTER_FCS		= 1 << 1,	/* 支持 FCS scattering */
+	IBV_RAW_PACKET_CAP_IP_CSUM			= 1 << 2,	/* 支持 IP CSUM offload */
 	IBV_RAW_PACKET_CAP_DELAY_DROP		= 1 << 3,
 };
 ```
@@ -819,7 +826,8 @@ enum ibv_raw_packet_caps {
  struct ibv_tm_caps 定义如下：
 
 ```cpp
- struct ibv_tm_caps {
+ struct ibv_tm_caps
+ {
 	uint32_t	max_rndv_hdr_size;	/* 集合请求标头的最大大小 */
 	uint32_t	max_num_tags;		/* TM-SRQ匹配列表中标记缓冲区的最大数量 */
 	uint32_t	flags;				/* 来自枚举ibv_tm_cap_flags */
@@ -830,14 +838,16 @@ enum ibv_raw_packet_caps {
 enum ibv_tm_cap_flags 定义如下：
 
 ```cpp
-enum ibv_tm_cap_flags {
+enum ibv_tm_cap_flags
+{
 	IBV_TM_CAP_RC   = 1 << 0,	/* 支持RC传输上的标签匹配 */
 };
 ```
 
 struct ibv_cq_moderation_caps定义如下：
 ```cpp
-struct	ibv_cq_moderation_caps {
+struct	ibv_cq_moderation_caps
+{
 	uint16_t	max_cq_count;
 	uint16_t	max_cq_period; //usec
 };
@@ -845,8 +855,9 @@ struct	ibv_cq_moderation_caps {
 
  struct ibv_pci_atomic_caps定义如下：
 ```cpp
-struct ibv_pci_atomic_caps {
-	uint16_t fetch_add;		/* 原子获取和添加操作支持的大小，使用enum ibv_pci_atomic_op_size */
+struct ibv_pci_atomic_caps
+{
+	uint16_t fetch_add;			/* 原子获取和添加操作支持的大小，使用enum ibv_pci_atomic_op_size */
 	uint16_t swap;				/* 原子无条件交换操作支持的大小，使用enum ibv_pci_atomic_op_size  */
 	uint16_t compare_swap;		/* 原子比较和交换操作支持的大小，使用enum ibv_pci_atomic_op_size */
 };
@@ -854,7 +865,8 @@ struct ibv_pci_atomic_caps {
 
 enum ibv_pci_atomic_op_size定义如下：
 ```cpp
-enum ibv_pci_atomic_op_size {
+enum ibv_pci_atomic_op_size
+{
 	IBV_PCI_ATOMIC_OPERATION_4_BYTE_SIZE_SUP	= 1 << 0,
 	IBV_PCI_ATOMIC_OPERATION_8_BYTE_SIZE_SUP	= 1 << 1,
 	IBV_PCI_ATOMIC_OPERATION_16_BYTE_SIZE_SUP	= 1 << 2,
@@ -874,7 +886,7 @@ enum ibv_pci_atomic_op_size {
 
 例如，对于128字节的缓存行大小，任何小于128字节的数据包的传输都将需要在PCI上进行完整的128传输，从而可能使所需的PCI-E带宽增加一倍。
 
-可以通过IBV_QP_CREATE_PCI_WRITE_END_PADDING或IBV_WQ_FLAGS_PCI_WRITE_END_PADDING标志以QP或WQ方式启用此功能。
+可以通过IBV_QP_CREATE_PCI_WRITE_END_PADDING或IBV_WQ_FLAGS_PCI_WRITE_END_PADDING标志在QP或WQ上启用此功能。
 
 ### 5.1.3 ibv_query_port
 **函数原型：**
