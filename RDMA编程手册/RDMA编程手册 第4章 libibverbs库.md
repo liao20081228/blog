@@ -5157,9 +5157,9 @@ enum ibv_event_type
 	IBV_EVENT_CQ_ERR,				//CP事件，CQ错误，CQ溢出
 	IBV_EVENT_QP_FATAL,				//QP事件，QP发生错误，并转换为Error状态
 	IBV_EVENT_QP_REQ_ERR,			//QP事件，无效的请求本地工作队列错误
-	IBV_EVENT_QP_ACCESS_ERR,		//QP事件，本地访问违反错误
+	IBV_EVENT_QP_ACCESS_ERR,		//QP事件，本地访问违背错误
 	IBV_EVENT_COMM_EST,				//QP事件，QP上的通信已建立
-	IBV_EVENT_SQ_DRAINED,			//QP事件，进行中的发送队列中已耗尽未完成消息
+	IBV_EVENT_SQ_DRAINED,			//QP事件，进程中的发送队列中被未完成消息耗尽
 	IBV_EVENT_PATH_MIG,				//QP事件，连接已迁移到备用路径
 	IBV_EVENT_PATH_MIG_ERR,			//QP事件，连接无法迁移到备用路径
 	IBV_EVENT_DEVICE_FATAL,			//CA事件，CA处于FATAL状态
@@ -5176,6 +5176,17 @@ enum ibv_event_type
 	IBV_EVENT_WQ_FATAL,				//WQ事件，WQ处于FATAL状态
 };  
 ```
+
+下面是对struct ibv_device_attr的完整说明：
+
+下面是QPs可能发生的关联事件的描述。对于这些事件，字段 event->element.qp包含获得这个异步事件的qp的句柄。这些事件只会在QP所属的代码上下文中生成。
+
+|枚举值|说明|
+|:--|:--|
+|IBV_EVENT_QP_FATAL|QP遇到了一个错误，该错误阻止了在访问或处理工作队列（发送或接收队列）时生成完成。<br /><br /> 如果导致此事件的问题出在该工作队列的CQ中，则相应的CQ也将获得IBV_EVENT_CQ_ERR事件。|
+|IBV_EVENT_QP_REQ_ERR|RDMA设备的传输层在响应方检测到传输错误违反。 该错误可能是以下之一：<br /><br />&emsp;1.不支持或保留的操作码<br />&emsp;2.操作码乱序<br /><br /> 这些错误很少发生，并且可能在子网出现问题或RDMA设备发送非法数据包时发生。 <br /><br /> 发生这种情况时，RDMA设备会自动将QP转换为IBV_QPS_ERR状态。<br /><br /> 此事件仅与RC QP有关。
+|IBV_EVENT_QP_ACCESS_ERR|
+
 
 **示例:** 见ibv_ack_async_event。
 
