@@ -5116,9 +5116,8 @@ int ibv_get_async_event(struct ibv_context *context, struct ibv_async_event *eve
 **输入参数：** 
 
 * context——设备上下文，来自ibv_opend_device。
-* event——用于返回异步事件的指针。详细信息见下文。
 
-**输出参数：** event——指向寻找到的异步事件的指针。
+**输出参数：** event——指向寻找到的异步事件的指针。详细信息见下文。
 
 **返回值：** 成功，返回0；失败，返回-1，并设置errno显示失败原因。
 
@@ -5126,26 +5125,35 @@ int ibv_get_async_event(struct ibv_context *context, struct ibv_async_event *eve
 
 ibv_get_async_event获取RDMA设备上下文context的下一个异步事件，并通过指针event返回它，它是一个ibv_async_event结构体。 最后必须通过ibv_ack_async_event确认由ibv_get_async_event返回的所有异步事件。为避免竞争，销毁对象（CQ，SRQ或QP）将等待所有相关事件被确认。 这样可以避免应用程序在销毁相应对象之后检索关联事件。
 
-ibv_get_async_event()是一个阻塞函数。 如果多个线程同时调用此函数，则在发生异步事件时，只有一个线程将接收该函数，并且无法预测哪个线程将接收它。
+调用ibv_open_device()之后，所有异步事件都将排队到该上下文，并且调用ibv_get_async_event()将按它们的顺序逐个读取它们。 即使在事件生成很长时间之后才调用ibv_get_async_event()，它仍将首先读取较旧的事件。 不幸的是，事件没有任何时间概念，并且用户无法知道事件何时发生。
+
+缺省情况下，ibv_get_async_event()是一个阻塞函数，如果没有要读取的异步事件，它将等待直到生成下一个事件。 使用一个专用线程等待下一个事件发生会很有用。 但是，如果希望以非阻塞方式读取事件，则可以这样做。 可以使用fcntl()将设备上下文中的事件文件的文件描述符配置为非阻塞，然后使用read()/poll()/epoll()/ select()读取此文件描述符，以便确定是否有等待读取的事件。请参看示例。
+
+调用ibv_get_async_event()是原子的，即使在多个线程中调用它，也可以确保同一事件不会被多个线程读取。也就是说，如果多个线程同时调用此函数，则在发生异步事件时，只有一个线程将接收该函数，并且无法预测哪个线程将接收它。
+
+使用ibv_get_async_event()接收到的每个事件都必须使用ibv_ack_async_event()进行确认。
 
 struct ibv_async_event定义如下：
 ```cpp
-struct ibv_async_event {
-	union {							/* 结构体成员element的哪一个成员将是有效的，具体取决于结构体成员event_type */
-		struct ibv_cq		*cq;		/* 获得事件的CQ，详细信息见ibv_create_cq */
-		struct ibv_qp		*qp;		/* 获得事件的QP，详细信息见ibv_create_qp */
-		struct ibv_srq		*srq;		/* 获得事件的SRQ，详细信息见ibv_create_srq */
-		struct ibv_wq		*wq;		/* 获得事件的WQ，详细信息见ibv_create_wq */
-		int					port_num;	/* 获得事件的端口号*/
-	} element;
-	enum ibv_event_type	event_type;	/* 事件类型 */
+struct ibv_async_event
+{
+	union
+	{									/* 结构体成员element的哪一个成员将是有效的，具体取决于结构体成员event_type */
+		struct ibv_cq		*cq;		/* CQ事件： 此字段有效，指向获得事件的CQ，详细信息见ibv_create_cq */
+		struct ibv_qp		*qp;		/* QP事件：此字段有效，指向获得事件的QP，详细信息见ibv_create_qp */
+		struct ibv_srq		*srq;		/* SRQ事件：此字段有效，指向获得事件的SRQ，详细信息见ibv_create_srq */
+		struct ibv_wq		*wq;		/* WQ事件：此字段有效，指向获得事件的WQ，详细信息见ibv_create_wq */
+		int					port_num;	/* 端口事件： 此字段有效，指向获得事件的端口号*/
+	} element;							/* RDMA设备事件：没有字段有效*/
+	enum ibv_event_type	event_type;		/* 事件类型 */
 };
 
 ```
 enum ibv_event_type定义如下：
 
 ```cpp
-enum ibv_event_type {
+enum ibv_event_type
+{
 	IBV_EVENT_CQ_ERR,				//CP事件，CQ错误，CQ溢出
 	IBV_EVENT_QP_FATAL,				//QP事件，QP发生错误，并转换为Error状态
 	IBV_EVENT_QP_REQ_ERR,			//QP事件，无效的请求本地工作队列错误
