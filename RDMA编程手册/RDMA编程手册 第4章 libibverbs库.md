@@ -1218,26 +1218,32 @@ int ibv_query_gid(struct ibv_context *context, uint8_t port_num, int index, unio
 **输入参数：**
 
 * context——RDMA设备上下文，由ibv_open_device()返回。
-* port_num——物理端口号，1是第一个端口。
-* index——返回GID表中的哪一项（0是第一个）
+* port_num——物理端口号，1是第一个端口，取值范围为1~dev_cap.phys_port_cnt。
+* index——返回GID表中的哪一项（0是第一个），取值范围为0~port_attr.gid_tbl_len-1
 
 **输出参数：** gid——包含gid信息的union ibv_gid。联合体详细信息见下文。
 
-**返回值：** 成功，返回0；失败返回errno指示失败的原因。EMFILE	，该进程打开太多文件。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。EMFILE——该进程打开太多文件。
 
 **说明：**
 
 ibv_query_gid在端口的全局标识符（GID）表中检索条目。 子网管理器（SM）为每个端口分配至少一个GID。 GID是有效的IPv6地址，由全球唯一标识符（GUID）和SM分配的前缀组成。 GID [0]是唯一的，并且包含端口的GUID，它是RDMA设备制造商的卖方提供的恒定值。
 
 仅当port_attr.state为IBV_PORT_ARMED或IBV_PORT_ACTIVE时，GID表的内容才有效。 对于端口的其他状态，GID表的值不确定。
+
+配置此表的实体(条目0除外)是SM。
+
 用户应分配一个union ibv_gid，并将其传递给命令，在成功，返回后它将被填充。 ***用户负责释放该联合体***。
+
 
 union ibv_gid的定义如下：
 
 ```cpp
-union ibv_gid {
+union ibv_gid
+{
 	uint8_t raw[16];
-	struct {
+	struct
+	{
 		__be64 subnet_prefix;
 		__be64 interface_id;
 	} global;
@@ -1263,10 +1269,10 @@ A：GID是在不同子网之间发送包时的全局地址。每个GID有128位�
 * 低64位：GID前缀。由SM配置的EUI-64值。
 
 Q：我在用iWARP/IBoE，我会用这个动词吗?
-A：这个动词与InfiniBand和RoCE有关。
+A：这个动词与InfiniBand和IBpE有关。
 
 Q：当需要GID索引值时，每次调用ibv_query_gid()都需要花费时间，我可以缓存这个值吗?
-A：实际上,是的。GID表是由SM配置的，SM可以在初始配置之后更改GID，但大多数情况下不会这样做。如果缓存GID表的值，则在发生IBV_EVENT_GID_CHANGE事件时，应该刷新这些值。
+A：实际上，是的。GID表是由SM配置的，SM可以在初始配置之后更改GID，但大多数情况下不会这样做。如果缓存GID表的值，则在发生IBV_EVENT_GID_CHANGE事件时，应该刷新这些值。
 
 ### 5.1.5 ibv_query_pkey
 **函数原型：**
@@ -1275,12 +1281,12 @@ int ibv_query_pkey(struct ibv_context *context, uint8_t port_num, int index, uin
 ```
 **输入参数：**
 * context——RDMA设备上下文，由ibv_open_device()返回。
-* port_num——物理端口号，1是第一个端口。
-* index——返回pkey表中的哪一项（0是第一个）
+* port_num——物理端口号，1是第一个端口，取值范围为1~dev_cap.phys_port_cnt。
+* index——返回pkey表中的哪一项（0是第一个），取值范围为0~port_attr.pkey_tbl_len-1。
 
 **输出参数：** pkey——期望的pkey。
 
-**返回值：** 成功，返回0；失败返回errno指示失败的原因。EMFILE	，该进程打开太多文件。
+**返回值：** 成功，返回0；失败返回errno指示失败的原因。EMFILE——该进程打开太多文件。
 
 **说明：**
 
@@ -1290,7 +1296,7 @@ ibv_query_pkey在端口的分区密钥（pkey）表中检索条目。 子网管�
 
 配置该表的实体是SM，因此ibv_query_pkey()仅与InfiniBand相关。
 
-用户传入一个指向uint16的指针，该指针将被请求的pkey填充。 ***用户有释放释放此uint16***。
+用户传入一个指向uint16的指针，该指针将被请求的pkey填充。 ***用户负责释放释放此uint16***。
 
 **示例：**
 
@@ -1307,23 +1313,23 @@ if (rc) {
 **常见问题：**
 
 Q：P_Key有什么好处?
-A：P_Key允许在物理网络上创建虚拟网络(就像以太网中的vlan)。
+A：P_Key允许在物理网络上创建虚拟网络(就像以太网中的vlan)。每个P_Key有16位，它的值由两部分组成:
 * 高1位：定义成员级别:
-  * 1：正式成员
+  * 1：完全成员
   * 0：受限成员
 * 低15位：定义P_Key键值
 
-使用它的规则非常简单:每个QP都与一个P_Key关联。
+&emsp;使用它的规则非常简单:每个QP都与一个P_Key关联。
 
-仅当满足以下两个条件时，QP X（与P_Key值PX相关联）才能与QP Y（与P_Key值PY相关联）进行通信：
+&emsp;仅当满足以下两个条件时，QP X（与P_Key值PX相关联）才能与QP Y（与P_Key值PY相关联）进行通信：
 
 * PX.membership == 1 || PY.membership == 1
 * PX.key == PY.key
 
 
-这意味着，如果PX和PY的成员资格都受限，则即使它们的键值相等，它们也无法通信。
+&emsp;这意味着，如果PX和PY的成员资格都受限，则即使它们的键值相等，它们也无法通信。
 
-Q：我正在使用iWARP / IBoE，会使用这个动词吗？
+Q：我正在使用iWARP/IBoE，会使用这个动词吗？
 A：不。这个动词只与IB有关。
 
 Q：当我需要P_Key索引的值时每次调用ibv_query_pkey()都会花费时间，我可以缓存该值吗？
