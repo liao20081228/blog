@@ -5202,7 +5202,11 @@ void ibv_ack_async_event(struct ibv_async_event *event);
 
 **返回值：** 无。
 
-**说明：** 确认异步事件。
+**说明：** 
+
+ibv_ack_async_event()确认使用ibv_get_async_event()读取的异步事件。
+
+为了防止争用，必须使用ibv_ack_async_event()确认使用ibv_get_async_event()读取的所有异步事件。 调用ibv_ack_async_event()时，重要的是向其提供已读取的事件（或事件的精确副本），而不进行任何更改，否则内部数据结构可能包含错误的信息，并且销毁RDMA对象的调用可能永远不会结束。
 
 **示例:**
 
@@ -5248,7 +5252,16 @@ ibv_ack_async_event(&async_event);
 
 ```
 
+**常见问题：**
 
+Q：为什么我需要调用ibv_ack_async_event()呢?
+A：此动词用于防止内部竞争。
+
+Q：如果我不确认所有异步事件会怎样？
+A：如果所有使用ibv_get_async_event()读取的异步事件都不被确认，那么销毁适当的RDMA资源（QP事件的QP，CQ事件的CQ，SRQ事件的SRQ）的调用将永远阻塞。 使用此行为是为了防止对已被销毁的资源进行确认。
+
+Q：如果我读取一个异步事件，并且在确认该事件之前我的进程被有意地终止（例如，通过调用exit()）或无意地终止（例如，由于段错误），将会发生什么？
+A：即使有任何未确认的异步事件，当进程终止时，无论原因如何，所有资源都将被清除。
 # 10 通知和轮询完成队列
 ### 10.1  ibv_req_notify_cq（差mojo）
 **函数原型：**
