@@ -1351,45 +1351,7 @@ int ibv_get_pkey_index(struct ibv_context *context, uint8_t port_num, __be16 *pk
 
 **说明：**
 
-
-
-**示例：**
-
-```cpp
-uint16_t pkey;
-
-rc = ibv_query_pkey(ctx, 1, 2, &pkey);
-if (rc) {
-	fprintf(stderr, "Error, failed to query P_Key index %d of port %d in device '%s'\n",
-		2, 1, ibv_get_device_name(ctx->device));
-	return -1;
-}
-```
-**常见问题：**
-
-Q：P_Key有什么好处?
-A：P_Key允许在物理网络上创建虚拟网络(就像以太网中的vlan)。每个P_Key有16位，它的值由两部分组成:
-* 高1位：定义成员级别:
-  * 1：完全成员
-  * 0：受限成员
-* 低15位：定义P_Key键值
-
-&emsp;使用它的规则非常简单:每个QP都与一个P_Key关联。
-
-&emsp;仅当满足以下两个条件时，QP X（与P_Key值PX相关联）才能与QP Y（与P_Key值PY相关联）进行通信：
-
-* PX.membership == 1 || PY.membership == 1
-* PX.key == PY.key
-
-
-&emsp;这意味着，如果PX和PY的成员资格都受限，则即使它们的键值相等，它们也无法通信。
-
-Q：我正在使用iWARP/IBoE，会使用这个动词吗？
-A：不。这个动词只与IB有关。
-
-Q：当我需要P_Key索引的值时每次调用ibv_query_pkey()都会花费时间，我可以缓存该值吗？
-A：是。 P_Key表是由SM配置的，SM可以更改它，但是大多数时候不是。 如果缓存P_Key表的值，则在发生IBV_EVENT_PKEY_CHANGE事件的情况下，应刷新这些值。
-
+每个InfiniBand HCA都为其端口中的每个端口维护一个P_Key表，这些端口按整数索引并且每个端口中都有一个P_Key。 某些与P_Keys配合使用的InfiniBand数据结构期望使用P_Key索引，例如 struct ibv_qp_attr和struct ib_mad_addr。 因此，函数ibv_get_pkey_index()接受网络字节顺序的P_Key并返回P_Key表中的索引作为结果。
 
 ## 5.2 创建和销毁CC
 
