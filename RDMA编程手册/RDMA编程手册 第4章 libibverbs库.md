@@ -805,7 +805,8 @@ struct ibv_packet_pacing_caps 定义如下：
 
 
 ```cpp
-struct ibv_packet_pacing_caps {
+struct ibv_packet_pacing_caps
+{
 	uint32_t qp_rate_limit_min;	/* 最小速率限制， kbps */
 	uint32_t qp_rate_limit_max;	/* 最大速率限制， kbps */
 	uint32_t supported_qpts;		/* 按位或，显示支持哪些QP类型。 */
@@ -916,11 +917,11 @@ struct ibv_port_attr定义如下：
 ```cpp
 struct ibv_port_attr
 {
-	enum ibv_port_state	state;				//逻辑端口状态， enum ibv_port_state枚举值之一
+	enum ibv_port_state		state;				//逻辑端口状态， enum ibv_port_state枚举值之一
 	enum ibv_mtu			max_mtu;			//端口支持的最大传输单元(MTU)。			
 	enum ibv_mtu			active_mtu;			//实际使用的MTU
 	int						gid_tbl_len;		//源全局ID (GID)表的长度
-	uint32_t				port_cap_flags;		//该端口支持的功能，enum ibv_port_cap_flags中按位或
+	uint32_t				port_cap_flags;		//该端口支持的功能，enum ibv_port_cap_flags按位或
 	uint32_t				max_msg_sz;			//最大消息大小
 	uint32_t				bad_pkey_cntr;		//bad p_key计数器
 	uint32_t				qkey_viol_cntr;		//Q_Key无效计数器
@@ -945,15 +946,15 @@ struct ibv_port_attr
 
 |成员名|协议|说明|
 |:--|:--|:--|
-|state|IB/RoCE/iWARP|逻辑端口状态，它是 enum ibv_port_state枚举值之一，见下面详述|
-|max_mtu|IB/RoCE/iWARP|端口支持的MTU的最大值。它是 enum ibv_mtu枚举值之一，见下面详述|
-|active_mtu|IB/RoCE/iWARP|此端口上允许发送和接收的MTU的真实最大值。 它可以是上述max_mtu指定的枚举值之一。 此值指定可以在UC/RC QP中配置的最大消息大小以及UD QP可以传输的最大消息大小|
-|gid_tbl_len|IB/RoCE/iWARP|此端口的源GID表的长度|
-|port_cap_flags|IB/RoCE/iWARP|端口支持功能， 其值enum ibv_port_cap_flags中的枚举值按位或。见下面详述|
-|max_msg_sz|IB/RoCE/iWARP	|此端口支持的最大消息大小|
-|bad_pkey_cntr|IB/RoCE|端口的错误P_Key计数器（如果设备支持）（在dev_cap.device_cap_flags中设置了IBV_DEVICE_BAD_PKEY_CNTR）|
-|qkey_viol_cntr|IB/RoCE|端口的无效P_Key计数器（如果设备支持）（在dev_cap.device_cap_flags中设置了IBV_DEVICE_BAD_QKEY_CNTR ）|
-|pkey_tbl_len|IB/RoCE/iWARP|该端口分区表的长度|
+|state|IB/IBoE/iWARP|逻辑端口状态，它是 enum ibv_port_state枚举值之一，见下面详述|
+|max_mtu|IB/IBoE/iWARP|端口支持的MTU的最大值。它是 enum ibv_mtu枚举值之一，见下面详述|
+|active_mtu|IB/IBoE/iWARP|此端口上允许发送和接收的MTU的真实最大值。 它可以是上述max_mtu指定的枚举值之一。 此值指定可以在UC/RC QP中配置的最大消息大小以及UD QP可以传输的最大消息大小|
+|gid_tbl_len|IB/IBoE/iWARP|此端口的源GID表的长度|
+|port_cap_flags|IB/IBoE/iWARP|端口支持功能， 其值enum ibv_port_cap_flags中的枚举值按位或。见下面详述|
+|max_msg_sz|IB/IBoE/iWARP	|此端口支持的最大消息大小|
+|bad_pkey_cntr|IB/IBoE|端口的错误P_Key计数器（如果设备支持）（在dev_cap.device_cap_flags中设置了IBV_DEVICE_BAD_PKEY_CNTR）|
+|qkey_viol_cntr|IB/IBoE|端口的无效P_Key计数器（如果设备支持）（在dev_cap.device_cap_flags中设置了IBV_DEVICE_BAD_QKEY_CNTR ）|
+|pkey_tbl_len|IB/IBoE/iWARP|该端口分区表的长度|
 |lid|IB|此端口的基本LID，仅在状态为IBV_PORT_ARMED或IBV_PORT_ACTIVE时有效|
 |sm_lid|IB|管理这个端口的SM的LID|
 |lmc|IB|此端口的端口LID掩码（用于多路径），仅在状态为IBV_PORT_ARMED或IBV_PORT_ACTIVE时有效|
@@ -961,22 +962,23 @@ struct ibv_port_attr
 |sm_sl|IB|管理这个端口的SM的服务级别|
 |subnet_timeout|IB|指定期望的到达子网中的任何其他端口的最大子网传播延迟，该延迟取决于交换机的配置，并且还用于确定SubnTrap()从该端口可以发送的最大速率。持续时间的计算基于：4.096\*2^subnet_timeout^
 |init_type_reply|IB|如果设备支持，则在将端口状态更改为IBV_PORT_ACTIVE或IBV_PORT_ARMED状态之前由SM配置的值，表示执行的初始化类型（在dev_cap.device_cap_flags中设置了IBV_DEVICE_INIT_TYPE）|
-|active_width|	IB/RoCE/iWARP|该端口的激活链路宽度。 此值不是枚举值，数值见下面详述|
-|active_speed|IB/RoCE/iWARP|该端口的激活链路速度。 此值不是枚举值，数值见下面详述|
+|active_width|	IB/IBoE/iWARP|该端口的激活链路宽度。 此值不是枚举值，数值见下面详述|
+|active_speed|IB/IBoE/iWARP|该端口的激活链路速度。 此值不是枚举值，数值见下面详述|
 |phys_state|IB|物理链接状态。该值不是枚举值，数值见下面详述|
-|link_layer|IB/RoCE/iWARP|该端口使用的链路层协议。此值是匿名的枚举，见下面详述|
-|flags||端口标志
-|port_cap_flags2||端口支持功能 。 其值enum ibv_port_cap_flags2中的枚举值按位或。见下面详述
+|link_layer|IB/IBoE/iWARP|该端口使用的链路层协议。此值是匿名的枚举，见下面详述|
+|flags|？|端口标志
+|port_cap_flags2|？|端口支持功能 。 其值enum ibv_port_cap_flags2中的枚举值按位或。见下面详述
 
  enum ibv_port_state定义如下：
 ```cpp
-enum ibv_port_state {
+enum ibv_port_state
+{
 	IBV_PORT_NOP				= 0,	//保留
 	IBV_PORT_DOWN				= 1,	//逻辑链路中断
 	IBV_PORT_INIT				= 2,	//逻辑链接正在初始化
 	IBV_PORT_ARMED				= 3,	//逻辑链接已经装备
 	IBV_PORT_ACTIVE				= 4,	//逻辑链接是激活的
-	IBV_PORT_ACTIVE_DEFER		= 5	//逻辑链接处于“激活延期”状态
+	IBV_PORT_ACTIVE_DEFER		= 5		//逻辑链接处于“激活延期”状态
 };
 ```
 
@@ -986,27 +988,29 @@ enum ibv_port_state {
 |:--|:--|
 |  IBV_PORT_NOP|保留值，不应该被观察到|
 |  IBV_PORT_DOWN |逻辑链路中断。该端口的物理链接没有建立。在这种状态下，链路层丢弃所有呈现给它的数据包|
-|IBV_PORT_INIT|逻辑链接正在初始化。 端口的物理链路已建立，但是SM尚未配置逻辑链路。 在这种状态下，链路层只能接收和发送SMP和流控制链路数据包，呈现给它的其他类型的数据包将被丢弃|
+|IBV_PORT_INIT|逻辑链接正在初始化。 端口的物理链路已建立，但是SM尚未配置逻辑链路。 在这种状态下，链路层只能接收和发送SMP和流控链路数据包，呈现给它的其他类型的数据包将被丢弃|
 |IBV_PORT_ARMED|逻辑链接已经装备。 端口的物理链路已建立，但SM尚未完全配置逻辑链路。 在这种状态下，链路层可以接收和发送SMP和流控制链路数据包，可以接收其他类型的数据包，但会丢弃用于发送的非SMP数据包|
-| IBV_PORT_ACTIVE|逻辑链接是激活的。链路层可以传输和接收所有的数据包类型|
+|IBV_PORT_ACTIVE|逻辑链接是激活的。链路层可以传输和接收所有的数据包类型|
 |IBV_PORT_ACTIVE_DEFER |逻辑链接处于“激活延期”状态。 逻辑链接为激活的，但物理链接出现故障。 如果错误将在超时前恢复，则逻辑链接将返回到IBV_PORT_ACTIVE，否则它将移动到IBV_PORT_DOWN|
 
  enum ibv_mtu定义如下：
 
 ```cpp
-enum ibv_mtu {
+enum ibv_mtu
+{
 	IBV_MTU_256		= 1,	//MTU 是256 bytes
 	IBV_MTU_512		= 2,	//MTU 是512 bytes
 	IBV_MTU_1024	= 3,	//MTU 是1024 bytes
 	IBV_MTU_2048	= 4,	//MTU 是2048 bytes
-	IBV_MTU_4096	= 5	//MTU 是4096 bytes
+	IBV_MTU_4096	= 5		//MTU 是4096 bytes
 };
 ```
 
 enum ibv_port_cap_flags定义如下：
 ```cpp
-enum ibv_port_cap_flags {
-	IBV_PORT_SM							= 1 <<  1,	//管理子网的SM从该端口发送数据包
+enum ibv_port_cap_flags
+{
+	IBV_PORT_SM							= 1 <<  1,	//管理该子网的SM从该端口发送数据包
 	IBV_PORT_NOTICE_SUP					= 1 <<  2,
 	IBV_PORT_TRAP_SUP					= 1 <<  3,
 	IBV_PORT_OPT_IPD_SUP				= 1 <<  4,
@@ -1020,9 +1024,9 @@ enum ibv_port_cap_flags {
 	IBV_PORT_EXTENDED_SPEEDS_SUP		= 1 << 14,
 	IBV_PORT_CAP_MASK2_SUP				= 1 << 15,
 	IBV_PORT_CM_SUP						= 1 << 16,
-	IBV_PORT_SNMP_TUNNEL_SUP			= 1 << 17,	//表示SNMP隧道代理正在监听此端口
+	IBV_PORT_SNMP_TUNNEL_SUP			= 1 << 17,	//SNMP隧道代理正在监听此端口
 	IBV_PORT_REINIT_SUP					= 1 << 18,
-	IBV_PORT_DEVICE_MGMT_SUP			= 1 << 19,
+	IBV_PORT_DEVICE_MGMT_SUP			= 1 << 19,	//设备管理代理正在监听此端口
 	IBV_PORT_VENDOR_CLASS_SUP			= 1 << 20,	//供应商的指定代理正在监听此端口
 	IBV_PORT_DR_NOTICE_SUP				= 1 << 21,
 	IBV_PORT_CAP_MASK_NOTICE_SUP		= 1 << 22,
@@ -1061,7 +1065,7 @@ active_speed的完整说明如下：
 |4|105Gbps|
 |8|10Gbps|
 |16|14Gbps|
-|32|32Gbps|
+|32|25Gbps|
 
 phys_state的完整说明如下：
 
@@ -1079,10 +1083,11 @@ phys_state的完整说明如下：
 link_layer的定义如下：
 
 ```cpp
-enum {
+enum
+{
 	IBV_LINK_LAYER_UNSPECIFIED,		//遗留值，用于表示链路层协议是InfiniBand
 	IBV_LINK_LAYER_INFINIBAND,		//链路层协议是InfiniBand
-	IBV_LINK_LAYER_ETHERNET,		//链路层协议是以太网，因此可以使用RoCE
+	IBV_LINK_LAYER_ETHERNET,		//链路层协议是以太网，因此可以使用IBoE或RoCE
 };
 ```
 
@@ -1091,13 +1096,14 @@ enum {
 
 |值|说明|
 |:--|:--|
-|IBV_QPF_GRH_REQUIRED|设置此标志后，应用程序必须用创建配置的GRH创建所有的AH|
+|IBV_QPF_GRH_REQUIRED|设置此标志后，应用程序必须用配置的GRH来创建所有的AH|
 
 
  enum ibv_port_cap_flags2定义如下：
 
 ```cpp
-enum ibv_port_cap_flags2 {
+enum ibv_port_cap_flags2 
+{
 	IBV_PORT_SET_NODE_DESC_SUP				= 1 << 0,
 	IBV_PORT_INFO_EXT_SUP					= 1 << 1,
 	IBV_PORT_VIRT_SUP						= 1 << 2,
@@ -1122,19 +1128,22 @@ int main(void)
 	int rc;
 
 	device_list = ibv_get_device_list(&num_devices);
-	if (!device_list) {
+	if (!device_list)
+	{
 		fprintf(stderr, "Error, ibv_get_device_list() failed\n");
 		return -1;
 	}
 
 	printf("%d RDMA device(s) found:\n\n", num_devices);
 
-	for (i = 0; i < num_devices; ++ i) {
+	for (i = 0; i < num_devices; ++ i)
+	{
 		struct ibv_device_attr device_attr;
 		int j;
 
 		ctx = ibv_open_device(device_list[i]);
-		if (!ctx) {
+		if (!ctx)
+		{
 			fprintf(stderr, "Error, failed to open the device '%s'\n",
 				ibv_get_device_name(device_list[i]));
 			rc = -1;
@@ -1142,7 +1151,8 @@ int main(void)
 		}
 
 		rc = ibv_query_device(ctx, &device_attr);
-		if (rc) {
+		if (rc)
+		{
 			fprintf(stderr, "Error, failed to query the device '%s' attributes\n",
 				ibv_get_device_name(device_list[i]));
 			goto out_device;
@@ -1151,11 +1161,13 @@ int main(void)
 		printf("The device '%s' has %d port(s)\n", ibv_get_device_name(ctx->device),
 				device_attr.phys_port_cnt);
 
-		for (j = 1; j <= device_attr.phys_port_cnt; ++j) {
+		for (j = 1; j <= device_attr.phys_port_cnt; ++j)
+		{
 			struct ibv_port_attr port_attr;
 
 			rc = ibv_query_port(ctx, j, &port_attr);
-			if (rc) {
+			if (rc)
+			{
 				fprintf(stderr, "Error, failed to query port %d attributes in device '%s'\n",
 					j, ibv_get_device_name(ctx->device));
 				goto out_device;
@@ -1166,7 +1178,8 @@ int main(void)
 		}
 
 		rc = ibv_close_device(ctx);
-		if (rc) {
+		if (rc)
+		{
 			fprintf(stderr, "Error, failed to close the device '%s'\n",
 				ibv_get_device_name(ctx->device));
 			goto out;
