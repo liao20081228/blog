@@ -541,46 +541,46 @@ struct ibv_device_attr的定义如下:
 ```cpp
 struct ibv_device_attr
 {
-	char					fw_ver[64];					//固件版本
-	__be64					node_guid;					//节点全局唯一标识符(GUID，网络字节序)
-	__be64					sys_image_guid;				//系统映像GUID（网络字节序）
-	uint64_t				max_mr_size;				//可以注册的最大的连续内存块
-	uint64_t				page_size_cap;				//支持的页面大小
-	uint32_t				vendor_id;					//供应商ID，根据IEEE
-	uint32_t				vendor_part_id;				//供应商提供的部件ID
-	uint32_t				hw_ver;						//硬件版本
-	int						max_qp;						//队列对(QP)的最大数量
-	int						max_qp_wr;					//任意工作队列未完成工作请求(WR)的最大数量
-	unsigned int			device_cap_flags;			//HCA功能掩码，enum ibv_device_cap_flags的枚举值按位或得到
-	int						max_sge;					//非RDMA read QP的RQ和SQ中的每个WR的 分散/聚合条目（SGE）的最大数量
-	int						max_sge_rd;					//RRDMA read QP的每个WR的SGE的最大数量
-	int						max_cq;						//支持的CQ的最大数量
-	int						max_cqe;					//每个CQ的CQE的最大数量
-	int						max_mr;						//支持的MR的最大数量
-	int						max_pd;						//支持的保护域（PD）的最大数量
-	int						max_qp_rd_atom;				//每个QP的未完成的RDMA读取和原子操作的最大数量
-	int						max_ee_rd_atom;				//每个EEC的未完成的RDMA读取和原子操作的最大数量
-	int						max_res_rd_atom;			//此HCA作为目标用于RDMA读取和原子操作的最大资源数
-	int						max_qp_init_rd_atom;		//用于发起RDMA读和原子操作的每个QP的最大深度
-	int						max_ee_init_rd_atom;		//用于发起RDMA读和原子操作的每个EEC的最大深度
-	enum ibv_atomic_cap		atomic_cap;					//原子操作支持级别，详细信息见下文
-	int						max_ee;						//支持的EE上下文的最大数量
-	int						max_rdd;					//支持的RD域的最大数量
-	int						max_mw;						//支持的内存窗口（MW）的最大数量
-	int						max_raw_ipv6_qp;			//支持的原始IPv6数据报QP的最大数量
-	int						max_raw_ethy_qp;			//支持的以太网数据报QP的最大数量
-	int						max_mcast_grp;				//支持的多播组的最大数量
-	int						max_mcast_qp_attach;		//每个多播组可以附加的QP的最大数量
-	int						max_total_mcast_qp_attach;	//可以附加到多播组的QP的最大数量
-	int						max_ah;						//支持的地址句柄（AH）的最大数量
-	int						max_fmr;					//支持的快速内存注册（FMR）的最大数量
-	int						max_map_per_fmr;			//需要unmap操作之前，每个FMR的（重）映射的最大数量
-	int						max_srq;					//支持的共享接收队列（SRQ）的最大数量
-	int						max_srq_wr;					//每个SRQ的WR的最大数量
-	int						max_srq_sge;				//每个SRQ的SGE的最大数量
-	uint16_t				max_pkeys;					//分区的最大数量
-	uint8_t					local_ca_ack_delay;			//本地CA ack延迟
-	uint8_t					phys_port_cnt;				//物理端口数
+	char				fw_ver[64];					//固件版本
+	__be64				node_guid;					//节点全局唯一标识符(GUID，网络字节序)
+	__be64				sys_image_guid;				//系统映像GUID（网络字节序）
+	uint64_t			max_mr_size;				//可以注册的最大的连续内存块
+	uint64_t			page_size_cap;				//支持的页面大小
+	uint32_t			vendor_id;					//供应商ID，根据IEEE
+	uint32_t			vendor_part_id;				//供应商提供的部件ID
+	uint32_t			hw_ver;						//硬件版本
+	int					max_qp;						//队列对(QP)的最大数量
+	int					max_qp_wr;					//任意工作队列未完成工作请求(WR)的最大数量
+	unsigned int		device_cap_flags;			//HCA功能掩码，enum ibv_device_cap_flags的枚举值按位或得到
+	int					max_sge;					//非RDMA read QP的RQ和SQ中的每个WR的分散/聚合条目（SGE）的最大数量
+	int					max_sge_rd;					//RRDMA read QP的每个WR的SGE的最大数量
+	int					max_cq;						//支持的CQ的最大数量
+	int					max_cqe;					//每个CQ的CQE的最大数量
+	int					max_mr;						//支持的MR的最大数量
+	int					max_pd;						//支持的保护域（PD）的最大数量
+	int					max_qp_rd_atom;				//每个QP的未完成的RDMA读取和原子操作的最大数量
+	int					max_ee_rd_atom;				//每个EEC的未完成的RDMA读取和原子操作的最大数量
+	int					max_res_rd_atom;			//此HCA作为目标用于RDMA读取和原子操作的最大资源数
+	int					max_qp_init_rd_atom;		//用于发起RDMA读和原子操作的每个QP的最大深度
+	int					max_ee_init_rd_atom;		//用于发起RDMA读和原子操作的每个EEC的最大深度
+	enum ibv_atomic_cap	atomic_cap;					//原子操作支持级别，详细信息见下文
+	int					max_ee;						//支持的EE上下文的最大数量
+	int					max_rdd;					//支持的RD域的最大数量
+	int					max_mw;						//支持的内存窗口（MW）的最大数量
+	int					max_raw_ipv6_qp;			//支持的原始IPv6数据报QP的最大数量
+	int					max_raw_ethy_qp;			//支持的以太网数据报QP的最大数量
+	int					max_mcast_grp;				//支持的多播组的最大数量
+	int					max_mcast_qp_attach;		//每个多播组可以附加的QP的最大数量
+	int					max_total_mcast_qp_attach;	//可以附加到多播组的QP的最大数量
+	int					max_ah;						//支持的地址句柄（AH）的最大数量
+	int					max_fmr;					//支持的快速内存注册（FMR）的最大数量
+	int					max_map_per_fmr;			//需要unmap操作之前，每个FMR的（重）映射的最大数量
+	int					max_srq;					//支持的共享接收队列（SRQ）的最大数量
+	int					max_srq_wr;					//每个SRQ的WR的最大数量
+	int					max_srq_sge;				//每个SRQ的SGE的最大数量
+	uint16_t			max_pkeys;					//分区的最大数量
+	uint8_t				local_ca_ack_delay;			//本地CA ack延迟
+	uint8_t				phys_port_cnt;				//物理端口数
 }
 
 ```
@@ -704,7 +704,7 @@ A：不能。当前RDMA堆栈不支持此功能。
 
 **说明：**
 
-ibv_query_device_ex()获取设备的属性，用户应分配一个 struct ibv_device_attr_ex ，并传入函数，他将在成功调用时被填充。***用户负责释放此结构体***。
+ibv_query_device_ex()获取设备上下文的扩展属性，用户应分配一个 struct ibv_device_attr_ex，并传入函数，他将在成功调用时被填充。***用户负责释放此结构体***。
 
 该函数返回的最大值是设备支持的资源上限。 但是，可能无法使用这些最大值，因为可以创建的任何资源的实际数量可能会受到计算机配置，主机内存量，用户权限以及已被其他用户/进程使用的资源量的限制。
 
