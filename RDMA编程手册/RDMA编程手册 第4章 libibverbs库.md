@@ -5198,7 +5198,31 @@ enum ibv_event_type
 |:--|:--|
 |IBV_EVENT_CQ_ERR|当将完成写入CQ时发生错误。 当存在保护错误（极少数情况）或CQ溢出（最可能）时，可能发生此事件。<br /><br />当CQ出错时，不能保证可以从该CQ中提取完成。 所有与此CQ关联的QP（在其RQ或SQ）也会获得IBV_EVENT_QP_FATAL事件。|
 
+下面是SRQs可能发生的关联事件的描述。对于这些事件，字段 event->element.srq包含获得这个异步事件的SRQ的句柄。这些事件只会在SRQ所属的代码上下文中生成。
 
+|枚举值|说明|
+|:--|:--|
+|IBV_EVENT_SRQ_LIMIT_REACHED|一个已配置的SRQ，并且该SRQ中的RR数量降至该SRQ的限制值以下。 生成此事件时，SRQ的限值将设置为零。<br /><br />最有可能的是，当此事件发生时，用户将向该SRQ发布更多的RR，并再次重新配置SRQ。|
+|IBV_EVENT_SRQ_ERR|发生错误，这个错误阻止RDMA设备从该SRQ使RR出队并报告接收完成<br /><br />如果SRQ遇到此错误，则与此SRQ相关联的所有QP都将转换为IBV_QPS_ERR状态，并将为其生成IBV_EVENT_QP_FATAL异步事件。|
+
+下面是RDMA设备端口可能发生的非关联事件的描述。对于这些事件，字段 event->element.port_num包含获得这个异步事件的端口号。端口获得此事件的RDMA设备的所有上下文都会生成此事件。
+
+|枚举值|说明|
+|:--|:--|
+|IBV_EVENT_PORT_ACTIVE|链接变为激活状态，现在可用于发送/接收数据包。<br /><br />port_attr.state处于以下状态之一：IBV_PORT_DOWN，IBV_PORT_INIT，IBV_PORT_ARMED，并且已移至以下状态IBV_PORT_ACTIVE或IBV_PORT_ACTIVE_DEFER之一。 当SM配置端口时，可能会发生这种情况<br /><br />仅当在dev_cap.device_cap_flags中设置IBV_DEVICE_PORT_ACTIVE_EVENT时，设备才会生成此事件。|
+|IBV_EVENT_PORT_ERR|链接变为非活动状态，现在无法发送/接收数据包。<br /><br />port_attr.state处于IBV_PORT_ACTIVE或IBV_PORT_ACTIVE_DEFER状态，并且已移至以下状态之一：IBV_PORT_DOWN，IBV_PORT_INIT，IBV_PORT_ARMED。 当链接存在问题时（例如：电缆已拔出），可能会发生这种情况。<br /><br />这不会影响与此端口状态关联的QP状态。 尽管如果QP是可靠并且尝试发送数据，QP可能会遇到重试次数超出限制的情况。|
+|IBV_EVENT_LID_CHANGE|SM已在端口上更改了LID。 如果这不是SM首次配置端口LID，则可能表明子网中存在新的SM，或者SM重新配置了子网。 发送/接收数据的QP可能会遇到连接故障（如果子网中的LID已更改）。|
+|IBV_EVENT_PKEY_CHANGE|SM在端口上更改了P_Key表。 由于QP使用的是P_Key表索引而不是绝对值，因此建议客户检查其QP使用的P_Key索引是否未更改。|
+|IBV_EVENT_SM_CHANGE|该端口所属的子网中有一个新的SM，客户应该重新注册以前从该端口请求的所有订阅，例如（但不限于）加入多播组。
+|IBV_EVENT_CLIENT_REREGISTER|SM请求客户端将重新注册到该端口先前请求的所有订阅，例如（但不限于）加入多播组。 当SM发生故障（导致其丢失记录）或子网中存在新的SM时，可能会生成此事件。<br /><br />仅当在port_attr.port_cap_flags中设置了表示支持客户端重新注册的位时，设备才会生成此事件。
+|IBV_EVENT_GID_CHANGE|SM在端口上更改了GID表。 由于QP使用的是GID表索引而不是绝对值（作为源GID），因此建议客户端检查其QP使用的GID索引是否未更改。|
+
+下面是RDMA设备中可能发生的非关联事件。获得此事件的RDMA设备的所有上下文都将产生此事件。
+|枚举值|说明|
+|:--|:--|
+|IBV_EVENT_DEVICE_FATAL|RDMA设备遭受了与上述异步事件之一无关的错误。 发生此事件时，RDMA设备的行为是不确定的，强烈建议立即关闭该进程，因为销毁RDMA资源的尝试可能会失败。|
+
+下面是对异步事件行为的总结：
 |事件名|元素类型|事件类型|协议|
 |:--|:--|:--|:--|
 |IBV_EVENT_COMM_EST|QP|Info|IB, RoCE|
