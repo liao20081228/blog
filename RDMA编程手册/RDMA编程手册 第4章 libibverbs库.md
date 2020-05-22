@@ -5108,7 +5108,7 @@ if (ibv_get_cq_event(channel, &ev_cq, &ev_ctx)) {
 ibv_ack_cq_events(ev_cq, 1);
 ```
 ## 9.2 获取和确认异步事件
-### 9.2.1 ibv_get_async_event（差mojo）
+### 9.2.1 ibv_get_async_event
 **函数原型：** 
 ```c
 int ibv_get_async_event(struct ibv_context *context, struct ibv_async_event *event);
@@ -5179,19 +5179,52 @@ enum ibv_event_type
 
 下面是对struct ibv_device_attr的完整说明：
 
-下面是QPs可能发生的关联事件的描述。对于这些事件，字段 event->element.qp包含获得这个异步事件的qp的句柄。这些事件只会在QP所属的代码上下文中生成。
+下面是QPs可能发生的关联事件的描述。对于这些事件，字段 event->element.qp包含获得这个异步事件的QP的句柄。这些事件只会在QP所属的代码上下文中生成。
 
 |枚举值|说明|
 |:--|:--|
 |IBV_EVENT_QP_FATAL|QP遇到了一个错误，该错误阻止了在访问或处理工作队列（发送或接收队列）时生成完成。<br /><br /> 如果导致此事件的问题出在该工作队列的CQ中，则相应的CQ也将获得IBV_EVENT_CQ_ERR事件。|
 |IBV_EVENT_QP_REQ_ERR|RDMA设备的传输层在响应方检测到传输错误违反。 该错误可能是以下之一：<br /><br />&emsp;1.不支持或保留的操作码<br />&emsp;2.操作码乱序<br /><br /> 这些错误很少发生，并且可能在子网出现问题或RDMA设备发送非法数据包时发生。 <br /><br /> 发生这种情况时，RDMA设备会自动将QP转换为IBV_QPS_ERR状态。<br /><br /> 此事件仅与RC QP有关。
-|IBV_EVENT_QP_ACCESS_ERR|
+|IBV_EVENT_QP_ACCESS_ERR|RDMA设备的传输层在响应方检测到请求错误违反。 该错误可能是以下之一：<br /><br /> &emsp;1.不一致的原子请求；<br />&emsp;2.太多RDMA读或原子请求<br />&emsp;3.R_key违规<br />&emsp;4.没有即时数据的长度错误<br /><br /> 这些错误通常是由于用户代码中的错误造成的。<br /><br /> 发生这种情况时，RDMA设备会自动将QP转换为IBV_QPS_ERR状态。<br /><br /> 此事件仅与RC QP相关。|
+|IBV_EVENT_COMM_EST|状态为IBV_QPS_RTR的QP接收了其接收队列中的第一个数据包，并且已对其进行了正确处理。<br /><br /> 此事件主要仅与面向连接的QP有关，即RC和UC QP。 UD QP也可能发生，这是驱动实现的特性。|
+|IBV_EVENT_SQ_DRAINED|当要求状态更改时，其状态从IBV_QPS_RTS更改为IBV_QPS_SQD的QP已完成发送其发送队列中所有进行中的未完成消息。 对于RC QP，这意味着所有这些消息都收到确认（如果适用）。<br /><br /> 在大多数情况下，当（内部）QP状态从SQD.draining更改为SQD.drained时，将生成此事件。 但是，如果由于（由RDMA设备或由用户）转换为IBV_QPS_SQE，IBV_QPS_ERR或IBV_QPS_RESET QP状态而中止了向状态IBV_QPS_SQD的转换，也可能生成此事件。<br /><br /> 此事件发生后，QP处于IBV_QPS_SQD状态，对于用户来说，可以安全地开始修改发送队列属性，并且没有进行中的消息发送。|
+|IBV_EVENT_PATH_MIG|表示连接已迁移到备用路径。 此事件仅与面向连接的QP有关，即RC和UC QP。<br /><br />这意味着备用路径属性现在被用作主要路径属性。 如果要求将加载另一个备用路径属性，则用户现在可以设置这些属性。|
+|IBV_EVENT_PATH_MIG_EER|加载了备用路径属性的QP试图由RDMA设备或由用户显式执行路径迁移更改，并且出现了一个阻止移动到该备用路径错误。<br /><br /> 如果双方的备用路径属性不一致，通常会发生此错误。|
+|IBV_EVENT_QP_LAST_WQE_REACHED|与SRQ相关联的QP已由RDMA设备自动或由用户明确转换为IBV_QPS_ERR状态，并且发生以下情况之一：<br /><br />&emsp;1.为上一个WQE生成了一个有错误的完成<br />&emsp;2.QP转换为IBV_QPS_ERR状态，并且该QP的接收队列上不再有WQE<br /><br />此事件实际上意味着此QP将不再从SRQ中使用WQE。<br /><br />如果QP发生错误且未生成此事件，则用户必须销毁与此SRQ关联的所有QP和SRQ本身，以便回收与该QP关联的所有WQE。
 
+下面是CPs可能发生的关联事件的描述。对于这些事件，字段 event->element.cq包含获得这个异步事件的CQ的句柄。这些事件只会在CP所属的代码上下文中生成。
+
+|枚举值|说明|
+|:--|:--|
+|IBV_EVENT_CQ_ERR|当将完成写入CQ时发生错误。 当存在保护错误（极少数情况）或CQ溢出（最可能）时，可能发生此事件。<br /><br />当CQ出错时，不能保证可以从该CQ中提取完成。 所有与此CQ关联的QP（在其RQ或SQ）也会获得IBV_EVENT_QP_FATAL事件。|
+
+
+|事件名|元素类型|事件类型|协议|
+|:--|:--|:--|:--|
+|IBV_EVENT_COMM_EST|QP|Info|IB, RoCE|
+|IBV_EVENT_SQ_DRAINED|QP|Info|IB, RoCE|
+|IBV_EVENT_PATH_MIG|QP|Info|IB, RoCE|
+|IBV_EVENT_QP_LAST_WQE_REACHED|QP|Info|IB, RoCE|
+|IBV_EVENT_QP_FATAL|QP|Error|IB, RoCE, iWARP|
+|IBV_EVENT_QP_REQ_ERR|QP|Error|IB, RoCE, iWARP|
+|IBV_EVENT_QP_ACCESS_ERR|QP|Error|IB, RoCE, iWARP|
+|IBV_EVENT_PATH_MIG_ERR|QP|Error|IB, RoCE|
+|IBV_EVENT_CQ_ERR|CQ|Error|IB, RoCE, iWARP|
+|IBV_EVENT_SRQ_LIMIT_REACHED|SRQ|Info|IB, RoCE, iWARP|
+|IBV_EVENT_SRQ_ERR|SRQ|Error|IB, RoCE, iWARP|
+|IBV_EVENT_PORT_ACTIVE|Port|Info|IB, RoCE, iWARP|
+|IBV_EVENT_LID_CHANGE|Port|Info|IB|
+|IBV_EVENT_PKEY_CHANGE|Port|Info|IB|
+|IBV_EVENT_GID_CHANGE|Port|Info|IB, RoCE|
+|IBV_EVENT_SM_CHANGE|Port|Info|IB|
+|IBV_EVENT_CLIENT_REREGISTER|Port|Info|IB|
+|IBV_EVENT_PORT_ERR|Port|Error|IB, RoCE, iWARP|
+|IBV_EVENT_DEVICE_FATAL|Device|Error|IB, RoCE, iWARP|
 
 **示例:** 见ibv_ack_async_event。
 
 
-### 9.2.2 ibv_ack_async_event（差mojo）
+### 9.2.2 ibv_ack_async_event
 **函数原型：** 
 ```c
 void ibv_ack_async_event(struct ibv_async_event *event);
@@ -5262,6 +5295,7 @@ A：如果所有使用ibv_get_async_event()读取的异步事件都不被确认�
 
 Q：如果我读取一个异步事件，并且在确认该事件之前我的进程被有意地终止（例如，通过调用exit()）或无意地终止（例如，由于段错误），将会发生什么？
 A：即使有任何未确认的异步事件，当进程终止时，无论原因如何，所有资源都将被清除。
+
 # 10 通知和轮询完成队列
 ### 10.1  ibv_req_notify_cq（差mojo）
 **函数原型：**
