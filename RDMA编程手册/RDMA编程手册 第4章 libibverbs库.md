@@ -5214,7 +5214,7 @@ enum ibv_event_type
 |IBV_EVENT_LID_CHANGE|SM已在端口上更改了LID。 如果这不是SM首次配置端口LID，则可能表明子网中存在新的SM，或者SM重新配置了子网。 发送/接收数据的QP可能会遇到连接故障（如果子网中的LID已更改）。|
 |IBV_EVENT_PKEY_CHANGE|SM在端口上更改了P_Key表。 由于QP使用的是P_Key表索引而不是绝对值，因此建议客户检查其QP使用的P_Key索引是否未更改。|
 |IBV_EVENT_SM_CHANGE|该端口所属的子网中有一个新的SM，客户应该重新注册以前从该端口请求的所有订阅，例如（但不限于）加入多播组。
-|IBV_EVENT_CLIENT_REREGISTER|SM请求客户端将重新注册到该端口先前请求的所有订阅，例如（但不限于）加入多播组。 当SM发生故障（导致其丢失记录）或子网中存在新的SM时，可能会生成此事件。<br /><br />仅当在port_attr.port_cap_flags中设置了表示支持客户端重新注册的位时，设备才会生成此事件。
+|IBV_EVENT_CLIENT_REREGISTER|SM请求客户端重新注册以前从该端口请求的所有订阅，例如（但不限于）加入多播组。 当SM发生故障（导致其丢失记录）或子网中存在新的SM时，可能会生成此事件。<br /><br />仅当在port_attr.port_cap_flags中设置了表示支持客户端重新注册的位时，设备才会生成此事件。|
 |IBV_EVENT_GID_CHANGE|SM在端口上更改了GID表。 由于QP使用的是GID表索引而不是绝对值（作为源GID），因此建议客户端检查其QP使用的GID索引是否未更改。|
 
 下面是RDMA设备中可能发生的非关联事件。获得此事件的RDMA设备的所有上下文都将产生此事件。
