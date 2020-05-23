@@ -3884,7 +3884,8 @@ MR的起始地址为addr，大小为length。 可以注册的块的最大大小�
 enum ibv_access_flags 定义如下：
 
 ```cpp
-enum ibv_access_flags {
+enum ibv_access_flags
+{
 	IBV_ACCESS_LOCAL_WRITE		= 1,		//允许本地写
 	IBV_ACCESS_REMOTE_WRITE		= (1<<1),	//允许在这个QP上传入RDMA 写
 	IBV_ACCESS_REMOTE_READ		= (1<<2),	//允许在这个QP上传入RDMA 读
@@ -3892,7 +3893,9 @@ enum ibv_access_flags {
 	IBV_ACCESS_MW_BIND			= (1<<4),	//允许内存窗口绑定
 	IBV_ACCESS_ZERO_BASED		= (1<<5),	//使用从MR开头的字节偏移量来访问此MR，而不是指针地址
 	IBV_ACCESS_ON_DEMAND		= (1<<6),	//创建一个按需分页MR
-};**
+	IBV_ACCESS_HUGETLB			= (1<<7),	//保证将大页面用于此MR，仅适用于IBV_ACCESS_ON_DEMAND（显式模式下）
+	IBV_ACCESS_RELAXED_ORDERING	= IBV_ACCESS_OPTIONAL_FIRST,//允许系统重新排序对MR的访问以提高性能
+};
 ```
 enum ibv_access_flags 的完整定义如下：
 
@@ -3905,6 +3908,8 @@ enum ibv_access_flags 的完整定义如下：
 |IBV_ACCESS_MW_BIND|允许内存窗口绑定|
 |IBV_ACCESS_ZERO_BASED|使用从MR开头的字节偏移量来访问此MR，而不是指针地址|
 |IBV_ACCESS_ON_DEMAND|创建一个按需分页MR
+|IBV_ACCESS_HUGETLB|保证将大页面用于此MR，仅适用于IBV_ACCESS_ON_DEMAND（显式模式下）|
+|IBV_ACCESS_RELAXED_ORDERING|允许系统重新排序对MR的访问以提高性能|
 
 如果设置了 IBV_ACCESS_REMOTE_WRITE或 IBV_ACCESS_REMOTE_ATOMIC，则IBV_ACCESS_LOCAL_WRITE必须设置。因为只有在允许本地写的情况下才应该允许远程写。
 
@@ -3912,26 +3917,29 @@ enum ibv_access_flags 的完整定义如下：
 
 为了创建一个隐式的ODP MR，应设置IBV_ACCESS_ON_DEMAND， addr应该为0， length应该为SIZE_MAX。
 
+如果设置了IBV_ACCESS_HUGETLB，则应用程序将意识到对于此MR，所有页面都大页面，并且必须保证它将永远不会做任何事情来破坏大页面。
+
 内存注册区域的要求权限可以是该内存块的操作系统权限的全部或子集。 例如：只读内存无法注册为具有写入权限（本地或远程）。
 
 特定进程可以注册一个或多个内存区域。
 
 本地读访问是隐含的和自动的。
 
-任何违反给定内存操作的访问权限的VPI操作都将失败。
+任何违反给定内存操作的访问权限的动词操作都将失败。
 
 请注意，队列对（QP）属性还必须具有正确的权限，否则操作将失败。
 
 struct ibv_mr定义如下：
 ```cpp
-struct ibv_mr	{
-	struct ibv_context		*context;
-	struct ibv_pd			*pd;
-	void					*addr;
-	size_t					length;
+struct ibv_mr
+{
+	struct ibv_context		*context;	//设备上下文，来自ibv_open_device
+	struct ibv_pd			*pd;		//保护域，来自ibv_alloc_pd
+	void					*addr;		//MR的起始地址
+	size_t					length;		//MR的长度
 	uint32_t				handle;
-	uint32_t				lkey;	//将被用于在本地访问中引用此MR
-	uint32_t				rkey;	//将被用于在远程访问中引用此MR。这两个值可能相等，但这并不总是保证的。
+	uint32_t				lkey;		//将被用于在本地访问中引用此MR
+	uint32_t				rkey;		//将被用于在远程访问中引用此MR。这两个值可能相等，但这并不总是保证的。
 };
 ```
 
@@ -3939,19 +3947,19 @@ struct ibv_mr	{
 
 **常见问题：**
 
-Q：为什么MR总是有好处？
+Q：为什么MR有好处？
 A：MR注册是RDMA设备获取内存缓冲区并准备将其用于本地 和/或 远程访问的过程。
 
 Q：我可以多次注册同一个内存块吗?
-A：是。 可以多次注册同一个内存块或其一部分。 这些内存注册区甚至可以使用不同的访问标志来执行。
+A：可以。 可以多次注册同一个内存块或其一部分。 这些内存注册区甚至可以使用不同的访问标志来执行。
 
 Q：可以注册的内存的总大小是多少?
-A：没有任何方法可以知道可以注册的内存总大小。 从理论上讲，此值没有任何限制。 但是，如果希望注册大量内存（数百GB），则低级驱动程序的默认值可能还不够；因此，如果您希望将这些值添加到内存中，则可能无法使用。请参阅“设备特性”一节，了解如何更改默认参数值以解决此问题。
+A：没有任何方法知道可以注册的内存总大小。 从理论上讲，此值没有任何限制。 但是，如果希望注册大量内存（数百GB），则低级驱动程序的默认值可能还不够；请参阅“设备特性”一节，了解如何更改默认参数值以解决此问题。
 
-Q：我可以使用比操作系统允许的更多权限的RDMA设备访问内存吗?
-A：否。在内存注册期间，驱动程序将检查内存块的权限，并检查是否允许该内存块使用所请求的权限。
+Q：我可以使用具有比操作系统允许的更多权限的RDMA设备来访问内存吗?
+A：否。在内存注册期间，驱动程序将检查内存块的权限，并检查所请求的权限是否允许与该内存块一起使用。
 
-Q：没有注册就可以在RDMA中使用内存块吗？
+Q：可以在RDMA中使用没有注册的内存块吗？
 A：基本上不行，但是，有些RDMA设备可以读取内存而无需进行内存注册（内联数据发送）。
 
 Q：ibv_reg_mr()失败，原因是什么?
@@ -3959,7 +3967,7 @@ A：ibv_reg_mr()可能会失败，原因如下:
 * 错误的属性:错误的权限或错误的内存缓冲区
 * 没有足够的资源来注册这个内存缓冲区
 
-如果这是您注册的第一个缓冲区，则可能是由于第一个原因。 如果在已经注册了许多缓冲区之后内存注册失败，则可能是该失败的原因是没有足够的资源来注册此内存缓冲区：大多数情况下，RDMA设备中的资源用于虚拟地址的转换=> 实际地址。 在这种情况下，您可能需要检查如何增加此RDMA设备可以注册的内存量。
+如果这是您注册的第一个缓冲区，则可能是由于第一个原因。 如果在已经注册了许多缓冲区之后内存注册失败，则可能是该失败的原因是没有足够的资源来注册此内存缓冲区：大多数情况下，RDMA设备中的资源用于虚拟地址到物理地址的转换。 在这种情况下，您可能需要检查如何增加此RDMA设备可以注册的内存量。
 
 Q：我可以在进程中注册多个MR吗？
 A：可以。
