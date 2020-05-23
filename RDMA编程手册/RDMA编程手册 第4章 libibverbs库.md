@@ -4055,23 +4055,25 @@ struct ibv_pd *pd;
 struct ibv_mr *mr;
 
 mr	 ibv_reg_mr(pd, buf, size, IBV_ACCESS_LOCAL_WRITE);
-if (!mr) {
+if (!mr)
+{
 	fprintf(stderr, "Error, ibv_reg_mr() failed\n");
 	return -1;
 }
 
-if (ibv_dereg_mr(mr)) {
+if (ibv_dereg_mr(mr))
+{
 	fprintf(stderr, "Error, ibv_dereg_mr() failed\n");
 	return -1;
 }
 ```
 
 **常见问题：**
-Q：如果在注销之前释放与MR相关的内存缓冲区会怎样？
+Q：如果在注销MR之前释放与此MR相关的内存缓冲区会怎样？
 A：这样做可能会导致段错误。
 
-Q：如果我在注销MR之后使用与MR关联的密钥（密钥），将会发生什么？
-A：这样做将导致带有错误的工作完成，因为这些密钥无效。 在注销此MR之前，应确保没有使用这些密钥的任何本地工作请求或远程操作请求。
+Q：如果我在注销MR之后使用与此MR关联的密钥（密钥），将会发生什么？
+A：这样做将导致工作完成出错，因为这些密钥无效。 在注销此MR之前，应确保没有使用这些密钥的任何本地工作请求或远程操作请求。
 
 Q：ibv_dereg_mr()失败，我可以知道分配了哪个MW并导致此失败吗？
 A：不，目前RDMA堆栈没有这个功能。
