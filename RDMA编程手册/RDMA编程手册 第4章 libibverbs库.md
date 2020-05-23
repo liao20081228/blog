@@ -1354,9 +1354,275 @@ int ibv_get_pkey_index(struct ibv_context *context, uint8_t port_num, __be16 *pk
 
 每个InfiniBand HCA都为其端口中的每个端口维护一个P_Key表，这些端口按整数索引并且每个端口中都有一个P_Key。 某些与P_Keys配合使用的InfiniBand数据结构期望使用P_Key索引，例如 struct ibv_qp_attr和struct ib_mad_addr。 因此，函数ibv_get_pkey_index()接受网络字节顺序的P_Key并返回P_Key表中的索引作为结果。
 
-## 5.2 创建和销毁CC
+## 5.2 获取和确认异步事件
+### 5.2.1 ibv_get_async_event
+**函数原型：** 
+```c
+int ibv_get_async_event(struct ibv_context *context, struct ibv_async_event *event);
+```
+**输入参数：** 
 
-### 5.2.1 ibv_create_comp_channel
+* context——设备上下文，来自ibv_opend_device。
+
+**输出参数：** event——指向寻找到的异步事件的指针。详细信息见下文。
+
+**返回值：** 成功，返回0；失败，返回-1，并设置errno显示失败原因。
+
+**说明：** 
+
+ibv_get_async_event获取RDMA设备上下文context的下一个异步事件，并通过指针event返回它，它是一个ibv_async_event结构体。 最后必须通过ibv_ack_async_event确认由ibv_get_async_event返回的所有异步事件。为避免竞争，销毁对象（CQ，SRQ或QP）将等待所有相关事件被确认。 这样可以避免应用程序在销毁相应对象之后检索关联事件。
+
+调用ibv_open_device()之后，所有异步事件都将排队到该上下文，并且调用ibv_get_async_event()将按它们的顺序逐个读取它们。 即使在事件生成很长时间之后才调用ibv_get_async_event()，它仍将首先读取较旧的事件。 不幸的是，事件没有任何时间概念，并且用户无法知道事件何时发生。
+
+缺省情况下，ibv_get_async_event()是一个阻塞函数，如果没有要读取的异步事件，它将等待直到生成下一个事件。 使用一个专用线程等待下一个事件发生会很有用。 但是，如果希望以非阻塞方式读取事件，则可以这样做。 可以使用fcntl()将设备上下文中的事件文件的文件描述符配置为非阻塞，然后使用read()/poll()/epoll()/ select()读取此文件描述符，以便确定是否有等待读取的事件。请参看示例。
+
+调用ibv_get_async_event()是原子的，即使在多个线程中调用它，也可以确保同一事件不会被多个线程读取。也就是说，如果多个线程同时调用此函数，则在发生异步事件时，只有一个线程将接收该函数，并且无法预测哪个线程将接收它。
+
+使用ibv_get_async_event()接收到的每个事件都必须使用ibv_ack_async_event()进行确认。
+
+struct ibv_async_event定义如下：
+```cpp
+struct ibv_async_event
+{
+	union
+	{									/* 结构体成员element的哪一个成员将是有效的，具体取决于结构体成员event_type */
+		struct ibv_cq		*cq;		/* CQ事件： 此字段有效，指向获得事件的CQ，详细信息见ibv_create_cq */
+		struct ibv_qp		*qp;		/* QP事件：此字段有效，指向获得事件的QP，详细信息见ibv_create_qp */
+		struct ibv_srq		*srq;		/* SRQ事件：此字段有效，指向获得事件的SRQ，详细信息见ibv_create_srq */
+		struct ibv_wq		*wq;		/* WQ事件：此字段有效，指向获得事件的WQ，详细信息见ibv_create_wq */
+		int					port_num;	/* 端口事件： 此字段有效，指向获得事件的端口号*/
+	} element;							/* RDMA设备事件：没有字段有效*/
+	enum ibv_event_type	event_type;		/* 事件类型 */
+};
+
+```
+enum ibv_event_type定义如下：
+
+```cpp
+enum ibv_event_type
+{
+	IBV_EVENT_CQ_ERR,				//CP事件，CQ错误，CQ溢出
+	IBV_EVENT_QP_FATAL,				//QP事件，QP发生错误，并转换为Error状态
+	IBV_EVENT_QP_REQ_ERR,			//QP事件，无效的请求本地工作队列错误
+	IBV_EVENT_QP_ACCESS_ERR,		//QP事件，本地访问违背错误
+	IBV_EVENT_COMM_EST,				//QP事件，QP上的通信已建立
+	IBV_EVENT_SQ_DRAINED,			//QP事件，进程中的发送队列中被未完成消息耗尽
+	IBV_EVENT_PATH_MIG,				//QP事件，连接已迁移到备用路径
+	IBV_EVENT_PATH_MIG_ERR,			//QP事件，连接无法迁移到备用路径
+	IBV_EVENT_DEVICE_FATAL,			//CA事件，CA处于FATAL状态
+	IBV_EVENT_PORT_ACTIVE,			//端口事件，端口上的链接变为激活
+	IBV_EVENT_PORT_ERR,				//端口事件，端口上的链接不可用
+	IBV_EVENT_LID_CHANGE,			//端口事件，端口上的LID已更改
+	IBV_EVENT_PKEY_CHANGE,			//端口事件，端口上的P_key表已更改
+	IBV_EVENT_SM_CHANGE,			//端口事件，端口上的SM已更改
+	IBV_EVENT_SRQ_ERR,				//SRQ事件，SRQ出现错误
+	IBV_EVENT_SRQ_LIMIT_REACHED,	//SRQ事件，达到SRQ限制
+	IBV_EVENT_QP_LAST_WQE_REACHED,	//QP事件，上一个WQE到达与SRQ相关联的QP
+	IBV_EVENT_CLIENT_REREGISTER,	//端口事件，SM向端口发送了CLIENT_REREGISTER请求
+	IBV_EVENT_GID_CHANGE,			//端口事件，端口上GID表已更改
+	IBV_EVENT_WQ_FATAL,				//WQ事件，WQ处于FATAL状态
+};
+```
+
+下面是对struct ibv_device_attr的完整说明：
+
+下面是QPs可能发生的关联事件的描述。对于这些事件，字段 event->element.qp包含获得这个异步事件的QP的句柄。这些事件只会在QP所属的代码上下文中生成。
+
+|枚举值|说明|
+|:--|:--|
+|IBV_EVENT_QP_FATAL|QP遇到了一个错误，该错误阻止了在访问或处理工作队列（发送或接收队列）时生成完成。<br /><br /> 如果导致此事件的问题出在该工作队列的CQ中，则相应的CQ也将获得IBV_EVENT_CQ_ERR事件。|
+|IBV_EVENT_QP_REQ_ERR|RDMA设备的传输层在响应方检测到传输错误违反。 该错误可能是以下之一：<br /><br />&emsp;1.不支持或保留的操作码<br />&emsp;2.操作码乱序<br /><br /> 这些错误很少发生，并且可能在子网出现问题或RDMA设备发送非法数据包时发生。 <br /><br /> 发生这种情况时，RDMA设备会自动将QP转换为IBV_QPS_ERR状态。<br /><br /> 此事件仅与RC QP有关。
+|IBV_EVENT_QP_ACCESS_ERR|RDMA设备的传输层在响应方检测到请求错误违反。 该错误可能是以下之一：<br /><br /> &emsp;1.不一致的原子请求；<br />&emsp;2.太多RDMA读或原子请求<br />&emsp;3.R_key违规<br />&emsp;4.没有即时数据的长度错误<br /><br /> 这些错误通常是由于用户代码中的错误造成的。<br /><br /> 发生这种情况时，RDMA设备会自动将QP转换为IBV_QPS_ERR状态。<br /><br /> 此事件仅与RC QP相关。|
+|IBV_EVENT_COMM_EST|状态为IBV_QPS_RTR的QP接收了其接收队列中的第一个数据包，并且已对其进行了正确处理。<br /><br /> 此事件主要仅与面向连接的QP有关，即RC和UC QP。 UD QP也可能发生，这是驱动实现的特性。|
+|IBV_EVENT_SQ_DRAINED|当要求状态更改时，其状态从IBV_QPS_RTS更改为IBV_QPS_SQD的QP已完成发送其发送队列中所有进行中的未完成消息。 对于RC QP，这意味着所有这些消息都收到确认（如果适用）。<br /><br /> 在大多数情况下，当（内部）QP状态从SQD.draining更改为SQD.drained时，将生成此事件。 但是，如果由于（由RDMA设备或由用户）转换为IBV_QPS_SQE，IBV_QPS_ERR或IBV_QPS_RESET QP状态而中止了向状态IBV_QPS_SQD的转换，也可能生成此事件。<br /><br /> 此事件发生后，QP处于IBV_QPS_SQD状态，对于用户来说，可以安全地开始修改发送队列属性，并且没有进行中的消息发送。|
+|IBV_EVENT_PATH_MIG|表示连接已迁移到备用路径。 此事件仅与面向连接的QP有关，即RC和UC QP。<br /><br />这意味着备用路径属性现在被用作主要路径属性。 如果要求将加载另一个备用路径属性，则用户现在可以设置这些属性。|
+|IBV_EVENT_PATH_MIG_EER|加载了备用路径属性的QP试图由RDMA设备或由用户显式执行路径迁移更改，并且出现了一个阻止移动到该备用路径错误。<br /><br /> 如果双方的备用路径属性不一致，通常会发生此错误。|
+|IBV_EVENT_QP_LAST_WQE_REACHED|与SRQ相关联的QP已由RDMA设备自动或由用户明确转换为IBV_QPS_ERR状态，并且发生以下情况之一：<br /><br />&emsp;1.为上一个WQE生成了一个有错误的完成<br />&emsp;2.QP转换为IBV_QPS_ERR状态，并且该QP的接收队列上不再有WQE<br /><br />此事件实际上意味着此QP将不再从SRQ中使用WQE。<br /><br />如果QP发生错误且未生成此事件，则用户必须销毁与此SRQ关联的所有QP和SRQ本身，以便回收与该QP关联的所有WQE。
+
+下面是CPs可能发生的关联事件的描述。对于这些事件，字段 event->element.cq包含获得这个异步事件的CQ的句柄。这些事件只会在CP所属的代码上下文中生成。
+
+|枚举值|说明|
+|:--|:--|
+|IBV_EVENT_CQ_ERR|当将完成写入CQ时发生错误。 当存在保护错误（极少数情况）或CQ溢出（最可能）时，可能发生此事件。<br /><br />当CQ出错时，不能保证可以从该CQ中提取完成。 所有与此CQ关联的QP（在其RQ或SQ）也会获得IBV_EVENT_QP_FATAL事件。|
+
+下面是SRQs可能发生的关联事件的描述。对于这些事件，字段 event->element.srq包含获得这个异步事件的SRQ的句柄。这些事件只会在SRQ所属的代码上下文中生成。
+
+|枚举值|说明|
+|:--|:--|
+|IBV_EVENT_SRQ_LIMIT_REACHED|一个已配置的SRQ，并且该SRQ中的RR数量降至该SRQ的限制值以下。 生成此事件时，SRQ的限值将设置为零。<br /><br />最有可能的是，当此事件发生时，用户将向该SRQ发布更多的RR，并再次重新配置SRQ。|
+|IBV_EVENT_SRQ_ERR|发生错误，这个错误阻止RDMA设备从该SRQ使RR出队并报告接收完成<br /><br />如果SRQ遇到此错误，则与此SRQ相关联的所有QP都将转换为IBV_QPS_ERR状态，并将为其生成IBV_EVENT_QP_FATAL异步事件。|
+
+下面是RDMA设备端口可能发生的非关联事件的描述。对于这些事件，字段 event->element.port_num包含获得这个异步事件的端口号。端口获得此事件的RDMA设备的所有上下文都会生成此事件。
+
+|枚举值|说明|
+|:--|:--|
+|IBV_EVENT_PORT_ACTIVE|链接变为激活状态，现在可用于发送/接收数据包。<br /><br />port_attr.state处于以下状态之一：IBV_PORT_DOWN，IBV_PORT_INIT，IBV_PORT_ARMED，并且已移至以下状态IBV_PORT_ACTIVE或IBV_PORT_ACTIVE_DEFER之一。 当SM配置端口时，可能会发生这种情况<br /><br />仅当在dev_cap.device_cap_flags中设置IBV_DEVICE_PORT_ACTIVE_EVENT时，设备才会生成此事件。|
+|IBV_EVENT_PORT_ERR|链接变为非活动状态，现在无法发送/接收数据包。<br /><br />port_attr.state处于IBV_PORT_ACTIVE或IBV_PORT_ACTIVE_DEFER状态，并且已移至以下状态之一：IBV_PORT_DOWN，IBV_PORT_INIT，IBV_PORT_ARMED。 当链接存在问题时（例如：电缆已拔出），可能会发生这种情况。<br /><br />这不会影响与此端口状态关联的QP状态。 尽管如果QP是可靠并且尝试发送数据，QP可能会遇到重试次数超出限制的情况。|
+|IBV_EVENT_LID_CHANGE|SM已在端口上更改了LID。 如果这不是SM首次配置端口LID，则可能表明子网中存在新的SM，或者SM重新配置了子网。 发送/接收数据的QP可能会遇到连接故障（如果子网中的LID已更改）。|
+|IBV_EVENT_PKEY_CHANGE|SM在端口上更改了P_Key表。 由于QP使用的是P_Key表索引而不是绝对值，因此建议客户检查其QP使用的P_Key索引是否未更改。|
+|IBV_EVENT_SM_CHANGE|该端口所属的子网中有一个新的SM，客户应该重新注册以前从该端口请求的所有订阅，例如（但不限于）加入多播组。
+|IBV_EVENT_CLIENT_REREGISTER|SM请求客户端重新注册以前从该端口请求的所有订阅，例如（但不限于）加入多播组。 当SM发生故障（导致其丢失记录）或子网中存在新的SM时，可能会生成此事件。<br /><br />仅当在port_attr.port_cap_flags中设置了表示支持客户端重新注册的位时，设备才会生成此事件。|
+|IBV_EVENT_GID_CHANGE|SM在端口上更改了GID表。 由于QP使用的是GID表索引而不是绝对值（作为源GID），因此建议客户端检查其QP使用的GID索引是否未更改。|
+
+下面是RDMA设备中可能发生的非关联事件。获得此事件的RDMA设备的所有上下文都将产生此事件。
+|枚举值|说明|
+|:--|:--|
+|IBV_EVENT_DEVICE_FATAL|RDMA设备遭受了与上述异步事件之一无关的错误。 发生此事件时，RDMA设备的行为是不确定的，强烈建议立即关闭该进程，因为销毁RDMA资源的尝试可能会失败。|
+
+下面是对异步事件行为的总结：
+|事件名|元素类型|事件类型|协议|
+|:--|:--|:--|:--|
+|IBV_EVENT_COMM_EST|QP|Info|IB, RoCE|
+|IBV_EVENT_SQ_DRAINED|QP|Info|IB, RoCE|
+|IBV_EVENT_PATH_MIG|QP|Info|IB, RoCE|
+|IBV_EVENT_QP_LAST_WQE_REACHED|QP|Info|IB, RoCE|
+|IBV_EVENT_QP_FATAL|QP|Error|IB, RoCE, iWARP|
+|IBV_EVENT_QP_REQ_ERR|QP|Error|IB, RoCE, iWARP|
+|IBV_EVENT_QP_ACCESS_ERR|QP|Error|IB, RoCE, iWARP|
+|IBV_EVENT_PATH_MIG_ERR|QP|Error|IB, RoCE|
+|IBV_EVENT_CQ_ERR|CQ|Error|IB, RoCE, iWARP|
+|IBV_EVENT_SRQ_LIMIT_REACHED|SRQ|Info|IB, RoCE, iWARP|
+|IBV_EVENT_SRQ_ERR|SRQ|Error|IB, RoCE, iWARP|
+|IBV_EVENT_PORT_ACTIVE|Port|Info|IB, RoCE, iWARP|
+|IBV_EVENT_LID_CHANGE|Port|Info|IB|
+|IBV_EVENT_PKEY_CHANGE|Port|Info|IB|
+|IBV_EVENT_GID_CHANGE|Port|Info|IB, RoCE|
+|IBV_EVENT_SM_CHANGE|Port|Info|IB|
+|IBV_EVENT_CLIENT_REREGISTER|Port|Info|IB|
+|IBV_EVENT_PORT_ERR|Port|Error|IB, RoCE, iWARP|
+|IBV_EVENT_DEVICE_FATAL|Device|Error|IB, RoCE, iWARP|
+
+**示例：** 见ibv_ack_async_event。
+
+**常见问题：**
+
+Q：我必须读取异步事件吗?
+A：不。异步事件机制是一种提供有关CQ，QP，SRQ，端口，设备中发生的事情的额外信息的方法。 用户不必使用它，但强烈建议这样做。
+
+Q：我是否可以偶尔读取事件（例如，每隔几分钟）
+A：是的，你可以。 不利的一面是，您将不知道事件何时发生，并且此信息可能不再重要。
+
+Q：这个动词是线程安全的吗?
+A：是的，这个动词是线程安全的（就像其他动词一样）。
+
+Q：我收到了QP/CQ/SRQ事件。 其他进程也会获得此事件吗？
+A：不会。关联事件将仅在此资源所属的上下文中生成。 其他上下文甚至都不知道发生了此事件。
+
+### 5.2.2 ibv_ack_async_event
+**函数原型：** 
+```c
+void ibv_ack_async_event(struct ibv_async_event *event);
+```
+**输入参数：** event——异步事件，由ibv_get_async_event返回。
+
+**输出参数：** 无。
+
+**返回值：** 无。
+
+**说明：** 
+
+ibv_ack_async_event()确认使用ibv_get_async_event()读取的异步事件。
+
+为了防止争用，必须使用ibv_ack_async_event()确认使用ibv_get_async_event()读取的所有异步事件。 调用ibv_ack_async_event()时，重要的是向其提供已读取的事件（或事件的精确副本），而不进行任何更改，否则内部数据结构可能包含错误的信息，并且销毁RDMA对象的调用可能永远不会结束。
+
+**示例:**
+
+读取异步事件(阻塞方式)并打印其上下文:
+
+```cpp
+/* the actual code that reads the events in the loop and prints it */
+int ret;
+ 
+while (1)
+{
+	/* wait for the next async event */
+	ret = ibv_get_async_event(ctx, &event);
+	if (ret)
+	{
+		fprintf(stderr, "Error, ibv_get_async_event() failed\n");
+		return -1;
+	}
+ 
+	/* print the event */
+	print_async_event(ctx, &event);//打印异步事件的内容
+ 
+	/* ack the event */
+	ibv_ack_async_event(&event);
+}
+```
+
+下面的代码示例演示了一种在非阻塞模式下处理异步事件的可能方法。 它执行以下步骤：
+
+1. 将异步事件队列工作模式设置为非阻塞
+2. 轮询队列，直到发生异步事件
+3. 获取异步事件并确认
+
+```cpp
+int flags;
+int ret;
+ 
+printf("Changing the mode of events read to be non-blocking\n");
+ 
+/* change the blocking mode of the async event queue */
+flags = fcntl(ctx->async_fd, F_GETFL);
+ret = fcntl(ctx->async_fd, F_SETFL, flags | O_NONBLOCK);
+if (ret < 0)
+{
+	fprintf(stderr, "Error, failed to change file descriptor of async event queue\n");
+	return -1;
+}
+ 
+while (1)
+{
+	struct pollfd my_pollfd;
+	int ms_timeout = 100;
+ 
+	/*
+	 * poll the queue until it has an event and sleep ms_timeout
+	 * milliseconds between any iteration
+	 */
+	my_pollfd.fd      = ctx->async_fd;
+	my_pollfd.events  = POLLIN;
+	my_pollfd.revents = 0;
+	do
+	{
+		ret = poll(&my_pollfd, 1, ms_timeout);
+	} while (ret == 0);
+	if (ret < 0)
+	{
+		fprintf(stderr, "poll failed\n");
+		return -1;
+	}
+ 
+	/* we know that there is an event, so we just need to read it */
+	ret = ibv_get_async_event(ctx, &event);
+	if (ret)
+	{
+		fprintf(stderr, "Error, ibv_get_async_event() failed\n");
+		return -1;
+	}
+ 
+	/* print the event */
+	print_async_event(ctx, &event);
+ 
+	/* ack the event */
+	ibv_ack_async_event(&event);
+}
+```
+
+**常见问题：**
+
+Q：为什么我需要调用ibv_ack_async_event()呢?
+A：此动词用于防止内部竞争。
+
+Q：如果我不确认所有异步事件会怎样？
+A：如果所有使用ibv_get_async_event()读取的异步事件都不被确认，那么销毁适当的RDMA资源（QP事件的QP，CQ事件的CQ，SRQ事件的SRQ）的调用将永远阻塞。 使用此行为是为了防止对已被销毁的资源进行确认。
+
+Q：如果我读取一个异步事件，并且在确认该事件之前我的进程被有意地终止（例如，通过调用exit()）或无意地终止（例如，由于段错误），将会发生什么？
+A：即使有任何未确认的异步事件，当进程终止时，无论原因如何，所有资源都将被清除。
+## 5.3 创建和销毁CC
+
+### 5.3.1 ibv_create_comp_channel
 **函数原型：**
 ```cpp
 struct ibv_comp_channel *ibv_create_comp_channel(struct ibv_context *context)
@@ -1402,7 +1668,7 @@ A：是的。 多个CQ可以与同一完成事件通道相关联。 一个进程
 Q：我如何使用多个完成事件通道来为不同的CQ分配不同的优先级？
 A：您可以将具有相同优先级的所有CQ与相同的完成事件通道相关联，并根据CQs组的优先级来处理“工作完成”事件。
 
-### 5.2.2 ibv_destroy_comp_channel
+### 5.3.2 ibv_destroy_comp_channel
 **函数原型：**
 ```cpp
 int ibv_destroy_comp_channel(struct ibv_comp_channel *channel)
@@ -1439,9 +1705,9 @@ A：什么变化都没有。你可以使用他们，没有任何副作用。
 Q：ibv_destroy_comp_channel()失败了，我能知道哪些cq与它相关并导致了失败吗?
 A：不，目前RDMA堆栈没有这个功能。
 
-## 5.3 创建、修改、销毁CQ
+## 5.4 创建、修改、销毁CQ
 
-###  5.3.1 ibv_create_cq
+###  5.4.1 ibv_create_cq
 **函数原型：**
 ```cpp
 struct ibv_cq *ibv_create_cq(struct ibv_context *context, int cqe, void *cq_context,
@@ -1534,7 +1800,7 @@ Q：我可以使用哪个值作为cq_context?
 A：由于cq_context为void*，因此您可以输入所需的任何值。
 
 
-### 5.3.2 ibv_create_cq_ex
+### 5.4.2 ibv_create_cq_ex
 
 **函数原型：**
 ```cpp
@@ -1758,7 +2024,7 @@ struct ibv_poll_cq_attr {
 	uint32_t comp_mask;
 };
 ```
-### 5.3.3 ibv_cq_ex_to_cq
+### 5.4.3 ibv_cq_ex_to_cq
   **函数原型：**
  **
 ```cpp
@@ -1772,7 +2038,7 @@ static inline struct ibv_cq *ibv_cq_ex_to_cq(struct ibv_cq_ex *cq)
 
 **说明：** 将扩展cq转为普通cq。
 
-### 5.3.4 ibv_resize_cq
+### 5.4.4 ibv_resize_cq
 **函数原型：**
 ```cpp
 int ibv_resize_cq(struct ibv_cq *cq, int cqe)
@@ -1824,7 +2090,7 @@ A：是的，只要新的尺寸不小于该CQ中当前的工作完成数量即�
 Q：我调用了ibv_resize_cq()并尝试减小CQ大小，但是CQ大小没有改变。 发生了什么？
 A：这可能发生。 规则是用户可以定义CQ的最小大小，并且实际大小可以等于或大于此值。 尝试减小CQ大小可能会导致无济于事。 这取决于（低级驱动程序的）实现。
 
-### 5.3.5 ibv_modify_cq
+### 5.4.5 ibv_modify_cq
 **函数原型：**
 ```cpp
 int ibv_modify_cq(struct ibv_cq *cq, struct ibv_modify_cq_attr *cq_attr。)
@@ -1866,7 +2132,7 @@ enum ibv_cq_attr_mask {
 };
 ```
 
-### 5.3.6 ibv_destroy_cq
+### 5.4.6 ibv_destroy_cq
 **函数原型：**
 ```cpp
 int ibv_destroy_cq(struct ibv_cq *cq)
@@ -1925,8 +2191,8 @@ A：是的，你可以。
 Q：我调用了ibv_destroy_cq()，但是它没有结束。 发生了什么？
 A：该CQ上至少有一个关联的异步事件被读取，但没有确认。
 
-## 5.4 分配和释放PD
-###  5.4.1 ibv_alloc_pd
+## 5.5 分配和释放PD
+###  5.5.1 ibv_alloc_pd
 **函数原型：**
 ```cpp
 struct ibv_pd *ibv_alloc_pd(struct ibv_context *context)
@@ -1959,7 +2225,7 @@ struct ibv_pd
 Q：PD有什么好处？
 A：PD是一种保护手段，可帮助您创建一组可以一起工作的对象。 如果使用PD1创建了多个对象，而使用PD2创建了其他对象，则将来自group1的对象与来自group2的对象一起使用将最终以错误结束。
 
-### 5.4.2 ibv_dealloc_pd
+### 5.5.2 ibv_dealloc_pd
 **函数原型：**
 ```cpp
 int ibv_dealloc_pd(struct ibv_pd *pd)
@@ -2002,8 +2268,8 @@ A：不行，libibverbs不支持它。 如果用户希望释放PD，则需要在
 Q：ibv_dealloc_pd()失败，我可以知道分配了哪些RDMA资源并导致此失败吗？
 A：不可以，目前RDMA堆栈不具备此功能。
 
-## 5.5 分配和释放DM
-### 5.5.1 ibv_adlloc_dm
+## 5.6 分配和释放DM
+### 5.6.1 ibv_adlloc_dm
 **函数原型：**
 ```cpp
 struct ibv_dm *ibv_alloc_dm(struct ibv_context *context, struct ibv_alloc_dm_attr *attr)
@@ -2050,7 +2316,7 @@ struct ibv_dm {
 };
 ```
 
-### 5.5.2 ibv_dealloc_dm
+### 5.6.2 ibv_dealloc_dm
 **函数原型：**
 ```cpp
  int ibv_free_dm(struct ibv_dm *dm)
@@ -2063,9 +2329,9 @@ struct ibv_dm {
 
 **说明：** 释放设备内存。如果如果任何其他资源（例如MR）仍然与DM关联，则调用失败。
 
-## 5.6 分配和释放TD（差mojo）
+## 5.7 分配和释放TD（差mojo）
 
-### 5.6.1 ibv_alloc_td
+### 5.7.1 ibv_alloc_td
 **函数原型：**
 ```cpp
 struct ibv_td *ibv_alloc_td(struct ibv_context *context, struct ibv_td_init_attr *init_attr);
@@ -2104,7 +2370,7 @@ struct ibv_td {
 };
 ```
 
-### 5.6.2 ibv_dealloc_td
+### 5.7.2 ibv_dealloc_td
 **函数原型：**
 ```cpp
 int ibv_dealloc_td(struct ibv_td *td)
@@ -2117,8 +2383,8 @@ int ibv_dealloc_td(struct ibv_td *td)
 
 **说明：** ibv_dealloc_td()将取消分配线程域td。 在取消分配td之前，应销毁使用td创建的所有资源。
 
-## 5.7 打开和关闭XRCD（差mojo）
-### 5.7.1 ibv_open_xrcd
+## 5.8 打开和关闭XRCD（差mojo）
+### 5.8.1 ibv_open_xrcd
 **函数原型：**
 ```cpp
 struct ibv_xrcd *ibv_open_xrcd(struct ibv_context *context, struct ibv_xrcd_init_attr *xrcd_init_attr)
@@ -2166,7 +2432,7 @@ struct ibv_xrcd {
 	struct ibv_context	*context;	//设备上下文
 };
 ```
-### 5.7.2 ibv_close_xrcd
+### 5.8.2 ibv_close_xrcd
 **函数原型：**
 
 ```cpp
@@ -2184,9 +2450,9 @@ ibv_close_xrcd()关闭XRCD域。如果是最后一个引用，则XRCD将被销�
 
 如果xrcd被关闭时仍有其他任何资源与其关联，则该调用可能会失败。
 
-## 5.8 创建和销毁计数器（差mojo）
+## 5.9 创建和销毁计数器（差mojo）
 
-### 5.8.1 ibv_create_counters
+### 5.9.1 ibv_create_counters
 **函数原型：** 
 ```cpp
 struct ibv_counters *ibv_create_counters(struct ibv_context *context, 
@@ -2230,7 +2496,7 @@ struct ibv_counters {
 
 **示例：** 见ibv_read_counters。
 
-### 5.8.2 ibv_destroy_counters
+### 5.9.2 ibv_destroy_counters
 **函数原型：** 
 ```cpp
 int ibv_destroy_counters(struct ibv_counters *counters)
@@ -2242,8 +2508,8 @@ int ibv_destroy_counters(struct ibv_counters *counters)
 **返回值：** 成功，返回0；失败，返回errno显失败原因。EINVAL——参数非法。
 
 **说明：** ibv_destroy_counters()释放了计数器句柄，用户应在销毁计数器对象之前将其分离。
-## 5.9 创建、修改、销毁WQ（差mojo）
-### 5.9.1 ibv_create_wq
+## 5.10 创建、修改、销毁WQ（差mojo）
+### 5.10.1 ibv_create_wq
 **函数原型：** 
 ```cpp
 struct ibv_wq *ibv_create_wq(struct ibv_context *context, struct ibv_wq_init_attr *wq_init_attr)
@@ -2338,9 +2604,9 @@ enum ibv_wq_flags {
 	IBV_WQ_FLAGS_RESERVED				= 1 << 4,	//
 };
 ```
-### 5.9.2 ibv_modify_wq(N)
+### 5.10.2 ibv_modify_wq(N)
 
-### 5.9.3 ibv_destroy_wq
+### 5.10.3 ibv_destroy_wq
 **函数原型：** 
 ```cpp
 int ibv_destroy_wq(struct ibv_wq *wq)
@@ -2353,8 +2619,8 @@ int ibv_destroy_wq(struct ibv_wq *wq)
 
 **说明：** 销毁已存在的wq。
 
-## 5.10 创建和销毁RWQ IND TBL
-### 5.10.1 ibv_create_rwq_ind_table
+## 5.11 创建和销毁RWQ IND TBL
+### 5.11.1 ibv_create_rwq_ind_table
 **函数原型：** 
 ```cpp
 struct ibv_rwq_ind_table *ibv_create_rwq_ind_table(struct ibv_context *context,
@@ -2403,7 +2669,7 @@ enum ibv_ind_table_init_attr_mask {
 	IBV_CREATE_IND_TABLE_RESERVED	= (1 << 0)
 };
 ```
-### 5.10.2 ibv_destroy_rwq_ind_table
+### 5.11.2 ibv_destroy_rwq_ind_table
 **函数原型：** 
 ```cpp
 int ibv_destroy_rwq_ind_table(struct ibv_rwq_ind_table *rwq_ind_table)
@@ -5115,272 +5381,7 @@ if (ibv_get_cq_event(channel, &ev_cq, &ev_ctx)) {
 /* Ack the event */
 ibv_ack_cq_events(ev_cq, 1);
 ```
-## 9.2 获取和确认异步事件
-### 9.2.1 ibv_get_async_event
-**函数原型：** 
-```c
-int ibv_get_async_event(struct ibv_context *context, struct ibv_async_event *event);
-```
-**输入参数：** 
 
-* context——设备上下文，来自ibv_opend_device。
-
-**输出参数：** event——指向寻找到的异步事件的指针。详细信息见下文。
-
-**返回值：** 成功，返回0；失败，返回-1，并设置errno显示失败原因。
-
-**说明：** 
-
-ibv_get_async_event获取RDMA设备上下文context的下一个异步事件，并通过指针event返回它，它是一个ibv_async_event结构体。 最后必须通过ibv_ack_async_event确认由ibv_get_async_event返回的所有异步事件。为避免竞争，销毁对象（CQ，SRQ或QP）将等待所有相关事件被确认。 这样可以避免应用程序在销毁相应对象之后检索关联事件。
-
-调用ibv_open_device()之后，所有异步事件都将排队到该上下文，并且调用ibv_get_async_event()将按它们的顺序逐个读取它们。 即使在事件生成很长时间之后才调用ibv_get_async_event()，它仍将首先读取较旧的事件。 不幸的是，事件没有任何时间概念，并且用户无法知道事件何时发生。
-
-缺省情况下，ibv_get_async_event()是一个阻塞函数，如果没有要读取的异步事件，它将等待直到生成下一个事件。 使用一个专用线程等待下一个事件发生会很有用。 但是，如果希望以非阻塞方式读取事件，则可以这样做。 可以使用fcntl()将设备上下文中的事件文件的文件描述符配置为非阻塞，然后使用read()/poll()/epoll()/ select()读取此文件描述符，以便确定是否有等待读取的事件。请参看示例。
-
-调用ibv_get_async_event()是原子的，即使在多个线程中调用它，也可以确保同一事件不会被多个线程读取。也就是说，如果多个线程同时调用此函数，则在发生异步事件时，只有一个线程将接收该函数，并且无法预测哪个线程将接收它。
-
-使用ibv_get_async_event()接收到的每个事件都必须使用ibv_ack_async_event()进行确认。
-
-struct ibv_async_event定义如下：
-```cpp
-struct ibv_async_event
-{
-	union
-	{									/* 结构体成员element的哪一个成员将是有效的，具体取决于结构体成员event_type */
-		struct ibv_cq		*cq;		/* CQ事件： 此字段有效，指向获得事件的CQ，详细信息见ibv_create_cq */
-		struct ibv_qp		*qp;		/* QP事件：此字段有效，指向获得事件的QP，详细信息见ibv_create_qp */
-		struct ibv_srq		*srq;		/* SRQ事件：此字段有效，指向获得事件的SRQ，详细信息见ibv_create_srq */
-		struct ibv_wq		*wq;		/* WQ事件：此字段有效，指向获得事件的WQ，详细信息见ibv_create_wq */
-		int					port_num;	/* 端口事件： 此字段有效，指向获得事件的端口号*/
-	} element;							/* RDMA设备事件：没有字段有效*/
-	enum ibv_event_type	event_type;		/* 事件类型 */
-};
-
-```
-enum ibv_event_type定义如下：
-
-```cpp
-enum ibv_event_type
-{
-	IBV_EVENT_CQ_ERR,				//CP事件，CQ错误，CQ溢出
-	IBV_EVENT_QP_FATAL,				//QP事件，QP发生错误，并转换为Error状态
-	IBV_EVENT_QP_REQ_ERR,			//QP事件，无效的请求本地工作队列错误
-	IBV_EVENT_QP_ACCESS_ERR,		//QP事件，本地访问违背错误
-	IBV_EVENT_COMM_EST,				//QP事件，QP上的通信已建立
-	IBV_EVENT_SQ_DRAINED,			//QP事件，进程中的发送队列中被未完成消息耗尽
-	IBV_EVENT_PATH_MIG,				//QP事件，连接已迁移到备用路径
-	IBV_EVENT_PATH_MIG_ERR,			//QP事件，连接无法迁移到备用路径
-	IBV_EVENT_DEVICE_FATAL,			//CA事件，CA处于FATAL状态
-	IBV_EVENT_PORT_ACTIVE,			//端口事件，端口上的链接变为激活
-	IBV_EVENT_PORT_ERR,				//端口事件，端口上的链接不可用
-	IBV_EVENT_LID_CHANGE,			//端口事件，端口上的LID已更改
-	IBV_EVENT_PKEY_CHANGE,			//端口事件，端口上的P_key表已更改
-	IBV_EVENT_SM_CHANGE,			//端口事件，端口上的SM已更改
-	IBV_EVENT_SRQ_ERR,				//SRQ事件，SRQ出现错误
-	IBV_EVENT_SRQ_LIMIT_REACHED,	//SRQ事件，达到SRQ限制
-	IBV_EVENT_QP_LAST_WQE_REACHED,	//QP事件，上一个WQE到达与SRQ相关联的QP
-	IBV_EVENT_CLIENT_REREGISTER,	//端口事件，SM向端口发送了CLIENT_REREGISTER请求
-	IBV_EVENT_GID_CHANGE,			//端口事件，端口上GID表已更改
-	IBV_EVENT_WQ_FATAL,				//WQ事件，WQ处于FATAL状态
-};
-```
-
-下面是对struct ibv_device_attr的完整说明：
-
-下面是QPs可能发生的关联事件的描述。对于这些事件，字段 event->element.qp包含获得这个异步事件的QP的句柄。这些事件只会在QP所属的代码上下文中生成。
-
-|枚举值|说明|
-|:--|:--|
-|IBV_EVENT_QP_FATAL|QP遇到了一个错误，该错误阻止了在访问或处理工作队列（发送或接收队列）时生成完成。<br /><br /> 如果导致此事件的问题出在该工作队列的CQ中，则相应的CQ也将获得IBV_EVENT_CQ_ERR事件。|
-|IBV_EVENT_QP_REQ_ERR|RDMA设备的传输层在响应方检测到传输错误违反。 该错误可能是以下之一：<br /><br />&emsp;1.不支持或保留的操作码<br />&emsp;2.操作码乱序<br /><br /> 这些错误很少发生，并且可能在子网出现问题或RDMA设备发送非法数据包时发生。 <br /><br /> 发生这种情况时，RDMA设备会自动将QP转换为IBV_QPS_ERR状态。<br /><br /> 此事件仅与RC QP有关。
-|IBV_EVENT_QP_ACCESS_ERR|RDMA设备的传输层在响应方检测到请求错误违反。 该错误可能是以下之一：<br /><br /> &emsp;1.不一致的原子请求；<br />&emsp;2.太多RDMA读或原子请求<br />&emsp;3.R_key违规<br />&emsp;4.没有即时数据的长度错误<br /><br /> 这些错误通常是由于用户代码中的错误造成的。<br /><br /> 发生这种情况时，RDMA设备会自动将QP转换为IBV_QPS_ERR状态。<br /><br /> 此事件仅与RC QP相关。|
-|IBV_EVENT_COMM_EST|状态为IBV_QPS_RTR的QP接收了其接收队列中的第一个数据包，并且已对其进行了正确处理。<br /><br /> 此事件主要仅与面向连接的QP有关，即RC和UC QP。 UD QP也可能发生，这是驱动实现的特性。|
-|IBV_EVENT_SQ_DRAINED|当要求状态更改时，其状态从IBV_QPS_RTS更改为IBV_QPS_SQD的QP已完成发送其发送队列中所有进行中的未完成消息。 对于RC QP，这意味着所有这些消息都收到确认（如果适用）。<br /><br /> 在大多数情况下，当（内部）QP状态从SQD.draining更改为SQD.drained时，将生成此事件。 但是，如果由于（由RDMA设备或由用户）转换为IBV_QPS_SQE，IBV_QPS_ERR或IBV_QPS_RESET QP状态而中止了向状态IBV_QPS_SQD的转换，也可能生成此事件。<br /><br /> 此事件发生后，QP处于IBV_QPS_SQD状态，对于用户来说，可以安全地开始修改发送队列属性，并且没有进行中的消息发送。|
-|IBV_EVENT_PATH_MIG|表示连接已迁移到备用路径。 此事件仅与面向连接的QP有关，即RC和UC QP。<br /><br />这意味着备用路径属性现在被用作主要路径属性。 如果要求将加载另一个备用路径属性，则用户现在可以设置这些属性。|
-|IBV_EVENT_PATH_MIG_EER|加载了备用路径属性的QP试图由RDMA设备或由用户显式执行路径迁移更改，并且出现了一个阻止移动到该备用路径错误。<br /><br /> 如果双方的备用路径属性不一致，通常会发生此错误。|
-|IBV_EVENT_QP_LAST_WQE_REACHED|与SRQ相关联的QP已由RDMA设备自动或由用户明确转换为IBV_QPS_ERR状态，并且发生以下情况之一：<br /><br />&emsp;1.为上一个WQE生成了一个有错误的完成<br />&emsp;2.QP转换为IBV_QPS_ERR状态，并且该QP的接收队列上不再有WQE<br /><br />此事件实际上意味着此QP将不再从SRQ中使用WQE。<br /><br />如果QP发生错误且未生成此事件，则用户必须销毁与此SRQ关联的所有QP和SRQ本身，以便回收与该QP关联的所有WQE。
-
-下面是CPs可能发生的关联事件的描述。对于这些事件，字段 event->element.cq包含获得这个异步事件的CQ的句柄。这些事件只会在CP所属的代码上下文中生成。
-
-|枚举值|说明|
-|:--|:--|
-|IBV_EVENT_CQ_ERR|当将完成写入CQ时发生错误。 当存在保护错误（极少数情况）或CQ溢出（最可能）时，可能发生此事件。<br /><br />当CQ出错时，不能保证可以从该CQ中提取完成。 所有与此CQ关联的QP（在其RQ或SQ）也会获得IBV_EVENT_QP_FATAL事件。|
-
-下面是SRQs可能发生的关联事件的描述。对于这些事件，字段 event->element.srq包含获得这个异步事件的SRQ的句柄。这些事件只会在SRQ所属的代码上下文中生成。
-
-|枚举值|说明|
-|:--|:--|
-|IBV_EVENT_SRQ_LIMIT_REACHED|一个已配置的SRQ，并且该SRQ中的RR数量降至该SRQ的限制值以下。 生成此事件时，SRQ的限值将设置为零。<br /><br />最有可能的是，当此事件发生时，用户将向该SRQ发布更多的RR，并再次重新配置SRQ。|
-|IBV_EVENT_SRQ_ERR|发生错误，这个错误阻止RDMA设备从该SRQ使RR出队并报告接收完成<br /><br />如果SRQ遇到此错误，则与此SRQ相关联的所有QP都将转换为IBV_QPS_ERR状态，并将为其生成IBV_EVENT_QP_FATAL异步事件。|
-
-下面是RDMA设备端口可能发生的非关联事件的描述。对于这些事件，字段 event->element.port_num包含获得这个异步事件的端口号。端口获得此事件的RDMA设备的所有上下文都会生成此事件。
-
-|枚举值|说明|
-|:--|:--|
-|IBV_EVENT_PORT_ACTIVE|链接变为激活状态，现在可用于发送/接收数据包。<br /><br />port_attr.state处于以下状态之一：IBV_PORT_DOWN，IBV_PORT_INIT，IBV_PORT_ARMED，并且已移至以下状态IBV_PORT_ACTIVE或IBV_PORT_ACTIVE_DEFER之一。 当SM配置端口时，可能会发生这种情况<br /><br />仅当在dev_cap.device_cap_flags中设置IBV_DEVICE_PORT_ACTIVE_EVENT时，设备才会生成此事件。|
-|IBV_EVENT_PORT_ERR|链接变为非活动状态，现在无法发送/接收数据包。<br /><br />port_attr.state处于IBV_PORT_ACTIVE或IBV_PORT_ACTIVE_DEFER状态，并且已移至以下状态之一：IBV_PORT_DOWN，IBV_PORT_INIT，IBV_PORT_ARMED。 当链接存在问题时（例如：电缆已拔出），可能会发生这种情况。<br /><br />这不会影响与此端口状态关联的QP状态。 尽管如果QP是可靠并且尝试发送数据，QP可能会遇到重试次数超出限制的情况。|
-|IBV_EVENT_LID_CHANGE|SM已在端口上更改了LID。 如果这不是SM首次配置端口LID，则可能表明子网中存在新的SM，或者SM重新配置了子网。 发送/接收数据的QP可能会遇到连接故障（如果子网中的LID已更改）。|
-|IBV_EVENT_PKEY_CHANGE|SM在端口上更改了P_Key表。 由于QP使用的是P_Key表索引而不是绝对值，因此建议客户检查其QP使用的P_Key索引是否未更改。|
-|IBV_EVENT_SM_CHANGE|该端口所属的子网中有一个新的SM，客户应该重新注册以前从该端口请求的所有订阅，例如（但不限于）加入多播组。
-|IBV_EVENT_CLIENT_REREGISTER|SM请求客户端重新注册以前从该端口请求的所有订阅，例如（但不限于）加入多播组。 当SM发生故障（导致其丢失记录）或子网中存在新的SM时，可能会生成此事件。<br /><br />仅当在port_attr.port_cap_flags中设置了表示支持客户端重新注册的位时，设备才会生成此事件。|
-|IBV_EVENT_GID_CHANGE|SM在端口上更改了GID表。 由于QP使用的是GID表索引而不是绝对值（作为源GID），因此建议客户端检查其QP使用的GID索引是否未更改。|
-
-下面是RDMA设备中可能发生的非关联事件。获得此事件的RDMA设备的所有上下文都将产生此事件。
-|枚举值|说明|
-|:--|:--|
-|IBV_EVENT_DEVICE_FATAL|RDMA设备遭受了与上述异步事件之一无关的错误。 发生此事件时，RDMA设备的行为是不确定的，强烈建议立即关闭该进程，因为销毁RDMA资源的尝试可能会失败。|
-
-下面是对异步事件行为的总结：
-|事件名|元素类型|事件类型|协议|
-|:--|:--|:--|:--|
-|IBV_EVENT_COMM_EST|QP|Info|IB, RoCE|
-|IBV_EVENT_SQ_DRAINED|QP|Info|IB, RoCE|
-|IBV_EVENT_PATH_MIG|QP|Info|IB, RoCE|
-|IBV_EVENT_QP_LAST_WQE_REACHED|QP|Info|IB, RoCE|
-|IBV_EVENT_QP_FATAL|QP|Error|IB, RoCE, iWARP|
-|IBV_EVENT_QP_REQ_ERR|QP|Error|IB, RoCE, iWARP|
-|IBV_EVENT_QP_ACCESS_ERR|QP|Error|IB, RoCE, iWARP|
-|IBV_EVENT_PATH_MIG_ERR|QP|Error|IB, RoCE|
-|IBV_EVENT_CQ_ERR|CQ|Error|IB, RoCE, iWARP|
-|IBV_EVENT_SRQ_LIMIT_REACHED|SRQ|Info|IB, RoCE, iWARP|
-|IBV_EVENT_SRQ_ERR|SRQ|Error|IB, RoCE, iWARP|
-|IBV_EVENT_PORT_ACTIVE|Port|Info|IB, RoCE, iWARP|
-|IBV_EVENT_LID_CHANGE|Port|Info|IB|
-|IBV_EVENT_PKEY_CHANGE|Port|Info|IB|
-|IBV_EVENT_GID_CHANGE|Port|Info|IB, RoCE|
-|IBV_EVENT_SM_CHANGE|Port|Info|IB|
-|IBV_EVENT_CLIENT_REREGISTER|Port|Info|IB|
-|IBV_EVENT_PORT_ERR|Port|Error|IB, RoCE, iWARP|
-|IBV_EVENT_DEVICE_FATAL|Device|Error|IB, RoCE, iWARP|
-
-**示例：** 见ibv_ack_async_event。
-
-**常见问题：**
-
-Q：我必须读取异步事件吗?
-A：不。异步事件机制是一种提供有关CQ，QP，SRQ，端口，设备中发生的事情的额外信息的方法。 用户不必使用它，但强烈建议这样做。
-
-Q：我是否可以偶尔读取事件（例如，每隔几分钟）
-A：是的，你可以。 不利的一面是，您将不知道事件何时发生，并且此信息可能不再重要。
-
-Q：这个动词是线程安全的吗?
-A：是的，这个动词是线程安全的（就像其他动词一样）。
-
-Q：我收到了QP/CQ/SRQ事件。 其他进程也会获得此事件吗？
-A：不会。关联事件将仅在此资源所属的上下文中生成。 其他上下文甚至都不知道发生了此事件。
-
-### 9.2.2 ibv_ack_async_event
-**函数原型：** 
-```c
-void ibv_ack_async_event(struct ibv_async_event *event);
-```
-**输入参数：** event——异步事件，由ibv_get_async_event返回。
-
-**输出参数：** 无。
-
-**返回值：** 无。
-
-**说明：** 
-
-ibv_ack_async_event()确认使用ibv_get_async_event()读取的异步事件。
-
-为了防止争用，必须使用ibv_ack_async_event()确认使用ibv_get_async_event()读取的所有异步事件。 调用ibv_ack_async_event()时，重要的是向其提供已读取的事件（或事件的精确副本），而不进行任何更改，否则内部数据结构可能包含错误的信息，并且销毁RDMA对象的调用可能永远不会结束。
-
-**示例:**
-
-读取异步事件(阻塞方式)并打印其上下文:
-
-```cpp
-/* the actual code that reads the events in the loop and prints it */
-int ret;
- 
-while (1)
-{
-	/* wait for the next async event */
-	ret = ibv_get_async_event(ctx, &event);
-	if (ret)
-	{
-		fprintf(stderr, "Error, ibv_get_async_event() failed\n");
-		return -1;
-	}
- 
-	/* print the event */
-	print_async_event(ctx, &event);//打印异步事件的内容
- 
-	/* ack the event */
-	ibv_ack_async_event(&event);
-}
-```
-
-下面的代码示例演示了一种在非阻塞模式下处理异步事件的可能方法。 它执行以下步骤：
-
-1. 将异步事件队列工作模式设置为非阻塞
-2. 轮询队列，直到发生异步事件
-3. 获取异步事件并确认
-
-```cpp
-int flags;
-int ret;
- 
-printf("Changing the mode of events read to be non-blocking\n");
- 
-/* change the blocking mode of the async event queue */
-flags = fcntl(ctx->async_fd, F_GETFL);
-ret = fcntl(ctx->async_fd, F_SETFL, flags | O_NONBLOCK);
-if (ret < 0)
-{
-	fprintf(stderr, "Error, failed to change file descriptor of async event queue\n");
-	return -1;
-}
- 
-while (1)
-{
-	struct pollfd my_pollfd;
-	int ms_timeout = 100;
- 
-	/*
-	 * poll the queue until it has an event and sleep ms_timeout
-	 * milliseconds between any iteration
-	 */
-	my_pollfd.fd      = ctx->async_fd;
-	my_pollfd.events  = POLLIN;
-	my_pollfd.revents = 0;
-	do
-	{
-		ret = poll(&my_pollfd, 1, ms_timeout);
-	} while (ret == 0);
-	if (ret < 0)
-	{
-		fprintf(stderr, "poll failed\n");
-		return -1;
-	}
- 
-	/* we know that there is an event, so we just need to read it */
-	ret = ibv_get_async_event(ctx, &event);
-	if (ret)
-	{
-		fprintf(stderr, "Error, ibv_get_async_event() failed\n");
-		return -1;
-	}
- 
-	/* print the event */
-	print_async_event(ctx, &event);
- 
-	/* ack the event */
-	ibv_ack_async_event(&event);
-}
-```
-
-**常见问题：**
-
-Q：为什么我需要调用ibv_ack_async_event()呢?
-A：此动词用于防止内部竞争。
-
-Q：如果我不确认所有异步事件会怎样？
-A：如果所有使用ibv_get_async_event()读取的异步事件都不被确认，那么销毁适当的RDMA资源（QP事件的QP，CQ事件的CQ，SRQ事件的SRQ）的调用将永远阻塞。 使用此行为是为了防止对已被销毁的资源进行确认。
-
-Q：如果我读取一个异步事件，并且在确认该事件之前我的进程被有意地终止（例如，通过调用exit()）或无意地终止（例如，由于段错误），将会发生什么？
-A：即使有任何未确认的异步事件，当进程终止时，无论原因如何，所有资源都将被清除。
 
 # 10 通知和轮询完成队列
 ### 10.1  ibv_req_notify_cq（差mojo）
