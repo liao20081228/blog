@@ -5245,8 +5245,21 @@ enum ibv_event_type
 |IBV_EVENT_PORT_ERR|Port|Error|IB, RoCE, iWARP|
 |IBV_EVENT_DEVICE_FATAL|Device|Error|IB, RoCE, iWARP|
 
-**示例:** 见ibv_ack_async_event。
+**示例：** 见ibv_ack_async_event。
 
+**常见问题：**
+
+Q：我必须读取异步事件吗?
+A：不。异步事件机制是一种提供有关CQ，QP，SRQ，端口，设备中发生的事情的额外信息的方法。 用户不必使用它，但强烈建议这样做。
+
+Q：我是否可以偶尔读取事件（例如，每隔几分钟）
+A：是的，你可以。 不利的一面是，您将不知道事件何时发生，并且此信息可能不再重要。
+
+Q：这个动词是线程安全的吗?
+A：是的，这个动词是线程安全的（就像其他动词一样）。
+
+Q：我收到了QP/CQ/SRQ事件。 其他进程也会获得此事件吗？
+A：不会。关联事件将仅在此资源所属的上下文中生成。 其他上下文甚至都不知道发生了此事件。
 
 ### 9.2.2 ibv_ack_async_event
 **函数原型：** 
@@ -5267,6 +5280,30 @@ ibv_ack_async_event()确认使用ibv_get_async_event()读取的异步事件。
 
 **示例:**
 
+读取异步事件(阻塞方式)并打印其上下文:
+
+```cpp
+/* the actual code that reads the events in the loop and prints it */
+int ret;
+ 
+while (1)
+{
+	/* wait for the next async event */
+	ret = ibv_get_async_event(ctx, &event);
+	if (ret)
+	{
+		fprintf(stderr, "Error, ibv_get_async_event() failed\n");
+		return -1;
+	}
+ 
+	/* print the event */
+	print_async_event(ctx, &event);//打印异步事件的内容
+ 
+	/* ack the event */
+	ibv_ack_async_event(&event);
+}
+```
+
 下面的代码示例演示了一种在非阻塞模式下处理异步事件的可能方法。 它执行以下步骤：
 
 1. 将异步事件队列工作模式设置为非阻塞
@@ -5274,39 +5311,54 @@ ibv_ack_async_event()确认使用ibv_get_async_event()读取的异步事件。
 3. 获取异步事件并确认
 
 ```cpp
+int flags;
+int ret;
+ 
+printf("Changing the mode of events read to be non-blocking\n");
+ 
 /* change the blocking mode of the async event queue */
 flags = fcntl(ctx->async_fd, F_GETFL);
-rc = fcntl(ctx->async_fd, F_SETFL, flags | O_NONBLOCK);
-if (rc < 0) {
-	fprintf(stderr, "Failed to change file descriptor of async event queue\n");
-	return 1;
+ret = fcntl(ctx->async_fd, F_SETFL, flags | O_NONBLOCK);
+if (ret < 0)
+{
+	fprintf(stderr, "Error, failed to change file descriptor of async event queue\n");
+	return -1;
 }
-
-/*
- * poll the queue until it has an event and sleep ms_timeout
- * milliseconds between any iteration
- */
-my_pollfd.fd      = ctx->async_fd;
-my_pollfd.events  = POLLIN;
-my_pollfd.revents = 0;
-
-do {
-	rc = poll(&my_pollfd, 1, ms_timeout);
-} while (rc == 0);
-if (rc < 0) {
-	fprintf(stderr, "poll failed\n");
-	return 1;
+ 
+while (1)
+{
+	struct pollfd my_pollfd;
+	int ms_timeout = 100;
+ 
+	/*
+	 * poll the queue until it has an event and sleep ms_timeout
+	 * milliseconds between any iteration
+	 */
+	my_pollfd.fd      = ctx->async_fd;
+	my_pollfd.events  = POLLIN;
+	my_pollfd.revents = 0;
+	do {
+		ret = poll(&my_pollfd, 1, ms_timeout);
+	} while (ret == 0);
+	if (ret < 0) {
+		fprintf(stderr, "poll failed\n");
+		return -1;
+	}
+ 
+	/* we know that there is an event, so we just need to read it */
+	ret = ibv_get_async_event(ctx, &event);
+	if (ret)
+	{
+		fprintf(stderr, "Error, ibv_get_async_event() failed\n");
+		return -1;
+	}
+ 
+	/* print the event */
+	print_async_event(ctx, &event);
+ 
+	/* ack the event */
+	ibv_ack_async_event(&event);
 }
-
-/* Get the async event */
-if (ibv_get_async_event(ctx, &async_event)) {
-	fprintf(stderr, "Failed to get async_event\n");
-	return 1;
-}
-
-/* Ack the event */
-ibv_ack_async_event(&async_event);
-
 ```
 
 **常见问题：**
