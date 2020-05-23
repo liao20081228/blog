@@ -5349,7 +5349,8 @@ while (1)
 	{
 		ret = poll(&my_pollfd, 1, ms_timeout);
 	} while (ret == 0);
-	if (ret < 0) {
+	if (ret < 0)
+	{
 		fprintf(stderr, "poll failed\n");
 		return -1;
 	}
