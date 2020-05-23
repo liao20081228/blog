@@ -1645,7 +1645,8 @@ ibv_create_comp_channel为RMDA设备上下文创建一个完成事件通道。
 
 struct ibv_comp_channel 定义如下：
 ```cpp
-struct ibv_comp_channel {
+struct ibv_comp_channel
+{
 	struct ibv_context	*context;	//上下文
 	int					fd;			//文件说明符
 	int					refcnt;		//通道的引用计数
@@ -1687,12 +1688,14 @@ int ibv_destroy_comp_channel(struct ibv_comp_channel *channel)
 struct ibv_comp_channel *event_channel;
 
 event_channel = ibv_create_comp_channel(context);
-if (!event_channel) {
+if (!event_channel)
+{
 	fprintf(stderr, "Error, ibv_create_comp_channel() failed\n");
 	return -1;
 }
 
-if (ibv_destroy_comp_channel(event_channel)) {
+if (ibv_destroy_comp_channel(event_channel))
+{
 	fprintf(stderr, "Error, ibv_destroy_comp_channel() failed\n");
 	return -1;
 }
@@ -4098,18 +4101,19 @@ struct ibv_ah *ibv_create_ah(struct ibv_pd *pd, struct ibv_ah_attr *attr)
 
 **说明：**
 
-ibv_create_ah()创建与保护域关联的地址句柄(AH)。 AH包含到达远程目的地的所有必要数据。 在连接的传输模式（RC，UC）中，AH与队列对（QP）相关联。 在数据报传输模式（UD）中，AH与工作请求（WR）相关联。
+ibv_create_ah()创建与保护域关联的地址句柄(AH)。 AH包含到达远程目的地的所有必要数据。 在有连接的传输模式（RC，UC）中，AH与队列对（QP）相关联。 在数据报传输模式（UD）中，AH与工作请求（WR）相关联。
 
 稍后，当发送请求(SR)被发布到不可靠的数据报（ UD ）QP时，将使用这个AH。
 
 如果设置了端口标志IBV_QPF_GRH_REQUIRED，则 ibv_create_ah必须使用如下定义：
 ```
-struct ibv_ah_attr { .is_global	 1; .grh	 {...}; }
+struct ibv_ah_attr { .is_global =1; .grh ={...}; }
 ```
 
 struct ibv_ah定义如下：
 ```cpp
-struct ibv_ah {
+struct ibv_ah 
+{
 	struct ibv_context		*context;	//设备上下文，来自ibv_open_device
 	struct ibv_pd			*pd;		//保护域，来自ibv_alloc_pd
 	uint32_t				handle;		//句柄
@@ -4118,14 +4122,15 @@ struct ibv_ah {
 
 struct ibv_ah_attr定义如下：
 ```cpp
-struct ibv_ah_attr {
+struct ibv_ah_attr 
+{
 	struct ibv_global_route	grh;			//全局路由头GRH属性，定义见下文
-	uint16_t					dlid;			//目的地lid
-	uint8_t						sl;				//服务级别
-	uint8_t						src_path_bits;	//源路径位
-	uint8_t						static_rate;	//静态速度
-	uint8_t						is_global;		//GRH属性是有效的
-	uint8_t						port_num;		//将发送数据包的本地物理端口
+	uint16_t				dlid;			//目的地lid
+	uint8_t					sl;				//服务级别
+	uint8_t					src_path_bits;	//源路径位
+	uint8_t					static_rate;	//最大静态速度
+	uint8_t					is_global;		//GRH属性是有效的
+	uint8_t					port_num;		//将发送数据包的本地物理端口号
 };
 ```
 struct ibv_ah_attr完整定义如下：
@@ -4142,7 +4147,8 @@ struct ibv_ah_attr完整定义如下：
 
 struct ibv_global_route的定义如下：
 ```cpp
-struct ibv_global_route {
+struct ibv_global_route
+{
 	union		ibv_gid dgid;	//目的地GID（参见ibv_query_gid）或MGID
 	uint32_t	flow_label;		//流标签
 	uint8_t		sgid_index;		//源GID索引（参见ibv_query_gid）
@@ -4188,7 +4194,7 @@ int ibv_init_ah_from_wc(struct ibv_context *context, uint8_t port_num,
 * context——从ibv_open_device()返回的RDMA设备上下文，接收到的消息到达该上下文。
 * port_num——接收到的消息到达的端口号。
 * wc——使用ibv_poll_cq()读取的工作完成
-* grh——到UD QP的传入消息的GRH缓冲区。 除非工作完成表明GRH有效，否则将忽略此值。详细信息见下文。
+* grh——发送到UD QP的传入消息的GRH缓冲区。 除非工作完成表明GRH有效，否则将忽略此值。详细信息见下文。
 
 **输出参数：** ah_attr——将被填充的地址句柄属性的结构体。
 
@@ -4202,18 +4208,19 @@ ibv_init_ah_from_wc使用端口号port_num以及来自工作完成wc和全局路
 
 当希望将响应发送回不可靠数据报（UD）QP接收到的消息的发送者时，这很有用。 wc是使用ibv_poll_cq()从CQ轮询的该消息的工作完成。 此工作完成必须成功并且属于单播消息。
 
-grh是(可能)包含接收消息的grh的缓冲区(发送到接收队列以指定消息保存位置的接收请求缓冲区的前40个字节)。
+grh是(可能)包含接收到的消息的grh的缓冲区(发送到接收队列以指定消息保存位置的接收请求缓冲区的前40个字节)。
 
-struct ibv_grh定义如下：
+struct ibv_grh定义如下：-
 ```cpp
-  struct ibv_grh {
+struct ibv_grh
+{
 	__be32			version_tclass_flow;
 	__be16			paylen;
 	uint8_t			next_hdr;
 	uint8_t			hop_limit;
 	union ibv_gid	sgid;
 	union ibv_gid	dgid;
-  };
+};
 ```
 
 
@@ -4227,21 +4234,22 @@ struct ibv_wc wc;
 struct ibv_ah_attr ah_attr;
 int ret;
 
-ret	 ibv_init_ah_from_wc(context, port,
-                          &wc, grh_buf,
-                          &ah_attr);
-if (ret) {
+ret	 ibv_init_ah_from_wc(context, port, &wc, grh_buf, &ah_attr);
+if (ret)
+{
 	fprintf(stderr, "Error, ibv_init_ah_from_wc() failed\n");
 	return -1;
 }
 
 ah	 ibv_create_ah(pd, &ah_attr);
-if (!ah) {
+if (!ah)
+{
 	fprintf(stderr, "Error, ibv_create_ah() failed\n");
 	return -1;
 }
 
-if (ibv_destroy_ah(ah)) {
+if (ibv_destroy_ah(ah))
+{
 	fprintf(stderr, "Error, ibv_destroy_ah() failed\n");
 	return -1;
 }
@@ -4261,8 +4269,7 @@ A：否。调用ibv_init_ah_from_wc()时可以使用的工作完成有几点限�
 
 **函数原型：**
 ```cpp
-struct ibv_ah *ibv_create_ah_from_wc(struct ibv_pd *pd, struct ibv_wc *wc,
-										struct ibv_grh *grh, uint8_t port_num);
+struct ibv_ah *ibv_create_ah_from_wc(struct ibv_pd *pd, struct ibv_wc *wc,struct ibv_grh *grh, uint8_t port_num);
 ```
 **输入参数：**
 
@@ -4280,7 +4287,7 @@ struct ibv_ah *ibv_create_ah_from_wc(struct ibv_pd *pd, struct ibv_wc *wc,
 
 **说明：**
 
-ibv_create_ah_from_wc()使用port_num、工作完成和全局路由头（GRH）缓冲区来创建地址句柄（AH）。
+ibv_create_ah_from_wc()使用port_num、工作完成wc和全局路由头（GRH）缓冲区来创建地址句柄（AH）。
 
 当希望将响应发送回不可靠数据报（UD）QP接收到的消息的发送者时，这很有用。 wc是使用ibv_poll_cq()从CQ轮询的该消息的工作完成。 此工作完成必须成功并且属于单播消息。
 
@@ -4296,14 +4303,15 @@ struct ibv_ah *ah;
 struct ibv_wc wc;
 int ret;
 
-ah	 ibv_create_ah_from_wc(pd, &wc, grh_buf,
-                            port);
-if (!ah) {
+ah = ibv_create_ah_from_wc(pd, &wc, grh_buf,port);
+if (!ah)
+{
 	fprintf(stderr, "Error, ibv_create_ah_from_wc() failed\n");
 	return -1;
 }
 
-if (ibv_destroy_ah(ah)) {
+if (ibv_destroy_ah(ah))
+{
 	fprintf(stderr, "Error, ibv_destroy_ah() failed\n");
 	return -1;
 }
@@ -4350,15 +4358,18 @@ ah_attr.sl	 sl;
 ah_attr.src_path_bits	 0;
 ah_attr.port_num	 port;
 
-ah	 ibv_create_ah(pd, &ah_attr);
-if (!ah) {
+ah=ibv_create_ah(pd, &ah_attr);
+if (!ah)
+{
 	fprintf(stderr, "Error, ibv_create_ah() failed\n");
 	return -1;
 }
 
-if (ibv_destroy_ah(ah)) {
+if (ibv_destroy_ah(ah))
+{
 	fprintf(stderr, "Error, ibv_destroy_ah() failed\n");
-	
+	return -1;
+}
 ```
 
 **常见问题：**
