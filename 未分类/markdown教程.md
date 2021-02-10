@@ -545,10 +545,10 @@ mi posuere lectus.
 
 **示例**：
 ```html
-<table>
+<table border='1' align="center">
   <caption>跨行和跨列，带背景色和前景色</caption> 
   <tr>
-    <td>&emsp;</td>
+    <td></td>
     <th colspan='2'><font color="red">跨2列</font></th>
     <th><font color="red">第3列</font></th>
   </tr>
@@ -575,7 +575,7 @@ mi posuere lectus.
 <table border='1' align="center">
   <caption>跨行和跨列，带背景色和前景色</caption> 
   <tr>
-    <td>&emsp;</td>
+    <td></td>
     <th colspan='2'><font color="red">跨2列</font></th>
     <th><font color="red">第3列</font></th>
   </tr>
