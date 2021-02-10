@@ -217,10 +217,10 @@ Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
 ```
 显示效果：
 
-* 一级一层无序条目
-* * 一级二层无序条目
-	* * + 三层三级无序条目
-	* * 1. 三层三级有序条目
+* 一级无序条目
+* * 一级二层无需列表
+	* * + 二级三层无序条目
+	* * 1.二级三层有序条目
 
 **无序列表可与有序列表嵌套**。例如：
 
@@ -228,7 +228,7 @@ Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
 * 无序条目
 * 无条条目
 	1. 有序条目
-	2. 有序条目
+	7. 有序条目
 * 无序条目
 ```
 显示效果：
@@ -236,28 +236,34 @@ Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
 * 无序条目
 * 无条条目
 	1. 有序条目
-	2. 有序条目
+	7. 有序条目
 * 无序条目
 
 **单个列表项可以有多行，每行开头可以添加空格或制表符，或者不添加，但是不能有空行，否则视为下一段**。例如：
 
 ```
 * Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
-  viverra nec, fringilla in, laoreet vitae, risus. 
-  * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-	Suspendisse id sem consectetuer libero luctus adipiscing.
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,//不加空格制表符
+  viverra nec, fringilla in, laoreet vitae, risus. //加两个空格
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,//不加空格制表符
+  viverra nec, fringilla in, laoreet vitae, risus. //加两个空格
+  * Donec sit amet nisl. Aliquam semper ipsum sit amet velit. 
+	Suspendisse id sem consectetuer libero luctus adipiscing. //加一个制表符
 ```
 
 显示效果：
 
 * Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
-  viverra nec, fringilla in, laoreet vitae, risus. 
-  * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-	Suspendisse id sem consectetuer libero luctus adipiscing.
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,//不加空格制表符
+  viverra nec, fringilla in, laoreet vitae, risus. //加两个空格
+* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,//不加空格制表符
+  viverra nec, fringilla in, laoreet vitae, risus. //加两个空格
+  * Donec sit amet nisl. Aliquam semper ipsum sit amet velit. 
+	Suspendisse id sem consectetuer libero luctus adipiscing. //加一个制表符
 
-**单个列表项可以有多段，每段之间用空行隔开，每段第一行或每一行必须在列表项目的缩进基础上再加一个缩进：两个空格或一个制表符以上**。例如：
+**单个列表项可以有多段，每段之间用空行隔开，每段第一行或每一行必须在列表项目的缩进基础上再加一个缩进：两个空格或一个制表符**。例如：
 
 ```
 * This is a list item with two paragraphs. Lorem ipsum dolor 
@@ -266,14 +272,18 @@ mi posuere lectus.
 
   Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
   vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
-  sit amet velit. 
+  sit amet velit. // 每一行都加空格
+  
+	Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
+vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+sit amet velit.  // 只第一行加一个制表符
 
 	* This is a list item with two paragraphs. Lorem ipsum dolor 
 sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
 mi posuere lectus. 
 
-		Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
-	  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+		Vestibulum enim wisi, viverra nec, fringilla in, laoreet //缩进基础上加一个制表符
+	  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum //缩进基础上加两个空格
 	  sit amet velit. 
 ```
 显示效果：
@@ -284,14 +294,18 @@ mi posuere lectus.
 
   Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
   vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
-  sit amet velit. 
+  sit amet velit. // 每一行都加空格
+  
+	Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
+vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+sit amet velit.  // 只第一行加一个制表符
 
 	* This is a list item with two paragraphs. Lorem ipsum dolor 
 sit amet, consectetuer adipiscing elit. Aliquam hendrerit 
 mi posuere lectus. 
 
-		Vestibulum enim wisi, viverra nec, fringilla in, laoreet 
-	  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum 
+		Vestibulum enim wisi, viverra nec, fringilla in, laoreet //缩进基础上加一个制表符
+	  vitae, risus. Donec sit amet nisl. Aliquam semper ipsum //缩进基础上加两个空格
 	  sit amet velit. 
 
 **一个列表项可以嵌套引用，如果引用作为列表项内容的一段，则应该在列表项的缩进基础上加上一个缩进，即两个空格以上或一个制表符**。例如：
