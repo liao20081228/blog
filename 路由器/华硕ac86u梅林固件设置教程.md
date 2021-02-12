@@ -116,14 +116,14 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 1. 【Steering Trigger Conditions】：
 	* 【Enable Load Balance】：设为【No】。
 	* 【Bandwidth Utilization】：2.4G设置为0，5G设置为80%。
-	* 【RSSI】：2.5G设置为【Greater】-50，5G设置为【Less】-73。
-	* 【PHY Rate Less】：设为【Disable】。
-	* 【PHY Rate Greater】：设为150
+	* 【RSSI】：2.5G设置为【Greater】-50dbm，5G设置为【Less】-73dbm。
+	* 【PHY Rate Less】：2.4G设为【Disable】，5G设为。
+	* 【PHY Rate Greater】：2.4G设为150Mbps，5G设为【Disable】
 	* 【VHT】：【all】【AC-only】【not-allowed】
 2. 【STA Selection Policy】：
-	* 【RSSI】：2.5G设置为【Greater】-50，5G设置为【Less】-73。
-	* 【PHY Rate Less】：设为【Disable】。
-	* 【PHY Rate Greater】：设为150
+	* 【RSSI】：2.5G设置为【Greater】-50dbm，5G设置为【Less】-73dbm。
+	* 【PHY Rate Less】：2.4G设为【Disable】，5G设为。
+	* 【PHY Rate Greater】：2.4G设为150Mbps，5G设为【Disable】
 	* 【VHT】：【all】【AC-only】【not-allowed】
 3. 【Interface Select and Qualify Procedures】：
 	* 【Bandwidth Utilization】：目标频段2.4G设为80%，目标频段5G设为80%
@@ -133,7 +133,38 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 	* 【Count】：设为2次。
 	* 【Dewell Time】：设为180秒。
 
+**【PHY Rate】和【VHT】究竟应该怎么设置？**：
 
+现行无线标准主要有802.11a、802.11b、802.11g、802.11n、802.11ac。其特性如下表所示：
+
+|标准版本|802.11a|802.11b|802.11g|802.11n|802.11ac|
+|:--|:--|:--|:--|:--|:--|
+|**发布时间**|1999|1999|2003|2009|2012|
+|**工作频段**|5GHz|2.4GHz|2.4GHz|2.4/5GHz|5GHz|
+|**最大带宽**|54Mbps|11Mbps|54Mbps|600Mbps|1Gbps|
+|**信道宽度**|20Hz|22Hz|20Hz|20/40/20+20Hz|20/40/80/160/80+80Hz|
+|**天线数**|1|1|1|4x4|8x8|
+
+问题就出在802.11n上，由于802.11n设备可以工作在2.4G和5G频段，并且有些设备两个频段都支持，有些只支持其中一个。如果不设置限制条件，路由器将只支持2.4G 802.11n的终端在2.4G切向5G时，首先将终端从2.4G下线，之后连接5G频段。但是由于终端不支持5G 802.11n，因此该设备将无网络可用。同理，只支持5G 802.11n的终端在5G切向2.4G时也无网络可用。
+因此我们通常通过【PHY Rate】和【VHT】组合使用来这样的特殊设备。此外，由于MIMO的出现，这就导致这些设备的带宽不是固定的，因此没有统一值，只有适合自己环境的最优值。
+
+先看看802.11n的最大带宽集：
+
+|天线数|带宽（2.4G 20Hz）|带宽（5GHZ，40Hz）|
+|:--|:--|:--|
+|1|72.2Mbps|150Mbps|
+|2|144.4Mbps|300Mbps|
+|3|216.7Mbps|450Mbps|
+|4|288.9Mbps|600Mbps|
+
+我们考虑2.4G向5G切换的情况：
+
+|终端支持无线标准|PHY为55Mbps|PHY为75Mbps|PHY为150Mbps|PHY为225Mbps|PHY为300Mbps|
+|:--|:--|:--|:--|:--|:--|
+|802.11ac/n2.4/n5|1/2/3/4天线切换|1天线不切换，2/3/4天线切换|1/2天线不切换，3/4天线切换|1/2/3天线不切换，4天线切换|1/2/3/4天线不切换|
+|802.11ac/n2.4|1/2/3/4天线切换但无网络|1天线不切换，2/3/4天线切换|1/2天线不切换，3/4天线切换|1/2/3天线不切换，4天线切换|1/2/3/4天线不切换|
+|802.11n 2.4|
+|802.11n 2.4/5|
 
 
 
