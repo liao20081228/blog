@@ -68,13 +68,12 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 * PHY（Physical）：物理层。
 * STA（Station）：站点、客户端（无线终端设备））
 * VHT（Very High Throughput）：超高吞吐量，802.11ac就属于VHT技术
-* Greter：大于，信号强于。用于触发2.4→G5G。
+* Greater：大于，信号强于。用于触发2.4G→5G。
 * Less：小于，信号弱于。用于触发5G→2.4G。
 
-**注意事项**
+**注意事项**：
 * Smart Connect功能并不能完美，因为无线终端设备在某些时候会自主选择2.4G或5G频段。
 * 设置Smart Connect规则时，不要参考ASUS固件中【System Log】→【Wireless Log】中的RSSI数据和Rx/Tx速率数据
-
 
 **准备工作**：开启Smart Connect功能之前，你需要根据你自己家里环境，测出适合你能用的Smart Connect规则RSSI切换阈值。
 1. 关闭Smart Connet，并且为2.4G和5G分别设置不同的SSID。
@@ -82,20 +81,66 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 3. 原地不动，将Wi-Fi手动切换到2.4频段，点击【Refresh stats】，重新记录RSSI。和上面一样，去一个均值，例如-60 dBm，这就是2.4G向5G切换的阈值。要注意的是实际上此处5G信号其实极差，因此即使切到5G信号也不好，因此应当让切换延后发生，通常在这个值之上加10~20，例如-50dbm。
 
 
-**设置智能切换规则**：点击【Wireless】→【General】→【Smart Connect Rule】或者点击【Network Tools】→【Smart Connect Rule】。Smart Connect切换规则由四部分构成，当且仅当这四个部分都满足的时候，才发生切换，只要有一个不满足都停留在当前频段。
-1. 【steering Trigger Condition】：控制触发条件，当且仅当以下条件都为真时才触发切换程序。
-	* 【band】：当前频段。
-	* 【Enable Load Balance】：负载均衡。开启后该频段的所有终端网速均分（这个不是条件）。
-	* 【Bandwidth Utilization】	：带宽使用率。该频段所有连接的终端设备带宽使用量之和超过该值时条件为真。通常2.4G默认为0，5G默认80%，如果无线设备不多时可以都设置为0。
-	* 【RSSI】：接收信号强度。
-	* 【PHY Rate Less】和【PHY Rate Greater】：实时发送/接收速度小于或大于设定值为真。原文中说这个设计速度，这是错的，在【Refresh stats】可以看到，随着信号的衰减发送/接收速度也在变化。
-	* 【VHT】：超高吞吐量。主要用于限制802.11a
+**理解切换规则**：Smart Connect切换规则由四部分构成，***当且仅当这四个部分都为真*** 时才会成功切换，只要有一个不满足终端都停留在当前频段。
+1. 【Trigger Conditions】：触发条件集，用于触发切换流程。***当且仅当所有触发条件都为真时，【Trigger Conditions】才为真***，才会触发切换流程。
+	* 【Bandwidth Utilization】：本频段的带宽使用率。当该频段所有连接的终端设备带宽使用量之和超过设定值时为真。
+	* 【RSSI】：终端接收信号强度。
+		* 【Greater】：RSSI强于设定值时为真。用于2.4G→5G。
+		* 【Less】：RSSI弱于设定值时为真。用于5G→2.4G。
+	* 【PHY Rate Less】：终端与路由器协商的带宽小于设定值为真。（有人说这个设计带宽或实际速率，都是错的），这需要了解无线通信的知识，在终端的WIFI状态可以看到：，随着信号的衰减，协商的带宽也在变小，简单说来终端协商的带宽往往大于实际速率。0表示禁用，该条件始终为真。
+	* 【PHY Rate Greater】：终端与路由器协商的带宽大于设定值为真。0表示禁用，该条件始终为真。
+	* 【VHT】：超高吞吐量，802.11ac才有的技术。
+		* 设置为【all】：不对终端做VHT要求，该条件始终为真。
+		* 设置为【AC-only】：只有终端支持802.11ac时该条件为真。
+		* 设置为【not-allowed】：只有终端不支持VHT时该条件为真。
+2. 【STA Selection Policy】：终端选择策略，用于选择将要切换的终端，***当且仅当终端满足以下所有条件都为真时，【STA Selection Policy】才为真***，该终端才能被选中。通常与1中设置相同。
+	* 【RSSI】
+	* 【PHY Rate Less】
+	* 【PHY Rate Greater】
+	* 【VHT】
+3. 【Interface Select and Qualify Procedures】：接口选择与质量审核。当且 ***当且仅当以下所有条件都为真***。
+	* 【Bandwidth Utilization】：目标频段的带宽使用率。当目标频段所有连接的终端设备带宽使用量之和小于设定值时为真。
+	* 【VHT】：超高吞吐量，802.11ac才有的技术。
+		* 设置为【all】：不对终端做VHT要求，该条件始终为真。
+		* 设置为【AC-only】：只有终端支持802.11ac时该条件为真。
+		* 设置为【not-allowed】：只有终端不支持VHT时该条件为真。
+4. 【Bounce detect】：来回切换检查。当且仅当在设定的连续时间内，切换次数不超过设定的次数，且不处于冷却状态时，条件为真。
+	* 【Windos Time】：窗口时间，计算切换次数的连续时间。
+	* 【Count】：在设定的连续时间内，最大切换次数。
+	* 【Dewell Time】：冷却时间。在【Windos Time】设定的时间内，如果切换超过【【Count】设定的次数，则在接下来在【Dewell Time】设定的时间内处于冷却状态。
 
-* STA Selection（终端选择）
-* Interface Select and Qualify Procedures：接口选择与质量审核
-* Bounce detect：来回切换检查
+![7](https://gitee.com/liao20081228/blog_pictures/raw/master/华硕ac86u梅林固件设置教程/7..JPG#pic_center)
 
-实际上是一个且运算表达式。
+
+
+**设置智能连接规则**：点击【Wireless】→【General】→【Smart Connect Rule】或者点击【Network Tools】→【Smart Connect Rule】。
+1. 【Trigger Conditions】：触发条件集，用于触发切换流程。***当且仅当所有触发条件都为真时，【Trigger Conditions】才为真***，才会触发切换流程。
+	* 【Bandwidth Utilization】：本频段的带宽使用率。当该频段所有连接的终端设备带宽使用量之和超过设定值时为真。
+	* 【RSSI】：终端接收信号强度。
+		* 【Greater】：RSSI强于设定值时为真。用于2.4G→5G。
+		* 【Less】：RSSI弱于设定值时为真。用于5G→2.4G。
+	* 【PHY Rate Less】：终端与路由器协商的带宽小于设定值为真。（有人说这个设计带宽或实际速率，都是错的），这需要了解无线通信的知识，在终端的WIFI状态可以看到：，随着信号的衰减，协商的带宽也在变小，简单说来终端协商的带宽往往大于实际速率。0表示禁用，该条件始终为真。
+	* 【PHY Rate Greater】：终端与路由器协商的带宽大于设定值为真。0表示禁用，该条件始终为真。
+	* 【VHT】：超高吞吐量，802.11ac才有的技术。
+		* 设置为【all】：不对终端做VHT要求，该条件始终为真。
+		* 设置为【AC-only】：只有终端支持802.11ac时该条件为真。
+		* 设置为【not-allowed】：只有终端不支持VHT时该条件为真。
+2. 【STA Selection Policy】：终端选择策略，用于选择将要切换的终端，***当且仅当终端满足以下所有条件都为真时，【STA Selection Policy】才为真***，该终端才能被选中。通常与1中设置相同。
+	* 【RSSI】
+	* 【PHY Rate Less】
+	* 【PHY Rate Greater】
+	* 【VHT】
+3. 【Interface Select and Qualify Procedures】：接口选择与质量审核。当且 ***当且仅当以下所有条件都为真***。
+	* 【Bandwidth Utilization】：目标频段的带宽使用率。当目标频段所有连接的终端设备带宽使用量之和小于设定值时为真。
+	* 【VHT】：超高吞吐量，802.11ac才有的技术。
+		* 设置为【all】：不对终端做VHT要求，该条件始终为真。
+		* 设置为【AC-only】：只有终端支持802.11ac时该条件为真。
+		* 设置为【not-allowed】：只有终端不支持VHT时该条件为真。
+4. 【Bounce detect】：来回切换检查。当且仅当在设定的连续时间内，切换次数不超过设定的次数，且不处于冷却状态时，条件为真。
+	* 【Windos Time】：窗口时间，计算切换次数的连续时间。
+	* 【Count】：在设定的连续时间内，最大切换次数。
+	* 【Dewell Time】：冷却时间。在【Windos Time】设定的时间内，如果切换超过【【Count】设定的次数，则在接下来在【Dewell Time】设定的时间内处于冷却状态。
+
 
 
 
