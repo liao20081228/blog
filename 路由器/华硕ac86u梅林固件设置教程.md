@@ -65,7 +65,7 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 
 **基本术语**：
 * RSSI（Received SignalStrength Indicator）接收信号强度指示。RSSI是一个负数，越大信号越强。
-* PHY（Physical）：物理（网卡）。
+* PHY（Physical）：物理层。
 * STA（Station）：站点、客户端（无线终端设备））
 * VHT（Very High Throughput）：超高吞吐量，802.11ac就属于VHT技术
 * Greter：大于，信号强于。用于触发2.4→G5G。
@@ -87,10 +87,9 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 	* 【band】：当前频段。
 	* 【Enable Load Balance】：负载均衡。开启后该频段的所有终端网速均分（这个不是条件）。
 	* 【Bandwidth Utilization】	：带宽使用率。该频段所有连接的终端设备带宽使用量之和超过该值时条件为真。通常2.4G默认为0，5G默认80%，如果无线设备不多时可以都设置为0。
-	* RSSI：接受信号强度。
-	* PHY Rate Less：终端最大网速小于设定值为真。
-	* PHY Rate Greater：终端最大网速大于设定值为真。
-	* VHT：超高吞吐量。
+	* 【RSSI】：接收信号强度。
+	* 【PHY Rate Less】和【PHY Rate Greater】：实时发送/接收速度小于或大于设定值为真。原文中说这个设计速度，这是错的，在【Refresh stats】可以看到，随着信号的衰减发送/接收速度也在变化。
+	* 【VHT】：超高吞吐量。主要用于限制802.11a
 
 * STA Selection（终端选择）
 * Interface Select and Qualify Procedures：接口选择与质量审核
