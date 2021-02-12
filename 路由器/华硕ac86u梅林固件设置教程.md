@@ -71,7 +71,7 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 
 **注意事项**
 * Smart Connect功能并不能完美，因为无线终端设备在某些时候会自主选择2.4G或5G频段。
-* 设置Smart Connect规则时，不要参考ASUS固件中【System Log】→【Wireless Log】中的RSSI数据和Rx/Tx速率数据！
+* 设置Smart Connect规则时，不要参考ASUS固件中【System Log】→【Wireless Log】中的RSSI数据和Rx/Tx速率数据
 
 
 **准备工作**：开启Smart Connect功能之前，你需要根据你自己家里环境，测出适合你能用的Smart Connect规则RSSI切换阈值。
@@ -79,9 +79,6 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 2. 用一个高通CPU的双频手机，在手机电话拨号界面输入【*#*#4636#*#*】，依次进入Sta【Wi-Fi information】、【Wi-Fi status】，然后一边远离路由器一边点击【Refresh stats】。当【NetWork State】由已连接变为未连接时，记录下RSSI值。这个值会变化，但是浮动不大，多刷几次取个均值，例如-80dbm，这就是5G向2.4G切换的阈值。要注意的是实际上此处的5G信号已经极差了，数据传输也即将中段，因此应当让切换提前发生，通常在这个值之上加5-10，例如-73dbm。
 3. 原地不动，将Wi-Fi手动切换到2.4频段，点击【Refresh stats】，重新记录RSSI。和上面一样，去一个均值，例如-60 dBm，这就是2.4G向5G切换的阈值。要注意的是实际上此处5G信号其实极差，因此即使切到5G信号也不好，因此应当让切换延后发生，通常在这个值之上加10~20，例如-50dbm。
 
-ASUS固件ASUS固件在路由器管理界面【系统记录】、【无线用户】中，看到的RSSI的值和Rx/Tx很容易让人进入误区，里面显示的RSSI值因计算方式不同，不能用于Smart Connect规则设置中。
-大家可以参照我上述安卓手机测试方法与【无线用户】显示的RSSI值进行对比，分别设置在Smart Connect规则中，看哪个RSSI值效果更好，用实践来验证。我自己的验证结果，安卓手机测出来的RSSI值效果远远好于路由器端显示的RSSI值。
-华硕RT-AC88U原厂固件ASUSWRT中没有【无线用户】这个界面，不存在这个问题。
 
 1. 点击【Wireless】→【General】→【Enable Smart Connect】设置为【On】。
 2. 点击【Wireless】→【General】→【Smart Connect Rule】或者点击【Network Tools】→【Smart Connect Rule】
