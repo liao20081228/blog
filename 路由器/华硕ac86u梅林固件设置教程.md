@@ -80,13 +80,13 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 3. 原地不动，将Wi-Fi手动切换到2.4频段，点击【Refresh stats】，重新记录RSSI。和上面一样，去一个均值，例如-60 dBm，这就是2.4G向5G切换的阈值。要注意的是实际上此处5G信号其实极差，因此即使切到5G信号也不好，因此应当让切换延后发生，通常在这个值之上加10~20，例如-50dbm。
 
 
-1. 点击【Wireless】→【General】→【Enable Smart Connect】设置为【On】。
-2. 点击【Wireless】→【General】→【Smart Connect Rule】或者点击【Network Tools】→【Smart Connect Rule】
+
 3. 设置智能切换规则。
 
 
 **开启Smart Connect**
-
+1. 点击【Wireless】→【General】→【Enable Smart Connect】设置为【On】。
+2. 点击【Wireless】→【General】→【Smart Connect Rule】或者点击【Network Tools】→【Smart Connect Rule】
 ## 3.2 关闭WPS
 
 ## 3.3. 设置无线MAC过滤
