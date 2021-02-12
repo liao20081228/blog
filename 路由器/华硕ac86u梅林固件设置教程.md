@@ -83,6 +83,7 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 
 **理解切换规则**：Smart Connect切换规则由四部分构成，***当且仅当这四个部分都为真*** 时才会成功切换，只要有一个不满足终端都停留在当前频段。
 1. 【Trigger Conditions】：触发条件集，用于触发切换流程。***当且仅当所有触发条件都为真时，【Trigger Conditions】才为真***，才会触发切换流程。
+	* 【Load Balance】：启用负载均衡，所有终端均分当前频段带宽（不是触发条件，但会影响终端获得的带宽）。
 	* 【Bandwidth Utilization】：本频段的带宽使用率。当该频段所有连接的终端设备带宽使用量之和超过设定值时为真。
 	* 【RSSI】：终端接收信号强度。
 		* 【Greater】：RSSI强于设定值时为真。用于2.4G→5G。
@@ -111,40 +112,26 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 
 ![7](https://gitee.com/liao20081228/blog_pictures/raw/master/华硕ac86u梅林固件设置教程/7..JPG#pic_center)
 
-
-
 **设置智能连接规则**：点击【Wireless】→【General】→【Smart Connect Rule】或者点击【Network Tools】→【Smart Connect Rule】。
-1. 【Trigger Conditions】：触发条件集，用于触发切换流程。***当且仅当所有触发条件都为真时，【Trigger Conditions】才为真***，才会触发切换流程。
-	* 【Bandwidth Utilization】：本频段的带宽使用率。当该频段所有连接的终端设备带宽使用量之和超过设定值时为真。
-	* 【RSSI】：终端接收信号强度。
-		* 【Greater】：RSSI强于设定值时为真。用于2.4G→5G。
-		* 【Less】：RSSI弱于设定值时为真。用于5G→2.4G。
-	* 【PHY Rate Less】：终端与路由器协商的带宽小于设定值为真。（有人说这个设计带宽或实际速率，都是错的），这需要了解无线通信的知识，在终端的WIFI状态可以看到：，随着信号的衰减，协商的带宽也在变小，简单说来终端协商的带宽往往大于实际速率。0表示禁用，该条件始终为真。
-	* 【PHY Rate Greater】：终端与路由器协商的带宽大于设定值为真。0表示禁用，该条件始终为真。
-	* 【VHT】：超高吞吐量，802.11ac才有的技术。
-		* 设置为【all】：不对终端做VHT要求，该条件始终为真。
-		* 设置为【AC-only】：只有终端支持802.11ac时该条件为真。
-		* 设置为【not-allowed】：只有终端不支持VHT时该条件为真。
-2. 【STA Selection Policy】：终端选择策略，用于选择将要切换的终端，***当且仅当终端满足以下所有条件都为真时，【STA Selection Policy】才为真***，该终端才能被选中。通常与1中设置相同。
-	* 【RSSI】
-	* 【PHY Rate Less】
-	* 【PHY Rate Greater】
-	* 【VHT】
-3. 【Interface Select and Qualify Procedures】：接口选择与质量审核。当且 ***当且仅当以下所有条件都为真***。
-	* 【Bandwidth Utilization】：目标频段的带宽使用率。当目标频段所有连接的终端设备带宽使用量之和小于设定值时为真。
-	* 【VHT】：超高吞吐量，802.11ac才有的技术。
-		* 设置为【all】：不对终端做VHT要求，该条件始终为真。
-		* 设置为【AC-only】：只有终端支持802.11ac时该条件为真。
-		* 设置为【not-allowed】：只有终端不支持VHT时该条件为真。
-4. 【Bounce detect】：来回切换检查。当且仅当在设定的连续时间内，切换次数不超过设定的次数，且不处于冷却状态时，条件为真。
-	* 【Windos Time】：窗口时间，计算切换次数的连续时间。
-	* 【Count】：在设定的连续时间内，最大切换次数。
-	* 【Dewell Time】：冷却时间。在【Windos Time】设定的时间内，如果切换超过【【Count】设定的次数，则在接下来在【Dewell Time】设定的时间内处于冷却状态。
-
-
-
-
-
+1. 【Steering Trigger Conditions】：
+	* 【Enable Load Balance】：设为【No】。
+	* 【Bandwidth Utilization】：2.4G设置为0，5G设置为80%。
+	* 【RSSI】：2.5G设置为【Greater】-50，5G设置为【Less】-73。
+	* 【PHY Rate Less】：设为【Disable】。
+	* 【PHY Rate Greater】：设为150
+	* 【VHT】：【all】【AC-only】【not-allowed】
+2. 【STA Selection Policy】：
+	* 【RSSI】：2.5G设置为【Greater】-50，5G设置为【Less】-73。
+	* 【PHY Rate Less】：设为【Disable】。
+	* 【PHY Rate Greater】：设为150
+	* 【VHT】：【all】【AC-only】【not-allowed】
+3. 【Interface Select and Qualify Procedures】：
+	* 【Bandwidth Utilization】：目标频段2.4G设为80%，目标频段5G设为80%
+	* 【VHT】：【all】【AC-only】【not-allowed】
+4. 【Bounce detect】：
+	* 【Windos Time】：设为60秒
+	* 【Count】：设为2次。
+	* 【Dewell Time】：设为180秒。
 
 
 
