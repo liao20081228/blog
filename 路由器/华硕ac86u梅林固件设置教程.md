@@ -83,14 +83,14 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 
 
 **设置智能切换规则**：点击【Wireless】→【General】→【Smart Connect Rule】或者点击【Network Tools】→【Smart Connect Rule】。Smart Connect切换规则由四部分构成，当且仅当这四个部分都满足的时候，才发生切换，只要有一个不满足都停留在当前频段。
-1. steering Trigger Condition（触发条件）：当且仅当以下没有描述为非条件的项都满足时才触发切换程序。
-	* band（频段）：当前频段。
-	* Enable Load Balance（开启负载均衡）：开启后该频段的所有终端网速均分（这个不是条件）。
-	* Bandwidth Utilization	（带宽使用率）：该频段所有连接的终端设备带宽使用量之和超过该值时。了2.4G默认为0，5G默认80%。
-	* RSSI：信号强度，
-	* PHY Rate Less：
-	* PHY Rate Greater：
-	* VHT：
+1. 【steering Trigger Condition】：控制触发条件，当且仅当以下条件都为真时才触发切换程序。
+	* 【band】：当前频段。
+	* 【Enable Load Balance】：负载均衡。开启后该频段的所有终端网速均分（这个不是条件）。
+	* 【Bandwidth Utilization】	：带宽使用率。该频段所有连接的终端设备带宽使用量之和超过该值时条件为真。通常2.4G默认为0，5G默认80%，如果无线设备不多时可以都设置为0。
+	* RSSI：接受信号强度。
+	* PHY Rate Less：终端最大网速小于设定值为真。
+	* PHY Rate Greater：终端最大网速大于设定值为真。
+	* VHT：超高吞吐量。
 
 * STA Selection（终端选择）
 * Interface Select and Qualify Procedures：接口选择与质量审核
