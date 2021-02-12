@@ -1,6 +1,6 @@
 ---
 title: 华硕ac86u刷梅林固件教程
-tags: 路由器,meilin,梅林
+tags: 路由器, meilin, 梅林
 ---
 
 ------
@@ -29,9 +29,10 @@ tags: 路由器,meilin,梅林
 刷机步骤：
 
 1. 下载固件。
-2. 登录路由器固件升级页面：[【系统设置】→【固件升级】](http://router.asus.com/Advanced_FirmwareUpgrade_Content.asp)。
-3. 上传名为`xxx.w`固件，等待重启完成。
-4. 根据需要选择是否恢复出厂设置（也叫双清操作）:[【系统设置】→【恢复/导出/上传设置】](http://router.asus.com/Advanced_SettingBackup_Content.asp)。
+2. 登录[路由器配置页面](router.asus.com)。
+2. 切换到[路由器固件升级页面](router.asus.com/Advanced_FirmwareUpgrade_Content.asp)：【Administration】→【Fireware Upgrade】。
+3. 点击【upload】上传名为`xxx.w`固件，等待重启完成。
+4. 根据需要选择是否恢复出厂设置（也叫双清操作）:【Administration】→【Restore/Save/Upload Setting】
 	* 以下情况如无特殊说明，刷机完成后不用双清，当然双清后更好。
 		* 官方固件 → 梅林改版固件
 		* 梅林固件 → 梅林改版固件
@@ -42,12 +43,12 @@ tags: 路由器,meilin,梅林
 		* 梅林改版固件 → 官方改版固件
 		* 梅林改版固件 → 梅林固件
 5. 根据需要选择是否要格式化或启用软件中心
-	* 以下情况需要格式化并启用软件中心：在【系统管理】–【系统设置】内勾选Format JFFS partition at next boot 和 Enable JFFS custom scripts and configs 然后点击应用本页面设置，成功后点击顶部【重启按钮】重启路由器。
+	* 以下情况需要格式化并启用软件中心：在【Administration】–【System】内勾选Format JFFS partition at next boot 和 Enable JFFS custom scripts and configs 然后点击应用本页面设置，成功后点击顶部【重启按钮】重启路由器。
 		* 官方固件 → 梅林改版固件
 		* 梅林固件 → 梅林改版固件
 		* 官方改版固件 → 梅林改版固件，并双清
 		* 梅林改版固件 → 官方改版固件，并双清
-	* 以下情况只需要启用软件中心：在【系统管理】–【系统设置】内勾选Enable JFFS custom scripts and configs 然后点击应用本页面设置。
+	* 以下情况只需要启用软件中心：在【Administration】–【System】内勾选Enable JFFS custom scripts and configs 然后点击应用本页面设置。
 		* 梅林改版固件 → 梅林改版固件
 		* 官方改版固件 → 梅林改版固件，并不双清
 		* 梅林改版固件 → 官方改版固件，并不双清
