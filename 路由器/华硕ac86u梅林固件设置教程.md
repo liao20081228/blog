@@ -85,9 +85,7 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 3. 设置智能切换规则。
 
 
-
-
-
+**开启Smart Connect**
 
 ## 3.2 关闭WPS
 
