@@ -68,6 +68,8 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 * PHY（Physical）：物理（网卡）。
 * STA（Station）：站点、客户端（无线终端设备））
 * VHT（Very High Throughput）：超高吞吐量，802.11ac就属于VHT技术
+* Greter：大于，信号强于。用于触发2.4→G5G。
+* Less：小于，信号弱于。用于触发5G→2.4G。
 
 **注意事项**
 * Smart Connect功能并不能完美，因为无线终端设备在某些时候会自主选择2.4G或5G频段。
@@ -80,13 +82,32 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 3. 原地不动，将Wi-Fi手动切换到2.4频段，点击【Refresh stats】，重新记录RSSI。和上面一样，去一个均值，例如-60 dBm，这就是2.4G向5G切换的阈值。要注意的是实际上此处5G信号其实极差，因此即使切到5G信号也不好，因此应当让切换延后发生，通常在这个值之上加10~20，例如-50dbm。
 
 
+**设置智能切换规则**：点击【Wireless】→【General】→【Smart Connect Rule】或者点击【Network Tools】→【Smart Connect Rule】。Smart Connect切换规则由四部分构成，当且仅当这四个部分都满足的时候，才发生切换，只要有一个不满足都停留在当前频段。
+1. steering Trigger Condition（触发条件）：当且仅当以下没有描述为非条件的项都满足时才触发切换程序。
+	* band（频段）：当前频段。
+	* Enable Load Balance（开启负载均衡）：开启后该频段的所有终端网速均分（这个不是条件）。
+	* Bandwidth Utilization	（带宽使用率）：该频段所有连接的终端设备带宽使用量之和超过该值时。了2.4G默认为0，5G默认80%。
+	* RSSI：信号强度，
+	* PHY Rate Less：
+	* PHY Rate Greater：
+	* VHT：
 
-3. 设置智能切换规则。
+* STA Selection（终端选择）
+* Interface Select and Qualify Procedures：接口选择与质量审核
+* Bounce detect：来回切换检查
+
+实际上是一个且运算表达式。
 
 
-**开启Smart Connect**
-1. 点击【Wireless】→【General】→【Enable Smart Connect】设置为【On】。
-2. 点击【Wireless】→【General】→【Smart Connect Rule】或者点击【Network Tools】→【Smart Connect Rule】
+
+
+
+
+
+
+
+**开启Smart Connect**：点击【Wireless】→【General】→【Enable Smart Connect】设置为【On】。
+
 ## 3.2 关闭WPS
 
 ## 3.3. 设置无线MAC过滤
