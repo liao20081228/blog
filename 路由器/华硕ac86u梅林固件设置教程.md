@@ -81,57 +81,35 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 3. 原地不动，将Wi-Fi手动切换到2.4频段，点击【Refresh stats】，重新记录RSSI。和上面一样，去一个均值，例如-60 dBm，这就是2.4G向5G切换的阈值。要注意的是实际上此处5G信号其实极差，因此即使切到5G信号也不好，因此应当让切换延后发生，通常在这个值之上加10~20，例如-50dbm。
 
 
-**理解切换规则**：Smart Connect切换规则由四部分构成，***当且仅当这四个部分都满足时*** 时才会成功切换，只要有一个不满足终端都停留在当前频段。
-1. 【Trigger Condition】：触发条件，用于触发切换流程。***当且仅当所有条件都触发时，【Trigger Conditions】才***，才会触发切换流程。
-	* 【Load Balance】：启用负载均衡，所有终端均分当前频段带宽（不是触发条件，但会影响终端获得的带宽）。通常设置为【No】。
-	* 【Bandwidth Utilization】：本频段的带宽使用率。当该频段所有连接的终端设备带宽使用量之和超过设定值时为真。通常设置为【0】。
+**理解切换流程**：Smart Connect切换流程由三部分构成：触发切换流程、选择待切换终端、向目标频段切换。这三步想要完成则需要满足各自的约束条件，且不处于冷却状态。这就涉及四组规则：
+1. 【Trigger Condition】：触发条件。***当且仅当以下所有规则都满足时***，才会触发切换流程。
+	* 【Load Balance】：启用负载均衡，所有终端均分当前频段带宽（不是条件，但会影响终端获得的带宽）。通常设置为【No】。
+	* 【Bandwidth Utilization】：本频段带宽使用率。要求该频段所有连接的终端设备带宽使用量之和超过设定值。通常设置为【0】。
 	* 【RSSI】：终端接收信号强度。
-		* 【Greater】：RSSI强于设定值时为真。用于2.4G→5G。
-		* 【Less】：RSSI弱于设定值时为真。用于5G→2.4G。
-	* 【PHY Rate Less】：终端与路由器协商的带宽小于设定值为真。（有人说这个设计带宽或实际速率，都是错的），这需要了解无线通信的知识，在终端的WIFI状态可以看到：随着信号的衰减，协商的带宽也在变小，简单说来终端协商的带宽往往大于实际速率。0表示禁用，该条件始终为真。
-	* 【PHY Rate Greater】：终端与路由器协商的带宽大于设定值为真。0表示禁用，该条件始终为真。
-	* 【VHT】：超高吞吐量，802.11ac才有的技术。
-		* 设置为【all】：不对终端做VHT要求，该条件始终为真。
-		* 设置为【AC-only】：只有终端支持802.11ac时该条件为真。
-		* 设置为【not-allowed】：只有终端不支持VHT时该条件为真。
-2. 【STA Selection Policy】：终端选择策略，用于选择将要切换的终端，***当且仅当终端满足以下所有条件都为真时，【STA Selection Policy】才为真***，该终端才能被选中。通常与1中设置相同。
+		* 【Greater】：要求RSSI强于设定值。通常2.4G设置为【-50】。
+		* 【Less】：要求RSSI弱于设定值。通常5G设置为【-70】。
+	* 【PHY Rate Less】：要求终端与路由器协商的带宽小于设定值。（有人说这个设计带宽或实际速率，都是错的）。通常设置【0】表示禁用该规则。
+	* 【PHY Rate Greater】：要求终端与路由器协商的带宽大于设定值。通常设置【0】表示禁用该规则。
+	* 【VHT】：超高吞吐量，要求终端是否支持802.11ac。通常设置为【AC-only】或【all】。
+		* 设置为【all】：不要求终端支持。
+		* 设置为【AC-only】：要求终端支持。
+		* 设置为【not-allowed】：要求终端不支持。
+2. 【STA Selection Policy】：终端选择策略，用于选择将要切换的终端，***当且仅当终端满足以下所有规则时***，才能选出待切换终端。通常与1中设置相同。
 	* 【RSSI】
 	* 【PHY Rate Less】
 	* 【PHY Rate Greater】
 	* 【VHT】
-3. 【Interface Select and Qualify Procedures】：接口选择与质量审核。当且 ***当且仅当以下所有条件都为真***。
-	* 【Bandwidth Utilization】：目标频段的带宽使用率。当目标频段所有连接的终端设备带宽使用量之和小于设定值时为真。
-	* 【VHT】：超高吞吐量，802.11ac才有的技术。
-		* 设置为【all】：不对终端做VHT要求，该条件始终为真。
-		* 设置为【AC-only】：只有终端支持802.11ac时该条件为真。
-		* 设置为【not-allowed】：只有终端不支持VHT时该条件为真。
-4. 【Bounce detect】：来回切换检查。当且仅当在设定的连续时间内，切换次数不超过设定的次数，且不处于冷却状态时，条件为真。
-	* 【Windos Time】：窗口时间，计算切换次数的连续时间。
-	* 【Count】：在设定的连续时间内，最大切换次数。
-	* 【Dewell Time】：冷却时间。在【Windos Time】设定的时间内，如果切换超过【【Count】设定的次数，则在接下来在【Dewell Time】设定的时间内处于冷却状态。
+3. 【Interface Select and Qualify Procedures】：接口选择与质量审核。***当且仅当目标频段和终端满足以下所有规则时***，终端才会被切换到目标频段。
+	* 【Bandwidth Utilization】：目标频段的带宽使用率。要求目标频段所有连接的终端设备带宽使用量之和小于设定值。通常设置为【80%】.
+	* 【VHT】：通常和1设置相同。
+4. 【Bounce detect】：来回切换检查。要求**设定的连续时间内，切换不超过设定次数**，否则终端处于冷却指定时间。
+	* 【Windos Time】：窗口时间。通常设置为【60】。
+	* 【Count】：最大切换次数。通常设置为【2】。
+	* 【Dewell Time】：冷却时间。通常设置为【180】。
 
 ![7](https://gitee.com/liao20081228/blog_pictures/raw/master/华硕ac86u梅林固件设置教程/7..JPG#pic_center)
 
 **设置智能连接规则**：点击【Wireless】→【General】→【Smart Connect Rule】或者点击【Network Tools】→【Smart Connect Rule】。
-1. 【Steering Trigger Conditions】：
-	* 【Enable Load Balance】：设为【No】。
-	* 【Bandwidth Utilization】：2.4G设置为0，5G设置为80%。
-	* 【RSSI】：2.5G设置为【Greater】-50dbm，5G设置为【Less】-73dbm。
-	* 【PHY Rate Less】：2.4G设为【Disable】，5G设为。
-	* 【PHY Rate Greater】：2.4G设为150Mbps，5G设为【Disable】
-	* 【VHT】：【AC-only】
-2. 【STA Selection Policy】：
-	* 【RSSI】：2.5G设置为【Greater】-50dbm，5G设置为【Less】-73dbm。
-	* 【PHY Rate Less】：2.4G设为【Disable】，5G设为。
-	* 【PHY Rate Greater】：2.4G设为150Mbps，5G设为【Disable】
-	* 【VHT】：【AC-only】
-3. 【Interface Select and Qualify Procedures】：
-	* 【Bandwidth Utilization】：目标频段2.4G设为80%，目标频段5G设为80%
-	* 【VHT】：【AC-only】
-4. 【Bounce detect】：
-	* 【Windos Time】：设为60秒
-	* 【Count】：设为2次。
-	* 【Dewell Time】：设为180秒。
 
 **【PHY Rate】和【VHT】究竟应该怎么设置？**
 
