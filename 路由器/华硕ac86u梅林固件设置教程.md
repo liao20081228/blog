@@ -59,30 +59,21 @@ tags: 路由器,meilin,梅林
 
 ## 3.2 设置智能连接
 
-Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进行频段间的自动切换。其他路由器厂商也有类似功能，名字不一样，比如：小米路由器叫“双频合一”，TP-LINK路由器叫“频谱导航”。
+Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进行频段间的自动切换。
 
 为什么需要开启Smart Connect？因为2.4G WIFI速度慢，但穿透能力强，覆盖范围大；而5G WIFI速度更快，穿透能力更弱，覆盖范围更小。因此当终端由5G覆盖域移动到2.4G覆盖域时，需要将WIFI由2.4G切换为5G，反之则需要切回来。之前这个过程是由用户手动完成的，开启Smart Connect后，这个过程将由路由器自动完成。
 
-**基本术语**：
-* RSSI（Received SignalStrength Indicator）接收信号强度指示。RSSI是一个负数，越大信号越强。
-* PHY（Physical）：物理层。
-* STA（Station）：站点、客户端（无线终端设备））
-* VHT（Very High Throughput）：超高吞吐量，802.11ac就属于VHT技术
-* Greater：大于，信号强于。用于触发2.4G→5G。
-* Less：小于，信号弱于。用于触发5G→2.4G。
-
 **注意事项**：
 * Smart Connect功能并不能完美，因为无线终端设备在某些时候会自主选择2.4G或5G频段。
-* 设置Smart Connect规则时，不要参考ASUS固件中【System Log】→【Wireless Log】中的RSSI数据和Rx/Tx速率数据
+* 设置Smart Connect规则时，不要参考ASUS固件中【System Log】→【Wireless Log】中的RSSI数据和Rx/Tx速率数据，而应该参考终端设备侧的值。
 
 **准备工作**：开启Smart Connect功能之前，你需要根据你自己家里环境，测出适合你能用的Smart Connect规则RSSI切换阈值。
 1. 关闭Smart Connet，并且为2.4G和5G分别设置不同的SSID。
 2. 用一个高通CPU的双频手机，在手机电话拨号界面输入【*#*#4636#*#*】，依次进入Sta【Wi-Fi information】、【Wi-Fi status】，然后一边远离路由器一边点击【Refresh stats】。当【NetWork State】由已连接变为未连接时，记录下RSSI值。这个值会变化，但是浮动不大，多刷几次取个均值，例如-80dbm，这就是5G向2.4G切换的阈值。要注意的是实际上此处的5G信号已经极差了，数据传输也即将中段，因此应当让切换提前发生，通常在这个值之上加5-10，例如-73dbm。
 3. 原地不动，将Wi-Fi手动切换到2.4频段，点击【Refresh stats】，重新记录RSSI。和上面一样，去一个均值，例如-60 dBm，这就是2.4G向5G切换的阈值。要注意的是实际上此处5G信号其实极差，因此即使切到5G信号也不好，因此应当让切换延后发生，通常在这个值之上加10~20，例如-50dbm。
 
-
 **理解切换流程**：Smart Connect切换流程由三部分构成：触发切换流程、选择待切换终端、向目标频段切换。这三步想要完成则需要满足各自的约束条件，且不处于冷却状态。这就涉及四组规则：
-1. 【Trigger Condition】：触发条件。***当且仅当以下所有规则都满足时***，才会触发切换流程。
+1. 【Steering Trigger Condition】：控制触发条件。***当且仅当以下所有规则都满足时***，才会触发切换流程。
 	* 【Load Balance】：启用负载均衡，所有终端均分当前频段带宽（不是条件，但会影响终端获得的带宽）。通常设置为【No】。
 	* 【Bandwidth Utilization】：本频段带宽使用率。要求该频段所有连接的终端设备带宽使用量之和超过设定值。通常设置为【0】。
 	* 【RSSI】：终端接收信号强度。
