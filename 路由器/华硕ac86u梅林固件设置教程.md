@@ -175,7 +175,7 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 * 如果没有仅支持802.11n 2.4G的设备时，则只需把【PHY Rate Greater】、【PHY Rate less】设置为【Disable】，【VHT】设为【all】即可。
 * 如果有仅支持802.11n 2.4G的设备时，有两种办法：
 	* 1. 把【PHY Rate Greater】、【PHY Rate less】设置为【Disable】，【VHT】设为【AC only】即可。但这样会造成802.11n 2.4/5G终端无法切换到5G，如果没有802.11n 2.4/5G终端需要连接，那么这就是一个完美的方案。
-	* 2. 把【PHY Rate Greater】设置为这些终端设计带宽的最大值即可、【PHY Rate less】设置为【Disable】，【VHT】设为【all】。这样会导致支持802.11ac和802.11n 2.4/5G的设备延迟切换和驻留。。
+	* 2. 把【PHY Rate Greater】设置为这些终端设计带宽的最大值即可、【PHY Rate less】设置为【Disable】，【VHT】设为【all】。这样会导致支持802.11ac和802.11n 2.4/5G的设备延迟切换和驻留。
 
 考虑5G向2.4G切换的情况：
 
