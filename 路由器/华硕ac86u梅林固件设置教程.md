@@ -119,15 +119,15 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 	* 【RSSI】：2.5G设置为【Greater】-50dbm，5G设置为【Less】-73dbm。
 	* 【PHY Rate Less】：2.4G设为【Disable】，5G设为。
 	* 【PHY Rate Greater】：2.4G设为150Mbps，5G设为【Disable】
-	* 【VHT】：【all】【AC-only】【not-allowed】
+	* 【VHT】：【AC-only】
 2. 【STA Selection Policy】：
 	* 【RSSI】：2.5G设置为【Greater】-50dbm，5G设置为【Less】-73dbm。
 	* 【PHY Rate Less】：2.4G设为【Disable】，5G设为。
 	* 【PHY Rate Greater】：2.4G设为150Mbps，5G设为【Disable】
-	* 【VHT】：【all】【AC-only】【not-allowed】
+	* 【VHT】：【AC-only】
 3. 【Interface Select and Qualify Procedures】：
 	* 【Bandwidth Utilization】：目标频段2.4G设为80%，目标频段5G设为80%
-	* 【VHT】：【all】【AC-only】【not-allowed】
+	* 【VHT】：【AC-only】
 4. 【Bounce detect】：
 	* 【Windos Time】：设为60秒
 	* 【Count】：设为2次。
