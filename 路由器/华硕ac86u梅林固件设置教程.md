@@ -14,7 +14,7 @@ tags: 路由器,meilin,梅林
 # 1 基本设置
 进入[设置页面](router.asus.com/)。
 
-1. 点击【Quick Internet Setup】并选择【Create New NetWork】。
+1. 点击【Quick Internet Setup | 快速设置向导】并选择【Create New NetWork】。
 2. 设置WIFI名和密码。如果需要分别2.4G和5G的WIFI名和密码，请勾选[Separate 2.4GHz and 5GHz]进行设置。
 3. 输入路由器管理员用户名和密码。
 
