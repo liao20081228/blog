@@ -43,7 +43,6 @@ tags: 路由器,meilin,梅林
 除了【Quick Internet Setup】，该【Wireless】界面也可以设置无线WIFI的基本信息。
 
 1. 点击【Wireless】→【General】
-![6](https://gitee.com/liao20081228/blog_pictures/raw/master/华硕ac86u梅林固件设置教程/6.jpg#pic_center)
 2. 设置设置无线WIFI的基本信息。
 	* 【Hide SSID】：隐藏WIFI名，通常选择【No】。
 	* 【Network Name（SSID）】：设置WIFI名
