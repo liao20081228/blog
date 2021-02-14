@@ -26,11 +26,9 @@ tags: 路由器,meilin,梅林
 访客网络就是只能访问WAN网络，而不能访问同一局域网设备的网络。如果经常有陌生设备需要连接WIFI则则建议开启访客网络，一般家庭网络无需开启。
 
 1. 点击【Guest Network】→【Enable】。
-![4](https://gitee.com/liao20081228/blog_pictures/raw/master/华硕ac86u梅林固件设置教程/4.jpg#pic_center)
 2. 设置无线参数。
-![5](https://gitee.com/liao20081228/blog_pictures/raw/master/华硕ac86u梅林固件设置教程/5.jpg#pic_center)
-	* 【Hide SSID】：隐藏WIFI名，通常选择【No】。
-	* 【Network Name（SSID）】：设置WIFI名
+	* 【Hide SSID】：隐藏WIFI名。通常选择【No】。
+	* 【Network Name（SSID）】：WIFI名
 	* 【Authentic Method】：连接WIFI时是否需要密码及如何加密。通常选择【WPA-Personal】和【AES】，如果终端不支持AES加密，则选择【WPA2-auto-Personal】和【TKIP+AES】，AES比TKIP更安全，且速度更快。
 	* 【Access time】：允许上网多久。通常【Unlimited Acess】。
 	* 【Bandwidth limiter】：是否限制带宽。通常选择【Disable】。
