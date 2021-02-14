@@ -15,10 +15,7 @@ tags: 路由器,meilin,梅林
 进入[设置页面](router.asus.com/)。
 
 1. 点击【Quick Internet Setup】并选择【Create New NetWork】。
-![1](https://gitee.com/liao20081228/blog_pictures/raw/master/华硕ac86u梅林固件设置教程/1.jpg#pic_center)
 2. 设置WIFI名和密码。如果需要分别2.4G和5G的WIFI名和密码，请勾选[Separate 2.4GHz and 5GHz]进行设置。
-![2](https://gitee.com/liao20081228/blog_pictures/raw/master/华硕ac86u梅林固件设置教程/2.jpg#pic_center)
-
 3. 输入路由器管理员用户名和密码。
 
 # 2 设置访客网络
