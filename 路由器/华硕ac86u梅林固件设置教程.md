@@ -50,8 +50,9 @@ tags: 路由器,meilin,梅林
 	* 【Hide SSID】：隐藏WIFI名，通常选择【No】。
 	* 【Network Name（SSID）】：设置WIFI名
 	* 【Authentic Method】：连接WIFI时是否需要密码及如何加密。通常选择【WPA2-Personal】
-	* 【WPA Encryption】：加密方式。通常选择【AES】
+	* 【WPA Encryption】：加密方式。通常选择【AES】。【Tkip】不如【AES】。
 	* 【WPA Pre-shared key】：WIFI密码
+	* 【Wireless Mode】：无线模式。设置为【Auto】。
 
 >如果终端不支持AES加密，则【Authentic Method】需要选择【WPA2-auto-Personal】，【WPA Encryption】需要选择【TKIP+AES】，AES比TKIP更安全，且速度更快。
 >
@@ -101,6 +102,7 @@ Smart Connect能将多个频段用一个SSID，并根据预先设定的规则进
 **开启Smart Connect**：点击【Wireless】→【General】→【Enable Smart Connect】设置为【On】。
 
 ## 3.2 关闭WPS
+
 
 ## 3.3. 设置无线MAC过滤
 
