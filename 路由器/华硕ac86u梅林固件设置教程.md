@@ -44,14 +44,11 @@ tags: 路由器,meilin,梅林
 	* 【Hide SSID】：隐藏WIFI名，通常选择【No】。
 	* 【Network Name（SSID）】：设置WIFI名
 	* 【Authentic Method】：连接WIFI时是否需要密码及如何加密。通常选择【WPA2-Personal】
-	* 【WPA Encryption】：加密方式。通常选择【AES】。【Tkip】不如【AES】。
+	* 【WPA Encryption】：加密方式。通常选择【AES】。
 	* 【WPA Pre-shared key】：WIFI密码
 	* 【Wireless Mode】：无线模式。设置为【Auto】
-		* 【open system】：不需要密码就能连接。
-		* 【WPA2-Personal】：支持AES加密方式。
-		* 【WPA-auto-Personal】：支持AES和TKIP加密方式。
-		* 【WPA-auto-Enterprise】：支持Radius，支持AES和TKIP加密方式。
-		* 【WPA2-Enterprise】：支持Radius，支持AES加密方式。
+	* 【Protected Management Frames】：启用保护帧，可以防止窃听和伪造。通常设置【Disable】
+
 
 >如果终端不支持AES加密，则【Authentic Method】需要选择【WPA2-auto-Personal】，【WPA Encryption】需要选择【TKIP+AES】，AES比TKIP更安全，且速度更快。
 >
