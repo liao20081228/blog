@@ -56,7 +56,6 @@ tags: 路由器,meilin,梅林
 		* 【WPA-auto-Personal】：支持AES和TKIP加密方式。
 		* 【WPA-auto-Enterprise】：支持Radius，支持AES和TKIP加密方式。
 		* 【WPA2-Enterprise】：支持Radius，支持AES加密方式。
-		Protected Management Frames
 
 >如果终端不支持AES加密，则【Authentic Method】需要选择【WPA2-auto-Personal】，【WPA Encryption】需要选择【TKIP+AES】，AES比TKIP更安全，且速度更快。
 >
