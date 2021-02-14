@@ -42,12 +42,12 @@ tags: 路由器,meilin,梅林
 1. 点击【Wireless】→【General】
 2. 设置设置无线WIFI的基本信息。
 	* 【Hide SSID】：隐藏WIFI名，通常选择【No】。
-	* 【Network Name（SSID）】：设置WIFI名
-	* 【Authentic Method】：连接WIFI时是否需要密码及如何加密。通常选择【WPA2-Personal】
+	* 【Network Name（SSID）】：设置WIFI名。
+	* 【Authentic Method】：连接WIFI时是否需要密码及如何加密。通常选择【WPA2-Personal】。
 	* 【WPA Encryption】：加密方式。通常选择【AES】。
-	* 【WPA Pre-shared key】：WIFI密码
-	* 【Wireless Mode】：无线模式。设置为【Auto】
-	* 【Protected Management Frames】：启用保护帧，可以防止窃听和伪造。通常设置【Disable】
+	* 【WPA Pre-shared key】：WIFI密码。
+	* 【Wireless Mode】：无线模式。设置为【Auto】。
+	* 【Protected Management Frames】：启用保护帧，可以防止窃听和伪造。通常设置【Disable】。
 
 
 >如果终端不支持AES加密，则【Authentic Method】需要选择【WPA2-auto-Personal】，【WPA Encryption】需要选择【TKIP+AES】，AES比TKIP更安全，且速度更快。
