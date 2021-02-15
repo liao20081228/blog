@@ -25,8 +25,9 @@ tags: 路由器,meilin,梅林
 1. 点击【Guest Network】→【Enable】。
 2. 设置无线参数。
 	* 【Hide SSID】：隐藏WIFI名。通常选择【No】。
-	* 【Network Name（SSID）】：WIFI名
-	* 【Authentic Method】：连接WIFI时是否需要密码及如何加密。通常选择【WPA-Personal】和【AES】，如果终端不支持AES加密，则选择【WPA2-auto-Personal】和【TKIP+AES】，AES比TKIP更安全，且速度更快。
+	* 【Network Name（SSID）】：WIFI名，最长32个英文字符。
+	* 【Authentic Method】：无线终端认证方式。通常选择【WPA2-Personal】。
+	* 【WPA Encryption】：加密算法。通常选择【AES】。
 	* 【Access time】：允许上网多久。通常【Unlimited Acess】。
 	* 【Bandwidth limiter】：是否限制带宽。通常选择【Disable】。
 	* 【Access Intranet】：是否可以访问内部网络。通常选择【否】。
@@ -42,13 +43,16 @@ tags: 路由器,meilin,梅林
 1. 点击【Wireless】→【General】
 2. 设置设置无线WIFI的基本信息。
 	* 【Hide SSID】：隐藏WIFI名，通常选择【No】。
-	* 【Network Name（SSID）】：设置WIFI名。
-	* 【Authentic Method】：连接WIFI时是否需要密码及如何加密。通常选择【WPA2-Personal】。
-	* 【WPA Encryption】：加密方式。通常选择【AES】。
-	* 【WPA Pre-shared key】：WIFI密码。
-	* 【Wireless Mode】：无线模式。设置为【Auto】。
+	* 【Network Name（SSID）】：WIFI名，最长32个英文字符。
+	* 【Authentic Method】：无线终端认证方式。通常选择【WPA2-Personal】。
+	* 【WPA Encryption】：加密算法。通常选择【AES】。
+	* 【WPA Pre-shared key】：WIFI密码，8-63个英文字符。
+	* 【Wireless Mode】：无线模式，是否接受对802.11b/g终端。设置为【Auto】。
 	* 【Protected Management Frames】：启用保护帧，可以防止窃听和伪造。通常设置【Disable】。
-
+	* 【Group Key Rotation Interval】：WPA群组密码变换间隔，0表示禁用，最大2592000秒，通常设置为【3600】。
+	* 【Channel bandwidth】：信道带宽。通常2.4G设置为【20/40Mhz】，5G设置为【20/40/80Mhz】。
+	* 【Control Channel】：使用哪一个无线信道。通常设置为【Auto】。。
+	* 【Extension Channel】：将扩展信道与控制信道结合为40MHz。通常设置为【Auto】。
 
 >如果终端不支持AES加密，则【Authentic Method】需要选择【WPA2-auto-Personal】，【WPA Encryption】需要选择【TKIP+AES】，AES比TKIP更安全，且速度更快。
 >
