@@ -54,9 +54,9 @@ tags: 路由器,meilin,梅林
 	* 【Control Channel】：使用哪一个无线信道。通常设置为【Auto】。。
 	* 【Extension Channel】：将扩展信道与控制信道结合为40MHz。通常设置为【Auto】。
 
->如果终端不支持AES加密，则【Authentic Method】需要选择【WPA2-auto-Personal】，【WPA Encryption】需要选择【TKIP+AES】，AES比TKIP更安全，且速度更快。
+>如果终端不支持AES算法，则【Authentic Method】需要选择【WPA2-auto-Personal】，【WPA Encryption】需要选择【TKIP+AES】，AES比TKIP更快。
 >
->如果希望每个用户都有自己的用户名和密码，则【Authentic Method】需要选择【WPA2-Enterprise】或【WPA-auto-Enterprise】版本，这需要设置radius服务器的地址和端口及连接密码，这通常用于企业，同样你也需要搭建一个radus服务器。
+>如果希望每个用户都有自己的用户名和密码，则【Authentic Method】需要选择【WPA2-Enterprise】或【WPA-auto-Enterprise】版本，这需要设置radius服务器的地址和端口及连接密码，这通常用于企业，同样也需要额外搭建一个radius服务器。
 
 ## 3.2 设置智能连接
 
