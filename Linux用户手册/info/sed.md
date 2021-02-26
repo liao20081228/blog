@@ -1,5 +1,5 @@
 ---
-title: Linux文本处理工具sed
+title: sed
 tags: Linux用户命令
 ---
 
