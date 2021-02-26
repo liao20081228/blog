@@ -1,6 +1,6 @@
 ---
-title: awk
-tags: 未分类
+title: Linux文本处理工具sed
+tags: Linux使用教程
 ---
 
 
