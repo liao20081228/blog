@@ -152,11 +152,77 @@ Gawk的内置变量如下：
 |ARGC|命令行参数的数量（不包括gawk的选项或程序源码）|
 |ARGIND|正在处理的当前文件在ARGV中的索引|
 |ARGV |命令行参数数组。该数组的索引从0到ARGC-1。动态更改ARGV的内容可以控制用于数据的文件。|
-|BINMODE|在非POSIX系统上，为所有文件I/O指定使用“二进制”模式。数值1、2、3分别指定输入文件、输出文件、所有文件应使用二进制I/O。字符串值“r”或“w”指定输入文件或输出文件使用二进制I/O。字符串值“rw”或“wr”指定所有文件应使用二进制I/O。任何其他字符串值都被视为“rw”，但会生成警告消息。|
-|CONVFMT|默认情况下，数字的转换格式为“％.6g”。|
+|BINMODE|在非POSIX系统上，为所有文件I/O指定使用“二进制”模式。数值1、2、3分别指定输入文件、输出文件、所有文件应使用二进制I/O。字符串值"r"或"w"指定输入文件或输出文件使用二进制I/O。字符串值"rw"或"wr"指定所有文件应使用二进制I/O。任何其他字符串值都被视为"rw"，但会生成警告消息。|
+|CONVFMT|默认情况下，数字的转换格式为"％.6g"。|
 |ENVIRON|包含当前环境值的数组。该数组通过环境变量进行索引，每个元素都是该变量的值（例如ENVIRON["HOME"]可能是"/home/ arnold"）。<br />在POSIX模式下，更改此数组不会影响gawk通过重定向或system()函数生成的程序所看到的环境。否则，gawk将更新其实际环境，以便其生成的程序可以看到更改。|
 | ERRNO|如果在重定向getline、读取getline、close()期间发生错误，则将ERRNO设置为描述该错误的字符串。该值可以在非英语语言环境中进行翻译。如果ERRNO中的字符串与errno(3)变量中的系统错误相匹配，则可以在PROCINFO["errno"]中找到该数值。对于非系统错误，PROCINFO["errno"]将为零。|
 |FIELDWIDTHS|以空格分隔的字段宽度列表。设置后，gawk会将输入解析为固定宽度的字段，而不是使用FS变量的值作为字段分隔符。可选地，每个字段宽度前面都可以有一个冒号分隔的值，该值指定在字段开始之前要跳过的字符数。参见前面的[字段](#filed)。|
+|FILENAME| 当前输入文件的名称。如果在命令行上未指定文件，则FILENAME的值为“-”。但是，FILENAME在BEGIN规则内是未定义的（除非由getline设置）。|
+|FNR|当前输入文件中的输入记录号。|
+|FPAT|描述记录中字段内容的正则表达式。设置后，gawk会将输入解析为与正则表达式匹配的字段，而不是使用FS的值作为字段分割符。参见前面的[字段](#filed)。|
+|FS|输入字段分割符，默认为空格。参见前面的[字段](#filed)。|
+|FUNCTAB |一个数组，其索引和对IGNORECASE|应值是程序中所有用户定义或扩展函数的名称。注意：您不能与FUNCTAB数组一起使用delete语句。|
+|<span id='IGNORECASE'>IGNORECASE</span>| 控制所有正则表达式和字符串操作的是否区分大小写。如果IGNORECASE具有非零值，则在规则中进行字符串比较和模式匹配，使用FS和FPAT进行字段拆分，使用RS进行记录分隔，使用\~和!\~匹配正则表达式，以及内置函数gensub()、gsub()、index()、match()、patsplit()、split()和sub()在进行正则表达式操作时都会忽略大小写。注意：数组下标不受影响，但是asort()和asorti()函数会受到影响。<br /><br />因此，如果IGNORECASE不等于零，则/aB/匹配所有字符串“ab”，“aB”，“Ab”和“AB”。与所有AWK变量一样，IGNORECASE的初始值为零，因此所有正则表达式和字符串操作通常区分大小写。|
+|LINT|在AWK程序中提供--lint选项的动态控制。 如果为true，gawk将打印温和警告。 如果为fasle，则不会。 当为LINT赋值"fatal"时，温和警告将成为致命错误，与--lint=fatal一样。 其他任何真值只会显示警告。|
+|NF|当前输入记录中的字段数。|
+|NR|到目前为止看到的输入记录总数。|
+|OFMT|默认情况下，数字的输出格式为"％.6g"。|
+|OFS|输出字段分隔符，默认为空格。|
+|ORS|输出记录分隔符，默认情况下为换行符。|
+|PREC|任意精度浮点数的有效精度，默认为53。|
+|PROCINFO|该数组的元素提供了访问正在运行的AWK程序的信息的接口。参见下面的[PROCINFO](#PROCINFO)。|
+|ROUNDMODE|用于对数字进行任意精度算术的舍入模式，默认情况下为"N"（IEEE-754 roundTiesToEven模式）。可接受的值为：<br /><br /> "A" 或 "a"&emsp;&emsp;roundAwayFromZero。仅当您的GNU MPFR库版本支持roundAwayFromZero才可用。<br /><br />"D" 或 "d"&emsp;&emsp; roundTowardNegative。<br /><br />"N" 或 "n"&emsp;&emsp;roundTiesToEven。<br /><br />"U" or "u" &emsp;&emsp;roundTowardPositive。<br /><br />"Z" or "z" &emsp;&emsp;roundTowardZero。|
+|RS|输入记录分隔符，默认情况下为换行符。|
+|RT|记录终止符。 Gawk将RT设置为与RS指定的字符或正则表达式匹配的输入文本。|
+|RSTART|match()匹配的第一个字符的索引。如果没有匹配，则为0。（这意味着字符索引从1开始。）|
+|RLENGTH |match()匹配的字符串的长度；如果没有匹配，则为-1。|
+|SUBSPEP|默认情况下，用于分隔数组元素中多个下标的字符串“\034”。|
+|SYMTAB|一个数组，其索引是程序中所有当前定义的全局变量和数组的名称。该数组可用于间接访问以读取或写入变量的值：<br /><br />&emsp;&emsp; foo = 5<br /><br />&emsp;&emsp;SYMTAB["foo"] = 4<br /><br />&emsp;&emsp;print foo    # prints 4<br /><br />typeof()函数可用于测试SYMTAB中的元素是否为数组。您不能将delete语句与SYMTAB数组一起使用，也不能赋值给索引不是变量名的元素。|
+|TEXTDOMAIN |AWK程序的文本域；用于查找程序字符的本地化翻译。|
+
+在某些系统上，PROCINFO数组中可能存在一些元素，从"group1"到"groupn"，n是进程具有的补充组的数量。使用in运算符测试这些元素。以下元素保证可以使用：
+
+|<span id='PROCINFO'>PROCINFO数组元素</span>|说明|
+|:--|:--|
+|PROCINFO["argv"]|gawk在C语言级别上接收到的命令行参数。下标从零开始。|
+|PROCINFO["egid"]|系统调用getegid(2)的值。|
+|PROCINFO["errno"] |当ERRNO设置为关联的错误消息时，errno(3)的值。|
+|PROCINFO["euid"]|系统调用geteuid(2)的值。|
+|PROCINFO ["FS"]| 如果使用FS进行字段拆分则为"FS"；如果使用FPAT进行字段拆分，则为"FPAT"；如果使用FIELDWIDTHS进行字段拆分，则为"FIELDWIDTHS"；如果使用API输入解析器拆分字段，则为"API"。|
+|PROCINFO["gid"]|系统调用getgid(2)的值。|
+|PROCINFO["identifiers"] |子数组，由AWK程序文本中使用的所有标识符的名称索引。这些值表示gawk在完成对程序的解析之后对标识符的了解；它们不会在程序运行时更新。对于每个标识符，元素的值是以下值之一：<br /><br />"array"&emsp;&emsp;标识符是一个数组。<br /><br />"builtin"&emsp;&emsp;标识符是内置函数。<br /><br />"extension"&emsp;&emsp; 标识符是通过@load或--load加载的扩展函数。<br /><br />"scalar"&emsp;&emsp;标识符是标量。<br /><br />"untyped"&emsp;&emsp;标识符是无类型的（可以用作标量或数组，gawk尚不知道）。<br /><br />"user"&emsp;&emsp;标识符是用户定义的函数。|
+|PROCINFO["pgrpid"]|系统调用getpgrp(2)的值。|
+|PROCINFO["pid"]|系统调用getpid(2)的值。
+|PROCINFO["platform"]|一个字符串，指示编译gawk的平台。它是以下之一：<br /><br />"djgpp"，"mingw"&emsp;&emsp;Microsoft Windows，分别使用DJGPP或MinGW的。<br /><br />"os2"&emsp;&emsp;OS/2。<br /><br />"posix"&emsp;&emsp;GNU/Linux，Cygwin，Mac OS X和传统的Unix系统。<br /><br />"vms"&emsp;&emsp;OpenVMS或Vax/VMS。<br /><br />|
+|PROCINFO["ppid"]|系统调用getppid(2)的值。
+|PROCINFO["strftime"]|strftime()的默认时间格式字符串。更改其值会影响无参数调用strftime()时格式化时间值的方式。|
+|PROCINFO["uid"]系统调用getuid(2)的值。|
+|PROCINFO["version"]|gawk的版本。|
+
+如果可以加载动态扩展，则存在以下元素：
+|PROCINFO数组元素|说明|
+|:--|:--|
+| PROCINFO["api_major"]|扩展API的主要版本。|
+|PROCINFO["api_minor"]|扩展API的次要版本。|
+
+如果将MPFR支持编译到gawk中，则可以使用以下元素：
+|PROCINFO数组元素|说明|
+|:--|:--|
+|PROCINFO["gmp_version"]| Gaw GMP中用于任意精度数字支持的GNU GMP库版本。|
+| PROCINFO["mpfr_version"]| Gaw MP中用于任意精度数字支持的GNU MPFR库版本。|
+|PROCINFO["prec_max"]|GNU MPFR库支持的任意精度浮点数的最大精度。|
+|PROCINFO["prec_min"]|GNU MPFR库允许的任意精度浮点数的最低精度。|
+
+程序可以设置以下元素来更改gawk的行为：
+
+|PROCINFO数组元素|说明|
+|:--|:--|
+|PROCINFO["NONFATAL"]|如果存在，则所有重定向的I/O错误都不会致命。|
+|PROCINFO["name", "NONFATAL"]|使指明的I/O错误非致命。|
+|PROCINFO["command", "pty"]|使用伪tty与命令进行双向通信，而不是设置两个单向管道。|
+|PROCINFO["input", "READ_TIMEOUT"]|从输入读取数据的超时时间（以毫秒为单位），其中输入是重定向字符串或文件名。零或小于零的值表示没有超时设置。|
+|PROCINFO["input", "RETRY"]|如果从输入读取数据时可能发生重试I/O错误，并且此数组项存在，则getline返回-2，而不是遵循默认行为返回-1，并将输入配置为不返回其他数据。可能重试的I/O错误是errno(3)的值为EAGAIN，EWOULDBLOCK，EINTR或ETIMEDOUT的错误。这在与PROCINFO["input", "READ_TIMEOUT"]联用，或在文件描述符已配置为以非阻塞方式运行的情况下很有用。|
+|PROCINFO["sorted_in"]|如果PROCINFO中存在此元素，则其值控制在for循环中遍历数组元素的顺序。 支持的值是"@ind_str_asc"、"@ind_num_asc"、"@val_type_asc"、"@val_str_asc"、"@val_num_asc"、"@ind_str_desc"、"@ind_num_desc"、"@val_type_desc"、"@val_str_desc"、"@val_num_desc"和 "@unsorted"。 该值也可以是定义如下的比较函数的名称（以字符串形式）：<br /><br />&emsp;&emsp;function cmp_func(i1,v1,i2,v2)<br /><br />其中i1和i2是索引，而v1和v2是要比较的两个元素的对应值。 它应返回小于、等于或大于0的数字，具体取决于数组元素的排序方式。|
 
 
 
