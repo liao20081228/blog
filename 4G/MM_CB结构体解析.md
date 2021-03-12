@@ -43,7 +43,7 @@ typedef struct
 typedef struct
 {
 	IMSI							Imsi;							// MM用户IMSI标识内容P
-	IMEI							Imei;							//MM用户IMEI标识内容P
+	IMEI							Imei;							// MM用户IMEI标识内容P
 	TMSI							Tmsi;
 	VOS_UINT8						ucTmsiStat;						// TMSI status 
 	TMGI							Tmgi;
