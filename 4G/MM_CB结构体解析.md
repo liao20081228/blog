@@ -42,44 +42,44 @@ typedef struct
 //CB表公共部分
 typedef struct
 {
-	IMSI							Imsi;					  // MM用户IMSI标识内容P
-	IMEI							Imei;					  //MM用户IMEI标识内容P
+	IMSI							Imsi;							// MM用户IMSI标识内容P
+	IMEI							Imei;							//MM用户IMEI标识内容P
 	TMSI							Tmsi;
-	VOS_UINT8						ucTmsiStat;		// TMSI status 
+	VOS_UINT8						ucTmsiStat;						// TMSI status 
 	TMGI							Tmgi;
-	PTMSI							Ptmsi;					// MM用户当前P-TMSI标识内容S
-	PTMSISIGN						PtmsiSign;		   // MM用户当前P-TMSI签名标识内容I
-	PTMSI							OldPtmsi;			// MM用户old P-TMSI标识内容?
-	PTMSISIGN						OldPtmsiSign;	// MM用户old P-TMSI签名标识内容?
+	PTMSI							Ptmsi;							// MM用户当前P-TMSI标识内容S
+	PTMSISIGN						PtmsiSign;						// MM用户当前P-TMSI签名标识内容I
+	PTMSI							OldPtmsi;						// MM用户old P-TMSI标识内容?
+	PTMSISIGN						OldPtmsiSign;					// MM用户old P-TMSI签名标识内容?
 
-	S_GUTI							CurrentGuti;		// USN_SIG_MM: 可以和P-TMSI合一，使用联合?
-	S_GUTI							OldGuti;				 // USN_SIG_MM: 可以和Old P-TMSI合一，使用联合?
+	S_GUTI							CurrentGuti;					// USN_SIG_MM: 可以和P-TMSI合一，使用联合?
+	S_GUTI							OldGuti;						// USN_SIG_MM: 可以和Old P-TMSI合一，使用联合?
 	S_GUTI							AdditionalGuti;
 
-	VOS_UINT8						ucFollowOnReq;			 /*是否有后续信令和数据指示标志 */
-	VOS_UINT16						uwReadyTimerVal;		   /*Requested READY timer value*/
-	VOS_UINT8						bt1IsReadyTimerIncluded:1; /*用户附着请求中是否携带ReadyTimer长度 */
-	VOS_UINT8						bt1TmsiReallocFlag:1;	  /*是否已TMSI重分配标志*/
-	VOS_UINT8						bt1PtmsiReallocFlag:1;	 /*是否已P-TMSI重分配标志*/
-	VOS_UINT8						bt1SdbRelocPtmsi:1;		/*SDB发起PTMSI分配*/
-	VOS_UINT8						bt1ImsiInTmsiRealloc:1;	/*位置更新过程中，VLR送imsi，要求邋MS删除旧TMSI*/
+	VOS_UINT8						ucFollowOnReq;					/*是否有后续信令和数据指示标志 */
+	VOS_UINT16						uwReadyTimerVal;				/*Requested READY timer value*/
+	VOS_UINT8						bt1IsReadyTimerIncluded:1;		/*用户附着请求中是否携带ReadyTimer长度 */
+	VOS_UINT8						bt1TmsiReallocFlag:1;			/*是否已TMSI重分配标志*/
+	VOS_UINT8						bt1PtmsiReallocFlag:1;			/*是否已P-TMSI重分配标志*/
+	VOS_UINT8						bt1SdbRelocPtmsi:1;				/*SDB发起PTMSI分配*/
+	VOS_UINT8						bt1ImsiInTmsiRealloc:1;			/*位置更新过程中，VLR送imsi，要求邋MS删除旧TMSI*/
 	VOS_UINT8						bt1FlexUser:1;
-	VOS_UINT8						bt1IsS6Available:1;		/*用户是否可以使用S6d接口*/
+	VOS_UINT8						bt1IsS6Available:1;				/*用户是否可以使用S6d接口*/
 	VOS_UINT8						btMmComCbReserved:1;
 
-	VOS_UINT8						ucMsIdType;	   // MM用户标识的类型: IMSI, P-TMSI, GUTI
+	VOS_UINT8						ucMsIdType;						// MM用户标识的类型: IMSI, P-TMSI, GUTI
 	VOS_UINT8						ucSystemType;
 	
 	S_USN_CAUSE_INF					stInnerCause;
 
-	RAI								TargetRai;			  // MM用户所在目标路由区 
-	RAI								OldRai;					 // MM用户所在 old 路由区 
-	RAI								SuspendRai;			   //suspend流程中的RAI
-	//SAI							CurrentSai;			   // MM用户当前所在服务区, 仅在3G时使用 
-	LAI								OldLocation;			  // Old location area identification 
-	TAI								CurrentTai;			   // USN_SIG_MM: 可以和RAI合一，使用联合?
-	TAI								CurentTaiList[M_TALIST_LEN];	  // USN_SIG_MM: TA list没有必要保存在MM CB表中?
-	TAI								OldTaiList[M_TALIST_LEN];		   // USN_SIG_MM: TA list没有必要保存在MM CB表中?
+	RAI								TargetRai;						// MM用户所在目标路由区 
+	RAI								OldRai;							// MM用户所在 old 路由区 
+	RAI								SuspendRai;						//suspend流程中的RAI
+	//SAI							CurrentSai;						// MM用户当前所在服务区, 仅在3G时使用 
+	LAI								OldLocation;					// Old location area identification 
+	TAI								CurrentTai;						// USN_SIG_MM: 可以和RAI合一，使用联合?
+	TAI								CurentTaiList[M_TALIST_LEN];	// USN_SIG_MM: TA list没有必要保存在MM CB表中?
+	TAI								OldTaiList[M_TALIST_LEN];		// USN_SIG_MM: TA list没有必要保存在MM CB表中?
 	VOS_UINT8						ucCurentTaiListNum;
 	VOS_UINT8						ucOldTaiListNum;
 	LAI								Lai;
@@ -94,22 +94,22 @@ typedef struct
 	VOS_UINT8						bt1TmsiStatValid:1;
 	
 	VOS_UINT8						bt1ACCCResult:1;
-	VOS_UINT8						bt1IsCombinedAttached:1; /*UE是否已经联合附着成功, DTS2015010609666, added by pengyi, 2015-1-23*/
+	VOS_UINT8						bt1IsCombinedAttached:1;		/*UE是否已经联合附着成功, DTS2015010609666, added by pengyi, 2015-1-23*/
 	VOS_UINT8						btExReserved:6;
   
-	PLMN							EquivalentPlmn; //FFS
+	PLMN							EquivalentPlmn;					//FFS
 	PLMN							SelectedPlmn;
-	PLMN							TargetPlmn;// USN1.2 协议跟进 by wushizhong
+	PLMN							TargetPlmn;						// USN1.2 协议跟进 by wushizhong
 
-	VOS_UINT32						udwTraceFlag;			   // 用户跟踪时使用?
-	VOS_UINT8						ucOAMTraceFlag;			 // O&M跟踪标志 */
+	VOS_UINT32						udwTraceFlag;					// 用户跟踪时使用?
+	VOS_UINT8						ucOAMTraceFlag;					// O&M跟踪标志 */
 
 	/* 消息缓存序列，主要使用在Idle的场景 */
 	S_SPU_MM_CTRL_STORE_MSG_NODE*	pStoreFwdMsgList;
 #ifndef MM_COMM_BUFF_TEST
 	S_SPU_MM_CTRL_STORE_MSG_NODE*	pStoreMsgList;
 #else
-	VOS_LIST						pStoreMsgList;		 // 消息缓存链表头指针
+	VOS_LIST						pStoreMsgList;					// 消息缓存链表头指针
 #endif
 
 #ifndef MM_COMM_BUFF_TEST
@@ -118,24 +118,24 @@ typedef struct
 	
 #else
 	/* 数据缓存序列, 主要使用大的数据缓存和消息重发的场景*/
-	VOS_LIST	pStoreDataList;		// 数据缓存链表头指针M
+	VOS_LIST	pStoreDataList;										// 数据缓存链表头指针M
 #endif
 	VOS_UINT8						ucMmeS1ReleaseSendFlag;
 	//VOS_UINT8						bt1IsRepBufferIniUEMsgFlag:1;
 	//VOS_UINT8						btReserved:7;
-	//S_MM_MSG_HEADER*				ptrBufferIniUEMsgData; //缓存消息的头指针
+	//S_MM_MSG_HEADER*				ptrBufferIniUEMsgData;			//缓存消息的头指针
 	VOS_UINT8						ucDelSdbFlag;
-	VOS_UINT8						ucSTMTypeWaitSppIdFromUip;  //E_STM_INSTANCE_NAME	
+	VOS_UINT8						ucSTMTypeWaitSppIdFromUip;		//E_STM_INSTANCE_NAME	
 	//add by chenheng for USN2.0
 	VOS_UINT8						ucOffLoadSgsnIndex;
 	VOS_UINT8						ucAttachOrTauFailInSecPhaseFlag;
 	VOS_UINT8						ucAttachFailbetweenAccAndCmpLiFlag;//合法监听中用户attach acc和attach cmp间失败后，不再上报detach使用
-	VOS_UINT16						uwRFSPIndexInUse;/* RFSP Index in Use */
+	VOS_UINT16						uwRFSPIndexInUse;				/* RFSP Index in Use */
 	VOS_UINT32						udwCrtTimeStamp;
 	
-	S_ENBID							stCurrentEnbId;				 /* 存储用户当前驻留的eNB的eNB ID */
-	S_ENBID							stOldEnbId;					 /* 存储用户原来驻留的eNB的eNB ID */
-	TAI								aucOldTai;					  /* 存储用户原来驻留的TA的TAI */
+	S_ENBID							stCurrentEnbId;					/* 存储用户当前驻留的eNB的eNB ID */
+	S_ENBID							stOldEnbId;						/* 存储用户原来驻留的eNB的eNB ID */
+	TAI								aucOldTai;						/* 存储用户原来驻留的TA的TAI */
 }VOS_PACKED S_MM_CB_COMM;
 ```
 
