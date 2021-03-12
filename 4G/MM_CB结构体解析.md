@@ -42,19 +42,19 @@ typedef struct
 //CB表公共部分
 typedef struct
 {
-	IMSI							Imsi;							// MM用户IMSI标识内容P
-	IMEI							Imei;							// MM用户IMEI标识内容P
-	TMSI							Tmsi;
+	IMSI							Imsi;							// MM用户IMSI标识
+	IMEI							Imei;							// MM用户IMEI标识
+	TMSI							Tmsi;							// MM用户TMSI
 	VOS_UINT8						ucTmsiStat;						// TMSI status 
 	TMGI							Tmgi;
-	PTMSI							Ptmsi;							// MM用户当前P-TMSI标识内容S
-	PTMSISIGN						PtmsiSign;						// MM用户当前P-TMSI签名标识内容I
-	PTMSI							OldPtmsi;						// MM用户old P-TMSI标识内容?
-	PTMSISIGN						OldPtmsiSign;					// MM用户old P-TMSI签名标识内容?
+	PTMSI							Ptmsi;							// MM用户当前P-TMSI标识
+	PTMSISIGN						PtmsiSign;						// MM用户当前P-TMSI签名标识
+	PTMSI							OldPtmsi;						// MM用户old P-TMSI标识
+	PTMSISIGN						OldPtmsiSign;					// MM用户old P-TMSI签名标识
 
 	S_GUTI							CurrentGuti;					// USN_SIG_MM: 可以和P-TMSI合一，使用联合?
 	S_GUTI							OldGuti;						// USN_SIG_MM: 可以和Old P-TMSI合一，使用联合?
-	S_GUTI							AdditionalGuti;
+	S_GUTI							AdditionalGuti;					// 附加GUTI
 
 	VOS_UINT8						ucFollowOnReq;					/*是否有后续信令和数据指示标志 */
 	VOS_UINT16						uwReadyTimerVal;				/*Requested READY timer value*/
@@ -97,7 +97,7 @@ typedef struct
 	VOS_UINT8						bt1IsCombinedAttached:1;		/*UE是否已经联合附着成功, DTS2015010609666, added by pengyi, 2015-1-23*/
 	VOS_UINT8						btExReserved:6;
   
-	PLMN							EquivalentPlmn;					//FFS
+	PLMN							EquivalentPlmn;					// FFS
 	PLMN							SelectedPlmn;
 	PLMN							TargetPlmn;						// USN1.2 协议跟进 by wushizhong
 
@@ -138,7 +138,90 @@ typedef struct
 	TAI								aucOldTai;						/* 存储用户原来驻留的TA的TAI */
 }VOS_PACKED S_MM_CB_COMM;
 ```
+```c
 
+#define		M_STMSI_LEN				11
+#define		M_PTMSI_SIG_STR_LEN		9
+#define		M_PTMSI_STR_LEN			11
+
+#define		M_IMSI_LEN				8  /* IMSI长度 */
+#define		M_IMEI_LEN				8
+#define		M_TMSI_LEN				4
+#define		M_PTMSI_SIG_LEN			3
+#define		M_PLMN_LEN				3
+
+typedef		VOS_UINT8			IMSI[M_IMSI_LEN];
+typedef		VOS_UINT8			IMEI[M_IMEI_LEN];
+typedef		VOS_UINT8			TMSI[M_TMSI_LEN];
+typedef		VOS_UINT8			TMGI[6];
+typedef		VOS_UINT32			PTMSI;
+typedef		VOS_UINT8			PTMSISIGN[M_PTMSI_SIG_LEN];
+typedef     VOS_UINT8           RAI[M_RAI_LEN];
+typedef     VOS_UINT8           LAI[M_LAI_LENGTH];
+typedef struct
+{
+	PLMN		PlmnCode;
+	MMEGID		MmeGroupId;
+	MMEC		MmeCode;
+	MTMSI		Mtmsi;
+}VOS_PACKED S_GUTI;
+
+// 原因值组成
+typedef struct
+{
+	VOS_UINT32		udwCauseType;		// 原因值类型, 参考枚举:E_USN_CAUSE_TYPE
+	VOS_UINT32		udwCauseValue;		// 原因值取值
+	VOS_UINT32		udwFileNo;			// 设置原因值的文件号
+	VOS_UINT32		udwLineNo;			// 设置原因值的行号
+} VOS_PACKED S_USN_CAUSE_INF;
+
+typedef		VOS_UINT8           PLMN[M_PLMN_LEN];
+typedef		VOS_UINT16			MMEGID; 
+typedef		VOS_UINT8			MMEC;
+typedef		VOS_UINT32			MTMSI;
+
+
+typedef		VOS_UINT8			MSISDN[M_MSISDN_LEN];   /* MSISDN */
+
+typedef		VOS_UINT8			TRUSERDN[M_USERDN_LEN];   /* USERDN */
+
+
+typedef		VOS_UINT32			LOG_CID;   
+
+
+typedef		VOS_UINT8			IMEISV[M_IMEI_LEN];	/*DEFINE BY CHENHENG ,TO BE CHECK*/
+
+typedef		VOS_UINT8			TID[M_TID_LEN]; 
+typedef		VOS_UINT32			IP;
+typedef		VOS_UINT8			TMGI[6];
+typedef		VOS_UINT32			TEID;
+typedef		VOS_UINT16			FLOWLABEL; 
+typedef		VOS_UINT8			LI_TARGETID[M_LI_TARGETID_LEN];
+typedef		VOS_UINT8			ENODEBID[M_GLB_ENBID_LEN];
+typedef		VOS_UINT8			TAI[M_TAI_LEN];
+
+typedef		VOS_UINT8			RANID[M_RANID_LEN];
+typedef		VOS_UINT8			GUTI[M_GUTI_LEN];
+
+typedef		VOS_UINT16			MMEGID; 
+typedef		VOS_UINT8			MMEC; 
+
+typedef		VOS_UINT8			PTMSISIGN[M_PTMSI_SIG_LEN]
+```
+```
+// 目前UDM和S1AP接口原因值中已经包含了协议原因值暂时不单独定义原因值
+typedef enum
+{
+    USN_24301_CAUSE,           // 24301协议原因值
+    USN_24008_CAUSE,           // 24008协议原因值
+    USN_29274_CAUSE,          // 29274协议原因值
+    USN_29060_CAUSE,          // 29060协议原因值
+    USN_29272_CAUSE,           // 29272协议原因值
+    USN_29002_CAUSE,         // 29002协议原因值
+    USN_INNER_CAUSE,         // 内部原因值
+    USN_CAUSE_BUTT
+}E_USN_CAUSE_TYPE;
+```
 ------
 
 ***<font color=blue>版权声明</font>：<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
