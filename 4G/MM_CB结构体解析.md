@@ -118,15 +118,14 @@ typedef struct
 	
 #else
 	/* 数据缓存序列, 主要使用大的数据缓存和消息重发的场景*/
-	VOS_LIST	pStoreDataList;										// 数据缓存链表头指针M
+	VOS_LIST						pStoreDataList;					// 数据缓存链表头指针M
 #endif
 	VOS_UINT8						ucMmeS1ReleaseSendFlag;
 	//VOS_UINT8						bt1IsRepBufferIniUEMsgFlag:1;
 	//VOS_UINT8						btReserved:7;
 	//S_MM_MSG_HEADER*				ptrBufferIniUEMsgData;			//缓存消息的头指针
 	VOS_UINT8						ucDelSdbFlag;
-	VOS_UINT8						ucSTMTypeWaitSppIdFromUip;		//E_STM_INSTANCE_NAME	
-	//add by chenheng for USN2.0
+	VOS_UINT8						ucSTMTypeWaitSppIdFromUip;		//E_STM_INSTANCE_NAME
 	VOS_UINT8						ucOffLoadSgsnIndex;
 	VOS_UINT8						ucAttachOrTauFailInSecPhaseFlag;
 	VOS_UINT8						ucAttachFailbetweenAccAndCmpLiFlag;//合法监听中用户attach acc和attach cmp间失败后，不再上报detach使用
@@ -139,16 +138,15 @@ typedef struct
 }VOS_PACKED S_MM_CB_COMM;
 ```
 ```c
-
-#define		M_STMSI_LEN				11
-#define		M_PTMSI_SIG_STR_LEN		9
-#define		M_PTMSI_STR_LEN			11
-
 #define		M_IMSI_LEN				8  /* IMSI长度 */
 #define		M_IMEI_LEN				8
 #define		M_TMSI_LEN				4
 #define		M_PTMSI_SIG_LEN			3
+#define		M_RAI_LEN				6
+#define		M_LAI_LENGTH			5
 #define		M_PLMN_LEN				3
+#define		M_ENB_LEN				5
+
 
 typedef		VOS_UINT8			IMSI[M_IMSI_LEN];
 typedef		VOS_UINT8			IMEI[M_IMEI_LEN];
@@ -156,8 +154,15 @@ typedef		VOS_UINT8			TMSI[M_TMSI_LEN];
 typedef		VOS_UINT8			TMGI[6];
 typedef		VOS_UINT32			PTMSI;
 typedef		VOS_UINT8			PTMSISIGN[M_PTMSI_SIG_LEN];
-typedef     VOS_UINT8           RAI[M_RAI_LEN];
-typedef     VOS_UINT8           LAI[M_LAI_LENGTH];
+typedef		VOS_UINT8			RAI[M_RAI_LEN];
+typedef		VOS_UINT8			LAI[M_LAI_LENGTH];
+typedef		VOS_UINT8			ENBC[M_ENB_LEN];
+typedef		VOS_UINT8			PLMN[M_PLMN_LEN];
+typedef		VOS_UINT16			MMEGID; 
+typedef		VOS_UINT8			MMEC;
+typedef		VOS_UINT32			MTMSI;
+
+
 typedef struct
 {
 	PLMN		PlmnCode;
@@ -165,6 +170,7 @@ typedef struct
 	MMEC		MmeCode;
 	MTMSI		Mtmsi;
 }VOS_PACKED S_GUTI;
+
 
 // 原因值组成
 typedef struct
@@ -175,53 +181,60 @@ typedef struct
 	VOS_UINT32		udwLineNo;			// 设置原因值的行号
 } VOS_PACKED S_USN_CAUSE_INF;
 
-typedef		VOS_UINT8           PLMN[M_PLMN_LEN];
-typedef		VOS_UINT16			MMEGID; 
-typedef		VOS_UINT8			MMEC;
-typedef		VOS_UINT32			MTMSI;
 
+/* 消息缓存序列，主要使用在Idle的场景 */
+typedef struct
+{
+	VOS_UINT8*		pStoreNext;			//缓存节点指针
+	VOS_UINT32		udwMsgIndex;
+	//VOS_UINT8*		pMsg;			//缓存消息指针  
+	VOS_UINT32		udwSenderPid;		//发送这个缓存消息的模块的PID
 
-typedef		VOS_UINT8			MSISDN[M_MSISDN_LEN];   /* MSISDN */
+	/* 原始缓存信息 */
+	VOS_UINT32		udwMsgBufferLen;	/* 缓存消息长度 */
+	VOS_UINT8*		pucMsgBuffer;		/* 缓存消息指针 */
 
-typedef		VOS_UINT8			TRUSERDN[M_USERDN_LEN];   /* USERDN */
+	/* 控制信息 */
+	VOS_UINT8		 aucMsgProcEnabled;	/*TRUE为处理,FALSE为不处理，注意初始化值*/
+	VOS_UINT8		 aucReserved[3];
 
+	/* 辅助信息 */
+	VOS_UINT32		udwInnerMsgId;		/* 统一映射后的内部消息字 */
+}S_SPU_MM_CTRL_STORE_MSG_NODE; 
 
-typedef		VOS_UINT32			LOG_CID;   
+//缓存控制节点
+typedef struct
+{
+	VOS_UINT8*			pStoreNext;		//缓存节点指针
+	VOS_UINT8			ucData[1];		//指向存储数据的第一个字节
+}S_SPU_STORE_DATA_NODE; 
 
+/*enodeB id 实际占用4个字节，第5个字节填充enodeB Type
+ENBC[0] ~ ENBC[3]填充的是enodeB id， ENBC[4]填充的是enodeB Type*/
+typedef struct
+{
+	PLMN				PlmnCode;
+	ENBC				EnbCode;
+}VOS_PACKED S_ENBID;
 
-typedef		VOS_UINT8			IMEISV[M_IMEI_LEN];	/*DEFINE BY CHENHENG ,TO BE CHECK*/
-
-typedef		VOS_UINT8			TID[M_TID_LEN]; 
-typedef		VOS_UINT32			IP;
-typedef		VOS_UINT8			TMGI[6];
-typedef		VOS_UINT32			TEID;
-typedef		VOS_UINT16			FLOWLABEL; 
-typedef		VOS_UINT8			LI_TARGETID[M_LI_TARGETID_LEN];
-typedef		VOS_UINT8			ENODEBID[M_GLB_ENBID_LEN];
-typedef		VOS_UINT8			TAI[M_TAI_LEN];
-
-typedef		VOS_UINT8			RANID[M_RANID_LEN];
-typedef		VOS_UINT8			GUTI[M_GUTI_LEN];
-
-typedef		VOS_UINT16			MMEGID; 
-typedef		VOS_UINT8			MMEC; 
-
-typedef		VOS_UINT8			PTMSISIGN[M_PTMSI_SIG_LEN]
 ```
-```
+
+```c
 // 目前UDM和S1AP接口原因值中已经包含了协议原因值暂时不单独定义原因值
 typedef enum
 {
-    USN_24301_CAUSE,           // 24301协议原因值
-    USN_24008_CAUSE,           // 24008协议原因值
-    USN_29274_CAUSE,          // 29274协议原因值
-    USN_29060_CAUSE,          // 29060协议原因值
-    USN_29272_CAUSE,           // 29272协议原因值
-    USN_29002_CAUSE,         // 29002协议原因值
-    USN_INNER_CAUSE,         // 内部原因值
-    USN_CAUSE_BUTT
+	USN_24301_CAUSE,		// 24301协议原因值
+	USN_24008_CAUSE,		// 24008协议原因值
+	USN_29274_CAUSE,		// 29274协议原因值
+	USN_29060_CAUSE,		// 29060协议原因值
+	USN_29272_CAUSE,		// 29272协议原因值
+	USN_29002_CAUSE,		// 29002协议原因值
+	USN_INNER_CAUSE,		// 内部原因值
+	USN_CAUSE_BUTT
 }E_USN_CAUSE_TYPE;
 ```
+
+
 ------
 
 ***<font color=blue>版权声明</font>：<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
