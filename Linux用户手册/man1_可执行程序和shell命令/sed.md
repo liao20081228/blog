@@ -1,6 +1,6 @@
 ---
 title: sed
-tags: Linux用户命令,Linux文本编辑
+tags: 用户命令,文本编辑
 ---
 
 
