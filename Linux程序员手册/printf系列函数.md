@@ -31,7 +31,7 @@ int vsprintf(char *str, const char *format, va_list ap);
 int vsnprintf(char *str, size_t size, const char *format, va_list ap);
 ```
 
-glibc的功能测试宏要求（参见feature_test_macros(7)）
+glibc的特性测试宏要求（参见feature_test_macros(7)）
 
 snprintf(), vsnprintf():
 &emsp;&emsp;\_XOPEN_SOURCE >= 500 || \_ISOC99_SOURCE || || /* Glibc versions <= 2.19: \*/ \_BSD_SOURCE
