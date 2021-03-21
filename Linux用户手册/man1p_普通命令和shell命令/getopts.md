@@ -5,7 +5,7 @@ tags: shell命令,命令行参数处理
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《POSIX程序员手册2017》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《POSIX programmer's manual》。</font>当前版本为2017。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
 
@@ -179,13 +179,14 @@ POSIX.1-2017的基本定义卷，第8章，环境变量，第12.2节，实用程
 POSIX.1-2017的系统接口卷，getopt()。
 
 ## 21 版权
-本文的某些部分以电子形式从IEEE Std 1003.1-2017，信息技术标准-便携式操作系统接口（POSIX），开放组基础规范第7版，2018年版，版权所有（C）2018以电子形式进行复制和复制。电气电子工程师协会和The Open Group。如果此版本与原始IEEE和The Open Group Standard之间存在任何差异，则原始IEEE和The Open Group Standard是裁判文档。原始标准可以在http://www.open group.org/unix/online.html上在线获得。
+本文的某些部分以电子形式从《IEEE Std 1003.1-2017，信息技术标准-可移植操作系统接口（POSIX），开放组基础规范第7版，2018年版》以电子形式转载和复制，版权为所有为电气电子工程师协会和The Open Group。如果此版本与原始IEEE和The Open Group Standard之间存在任何差异，则原始IEEE和The Open Group Standard是裁判文档。原始标准可以在http://www.opengroup.org/unix/online.html上在线获得。
 
-       在将源文件转换为手册页格式的过程中，最有可能在此页中出现任何印刷或格式错误。要报告此类错误，请参阅https://www.kernel.org/doc/man-pages/reporting_bugs.html。
+       在将源文件转换为手册页格式的过程中，最有可能在此页中出现任何印刷或格式错误。要报告此类错误，请参阅
+       https://www.kernel.org/doc/man-pages/reporting_bugs.html。
 
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《POSIX程序员手册2017》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《POSIX programmer's manual》。</font>当前版本为2017。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
