@@ -1,6 +1,6 @@
 ---
 title: awk
-tags: Linux用户命令
+tags: 用户命令,文本编辑
 ---
 
 
