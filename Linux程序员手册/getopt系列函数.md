@@ -40,7 +40,7 @@ struct option
 };
 ```
 
-glibc的功能测试宏要求（参见feature_test_macros(7)）：
+glibc的特性测试宏要求（参见feature_test_macros(7)）：
 
 **getopt**():
 &emsp;&emsp;\_POSIX_C_SOURCE >= 2 || \_XOPEN_SOURCE
