@@ -1,6 +1,6 @@
 ---
 title: getopts
-tags: shell内建命令,命令行参数处理
+tags: shell命令,命令行参数处理
 ---
 
 ------
