@@ -26,7 +26,7 @@ const char *gai_strerror(int errcode);
 ```
 
 
-glibc的函数测试宏要求(请参阅feature_test_macros(7))
+glibc的特性测试宏要求(请参阅feature_test_macros(7))
 
 **getaddrinfo**()，**freeaddrinfo**()，**gai_strerror**()：
 * 从glibc 2.22开始：\_POSIX_C_SOURCE> = 200112L
