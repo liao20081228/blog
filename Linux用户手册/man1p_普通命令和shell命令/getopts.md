@@ -1,21 +1,96 @@
 ---
 title: getopts
-tags: POSIX用户手册,shell内建命令
+tags: shell内建命令,命令行参数处理
 ---
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《POSIX 程序员手册》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《POSIX程序员手册2017》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
 
-# 1
+# 0 序言
+该手册页是《POSIX程序员手册》的一部分。该接口的Linux实现可能有所不同（有关Linux行为的详细信息，请查看相应的Linux手册页），或者该接口在Linux上没有实现。
 
-# 
+# 1 名字
+getopts——解析程序命令行选项。
+
+# 2 概要
+
+```shell
+getopts optstring name [arg ...]
+```
+
+# 3 说明
+
+实用程序<u>getopts</u>从参数列表中检索选项和选项参数。它支持POSIX.1-2017的基本定义卷第12.2节实用程序语法准则中3~10所述的准则。
+
+每次调用<u>getopts</u>，<u>getopts</u>都会将下一个选项的值放入由操作数<u>name</u>指定的shell变量中，并将要处理的下一个参数的索引放入shell变量<u>OPTIND</u>中。每次调用shell时，<u>OPTIND</u>都初始化为1。
+
+当选项要求选项参数时，<u>getopts</u>将其放置在在shell变量<u>OPTARG</u>中。如果未找到任何选项，或者找到的选项没有选项参数，则<u>OPTARG</u>将被置空。
+
+如果在期望使用选项字符的地方找到了未包含在操作数<u>optstring</u>中的选项字符，则<u>name</u>指定的shell变量被设置为问号('?')字符。在这种情况下，如果<u>optstring</u>中的第一个字符是冒号（':'），则将shell变量<u>OPTARG</u>设置为找到的选项字符，但不输出任何错误；否则，shell变量<u>OPTARG</u>将置空，并将诊断消息写入标准错误。应将这种情况视为将提供给调用程序的参数有错误，而不应视为<u>getopts</u>处理中的错误。
+
+如果选项缺少选项参数：
+
+* 如果<u>optstring</u>的第一个字符是冒号，则将由<u>name</u>指定的shell变量设置冒号字符，并将shell变量<u>OPTARG</u>设置为找到的选项字符。
+
+* 否则，应将由<u>name</u>指定的shell变量设置为问问号字符并将<u>OPTARG</u>置为空，并向标准错误写入诊断消息。应将这种情况视为将提供给调用程序的参数有错误，而不应视为<u>getopts</u>处理中的错误；诊断消息应按规定编写，但退出状态应为零。
+
+
+当遇到选项的结尾时，<u>getopts</u>将以大于零的返回值退出。shell变量<u>OPTIND</u>将设置为第一个操作数的索引，如果没有操作数，则为"\$#"+1；<u>name</u>变量设置为问号字符。以下任何一项都应标识选项的结尾：第一个不是选项参数的“--”参数，找到不是选项参数且不以“-”开头的参数，或者遇到错误 。。
+
+Shell变量<u>OPTIND</u>和<u>OPTARG</u>应该是getopts调用者的本地变量，并且默认情况下不会导出。
+
+操作数<u>name</u>指定的Shell变量、<u>OPTIND</u>和<u>OPTARG</u>将影响当前的shell执行环境。请参见第2.12节“Shell执行环境”。
+
+如果应用程序将OPTIND设置为值1，则可以使用一组新的参数：当前位置参数或新的<u>arg</u>值。任何企图在单个Shell执行环境中调用getopts多次，但使用的参数（位置参数或<u>arg</u>操作数）却不完全相同，或将<u>OPTIND</u>值修改为非1，均会产生未指定的结果。
+
+# 4 选项
+没有。
+# 5 操作数
+
+支持以下操作数
+
+<u>optstring</u>一个字符串，其中包含由实用程序调用getopts识别的选项字符。如果一个字符后跟一个<冒号>，则该选项应具有一个参数，该参数应作为单独的参数提供。应用程序应将选项字符及其选项参数指定为单独的参数，但是无论是否执行此操作，getopts都应解释要求参数作为参数的选项字符之后的字符。如果在调用getopts时未将其作为单独的参数提供，则无需识别显式的null选项参数。 （另请参见POSIX.1-2017的系统接口卷中定义的getopt（）函数。）字符<question-mark>和<colon>不应被应用程序用作选项字符。使用非字母数字的其他选项字符会产生未指定的
+ 结果。如果没有将选项参数作为与选项字符分开的参数提供，则OPTARG中的值应去除选项字符和“-”。 optstring中的第一个字符确定在不知道选项字符或缺少选项参数的情况下，getopts的行为。
+
+* <u>name</u> 应由getopts实用程序将shell变量的名称设置为找到的选项字符。
+
+
+默认情况下，getopts实用程序将解析传递给调用Shell过程的位置参数。如果给出了args，则应解析它们而不是位置参数。
+
+标准输入
+       不曾用过。
+
+输入文件
+       没有。
+
+环境变量
+       以下环境变量将影响getopts的执行：
+
+       LANG为未设置或为null的国际化变量提供默认值。 （有关用于确定语言环境类别的值的国际化变量的优先级，请参阅POSIX.1-2017的基本定义卷第8.2节“国际化变量”。）
+
+       LC_ALL如果设置为非空字符串值，请覆盖所有其他国际化变量的值。
+
+       LC_CTYPE确定将文本数据的字节序列解释为字符的语言环境（例如，单字节而不是参数和输入文件中的多字节字符）。
+
+       LC_MESSAGES
+                 确定应用于影响写入标准错误的诊断消息的格式和内容的语言环境。
+
+       NLSPATH确定用于处理LC_MESSAGES的消息目录的位置。
+
+       OPTIND此变量应由getopts实用程序用作要处理的下一个参数的索引。
+
+异步事件
+       默认。
+
+标准输出
+       不曾用过。
 
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《POSIX 程序员手册》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《POSIX程序员手册2017》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
