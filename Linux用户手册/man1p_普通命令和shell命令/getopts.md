@@ -179,9 +179,9 @@ POSIX.1-2017的基本定义卷，第8章，环境变量，第12.2节，实用程
 POSIX.1-2017的系统接口卷，getopt()。
 
 ## 21 版权
-本文的某些部分以电子形式从《IEEE Std 1003.1-2017，信息技术标准-可移植操作系统接口（POSIX），开放组基础规范第7版，2018年版》以电子形式转载和复制，版权为所有为电气电子工程师协会和The Open Group。如果此版本与原始IEEE和The Open Group Standard之间存在任何差异，则原始IEEE和The Open Group Standard是裁判文档。原始标准可以在http://www.opengroup.org/unix/online.html上在线获得。
+本文的某些部分以电子形式从《IEEE Std 1003.1-2017，信息技术标准-可移植操作系统接口（POSIX），开放组基础规范第7版，2018年版》以电子形式转载和复制，版权为所有为电气电子工程师协会和The Open Group。如果此版本与原始IEEE和The Open Group Standard之间存在任何差异，则原始IEEE和The Open Group Standard是裁判文档。原始标准可以在<http://www.opengroup.org/unix/online.html>上在线获得。
 
-在此页中出现任何印刷或格式错误最有可能发生在将源文件转换为手册页格式的过程中。要报告此类错误，请参阅https://www.kernel.org/doc/man-pages/reporting_bugs.html。
+在此页中出现任何印刷或格式错误最有可能发生在将源文件转换为手册页格式的过程中。要报告此类错误，请参阅<https://www.kernel.org/doc/man-pages/reporting_bugs.html>。
 
 
 ------
