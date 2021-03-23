@@ -1,5 +1,5 @@
 ---
-title: SMC与CHECK EMEI
+title: SMC与CHECK IMEI
 tags: 4G
 ---
 
@@ -84,29 +84,43 @@ s1->>A:S1AP_SPU_UPLINK_NAS_TRANSPORT
 A->>S:AC_US_NAS_TRANSFER(EMM_SECURITY_MODE_CMP/EMM_SECURITY_MODE_REJECT)
 S->>M:SEC_US_SMC_RSP
 ```
-## CHECK EMEI
+# 2 CHECK IMEI
 ## 2.1 信令流程
 ```mermaid!
 sequenceDiagram
 
-title: CHECK EMEI信令流程
+title: CHECK IMEI信令流程
 participant s1 as s1ap《modul》
 participant A as MM_AccConnCtrl
 participant M as MM_MainCtrl&emsp;
 participant S as MM_SecCtrl
-participant U as MM_UdmServer
-
+participant US as MM_UdmServer
+participant U as Udm
 note left of M: 上级流程触发
-note over S: MM_SECURITY_INIT
-M->>S:US_SEC_CHECKEMEI_REQ
+note over S: 状态：初始
+M->>S:US_SEC_CHECKIMEI_REQ
 note over M:WAIT_CHECKIMEI_RSP
-opt 已经取得有效IMEI
+opt 没有取得IMEI或IMEI无效
 S-->>A:US_AC_NAS_TRANSFER(EMM_IDEN_REQ)
+note over S:状态：等待终端IMEI响应
 A-->>s1:SPU_S1AP_DOWNLINK_NAS_TRANSPORT
 s1-->>A:S1AP_SPU_UPLINK_NAS_TRANSPORT
-A-->>S:AC_US_NAS_TRANSFER(EMM_SECURITY_MODE_CMP/EMM_SECURITY_MODE_REJECT)
+A-->>S:AC_US_NAS_TRANSFER(EMM_IDEN_RSP)
 end
+
+alt 当g_udwMmImeiChkSwitch==MM_GET_IMEI_YES
+S->>US:MM_UDM_NOTIFY_REQ
+
+else 当g_udwMmImeiChkSwitch==MM_CHECK_IMEI_YES
+S->>US:MM_UDM_CHK_IMEI_REQ
+note over S:状态：等待UDM检查IMEI响应
+U->>US:asd
+US->>S:asd
+end
+
 S->>M:SEC_US_SMC_RSP
+
+
 ```
 
 
