@@ -96,12 +96,15 @@ participant M as MM_MainCtrl&emsp;
 participant S as MM_SecCtrl
 participant US as MM_UdmServer
 participant U as Udm
+participant C as Cm
+
 note over M: 某个状态
 note over US:空闲态
 note over S: 初始状态
+note over U:空闲态
 M->>S:US_SEC_CHECKIMEI_REQ
-note over M:WAIT_CHECKIMEI_RSP
-opt 没有取得IMEI或IMEI无效
+note over M:等待检查IMEI响应
+opt CB中的IMEI无效，即全1
 S-->>A:US_AC_NAS_TRANSFER(EMM_IDEN_REQ)
 note over S:等待终端IMEI响应
 A-->>s1:SPU_S1AP_DOWNLINK_NAS_TRANSPORT
@@ -109,12 +112,13 @@ s1-->>A:S1AP_SPU_UPLINK_NAS_TRANSPORT
 A-->>S:AC_US_NAS_TRANSFER(EMM_IDEN_RSP)
 end
 
-alt 当g_udwMmImeiChkSwitch==MM_GET_IMEI_YES
-S->>US:MM_UDM_NOTIFY_REQ
+alt 当g_udwMmImeiChkSwitch==MM_GET_IMEI_YES且CB、SDB中的IMEI有效
+S->>U:MM_UDM_NOTIFY_REQ
+U->>C:SP_CM_NOTIFY_REQ
 
 else 当g_udwMmImeiChkSwitch==MM_CHECK_IMEI_YES
 S->>U:MM_UDM_CHK_IMEI_REQ
-note over S:等待UDM SERVER检查IMEI响应
+note over S:等待UdmServer检查IMEI响应
 U->>US:UDM_MM_CHK_IMEI_RSP
 US->>S:UDMSERV_MM_CHECK_IMEI_RSP
 end
