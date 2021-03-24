@@ -97,7 +97,6 @@ participant S as MM_SecCtrl
 participant US as MM_UdmServer
 participant U as Udm
 note over M: 某个状态
-note over of M:某个状态
 note over US:空闲态
 note over S: 初始状态
 M->>S:US_SEC_CHECKIMEI_REQ
