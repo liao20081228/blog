@@ -61,7 +61,7 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 
 请注意，在“Exploring Expect”一书中提供了对语言（**Expect**和**Tcl**）的最佳介绍（请参阅下面的“另请参阅”）。此手册页包含了一些示例，但由于本手册页主要是作为参考资料，因此它们的使用范围非常有限。
 
-请注意，在此手册页的文本中，带有大写字母“E”的“**Expect**”指的是**Expect**程序，而带有小写字母“e”的“**Expect**”指的是**Expect**程序中的**Expect**命令。
+请注意，在此手册页的文本中，带有大写字母“E”的“**Expect**”指的是**Expect**程序，而带有小写字母“e”的“**expect**”指的是**Expect**程序中的**expect**命令。
 
 ## 5.1 close
 ```shell
@@ -69,7 +69,7 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 ```
 关闭与当前进程的连接。大多数交互式程序在其stdin上检测EOF，然后退出；因此，close通常也足以终止该进程。 -i标志声明了对应spawn_id的进程，这个进程也将关闭。
 
-当当前进程退出并隐式关闭时，**Expect**和**interact**会检测到。但是，如果通过“exec kill \$pid”杀死进程，则需要显式调用close。
+当当前进程退出并隐式关闭时，**expect**和**interact**会检测到。但是，如果通过“exec kill \$pid”杀死进程，则需要显式调用close。
 
 **-onexec**标志确定是在新生成的进程中关闭spawn ID还是覆盖该进程。要使spawn ID保持打开状态，请使用值0。非0整数值将在所有新进程中强制关闭spawn（默认值）。
 
@@ -87,7 +87,7 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 
 参数为1时，将启动调试器。如果参数为0，则调试器将停止。如果1参数前面带有-now标志，则调试器将立即启动（即，在debug命令本身中）。否则，调试器将随下一个Tcl语句启动。
 
-debug命令不会更改任何trap。将其与以-D标志开头的**Expect**（请参见上文）进行比较。
+debug命令不会更改任何trap。将其与以-D标志开头的**expect**（请参见上文）进行比较。
 
 有关调试器的更多信息，请参见README文件或另请参阅（以下）。
 
@@ -198,27 +198,27 @@ exp_version [[-exit] version]
 ## 5.15 Expect
 
 ``` shell
-	Expect [[-opts] pat1 body1] ... [-opts] patn [bodyn]
+	expect [[-opts] pat1 body1] ... [-opts] patn [bodyn]
 ```
 
-一直等待直到其中一个模式与生成的进程的输出匹配、经过了指定的时间段或看到文件结束为止。如果最后的body为空，则可以省略。
+一直等待直到其中一个模式与派生进程的输出匹配、经过了指定的时间段或看到文件结束为止。如果最后的body为空，则可以省略。
 
-最近**Expect**_before命令的模式将在任何其他模式之前隐式使用。最近**Expect**_after命令的模式将在任何其他模式之后隐式使用。
+最近**Expect_before**命令的模式将在任何其他模式之前隐式使用。最近**Expect_after**命令的模式将在任何其他模式之后隐式使用。
 
-如果整个**Expect**语句的参数需要多行，则所有参数都可以“括起来”为一行，从而避免以反斜杠续行。在这种情况下，尽管有括号，仍会发生一般的Tcl替换。
+如果整个**Expect**语句的参数需要多行，则所有参数都可以用花括号“括起来”为一行，从而避免以反斜杠续行。在这种情况下，尽管有括号，仍会发生普通的Tcl替换。
 
-如果模式是关键字eof，则在文件结束时执行相应的body。如果模式是关键字timeout，则在超时时执行相应的body。如果不使用timeout关键字，则在超时时执行隐式null动作。默认超时时间为10秒，但可以通过命令“set timeout 30”将其设置为30秒，-1表示永不超时。如果模式是关键字default，则在超时或文件结束时执行相应的body。
+如果模式是关键字**eof**，则在文件结束时执行相应的body。如果模式是关键字**timeout**，则在超时时执行相应的body。如果不使用timeout关键字，则在超时时执行隐式的null动作。默认超时时间为10秒，但可以通过命令“set timeout 30”将其设置为30秒，-1表示永不超时。如果模式是关键字**default**，则在超时或文件结束时执行相应的body。
 
-如果模式匹配了，则执行相应的body。 **Expect**返回body的执行结果（如果没有匹配的模式，则返回空字符串）。如果有多个模式匹配，则执行首先出现的模式的body。
+如果一个模式匹配了，则执行相应的body。 **Expect**返回body的执行结果（如果没有匹配的模式，则返回空字符串）。如果有多个模式匹配，则执行首先出现的模式的body。
 
-每次到达新输出时，都会按照列出的顺序将其与每个模式进行比较。因此，您可以通过确保最后一个模式（如提示）的出现来测试是否缺少匹配项。在没有提示的情况下，您必须使用超时（就像您手动进行交互一样）。
+每次新输出到达时，都会按照列出的顺序将其与每个模式进行比较。因此，您可以通过确保最后一个模式（如提示）的出现来测试是否缺少匹配项，例如提示。在没有提示的情况下，您必须使用**timeout**（就像您手动进行交互一样）。
 
-模式以三种方式指定。默认情况下，使用Tcl的字符串匹配命令指定模式。 （这种模式也类似于通常称为“glob”模式的C shell正则表达式）。 -gl标志可用于保护可能与**Expect**标志匹配的模式。任何以“-”开头的模式都应采用这种方式进行保护。 （所有以“-”开头的字符串都保留用于将来的选项。）
+模式以三种方式指定。默认情况下，使用Tcl的**字符串匹配**命令指定模式。 （这种模式也类似于通常称为“glob”模式的C shell正则表达式）。 **-gl**标志可用于保护可能与**Expect**标志匹配的模式。任何以“-”开头的模式都应采用这种方式进行保护。 （所有以“-”开头的字符串都保留用于将来的选项。）
 
-例如，以下片段查找一个成功的登录。 （请注意，推测abort是脚本中其他地方定义的过程。）
+例如，以下片段查找一个成功的登录。 （请注意，推测**abort**是脚本中其他地方定义的过程。）
 
 ```shell
-	**Expect** {
+	expect {
 		busy               {puts busy\n ; exp_continue}
 		failed             abort
 		"invalid password" abort
@@ -227,49 +227,125 @@ exp_version [[-exit] version]
 	}
 
 ```
-第四个模式必须用引号引起来，因为它包含一个空格，否则该空格会将模式与动作分开。 具有相同动作的模式（例如第三和第四）需要再次列出动作。 可以通过使用正则表达式样式的模式来避免这种情况（请参阅下文）。 在Tcl手册中可以找到有关glob-style模式的更多信息。
+第三个模式必须用引号引起来，因为它包含一个空格，否则该空格会将模式与动作分开。 具有相同动作的模式（例如第三和第四）需要再次列出动作。 可以通过使用正则表达式样式的模式来避免这种情况（请参阅下文）。 在Tcl手册中可以找到有关glob-style模式的更多信息。
 
-Regexp风格的模式遵循Tcl的regexp（“正则表达式”的缩写）命令定义的语法。 -re表示要使用正则表达式模式。 可以使用regexp将前面的示例重写为：
+Regexp风格的模式遵循Tcl的**regexp**（“正则表达式”的缩写）命令定义的语法。 **-re**表示要使用正则表达式模式。 可以使用regexp将前面的示例重写为：
 
 ``` shell
-	**Expect** {
+	expect {
 		busy       {puts busy\n ; exp_continue}
 		-re "failed|invalid password" abort
 		timeout    abort
 		connected
 	}
 ```
-两种类型的模式都是“未锚定的”。这意味着模式不必匹配整个字符串，但是可以在字符串中的任何位置开始和结束匹配（只要其他所有内容都匹配）。使用\^来匹配字符串的开头，并使用\$来匹配字符串的结尾。请注意，如果您不等待字符串的结尾，则当字符串是从生成的进程中回显时，响应很容易在字符串的中间结束。在仍然产生正确结果的同时，输出看起来可能不自然。因此，如果可以准确地描述字符串末尾的字符，则鼓励使用\$。
+两种类型的模式都是“未锚定的”。这意味着模式不必匹配整个字符串，可以在字符串中的任何位置开始和结束匹配（只要其他所有内容都匹配）。使用\^来匹配字符串的开头，使用\$来匹配字符串的结尾。请注意，如果您不等待字符串的结尾，则当字符串是从派生进程中回显时，响应很容易在字符串的中间结束。虽然仍产生正确结果，输出看起来可能不自然。因此，如果可以准确地描述字符串末尾的字符，则鼓励使用\$。
 
-请注意，在许多编辑器中，\^和\$分别匹配行的开头和结尾。但是，由于**Expect**不是面向行的，因此这些字符与当前在**Expect**匹配缓冲区中的数据的开头和结尾（与行相对）匹配。 （另请参见下面有关“系统消化不良”的注释。）
+请注意，在许多编辑器中，\^和\$分别匹配行的开头和结尾。但是，由于**Expect**不是面向行的，因此这些字符与当前在**Expect**匹配缓冲区中的数据的开头和结尾（与行相对）匹配。 （另请参见下面有关“系system indigestion”的注释。）
 
--ex标志使模式匹配为“精确”字符串。不对\*，\^等进行解释（尽管仍然必须遵守通常的Tcl约定）。精确模式总是不锚定的。
+**-ex**标志使模式匹配为“精确”字符串。不对\*，\^等进行解释（尽管仍然必须遵守常规Tcl约定）。精确模式总是不锚定的。
 
- -nocase标志使输出的大写字符进行比较，就好像它们是小写字符一样。模式不受影响。
+**-nocase**标志使模式匹配忽略大小写。模式不受影响。
 
- 在读取输出时，超过2000个字节会强制“忘记”较早的字节。这可以通过函数match_max进行更改。 （请注意，太大的值可能会减慢模式匹配器的速度。）如果patlist为full_buffer，则如果已接收到match_max字节且没有匹配其他模式，则将执行相应的body。不管是否使用full_buffer关键字，都会将“忘掉”的字符写到**Expect**_out(buffer)中。
+在读取输出时，超过2000个字节会强制“忘记”较早的字节。这可以通过函数**match_max**进行更改。 （请注意，太大的值可能会减慢模式匹配的速度。）如果为**full_buffer**，则如果已接收到<u>match_max</u>字节且没有匹配其他模式时，将执行相应的body。不管是否使用**full_buffer**关键字，都会将“忘掉”的字符写到expect_out(buffer)中。
 
-如果patlist是关键字null，并且允许使用nulls（通过remove_nulls命令），则匹配单个ASCII 0时则将执行相应的body。无法通过glob或regexp模式匹配0个字节。
+如果<u>patlist</u>是关键字**null**，并且允许使用nulls（通过**remove_nulls**命令），则匹配单个ASCII 0时则将执行相应的body。无法通过glob或regexp模式匹配0字节。
 
-匹配模式（或eof或full_buffer）后，所有匹配的和以前不匹配的输出都将保存在变量**Expect**_out(buffer)中。最多9个正则表达式子字符串匹配项保存在**Expect**_out(1，string)到**Expect**_out（1，string）中。如果在模式之前使用-indices标志，则将10个字符串的开始和结束索引（以适合lrange的形式）存储在变量**Expect**_out(X，start)和**Expect**_out(X，end)中，其中X为数字，对应于缓冲区中子字符串的位置。 0表示与glob模式和regexp整个模式匹配的字符串。例如，如果某个进程的输出为“ abcdefgh\\n”，则：
+匹配模式（或eof或full_buffer）后，所有匹配的和以前不匹配的输出都将保存在变量<u>expect_out(buffer)</u>中。最多9个正则表达式子字串匹配项保存在<u>expect_out(1，string)</u>到<u>expect_out(9，string)</u>中。如果在一个模式前使用 **-indices**标志，则这10个字符串的开始和结束索引（以适合**lrange**的形式）存储在变量<u>expect_out(X，start)</u>和<u>expect_out(X，end)</u>中，其中X为数字，对应缓冲区中子串的位置。 0表示与整个模式匹配的字符串，由glob模式和regexp模式产生。例如，如果某个进程的输出为“abcdefgh\\n”，则：
 
 ``` shell
-	**Expect** "cd"
+	expect "cd"
 ```
 的结果就像执行了以下语句：
 
 ``` shell
-	set **Expect**_out(0,string) cd
-	set **Expect**_out(buffer) abcd
+	set expect_out(0,string) cd
+	set expect_out(buffer) abcd
+```
+而"efgh\\n"则留在输出缓冲区中。 如果某个进程产生输出“abbbcabkkkka\\n”，则：
+
+``` shell
+	expect -indices -re "b(b*).*(k+)"
+```
+的结果就想执行了下列语句：
+
+``` shell
+	set expect_out(0,start) 1
+	set expect_out(0,end) 10
+	set expect_out(0,string) bbbcabkkkk
+	set expect_out(1,start) 2
+	set expect_out(1,end) 3
+	set expect_out(1,string) bb
+	set expect_out(2,start) 10
+	set expect_out(2,end) 10
+	set expect_out(2,string) k
+	set expect_out(buffer) abbbcabkkkk
+```
+而“a\\n”则留在输出缓冲区中。 模式“\*”（和-re “.\*”）将冲刷输出缓冲区，而不从进程中读取更多输出。
+
+通常，匹配的输出会从Expect的内部缓冲区中丢弃。 可以通过在模式前面加上 **-notransfer**标志来防止这种情况。 该标志在实验中特别有用（为方便起见，在实验中可以缩写为“-not”）。
+
+与匹配的输出（或eof或full_buffer）关联的spawn ID被存储在<u>expect_out(spawn_id)</u>中。
+
+**-timeout**标志使当前的**expect**命令使用跟随的值作为超时，而不是使用**timeout**变量的值。
+
+默认情况下，模式与当前进程的输出匹配，但是 **-i**标志声明后面跟随的任何模式与给出的spawn_id列表中进程的输出匹配（直到下一个 **-i**）。 spawn_id列表应该是空格分隔的spawn_ids列表，或者是引用此类spawn_ids列表的变量。
+
+例如，以下示例等待当前进程的“conneced”，或者等待\$proc2指定的spawn_id的“busy”，“fail”或“invalid password”。
+
+``` shell
+	expect {
+		-i $proc2 busy {puts busy\n ; exp_continue}
+		-re "failed|invalid password" abort
+		timeout abort
+		connected
+	}
+```
+全局变量<u>any_spawn_id</u>的值可用于将模式与当前**expect**命令中所有其他  **-i**标志列出的任何spawn_id进行匹配。 **-i**标志中没有关联模式的spawn_id（即另一个“-i”紧随其后）可用于 与<u>any_spawn_id</u>关联的同一<u>expect</u>命令中的任何其他模式。
+
+**-i**标志还可以命名全局变量，在这种情况下，这个全局变量用于读取spawn ID列表。 变量每次变化时都会重新读取。 这提供了一种在命令执行期间更改I/O源的方法。 通过这种方式提供的spawn ID被称为“间接”spawn ID。 
+
+**break**和**continue**之类的动作会导致控制结构（即，for，proc）以通常的方式运行。 命令exp_continue允许expect自己继续执行，而不是像往常那样返回。 
+
+这对于避免显式循环或重复的expect语句很有用。以下示例是自动化rlogin片段的一部分。如果rlogin提示输入密码，则**exp_continue**避免编写第二个Expect语句（再次查找提示）。
+
+``` shell
+	expect {
+		Password: {
+			stty -echo
+			send_user "password (for $user) on $host: "
+			expect_user -re "(.*)\n"
+			send_user "\n"
+			send "$expect_out(1,string)\r"
+			stty echo
+			exp_continue
+		} incorrect {
+			send_user "invalid password or account\n"
+			exit
+		} timeout {
+			send_user "connection to $host timed out\n"
+			exit
+		} eof {
+			send_user \
+				"connection to host failed: $expect_out(buffer)"
+			exit
+		} -re $prompt
+	}
 
 ```
-			  
-			  
-			  
-			  
-			 
-			 
+例如，以下片段可能帮助用户指导已经完全自动化的交互。 在这种情况下，终端将进入原始模式。 如果用户按下“+”，则变量增加。 如果按下“p”，则会向该过程发送多个返回消息，也许以某种方式对其进行poke，而“i”使用户可以与该进程进行交互，从而有效地从脚本中窃取控制权。 在每种情况下，**exp_continue**允许当前**expect**在执行当前操作后继续模式匹配。
 
+``` shell
+	stty raw -echo
+	expect_after {
+		-i $user_spawn_id
+		"p" {send "\r\r\r"; exp_continue}
+		"+" {incr foo; exp_continue}
+		"i" {interact; exp_continue}
+		"quit" exit
+	}
+```
+默认情况下，**exp_continue**重置超时计时器。 如果使用 **-continue_timer**标志调用**exp_continue**，则计时器不会重新启动。
 
 ## 5.3
 ## 5.3
