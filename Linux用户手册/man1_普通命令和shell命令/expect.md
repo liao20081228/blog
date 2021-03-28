@@ -59,7 +59,7 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 
 命令按字母顺序列出，以便可以快速找到它们。但是，新用户可能会发现通过按**spawn**、**send**、**Expect**和**interact**会更容易开始。
 
-请注意，在“Exploring **Expect**”一书中提供了对语言（**Expect**和**Tcl**）的最佳介绍（请参阅下面的“另请参阅”）。此手册页包含了一些示例，但由于本手册页主要是作为参考资料，因此它们的使用范围非常有限。
+请注意，在“Exploring Expect”一书中提供了对语言（**Expect**和**Tcl**）的最佳介绍（请参阅下面的“另请参阅”）。此手册页包含了一些示例，但由于本手册页主要是作为参考资料，因此它们的使用范围非常有限。
 
 请注意，在此手册页的文本中，带有大写字母“E”的“**Expect**”指的是**Expect**程序，而带有小写字母“e”的“**Expect**”指的是**Expect**程序中的**Expect**命令。
 
@@ -69,7 +69,7 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 ```
 关闭与当前进程的连接。大多数交互式程序在其stdin上检测EOF，然后退出；因此，close通常也足以终止该进程。 -i标志声明了对应spawn_id的进程，这个进程也将关闭。
 
-当当前进程退出并隐式关闭时，**Expect**和interact会检测到。但是，如果通过“exec kill \$pid”杀死进程，则需要显式调用close。
+当当前进程退出并隐式关闭时，**Expect**和**interact**会检测到。但是，如果通过“exec kill \$pid”杀死进程，则需要显式调用close。
 
 **-onexec**标志确定是在新生成的进程中关闭spawn ID还是覆盖该进程。要使spawn ID保持打开状态，请使用值0。非0整数值将在所有新进程中强制关闭spawn（默认值）。
 
@@ -91,8 +91,18 @@ debug命令不会更改任何trap。将其与以-D标志开头的**Expect**（�
 
 有关调试器的更多信息，请参见README文件或另请参阅（以下）。
 
-## 5.3
+## 5.3 disconnect
+断开fork进程程与终端的连接。它继续在后台运行。该进程还给自己的进程组（如果可能）。标准I/O重定向到/dev/null。
 
+以下片段使用**disconnect**接在后台继续运行脚本。
+
+``` shell
+	if {[fork]!=0} exit
+		disconnect
+		. . .
+
+```
+			 
 ## 5.3
 ## 5.3
 ## 5.3
