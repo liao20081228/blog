@@ -151,7 +151,7 @@ debug命令不会更改任何trap。将其与以-D标志开头的**Expect**（�
 
 **-info**标志使exp_internal返回给定的最新non-info参数的描述。
 
-## 5.3 exp_open
+## 5.7 exp_open
 
 ``` shell
 	exp_open [args] [-i spawn_id]
@@ -160,25 +160,25 @@ debug命令不会更改任何trap。将其与以-D标志开头的**Expect**（�
 
 **-leaveopen**标志使spawn ID保持打开状态，以便通过Expect命令进行访问。 必须在spawn ID上执行**wait**。
 
-## 5.3 exp_pid
+## 5.8 exp_pid
 
 ``` shell
 	exp_pid [-i spawn_id]
 ```
 返回与当前派生进程相对应的进程ID。 如果使用-i标志，则返回给定spawn ID的pid。
 
-## 5.3 exp_send
+## 5.9 exp_send
 **send**的别名。
-## 5.3 exp_send_error
+## 5.10 exp_send_error
 **send_error**的别名。
-## 5.3 exp_send_log
+## 5.11 exp_send_log
 **send_log**的别名。
-## 5.3 exp_send_tty
+## 5.12 exp_send_tty
 **send_tty**的别名。
-## 5.3 exp_send_user
+## 5.13 exp_send_user
 **send_user**的别名。
 
-## 5.3
+## 5.14 exp_version
 ```shell
 exp_version [[-exit] version]
 ```
@@ -195,7 +195,7 @@ exp_version [[-exit] version]
 
 **-exit**标志使得版本过时，Expect打印错误并退出。
 
-## 5.x Expect
+## 5.15 Expect
 
 ``` shell
 	Expect [[-opts] pat1 body1] ... [-opts] patn [bodyn]
