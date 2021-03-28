@@ -195,7 +195,7 @@ exp_version [[-exit] version]
 
 **-exit**标志使得版本过时，Expect打印错误并退出。
 
-## 5.x **Expect**
+## 5.x Expect
 
 ``` shell
 	Expect [[-opts] pat1 body1] ... [-opts] patn [bodyn]
