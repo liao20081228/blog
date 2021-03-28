@@ -100,34 +100,100 @@ debug命令不会更改任何trap。将其与以-D标志开头的**Expect**（�
 	if {[fork]!=0} exit
 		disconnect
 		. . .
+```
+
+下面的脚本读取一个密码，然后每小时运行一个程序，每次运行该程序都需要输入密码。该脚本提供了密码，因此您只需键入一次即可。 （请参阅stty命令，该命令演示了如何关闭密码回显。）
+
+``` c
+	send_user "password?\ "
+	expect_user -re "(.*)\n"
+	for {} 1 {} {
+		if {[fork]!=0} {sleep 3600;continue}
+		disconnect
+		spawn priv_prog
+		expect Password:
+		send "$expect_out(1,string)\r"
+		. . .
+		exit
+	}
 
 ```
-			 
+与shell异步进程特性(＆)相比，使用**disconnect**的优点是**Expect**可以在断开连接之前保存终端参数，然后将其应用于新的ptys。使用＆，**Expect**没有机会读取终端的参数，因为在**Expect**收到控制权之前，终端已经断开连接。
+## 5.4 exit
+
+``` shell
+	exit [-opts] [status]
+```
+导致**Expect**退出或准备退出。
+
+**-onexit**标志使下一个参数用作退出处理程序。不带参数的情况下，将返回当前的退出处理程序。
+
+**-noexit**标志使Expect准备退出，停止将控制权真正返回给操作系统。用户定义的退出处理程序以及Expect自己的内部处理程序都将运行。不再执行其他Expect命令。如果您在运行带有其他Tcl扩展的Expect，这将很有用。保留当前的解释器（如果在Tk环境中，则保留主窗口），以便其他Tcl扩展可以clean up。如果再次调用Expect的exit（但是可能会发生这种情况），则不会重新运行处理程序。
+
+退出后，与派生进程的所有连接都将关闭。生成的进程会将关闭视为EOF。除了正常的_exit(2)过程，exit不会执行其他任何操作。因此，不检查EOF的派生进程可能会继续运行。 （例如，确定发送信号到到一个派生进程的条件是很重要的，但这些条件取决于系统，通常记录在exit(3)下。）继续运行的spawn进程将被init继承。
+
+返回<u>status</u>（如果未指定，则为0）作为Expect的退出状态。如果到达脚本末尾，则隐式执行**exit**。
+
+## 5.5 exp_continue
+
+``` shell
+	exp_continue [-continue_timer]
+```
+命令**exp_continue**允许**expect**自己继续执行，而不是像往常那样返回。默认情况下，**exp_continue**重置超时计时器。 **-continue_timer**标志可防止重新启动计时器。 （请参阅**expect**以获取更多信息。）
+## 5.6 exp_internal
+
+``` shell
+	exp_internal [-f file] value
+```
+如果<u>value</u>非零，则导致其他命令将**Expect**内部的诊断信息发送到stderr。如果<u>value</u>为0，则禁用输出。诊断信息包括接收到的每个字符，以及将当前输出与模式进行匹配的所有尝试。
+
+如果提供了可选file，则所有普通输出和调试输出都将写入该文件（与value的值无关）。任何先前的诊断输出文件都已关闭。
+
+**-info**标志使exp_internal返回给定的最新non-info参数的描述。
+
+## 5.3 exp_open
+
+``` shell
+	exp_open [args] [-i spawn_id]
+```
+返回与原始spawn ID对应的Tcl文件标识符。 然后可以使用文件标识符，就好像它是由Tcl的open命令打开的一样。 （不应再使用spawn ID。不应执行**wait**）。
+
+**-leaveopen**标志使spawn ID保持打开状态，以便通过Expect命令进行访问。 必须在spawn ID上执行**wait**。
+
+## 5.3 exp_pid
+
+``` shell
+	exp_pid [-i spawn_id]
+```
+返回与当前派生进程相对应的进程ID。 如果使用-i标志，则返回给定spawn ID的pid。
+
+## 5.3 exp_send
+**send**的别名。
+## 5.3 exp_send_error
+**send_error**的别名。
+## 5.3 exp_send_log
+**send_log**的别名。
+## 5.3 exp_send_tty
+**send_tty**的别名。
+## 5.3 exp_send_user
+**send_user**的别名。
+
 ## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
-## 5.3
+```shell
+exp_version [[-exit] version]
+```
+
+对于确保脚本与Expect的当前版本兼容很有用。
+
+不带任何参数的情况下，返回Expect的当前版本。然后可以将此版本编码在您的脚本中。如果您知道自己没有使用最新版本的特性，则可以指定一个较早的版本。
+
+版本由点号分隔的三个数字组成。首先是主版本号。为主版本号与当前版本不同的**Expect**编写的脚本几乎肯定无法工作。如果主数版本号不匹配，则exp_version返回错误。
+
+第二个是次版本号。为次版本号比当前版本更大的**Expect**编写的脚本可能依赖某些新特性，且可能无法运行。如果脚本的主版本号匹配，但次版本号更大，则exp_version返回一个错误。
+
+第三个是在版本比较中不起作用的数字。但是，以任何方式（例如通过附加文档或优化）更改Expect软件发行版时，该值都会增加。每个新的次版本将其重置为0。
+
+**-exit**标志使得版本过时，Expect打印错误并退出。
 ## 5.x **Expect**
 
 ``` shell
@@ -202,6 +268,23 @@ Regexp风格的模式遵循Tcl的regexp（“正则表达式”的缩写）命�
 			  
 			 
 			 
+
+
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+## 5.3
+
 
 ------
 
