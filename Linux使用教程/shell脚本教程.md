@@ -63,21 +63,21 @@ tcsh是csh的增强版，与C shell完全兼容。
 
 
 ## 1.3 shell脚本组成
-* 第一行用`#!/bin/shell解释器`开头 ，声明这个脚本使用的 shell 名称，一般有bash、dash、sh、csh、ksh，如果省略，则使用默认的shell解释器。
-* 程序内容的说明，包括：
-  * script 的功能；
-  * script 的版本信息；
-  * script 的作者与联络方式；
-  * script 的版权宣告方式；
-  * script 的 History (历史纪录)；
-  * script 内较特殊的指令，使用绝对路径的方式来下达；
-* 主要环境变量设置
-* 程序，主要包括：
-  * 变量定义
-  * 函数定义
-  * shell命令
-  * 流程控制
-* 返回执行结果：`exit n`。exit使脚本中断执行，并将n返回给系统。
+1. 第一行用`#!/bin/shell解释器`开头 ，声明这个脚本使用的 shell 名称，一般有bash、dash、sh、csh、ksh，如果省略，则使用默认的shell解释器。
+2. 程序内容的说明，包括：
+	* script 的功能；
+	* script 的版本信息；
+	* script 的作者与联络方式；
+	* script 的版权宣告方式；
+	* script 的 History (历史纪录)；
+	* script 内较特殊的指令，使用绝对路径的方式来下达；
+3. 主要环境变量设置
+4. 程序，主要包括：
+	* 变量定义
+	* 函数定义
+	* shell命令
+	* 流程控制
+5. 返回执行结果：`exit n`。exit使脚本中断执行，并将n返回给系统。
 
 # 2 shell 基本语法
 ## 2.1 注释
