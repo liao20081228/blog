@@ -1,5 +1,5 @@
 ---
-title: Linux shell脚本教程
+title: shell脚本教程
 tags: Linux使用教程
 ---
 
