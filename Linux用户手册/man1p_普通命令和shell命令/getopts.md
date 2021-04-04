@@ -68,18 +68,14 @@ Shell变量<u>OPTIND</u>和<u>OPTARG</u>应该是getopts调用者的本地变量
 # 8 环境变量
 
 以下环境变量将影响<u>getopts</u>的执行：
-
-<u>LANG</u>——为未设置或为null的国际化变量提供默认值。 （有关用于确定语言环境类别的国际化变量的优先级，请参阅POSIX.1-2017的基本定义卷第8.2节“国际化变量”。）
-
-<u>LC_ALL</u>——如果设置为非空字符串值，则会覆盖所有其他国际化变量的值。
-
-<u>LC_CTYPE</u>——将文本数据的字节序列解释为字符的语言环境（例如，单字节字符或多字节字符）。
-
-<u>LC_MESSAGES</u>——影响写入到标准错误的诊断消息的格式和内容的语言环境。
-
-<u>NLSPATH</u>——用于处理LC_MESSAGES的消息目录的位置。
-
-<u>OPTIND</u>——getopts设置为要处理的下一个参数的索引。
+|环境变量|说明|
+|:--|:--|
+|<u>LANG</u>|为未设置或为null的国际化变量提供默认值。 （有关用于确定语言环境类别的国际化变量的优先级，请参阅POSIX.1-2017的基本定义卷第8.2节“国际化变量”。）|
+|<u>LC_ALL</u>|如果设置为非空字符串值，则会覆盖所有其他国际化变量的值。|
+|<u>LC_CTYPE</u>|将文本数据的字节序列解释为字符的语言环境（例如，单字节字符或多字节字符）。|
+|LC_MESSAGES</u>|影响写入到标准错误的诊断消息的格式和内容的语言环境。|
+|<u>NLSPATH</u>|用于处理LC_MESSAGES的消息目录的位置。|
+|<u>OPTIND</u>|getopts设置为要处理的下一个参数的索引。|
 
 # 9 异步事件
 默认。
@@ -117,10 +113,10 @@ Shell变量<u>OPTIND</u>和<u>OPTARG</u>应该是getopts调用者的本地变量
 ## 16 应用程序用法
 
 由于<u>getopts</u>影响当前的shell执行环境，因此通常将其作为shell内置命令提供。如果在子shell或单独的程序执行环境中调用它，例如：
-```shell
-	(getopts abc value "$@")
-	nohup getopts ...
-	find . -exec getopts ... \;\;
+```bash
+(getopts abc value "$@")
+nohup getopts ...
+find . -exec getopts ... \;\;
 ```
 它不会影响调用者环境中的shell变量。
 
@@ -169,7 +165,7 @@ printf "Remaining arguments are: %s\n$*"
 具有内置getopt()或getopts版本的历史Shell使用了不同的格式，通常甚至不指示错误中发现的选项字符。
 
 # 19 未来发展方向
-       没有。
+没有。
 
 ## 20 另请参阅
 2.5.2节，特殊参数。
