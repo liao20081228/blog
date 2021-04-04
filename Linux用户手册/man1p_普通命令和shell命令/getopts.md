@@ -128,7 +128,7 @@ Shell变量<u>OPTIND</u>和<u>OPTARG</u>应该是getopts调用者的本地变量
 
 # 17 示例
 以下示例脚本分析并显示其参数：
-```shell
+```bash
 aflag=
 bflag=
 while getopts ab: name
