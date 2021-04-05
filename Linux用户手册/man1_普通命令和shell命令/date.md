@@ -10,6 +10,17 @@ tags: 用户命令,时间管理
 ------
 
 
+# 1 名称
+日期——打印或设置系统日期和时间
+
+# 2 概要
+
+```bash
+date [OPTION]... [+FORMAT]
+date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
+```
+
+# 3 说明
 
 
 ------
