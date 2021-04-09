@@ -42,7 +42,7 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 |Expect&emsp;|Expectk&emsp;&emsp;&emsp;&emsp;|说明|
 |:--|:--|:--|
 |cmdfile||**Expect**读取cmdfile以获取要执行的命令列表。在支持＃!的系统上，**Expect**也可能被隐式调用。通过将脚本标记为可执行文件，并在脚本的第一行中添加`#!/usr/bin/Expect -f`。<br /><br />当然，路径必须准确地描述**Expect**的安装位置。 /usr/bin只是一个示例。|
-|-c cmds|-command cmds|cmds先于cmdfile中命令执行。该命令应加引号，以防止被shell破坏。此选项可以多次使用。通过使用分号将多个命令分开，可以使用单个-c执行多个命令。命令按照它们出现的顺序执行。
+|-c cmds|-command cmds|cmds先于cmdfile中命令执行。该命令应加引号，以防止被shell破坏。此选项可以多次使用。通过使用分号";"将多个命令分开，可以使用单个-c执行多个命令。命令按照它们出现的顺序执行。
 |-d|-diag|启用一些诊断输出，该诊断输出主要报告命令的内部活动，例如**Expect**和**interact**。此标志与在**Expect**脚本开头的“exp_internal 1”具有相同的作用，并且还会打印**Expect**的版本。（strace命令对跟踪语句很有用，trace命令对跟踪变量赋值很有用。）|
 |-D num|-Debug num|标志启用交互式调试器。应该跟一个整数值。如果该值不为零或按下Ctrl+C（或达到断点，或脚本中出现其他合适的调试器命令），则调试器将在下一个Tcl过程之前获得控制权。有关调试器的更多信息，请参见README文件或另请参阅。| 
 |-f| -file|为从中读取命令的文件添加序言。该标志本身是可选的，因为它仅在使用#!表示法时才有用（请参见上文），以便可以在命令行上提供其他参数。|
@@ -139,7 +139,7 @@ debug命令不会更改任何trap。将其与以-D标志开头的**expect**（�
 ``` bash
 	exp_continue [-continue_timer]
 ```
-命令**exp_continue**允许**expect**自己继续执行，而不是像往常那样返回。默认情况下，**exp_continue**重置超时计时器。 **-continue_timer**标志可防止重新启动计时器。 （请参阅**expect**以获取更多信息。）
+命令**exp_continue**允许**expect**自身继续执行，而不是像往常那样返回。默认情况下，**exp_continue**重置超时计时器。 **-continue_timer**标志可防止重新启动计时器。 （请参阅**expect**以获取更多信息。）
 ## 5.6 exp_internal
 
 ``` bash
