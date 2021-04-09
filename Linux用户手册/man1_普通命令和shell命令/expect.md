@@ -14,7 +14,7 @@ Expect——使用交互式程序进行程序化对话，版本5。
 
 # 2 概要
 
-``` shell
+``` bash
 Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 ```
 # 3 介绍
@@ -64,7 +64,7 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 请注意，在此手册页的文本中，带有大写字母“E”的“**Expect**”指的是**Expect**程序，而带有小写字母“e”的“**expect**”指的是**Expect**程序中的**expect**命令。
 
 ## 5.1 close
-```shell
+``` bash
 	close [-slave] [-onexec 0|1] [-i spawn_id]
 ```
 关闭与当前进程的连接。大多数交互式程序在其stdin上检测EOF，然后退出；因此，close通常也足以终止该进程。 -i标志声明了对应spawn_id的进程，这个进程也将关闭。
@@ -78,7 +78,7 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 无论是隐式还是显式关闭连接，都应调用**wait**清除相应的内核进程插槽。 **close**不调用**wait**，因为不能保证关闭进程连接将导致close退出。请参阅下面的**wait**以获取更多信息。
 
 ## 5.2 debug
-``` shell
+``` bash
 	debug [[-now] 0|1]
 ```
 控制Tcl调试器，使您可以单步执行语句，设置断点等。
@@ -92,11 +92,11 @@ debug命令不会更改任何trap。将其与以-D标志开头的**expect**（�
 有关调试器的更多信息，请参见README文件或另请参阅（以下）。
 
 ## 5.3 disconnect
-断开fork进程程与终端的连接。它继续在后台运行。该进程还给自己的进程组（如果可能）。标准I/O重定向到/dev/null。
+断开分支（forked）进程与终端的连接。它继续在后台运行。该进程将被还给他自己的进程组（如果可能）。标准I/O重定向到/dev/null。
 
 以下片段使用**disconnect**接在后台继续运行脚本。
 
-``` shell
+``` bash
 	if {[fork]!=0} exit
 		disconnect
 		. . .
@@ -121,7 +121,7 @@ debug命令不会更改任何trap。将其与以-D标志开头的**expect**（�
 与shell异步进程特性(＆)相比，使用**disconnect**的优点是**Expect**可以在断开连接之前保存终端参数，然后将其应用于新的ptys。使用＆，**Expect**没有机会读取终端的参数，因为在**Expect**收到控制权之前，终端已经断开连接。
 ## 5.4 exit
 
-``` shell
+``` bash
 	exit [-opts] [status]
 ```
 导致**Expect**退出或准备退出。
@@ -136,13 +136,13 @@ debug命令不会更改任何trap。将其与以-D标志开头的**expect**（�
 
 ## 5.5 exp_continue
 
-``` shell
+``` bash
 	exp_continue [-continue_timer]
 ```
 命令**exp_continue**允许**expect**自己继续执行，而不是像往常那样返回。默认情况下，**exp_continue**重置超时计时器。 **-continue_timer**标志可防止重新启动计时器。 （请参阅**expect**以获取更多信息。）
 ## 5.6 exp_internal
 
-``` shell
+``` bash
 	exp_internal [-f file] value
 ```
 如果<u>value</u>非零，则导致其他命令将**Expect**内部的诊断信息发送到stderr。如果<u>value</u>为0，则禁用输出。诊断信息包括接收到的每个字符，以及将当前输出与模式进行匹配的所有尝试。
@@ -153,7 +153,7 @@ debug命令不会更改任何trap。将其与以-D标志开头的**expect**（�
 
 ## 5.7 exp_open
 
-``` shell
+``` bash
 	exp_open [args] [-i spawn_id]
 ```
 返回与原始spawn ID对应的Tcl文件标识符。 然后可以使用文件标识符，就好像它是由Tcl的open命令打开的一样。 （不应再使用spawn ID。不应执行**wait**）。
@@ -162,7 +162,7 @@ debug命令不会更改任何trap。将其与以-D标志开头的**expect**（�
 
 ## 5.8 exp_pid
 
-``` shell
+``` bash
 	exp_pid [-i spawn_id]
 ```
 返回与当前派生进程相对应的进程ID。 如果使用-i标志，则返回给定spawn ID的pid。
@@ -179,7 +179,7 @@ debug命令不会更改任何trap。将其与以-D标志开头的**expect**（�
 **send_user**的别名。
 
 ## 5.14 exp_version
-```shell
+``` bash
 exp_version [[-exit] version]
 ```
 
@@ -197,7 +197,7 @@ exp_version [[-exit] version]
 
 ## 5.15 Expect
 
-``` shell
+``` bash
 	expect [[-opts] pat1 body1] ... [-opts] patn [bodyn]
 ```
 
@@ -217,7 +217,7 @@ exp_version [[-exit] version]
 
 例如，以下片段查找一个成功的登录。 （请注意，推测**abort**是脚本中其他地方定义的过程。）
 
-```shell
+``` bash
 	expect {
 		busy               {puts busy\n ; exp_continue}
 		failed             abort
@@ -231,7 +231,7 @@ exp_version [[-exit] version]
 
 Regexp风格的模式遵循Tcl的**regexp**（“正则表达式”的缩写）命令定义的语法。 **-re**表示要使用正则表达式模式。 可以使用regexp将前面的示例重写为：
 
-``` shell
+``` bash
 	expect {
 		busy       {puts busy\n ; exp_continue}
 		-re "failed|invalid password" abort
@@ -253,23 +253,23 @@ Regexp风格的模式遵循Tcl的**regexp**（“正则表达式”的缩写）�
 
 匹配模式（或eof或full_buffer）后，所有匹配的和以前不匹配的输出都将保存在变量<u>expect_out(buffer)</u>中。最多9个正则表达式子字串匹配项保存在<u>expect_out(1，string)</u>到<u>expect_out(9，string)</u>中。如果在一个模式前使用 **-indices**标志，则这10个字符串的开始和结束索引（以适合**lrange**的形式）存储在变量<u>expect_out(X，start)</u>和<u>expect_out(X，end)</u>中，其中X为数字，对应缓冲区中子串的位置。 0表示与整个模式匹配的字符串，由glob模式和regexp模式产生。例如，如果某个进程的输出为“abcdefgh\\n”，则：
 
-``` shell
+``` bash
 	expect "cd"
 ```
 的结果就像执行了以下语句：
 
-``` shell
+``` bash
 	set expect_out(0,string) cd
 	set expect_out(buffer) abcd
 ```
 而"efgh\\n"则留在输出缓冲区中。 如果某个进程产生输出“abbbcabkkkka\\n”，则：
 
-``` shell
+``` bash
 	expect -indices -re "b(b*).*(k+)"
 ```
 的结果就想执行了下列语句：
 
-``` shell
+``` bash
 	set expect_out(0,start) 1
 	set expect_out(0,end) 10
 	set expect_out(0,string) bbbcabkkkk
@@ -293,7 +293,7 @@ Regexp风格的模式遵循Tcl的**regexp**（“正则表达式”的缩写）�
 
 例如，以下示例等待当前进程的“conneced”，或者等待\$proc2指定的spawn_id的“busy”，“fail”或“invalid password”。
 
-``` shell
+``` bash
 	expect {
 		-i $proc2 busy {puts busy\n ; exp_continue}
 		-re "failed|invalid password" abort
@@ -309,7 +309,7 @@ Regexp风格的模式遵循Tcl的**regexp**（“正则表达式”的缩写）�
 
 这对于避免显式循环或重复的expect语句很有用。以下示例是自动化rlogin片段的一部分。如果rlogin提示输入密码，则**exp_continue**避免编写第二个Expect语句（再次查找提示）。
 
-``` shell
+``` bash
 	expect {
 		Password: {
 			stty -echo
@@ -335,7 +335,7 @@ Regexp风格的模式遵循Tcl的**regexp**（“正则表达式”的缩写）�
 ```
 例如，以下片段可能帮助用户指导已经完全自动化的交互。 在这种情况下，终端将进入原始模式。 如果用户按下“+”，则变量增加。 如果按下“p”，则会向该过程发送多个返回消息，也许以某种方式对其进行poke，而“i”使用户可以与该进程进行交互，从而有效地从脚本中窃取控制权。 在每种情况下，**exp_continue**允许当前**expect**在执行当前操作后继续模式匹配。
 
-``` shell
+``` bash
 	stty raw -echo
 	expect_after {
 		-i $user_spawn_id
@@ -349,20 +349,20 @@ Regexp风格的模式遵循Tcl的**regexp**（“正则表达式”的缩写）�
 
 ## 5.3 expect_tty
 
-``` shell
+``` bash
 	expect_tty [expect_args]
 ```
 就像**expect**一样，但是它从/dev/tty中读取字符（即，用户击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stt**y更改（请参见下面的**stty**命令）。
 ## 5.3
 
-``` shell
+``` bash
 expect_user [expect_args]
 ```
 就像**expect**一样，但是它从stdin读取字符（即，用户的击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾才能期望看到它们。 这可以通过**stty**更改（请参见下面的**stty**命令）。
 
 ## 5.3 log_user
 
-``` shell
+``` bash
 	log_user -info|0|1
 ```
 默认情况下，send/expect对话框记录到stdout（如果一个日志文件被打开，则记录到该日志文件）。 通过命令“log_user 0”禁用到stdout的日志记录，并通过“log_user 1”重新启用。 到日志文件的记录不变。
@@ -370,12 +370,12 @@ expect_user [expect_args]
 **-info**标志使log_user返回给定的最新no-info参数的描述。
 ## 5.3 send
 
-``` shell
+``` bash
 	send [-flags] string
 ```
 发送字符串到当前进程。例如，命令
 
-``` shell
+``` bash
 send "hello world\r"
 ```
 发送字符`hello空格world回车`到当前进程。 （Tcl引入了类似printf的命令（称为**format**），可以构建任意复杂的字符串。）
@@ -397,7 +397,7 @@ send "hello world\r"
 
 例如，以下命令模拟快速一致的打字员：
 
-``` shell
+``` bash
 	set send_human {.1 .3 1 .05 2}
 	send -h "I'm hungry.  Let's do lunch."
 
@@ -405,7 +405,7 @@ send "hello world\r"
 
 而宿醉后，以下各项可能更适合：
 
-``` shell
+``` bash
 	set send_human {.4 .4 .2 .5 100}
 	send -h "Goodd party lash night!"
 ```
@@ -415,7 +415,7 @@ send "hello world\r"
 
 在第一次发送到进程之前，最好有一个**expect**。 **expect**将等待进程启动，而**send**不会。 特别是，如果第一次发送在进程开始运行之前完成，则可能会导致数据被忽略。 在交互式程序不提供初始提示的情况下，您可以在发送之前先进行延迟，如下所示：
 
-``` shell
+``` bash
 	# To avoid giving hackers hints on how to break in,
 	# this system does not prompt for an external password.
 	# Wait for 5 seconds for exec to complete
