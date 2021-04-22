@@ -120,8 +120,8 @@ git clone 版本库的URL [本地目录名]   #克隆远程仓库到本地目标
 #   git clone ftp[s]://hostname[:port]/path/to/repo.git
 #   git clone rsync://hostname[:port]/path/to/repo.git 
     
-#    git clone --local /opt/git/project.git   #本地仓库
-#    git clone file:///opt/git/project.git    #本地仓库
+#   git clone --local /opt/git/project.git   #本地仓库
+#   git clone file:///opt/git/project.git    #本地仓库
 ```
 通常，URL包含有关传输协议、远程服务器地址和存储库路径。Git支持ssh、git、http和https协议（另外，ftp和ftps可用于fetch，但效率低下，不推荐使用）。git协议不进行身份验证，因此在不安全的网络上应谨慎使用。
 
