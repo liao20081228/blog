@@ -47,7 +47,7 @@ git --version       //查看git版本
 从<http://msysgit.github.io/> 或<https://git-scm.com/downloads>下载git，并运行。完成安装之后，就可以使用命令行的 git 工具（已经自带了 ssh 客户端）了，另外还有一个图形界面的 Git 项目管理工具。
 在开始菜单里找到"Git"->"Git Bash"，会弹出 Git 命令窗口。
 
-## 1.2 配置
+## 1.2 配置文件
 Git提供了一个叫做git config 的工具（也可以叫命令），专门用来配置或读取相应的工作环境变量。这些环境变量，决定了 Git 在各个环节的具体工作方式和行为。这些变量可以存放在以下三个不同的地方：
 
 * `/etc/gitconfig` 文件——系统中对所有用户都普遍适用的配置。若使用 git config 时用 --system 选项，读写的就是这个文件。
@@ -56,7 +56,7 @@ Git提供了一个叫做git config 的工具（也可以叫命令），专门用
 
 每一个级别的配置都会覆盖上层的相同配置，所以 .git/config 里的配置会覆盖 /etc/gitconfig 中的同名变量。
 
-在 Windows 系统上，Git 会找寻用户主目录下的 .gitconfig 文件。主目录即 $HOME 变量指定的目录，一般都是 C:\Documents and Settings\$USER。此外，Git 还会尝试找寻 /etc/gitconfig 文件，只不过看当初 Git 装在什么目录，就以此作为根目录来定位。
+在 Windows 系统上也类似，Git会找寻用户主目录下的 .gitconfig 文件。主目录即 \$HOME 变量指定的目录，一般都是 C:\USER\\$USER\Documents and Settings。此外，Git 还会尝试找寻 /etc/gitconfig文件，一般都位于git安装目录。
 
 ### 1.2.1 配置用户信息
 ```bash
