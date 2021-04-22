@@ -97,8 +97,8 @@ git config --global alias.别名 git命令名 //为git命令配置别名
 $ git config --list //查看所有的配置信息
 ```
 有时候会看到重复的变量名，那就说明它们来自不同的配置文件（比如 /etc/gitconfig和~/.gitconfig），不过最终Git实际采用的是最后一个。
-这些配置我们也可以在 ~/.gitconfig 或 /etc/gitconfig 查看。
-也可以直接查阅某个环境变量的设定，只要把特定的名字跟在后面即可，像这样
+
+这些配置我们也可以在 ~/.gitconfig 或 /etc/gitconfig 查看，也可以直接查阅某个配置项，只要把特定的名字跟在后面即可，像这样：
 ```bash
 $ git config user.name
 ```
@@ -107,7 +107,7 @@ $ git config user.name
 ### 2.1.1 直接创建本地仓库
 ```bash
  git init         //将当前文件夹初始化为仓库
- git init dirname //将当前文件夹或指定文件夹初始化为仓库，如果不存在则新建
+ git init dirname //将dirname初始化为仓库，如果不存在则新建
 ```
 ### 2.1.2 拷贝远程仓库到本地
 ```bash
