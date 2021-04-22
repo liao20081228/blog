@@ -248,11 +248,11 @@ git remote -v #查看远程库的详细信息
 ```
 ## 5.2 管理远程主机
 ```bash
-git remote show 主机名              #可以查看该主机的详细信息。
+git remote show 主机名               #可以查看该主机的详细信息。
 
-git remote add  主机名 地址          #  添加远程主机。 默认主机为origin
+git remote add  主机名 地址          #添加远程主机。 默认主机为origin
 git remote rm  主机名                #用于删除远程主机。
-git remote rename  原主机名 新主机名  # 用于远程主机改名
+git remote rename 原主机名 新主机名  #用于远程主机改名
 
 git remote set-url --add 主机名 地址 #为指定主机设置地址，可将同1主机名关联到不同的地址
 ```
