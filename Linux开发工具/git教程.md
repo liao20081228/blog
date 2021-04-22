@@ -225,7 +225,7 @@ git merge 分支名 -m "合并说明"         #用于合并指定分支到当前
 git merge --no-ff -m "合并说明" 分支名 #禁用fast forward，避免删除分支时丢掉分支信息。
     
 git branch -d 分支名    #删除已经合并的某分支
-git branch -D 分支名    # 强制删除未合并的分支
+git branch -D 分支名    #强制删除未合并的分支
 
 #HEAD指针指向当前分支，master指针指向主分支。
 ```
