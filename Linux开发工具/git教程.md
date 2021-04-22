@@ -183,11 +183,12 @@ git reflog #查看所有分支的所有操作记录（包括commit和reset的操
 ```
 ## 2.6 撤销修改与版本回退
 ```bash
-git checkout filename #撤销对工作区文件的修改到最近一次git add后（没有提交到暂存区）
+git checkout filename  #将工作区回退到最近一次git add后（没有提交到暂存区）
 
-git reset HEAD filename #撤销对暂存区中的文件修改到最近一次commit后的，再用git checkout就能丢弃修改（已经提交到暂存区，但没有提交到版本库）
+git reset HEAD filename #将暂存区回退到最近一次git commit后的，
+                        #再用git checkout就能丢弃修改（已经提交到暂存区，但没有提交到版本库）
 
-git reset --hard #版本回退，撤销修改（已经commit到版本库，但还没有推送到远程仓库）
+git reset --hard        #版本回退，撤销修改（已经commit到版本库，但还没有推送到远程仓库）
 git reset --hard HEAD^  #版本回退一次
 git reset --hard HEAD^^ #版本回退两次
 git reset --hard HEAD~n #版本回退n次
@@ -197,9 +198,9 @@ git checkout 版本id 文件名  #将某个文件恢复到某个版本时的状�
 ```
 ## 2.7 删除文件
 ```bash
-rm filename          #从目录中删除文件
+rm filename              #从目录中删除文件
 
-git rm filename      #删除暂存区和工作区文件
+git rm filename          #删除暂存区和工作区文件
 git commit –m “注释”  #将删除提交版本库
 #执行这两个命令就可以从版本库中删除文件，如果不想删除 git checkout filename撤销删除
    
