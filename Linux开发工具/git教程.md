@@ -146,10 +146,12 @@ git clone [user@]host.xz:/~[user]/path/to/repo.git/
 
 ## 2.2 提交文件到仓库
 ```bash
- git add filename         //将文件提交到暂存区
- git commit –m “提交说明”  //将暂存区文件提交到版本库,并且添加提示信息
+git add filename             //将文件提交到暂存区
+git commit –m “提交说明”  //将暂存区文件提交到版本库,并且添加提示信息
  
- git commit -am “提交说明” //等效于git add 加 git commit
+或
+
+git commit -am “提交说明”  //等效于git add 加 git commit
 ```
 ## 2.3 查看仓库状态
 ```bash
