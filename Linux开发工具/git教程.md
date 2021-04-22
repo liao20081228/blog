@@ -7,8 +7,8 @@ tags:  程序员基础知识
 &emsp;&emsp;<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《git官方网站》](https://git-scm.com/book/en/v2"点击跳转")。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
 
 ------
-# 0 git、gitlib、github、gitLab、gitee
-**它们分别是什么？**
+# 0 基本概念
+**git、gitlib、github、gitLab、gitee分别是什么？**
 * git 是一个开源的分布式版本控制系统。而相对的SVN则是集中式。
 * gitlib是实现git功能的库。
 * [github](github.com) 是一个用git做版本控制的基于Web的项目托管平台，是官方的。
