@@ -106,8 +106,8 @@ $ git config user.name
 ## 2.1 创建仓库
 ### 2.1.1 直接创建本地仓库
 ```bash
- git init         //将当前文件夹初始化为仓库
- git init dirname //将dirname初始化为仓库，如果不存在则新建
+ git init         #将当前文件夹初始化为仓库
+ git init dirname #将dirname初始化为仓库，如果不存在则新建
 ```
 ### 2.1.2 拷贝远程仓库到本地
 ```bash
@@ -146,12 +146,14 @@ git clone [user@]host.xz:/~[user]/path/to/repo.git/
 
 ## 2.2 提交文件到仓库
 ```bash
-git add filename             //将文件提交到暂存区
-git commit –m “提交说明”  //将暂存区文件提交到版本库,并且添加提示信息
+git add filename                        #将文件提交到暂存区
+git commit –m “提交说明” [--signoff] #将暂存区文件提交到版本库,并且添加提示信息，
+                                        #--signoff表示在“提交说明”末尾自动添加签名文字
  
-或
+#或
 
-git commit -am “提交说明”  //等效于git add 加 git commit
+git commit -am “提交说明” [--signoff] #将工作区中发生变化的已经跟踪文件以及已经暂存区中的文件一起提交到版本库，
+                                        #等效于git add;git commit
 ```
 ## 2.3 查看仓库状态
 ```bash
