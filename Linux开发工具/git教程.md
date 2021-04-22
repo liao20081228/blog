@@ -162,21 +162,21 @@ git status -s  #查看仓库简述状态
 ```
 ## 2.4 查看仓库状态变化的内容
 ```bash
-git diff filename            #查看工作区文件与上一次add后的不同之处
-git diff --cached  filename  #查看暂存区文件与上一次commit后的不同之处
-git diff HEAD filename  #查看工作区和暂存区中的文件与版本库里面最新版本的区别
-git diff --stat             #只显示摘要
+git diff filename            #查看工作区文件与上一次git add后的不同之处
+git diff --cached  filename  #查看暂存区文件与上一次git commit后的不同之处
+git diff HEAD filename       #查看工作区和暂存区中的文件与版本库里面最新版本的区别
+git diff --stat              #只显示摘要
 ```
 ## 2.5 查看提交历史
 ```bash
-git log   #查看详细commit历史，可以看到各版本的id,但看不到已经删除的commit
-git log --oneline     #查看简洁的commit历史
-git log --graph       #查看提交历史中什么时候出现了分支、合并
-git log --reverse     #逆序显示
-git log --author=name #查看name的提交历史
-git log --since={time} --before={time}  #查看指定时间的提交历史
-git log --until={time} --after={time}   #查看指定时间的提交历史
-git log --no-merges #隐藏合并提交历史
+git log                                        #查看详细commit历史，可以看到各版本的id,但看不到已经删除的commit
+git log --oneline                              #查看简洁的commit历史
+git log --graph                                #查看提交历史中什么时候出现了分支、合并
+git log --reverse                              #逆序显示
+git log --author=name                          #查看name的提交历史
+git log --since={time} --before={time}         #查看指定时间的提交历史
+git log --until={time} --after={time}          #查看指定时间的提交历史
+git log --no-merges                            #隐藏合并提交历史
 
 git log --graph --pretty=oneline --abbrev-commit #图形化查看提交和合并历史
 git reflog #查看所有分支的所有操作记录（包括commit和reset的操作），包括已删除的commit记录
