@@ -37,14 +37,14 @@ tags:  程序员基础知识
 # 1 安装与配置
 ## 1.1 安装
 ### 1.1.1 Linux平台
-&emsp;&emsp;Debian/Ubuntu Git 安装命令为：
+Debian/Ubuntu Git 安装命令为：
 ```bash
 sudo apt install git  //安装git
 git --version       //查看git版本
 
 ```
 ### 1.1.2 windows平台
-&emsp; &emsp;从<http://msysgit.github.io/> 下载git，并运行。完成安装之后，就可以使用命令行的 git 工具（已经自带了 ssh 客户端）了，另外还有一个图形界面的 Git 项目管理工具。
+从<http://msysgit.github.io/> 或<https://git-scm.com/downloads>下载git，并运行。完成安装之后，就可以使用命令行的 git 工具（已经自带了 ssh 客户端）了，另外还有一个图形界面的 Git 项目管理工具。
 &emsp;&emsp;在开始菜单里找到"Git"->"Git Bash"，会弹出 Git 命令窗口。
 
 ## 1.2 配置
