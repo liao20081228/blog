@@ -9,7 +9,7 @@ tags:  程序员基础知识
 ------
 # 0 基本概念
 **git、gitlib、github、gitLab、gitee分别是什么？**
-* git 是一个开源的分布式版本控制系统。而相对的SVN则是集中式。
+* git是一个开源的分布式版本控制系统，而SVN则是集中式版本控制系统。
 * gitlib是实现git功能的库。
 * [github](github.com) 是一个用git做版本控制的基于Web的项目托管平台，是官方的。
 * [gitlab](gitlab.com) 是一个用git做版本控制的基于Web的项目托管平台，**还可以用于自己搭建项目托管平台**。
