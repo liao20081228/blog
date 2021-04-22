@@ -111,7 +111,7 @@ $ git config user.name
 ```
 ### 2.1.2 拷贝远程仓库到本地
 ```bash
-git clone  版本库的URL   [本地目录名]   #克隆远程仓库到目标目录中,省略本地目录则克隆到当前目录下
+git clone 版本库的URL [本地目录名]   #克隆远程仓库到本地目标目录中,省略本地目录则克隆到当前目录下
 
 #git clone  支持多种协议： 
 #   git clone ssh://[user@]hostname[:port]/path/to/repo.git/
@@ -123,20 +123,21 @@ git clone  版本库的URL   [本地目录名]   #克隆远程仓库到目标目
 #    git clone --local /opt/git/project.git   #本地仓库
 #    git clone file:///opt/git/project.git    #本地仓库
 ```
-* 通常，URL包含有关传输协议，远程服务器地址和存储库路径。Git支持ssh，git，http和https协议（另外，ftp和ftps可用于fetch，但效率低下，不推荐使用）。git协议不进行身份验证，因此在不安全的网络上应谨慎使用。
-* ssh协议也可以使用另一种类似scp的语法，这种语法只有在第一个冒号前没有斜线时才能识别。这有助于与包含冒号的本地路径区分。
+通常，URL包含有关传输协议、远程服务器地址和存储库路径。Git支持ssh、git、http和https协议（另外，ftp和ftps可用于fetch，但效率低下，不推荐使用）。git协议不进行身份验证，因此在不安全的网络上应谨慎使用。
+
+ssh协议也可以使用另一种类似scp的语法，这种语法只有在第一个冒号前没有斜线时才能识别。这有助于与包含冒号的本地路径区分。
 
 ```bash
 git clone [user@]host.xz:path/to/repo.git/
 ```
-* ssh和git协议还支持用户名扩展：
+ ssh和git协议还支持用户名扩展：
 
 ```bash
 git clone ssh://[user@]host.xz[:port]/~[user]/path/to/repo.git/
 git clone git://host.xz[:port]/~[user]/path/to/repo.git/
 git clone [user@]host.xz:/~[user]/path/to/repo.git/
 ```
-* 当Git不知道如何处理某个传输协议时，它会尝试使用remote-\<transport>远程助手（如果存在的话）。要显式请求远程助手，可以使用以下语法，其中\<address>可能是一个路径，一个服务器和路径，或者是由被调用的特定远程助手识别的任意类似URL的字符串。：
+当Git不知道如何处理某个传输协议时，它会尝试使用remote-\<transport>远程助手（如果存在的话）。要显式请求远程助手，可以使用以下语法，其中\<address>可能是一个路径，一个服务器和路径，或者是由被调用的特定远程助手识别的任意类似URL的字符串。：
 
 ```bash
 <transport>::<address>
