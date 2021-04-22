@@ -4,7 +4,7 @@ tags:  程序员基础知识
 ---
 ------
 
-&emsp;&emsp;<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《git官方网站》](https://git-scm.com/book/en/v2"点击跳转")。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《git官方网站》](https://git-scm.com/book/en/v2"点击跳转")。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
 
 ------
 # 0 基本概念
@@ -45,60 +45,60 @@ git --version       //查看git版本
 ```
 ### 1.1.2 windows平台
 从<http://msysgit.github.io/> 或<https://git-scm.com/downloads>下载git，并运行。完成安装之后，就可以使用命令行的 git 工具（已经自带了 ssh 客户端）了，另外还有一个图形界面的 Git 项目管理工具。
-&emsp;&emsp;在开始菜单里找到"Git"->"Git Bash"，会弹出 Git 命令窗口。
+在开始菜单里找到"Git"->"Git Bash"，会弹出 Git 命令窗口。
 
 ## 1.2 配置
-&emsp;&emsp;Git提供了一个叫做git config 的工具，专门用来配置或读取相应的工作环境变量。这些环境变量，决定了 Git 在各个环节的具体工作方式和行为。这些变量可以存放在以下三个不同的地方：
+Git提供了一个叫做git config 的工具，专门用来配置或读取相应的工作环境变量。这些环境变量，决定了 Git 在各个环节的具体工作方式和行为。这些变量可以存放在以下三个不同的地方：
 
 * `/etc/gitconfig` 文件——系统中对所有用户都普遍适用的配置。若使用 git config 时用 --system 选项，读写的就是这个文件。
 * `~/.gitconfig` 文件——用户目录下的配置文件只适用于该用户。若使用 git config 时用 --global 选项，读写的就是这个文件。
 * 当前项目目录中的`.git/config`——这里的配置仅仅针对当前项目有效。
 
-&emsp;&emsp;每一个级别的配置都会覆盖上层的相同配置，所以 .git/config 里的配置会覆盖 /etc/gitconfig 中的同名变量。
+每一个级别的配置都会覆盖上层的相同配置，所以 .git/config 里的配置会覆盖 /etc/gitconfig 中的同名变量。
 
-&emsp;&emsp;在 Windows 系统上，Git 会找寻用户主目录下的 .gitconfig 文件。主目录即 $HOME 变量指定的目录，一般都是 C:\Documents and Settings\$USER。此外，Git 还会尝试找寻 /etc/gitconfig 文件，只不过看当初 Git 装在什么目录，就以此作为根目录来定位。
+在 Windows 系统上，Git 会找寻用户主目录下的 .gitconfig 文件。主目录即 $HOME 变量指定的目录，一般都是 C:\Documents and Settings\$USER。此外，Git 还会尝试找寻 /etc/gitconfig 文件，只不过看当初 Git 装在什么目录，就以此作为根目录来定位。
 
 ### 1.2.1 配置用户信息
 ```bash
 $ git config --global user.name "user_naem"   //配置用户名
 $ git config --global user.email "user_Email" //配置用户邮箱
 ```
-&emsp;&emsp;如果用了 --global 选项，那么更改的配置文件就是位于你用户主目录下的那个，以后你所有的项目都会默认使用这里配置的用户信息。
-&emsp;&emsp;如果要在某个特定的项目中使用其他名字或者电邮，只要去掉 --global 选项重新配置即可，新的设定保存在当前项目的 .git/config 文件里。
+如果用了 --global 选项，那么更改的配置文件就是位于你用户主目录下的那个，以后你所有的项目都会默认使用这里配置的用户信息。
+如果要在某个特定的项目中使用其他名字或者电邮，只要去掉 --global 选项重新配置即可，新的设定保存在当前项目的 .git/config 文件里。
 
 ### 1.2.2 配置文本编辑器
-&emsp;&emsp;设置Git默认使用的文本编辑器, 一般可能会是 Vi 或者 Vim。如果你有其他偏好，比如 Emacs 的话，可以重新设置：:
+设置Git默认使用的文本编辑器, 一般可能会是 Vi 或者 Vim。如果你有其他偏好，比如 Emacs 的话，可以重新设置：:
 ```bash
 $ git config --global core.editor emacs
 ```
 ### 1.2.3 配置差异分析工具
-&emsp;&emsp;还有一个比较常用的是，在解决合并冲突时使用哪种差异分析工具。比如要改用 vimdiff 的话：
+还有一个比较常用的是，在解决合并冲突时使用哪种差异分析工具。比如要改用 vimdiff 的话：
 ```bash
 $ git config --global merge.tool vimdiff
 ```
-&emsp;&emsp;Git 可以理解kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。
+Git 可以理解kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。
 ### 1.2.4 配置颜色和别名
 
-&emsp;&emsp; 让Git显示颜色，会让命令输出看起来更醒目:
+ 让Git显示颜色，会让命令输出看起来更醒目:
 ```bash
 git config --global color.ui // true让Git显示颜色，会让命令输出看起来更醒目:
 ```
 
-&emsp;&emsp; 为git命令配置别名:
+ 为git命令配置别名:
 ```bash
 git config --global alias.别名 git命令名 //为git命令配置别名
 ```
 ### 1.2.5 其它
-&emsp;&emsp;在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去，Git就会自动忽略这些文件。
+在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去，Git就会自动忽略这些文件。
 
 ### 1.2.6 查看配置信息
-&emsp;&emsp;要检查已有的配置信息，可以使用 git config --list 命令：
+要检查已有的配置信息，可以使用 git config --list 命令：
 ```bash
 $ git config --list //查看所有的配置信息
 ```
-&emsp;&emsp;有时候会看到重复的变量名，那就说明它们来自不同的配置文件（比如 /etc/gitconfig和~/.gitconfig），不过最终Git实际采用的是最后一个。
+有时候会看到重复的变量名，那就说明它们来自不同的配置文件（比如 /etc/gitconfig和~/.gitconfig），不过最终Git实际采用的是最后一个。
 这些配置我们也可以在 ~/.gitconfig 或 /etc/gitconfig 查看。
-&emsp;&emsp;也可以直接查阅某个环境变量的设定，只要把特定的名字跟在后面即可，像这样
+也可以直接查阅某个环境变量的设定，只要把特定的名字跟在后面即可，像这样
 ```bash
 $ git config user.name
 ```
@@ -318,17 +318,17 @@ git push origin tagname  //将指定标签推送到远程
 git push origin --tags   //将本地所有标签推送到远程
 ```
 # 7 创建SSH Key。
-&emsp;&emsp;首先在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH：
+首先在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH：
 
 ```bash
 ssh-keygen -t rsa -b 4096 -C "youremail@example.com"
 ```
-&emsp;&emsp;然后登录github，账户——>设置——>添加SSH key.pub的内容，新建仓库。
+然后登录github，账户——>设置——>添加SSH key.pub的内容，新建仓库。
  
 # 8 开启两步验证后推送失败的解决方法
-&emsp;&emsp;首先在github设置中启用Personal Access Token                                                                      
-&emsp;&emsp;再输入密码时输入访问令牌而不是账户密码
-&emsp;&emsp;如果不想每次都输密码则可以使用: `git config --global credential.helper store`
+首先在github设置中启用Personal Access Token                                                                      
+再输入密码时输入访问令牌而不是账户密码
+如果不想每次都输密码则可以使用: `git config --global credential.helper store`
 
       
 # 9 搭建git服务器
@@ -342,14 +342,14 @@ ssh-keygen -t rsa -b 4096 -C "youremail@example.com"
 * 禁用bash登录：出于安全考虑，第二步创建的git用户不允许登录bash，这可以通过编辑/etc/passwd文件完成。找到类似下面的一行：` git:x:1001:1001:,,,:/home/git:/bin/bash   `改为： `git:x:1001:1001:,,,:/home/git:/usr/bin/git-bash`,这样，git用户可以正常通过ssh使用git，但无法登录bash，因为我们为git用户指定的git-bash每次一登录就自动退出。
  
 # 10 为项目添加成员
-&emsp;&emsp; 仓库-->设置-->member-->权限
-&emsp;&emsp; 为分支设置权限， 仓库-->设置-->branches --> Protected branches -->权限
+ 仓库-->设置-->member-->权限
+ 为分支设置权限， 仓库-->设置-->branches --> Protected branches -->权限
 
 
 
 ------
 
-&emsp;&emsp;<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《git官方网站》](https://git-scm.com/book/en/v2"点击跳转")。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《git官方网站》](https://git-scm.com/book/en/v2"点击跳转")。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
 
 ------
 
