@@ -77,7 +77,6 @@ participant S as MM_SecCtrl
 note over  M: 上级流程触发
 
 M->>S:US_SEC_SMC_REQ
-note over S:MM_SecurityInitRecvSmcReq
 S->>A:US_AC_NAS_TRANSFER(EMM_SECURITY_MODE_CMD)
 A->>s1:SPU_S1AP_DOWNLINK_NAS_TRANSPORT
 s1->>A:S1AP_SPU_UPLINK_NAS_TRANSPORT
@@ -129,6 +128,7 @@ note over M:某个状态
 
 
 ```
+U-->>S:UDM_MM_NOTIFY_RSP(发送给MM模块)
 # test
 
 ```mermaid!
@@ -163,7 +163,6 @@ S-->>U:MM_UDM_NOTIFY_REQ
 U-->>C:SP_CM_NOTIFY_REQ
 note over U:等待Notify响应
 C-->>U:CM_SP_NOTIFY_RSP
-U-->>S:UDM_MM_NOTIFY_RSP(发送给MM模块)
 end
 
 else g_udwMmImeiChkSwitch==MM_CHECK_IMEI_YES
@@ -192,6 +191,27 @@ note over M:某个状态
 
 ```
 
+# main
+```mermaid!
+sequenceDiagram
+
+title: 视频点呼流程
+participant UE
+participant ENB
+participant USN
+participant UGW
+participant TSN
+
+TSN-->UGW:MTB_REQ
+
+```
+# rw
+```shell
+
+
+
+
+```
 ------
 
 ***<font color=blue>版权声明</font>：<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
