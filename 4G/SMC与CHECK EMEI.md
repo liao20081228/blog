@@ -195,14 +195,18 @@ note over M:某个状态
 ```mermaid!
 sequenceDiagram
 
-title: 视频点呼流程
-participant UE
-participant ENB
-participant USN
-participant UGW
-participant TSN
+title: 分析平台调用算法流程
+participant P as 算法
+participant V as 分析平台
+participant S as 流平台
 
-TSN-->UGW:MTB_REQ
+V->>P:初始化请求
+P-->>V:OK
+V->>P:创建线程
+P-->>V:线程ID
+V->>S:开始传送图片流
+S-->>V:图片流分析
+
 
 ```
 # rw
