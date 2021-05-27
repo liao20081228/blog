@@ -198,14 +198,20 @@ sequenceDiagram
 title: 分析平台调用算法流程
 participant P as 算法
 participant V as 分析平台
-participant S as 流平台
+participant S as SDK
 
 V->>P:初始化请求
 P-->>V:OK
 V->>P:创建线程
 P-->>V:线程ID
-V->>S:开始传送图片流
-S-->>V:图片流分析
+V->>S:拉取图片
+S-->>V:图片
+alt 解码方式
+V->>V:解码
+else
+P->>P:解码
+end
+
 
 
 ```
