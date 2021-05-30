@@ -24,9 +24,9 @@ gawk——模式扫描和处理语言。
 
 Gawk是GNU工程对AWK编程语言的实现。它符合POSIX 1003.1标准。该版本反过来是基于Aho、Kernighan和Weinberger撰写的《AWK编程语言》中的描述开发。 Gawk提供了Brian Kernighan awk中的额外功能以及许多特定于GNU的扩展。
 
-命令行由gawk本身选项、AWK程序文本（如果未通过-f或--include选项提供程序文件）、在ARGC和ARGV预定义的AWK变量中的可用值组成。
+命令行由gawk本身选项、AWK程序文本（如果未通过 **-f** 或 **--include** 选项提供程序文件）、在 **ARGC** 和 **ARGV** 预定义的AWK变量中的可用值组成。
 
-当使用--profile选项调用gawk时，gawk将开始从程序的执行中收集性能分析统计信息。 Gawk在这种模式下运行速度较慢，并且在完成后会自动在文件awkprof.out中生成一个执行配置文件。请参阅下面的--profile选项。
+当使用 **--profile** 选项调用gawk时，gawk将开始从程序的执行中收集性能分析统计信息。 Gawk在这种模式下运行速度较慢，并且在完成后会自动在文件 **awkprof.out** 中生成一个执行配置文件。请参阅下面的 **--profile** 选项。
 
 Gawk还具有集成的调试器。可以通过在命令行中指定--debug选项来启动交互式调试会话。在这种执行方式下，gawk将加载AWK源代码，然后提示您调试程序。 Gawk只能调试-f和--include选项提供的AWK程序源码。调试器在《[高效AWK编程](#effective_awk_programing)》中说明。
 
@@ -47,14 +47,14 @@ Gawk接受以下选项。 首先列出标准选项，然后列出gawk扩展的�
 |-C|--copyright|在标准输出上打印GNU版权信息的简短版本，然后成功退出。|
 |-d\[file]|--dump-variables\[=file]|将全局变量以及它们的类型和最终值的排序列表打印到文件file中。如果未提供文件file，则gawk在当前目录中输出名为awkvars.out的文件。列出所有全局变量是在程序中查找“按错键错误”的好方法。如果您的大型程序具有很多函数，并且还希望确保您的函数不会无意中使用本应是局部变量的全局变量，那么您也可以使用此选项。（使用i，j等简单变量名称时，这是一个特别容易犯的错误。）|
 |-D\[file]|--debug\[=file]|启用AWK程序调试。默认情况下，调试器从键盘（标准输入）以交互方式读取命令。可选的file参数指定一个文件，其中包含命令列表，以供调试器以非交互方式执行。|
-|-e program-text|--source program-text|使用program-text作为AWK程序源代码。通过此选项，可以轻松地将库函数（通过-f和--include选项使用）与在命令行中输入的源代码混合在一起。它主要用于Shell脚本中的中大型AWK程序。通过-e提供的每个参数都被视为以隐式@namespace "awk"语句开头。|
+|-e program-text|--source program-text|使用program-text作为AWK程序源代码。通过此选项，可以轻松地将库函数（通过-f和--include选项使用）与在命令行中输入的源代码混合在一起。它主要用于Shell脚本中的中大型AWK程序。通过-e提供的每个参数都被视为以隐式`@namespace "awk"`语句开头。|
 |-E file|--exec file|与-f相似，但是，此选项是最后处理的选项。这个选项与`＃!`脚本一起使用，以避免在命令行中从URL传入选项或源代码（!），尤其是CGI应用程序脚本。此选项禁用命令行变量赋值。|
 |-f program-file|--file program-file|从文件program-file中读取AWK程序，而不是从第一个命令行参数中读取。可以使用多个-f（或--file）选项。使用-f读取的文件被视为以隐式的`@namespace "awk"`语句开头。|
 |-F fs|--field-separator fs|将fs用作输入字段分隔符（预定义变量FS的值）。|
 |-g|--gen-pot|扫描并解析AWK程序，并在标准输出上生成GNU .pot（可移植对象模板）格式文件，其中包含该程序中所有可本地化字符串条目。程序本身未执行。有关.pot文件的更多信息，请参见[GNU gettext](#gnu_gettext)分发。|
 |-h|--help|在标准输出上打印可用选项的简短摘要。 （根据GNU编码标准，这选项会导致立即成功退出。）
 |-i include-file|--include include-file|加载awk源码库。这将使用环境变量AWKPATH来搜索该库。如果首次搜索失败，则在加上.awk后缀之后再次尝试。该文件将仅加载一次（即消除重复），并且这些代码不构成主程序源码。用--include读取的文件被视为以隐式@namespace “awk”语句开头。|
-|-l lib|--load lib|从共享库库中加载gawk扩展。 这将使用环境变量AWKLIBPATH来搜索该库。 如果首次搜索失败，则在为加上平台默认共享库后缀后再次尝试。 库的初始化例程应命名为dl_load（）。|
+|-l lib|--load lib|从共享库库中加载gawk扩展。 awk将使用环境变量AWKLIBPATH来搜索该库。 如果首次搜索失败，则在为加上平台默认共享库后缀后再次尝试。 库的初始化例程应命名为dl_load（）。|
 |-L \[value]|--lint\[=value]|提供有关可疑或不可移植到其他AWK实现的构造的警告。 如果使用fatal的可选参数，则温柔警告会变成致命错误。 这可能很激烈，但是使用它肯定会鼓励开发更清洁的AWK程序。 使用invalid可选参数，仅发出有关确实无效的警告。 （这尚未完全实现）使用no-ext可选参数，将禁用有关gawk扩展的警告。|
 |-M|--bignum|对数字强制执行任意精度计算。如果编译gawk未使用GNU MPFR和GMP库，则此选项无效。（在这种情况下，gawk会发出警告。）|
 | -n|--non-decimal-data|识别输入数据中的八进制和十六进制值。请谨慎使用此选项！|
