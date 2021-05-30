@@ -28,7 +28,7 @@ Gawk是GNU工程对AWK编程语言的实现。它符合POSIX 1003.1标准。该�
 
 使用--profile选项调用gawk时，它将开始从程序的执行中收集性能分析统计信息。 Gawk在这种模式下运行速度较慢，并且在完成后会自动在文件awkprof.out中生成一个执行配置文件。请参阅下面的--profile选项。
 
-Gawk还具有集成的调试器。可以通过在命令行中指定--debug选项来启动交互式调试会话。在这种执行方式下，gawk将加载AWK源代码，然后提示您调试命令。 Gawk只能调试-f和--include选项提供的AWK程序源码。调试器文档在[高效AWK编程](#effective_awk_programing)中。
+Gawk还具有集成的调试器。可以通过在命令行中指定--debug选项来启动交互式调试会话。在这种执行方式下，gawk将加载AWK源代码，然后提示您调试命令。 Gawk只能调试-f和--include选项提供的AWK程序源码。调试器文档在《[高效AWK编程](#effective_awk_programing)》中。
 
 # 4 选项格式
 
@@ -70,6 +70,7 @@ Gawk接受以下选项。 首先列出标准选项，然后列出gawk扩展的�
 |-v var=val|--assign var=val|在程序开始执行之前，将值val分配给变量var。这样的变量值可用于AWK程序的BEGIN规则。|
 |-V|--version|在标准输出上打印该gawk特定副本的版本信息。 这主要用于了解当前系统上的gawk是否是自由软件基金会正在分发的最新版本。 报告bug时，这也很有用。 （根据GNU编码标准，此选项会导致立即成功退出。）|
 |--||选项结束信号。 这允许AWK程序的其他参数以“-”开头。 这与大多数其他POSIX程序使用的参数解析约定保持一致。|
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 
 在兼容模式下，任何其他选项均标记为无效，否则将被忽略。 在正常操作中，只要提供了程序文本，在ARGV数组中的未知选项会传递给AWK程序进行处理。这对于通过＃!可执行解释器机制运行AWK程序特别有用。|
 
