@@ -1,6 +1,6 @@
 ---
 title: awk
-tags: 用户命令,文本编辑
+tags: 用户命令,文本流编辑
 ---
 
 
@@ -22,7 +22,7 @@ gawk——模式扫描和处理语言。
 ```
 # 3 说明
 
-Gawk是GNU工程对AWK编程语言的实现。它符合POSIX 1003.1标准。该版本反过来是基于Aho，Kernighan和Weinberger撰写的《AWK编程语言》中的描述。 Gawk提供了Brian Kernighan awk中的额外功能以及许多特定于GNU的扩展。
+Gawk是GNU工程对AWK编程语言的实现。它符合POSIX 1003.1标准。该版本反过来是基于Aho、Kernighan和Weinberger撰写的《AWK编程语言》中的描述开发。 Gawk提供了Brian Kernighan awk中的额外功能以及许多特定于GNU的扩展。
 
 命令行由gawk本身选项、AWK程序文本（如果未通过-f或--include选项提供）、在ARGC和ARGV预定义的AWK变量中的可用值组成。
 
