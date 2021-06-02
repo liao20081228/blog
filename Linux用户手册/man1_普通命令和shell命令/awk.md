@@ -28,7 +28,7 @@ Gawk是GNU工程对AWK编程语言的实现。它符合POSIX 1003.1标准。该�
 
 当使用 **--profile** 选项调用gawk时，gawk将开始从程序的执行中收集性能分析统计信息。 Gawk在这种模式下运行速度较慢，并且在完成后会自动在文件 **awkprof.out** 中生成一个执行配置文件。请参阅下面的 **--profile** 选项。
 
-Gawk还具有集成的调试器。可以通过在命令行中指定--debug选项来启动交互式调试会话。在这种执行方式下，gawk将加载AWK源代码，然后提示您调试程序。 Gawk只能调试-f和--include选项提供的AWK程序源码。调试器在《[高效AWK编程](#effective_awk_programing)》中说明。
+Gawk还具有集成的调试器。可以通过在命令行中指定--debug选项来启动交互式调试会话。在这种执行方式下，gawk将加载AWK源代码，然后提示您调试程序。 Gawk只能调试-f和--include选项提供的AWK程序源码。调试器在《[高效AWK编程](#effectiveawkprograming)》中说明。
 
 # 4 选项格式
 
@@ -426,6 +426,79 @@ pattern1, pattern2
 |--posix|仅支持 POSIX 正则表达式，GNU 运算符并不特殊。 （例如，\\w 匹配文字 w）。|
 |--traditional|传统的 UNIX awk 正则表达式是匹配的。 GNU 运算符并不特殊，并且区间表达式不可用。 八进制和十六进制转义序列描述的字符按字面处理，即使它们表示正则表达式元字符。|
 |--traditional|允许在正则表达式中使用区间表达式，即使已提供--traditional选项。|
+
+## 8.3 动作
+
+动作语句括在大括号 **{** 和 **}** 中。 动作语句由大多数语言中常见的赋值语句、条件语句和循环语句组成。 可用的运算符、控制语句和输入/输出语句是按照 C 中的模式设计的。
+
+### 8.3.1 运算符
+
+AWK 中的运算符按优先级递减的顺序是：
+|运算符|说明|
+|:--|:--|
+|(...) |分组。|
+|\$| 字段引用。|
+|\+\+、--| 递增和递减，前缀和后缀。|
+|^|取幂（也可以使用 `\*\*`，而 `**=` 用于赋值运算符）。
+|+、-、！|正数、负数和逻辑非。
+|\*、 /、 %| 乘法、除法和求余。|
+|+、-| 加法和减法。|
+|空格| 字符串连接。|
+|\|、\|&| 用于 **getline**、**print** 和 **printf** 的管道 I/O。|
+|\<、>、\<=、 >= 、=\=、!=|普通的关系运算符。|
+|~ 、!~| 正则表达式匹配，不匹配。注意：不要在 **~** 或 **!~** 的左侧使用常量正则表达式 (**/foo/**)。仅在右侧使用。表达式` /foo/ ~ exp` 与 `(($0 ~ /foo/) ~ exp )` 具有相同的含义。这通常不是您想要的。
+|in| 数组成员|
+|&&| 逻辑与。|
+|\|\||逻辑或|
+|?：|C 条件运算符，形式为 `expr1 ？expr 2：expr3`。如果 expr1 为真，则表达式的值为 expr2，否则为 expr3。 expr2 和 expr3 中只有一个是评估。
+|=、+=、-=、\*=、/=、%=、^=|赋值。支持绝对赋值（var = value）和运算赋值（其他形式）。|
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
+
+
+### 8.3.2 控制语句
+
+控制语句如下
+|控制语句|说明|
+|:--|:--|
+|if (condition) statement \[ else statement \]|条件语句|
+|while (condition) statement|当循环|
+|do statement while (condition)|直到循环|
+|for (expr1; expr2; expr3) statement|进循环|
+|for (var in array) statement|遍历循环|
+|break|跳出循环|
+|continue|下一次循环|
+|delete array\[index]|删除数组元素|
+|delete array|删除数组|
+|exit \[ expression ]|退出|
+|{ statements }|普通语句|
+|switch (expression) {<br />&emsp;&emsp;case value\|regex : statement<br />&emsp;&emsp;...<br />&emsp;&emsp;\[ default: statement ]<br />}|开关语句|
+
+### 8.3.3 I/O语句
+输入/输出语句如下：
+|I/O语句|说明|
+|:--|:--|
+|close(file \[, how])|关闭文件、管道或协程。 <u>how </u>是可选的，应该只在将通向协程的双向管道的一端关闭时使用。 它必须是一个字符串值，可以是“**to**”或“**from**”。|
+|getline| 从下一个输入记录设置 **\$0**； 设置 **NF**、**NR**、**FNR**、**RT**。|
+|getline \<file| 从文件的下一条记录设置 **\$0**； 设置 **NF**，**RT**。|
+|getline var| 从下一个输入记录设置 <u>var</u>； 设置 **NR**、**FNR**、**RT**。|
+|getline var \<file | 从文件的下一条记录设置<u>var</u>； 设置 **RT**。|
+|command \| getline \[var]|运行命令<u>command</u>，将输出通过管道传输到 **\$0** 或 <u>var</u>（如上所述）和 **RT**。|
+|command \|& getline \[var]|将命令<u>command</u>作为协进程运行，将输出用管道传输到 \$0 或 <u>var</u>（如上所述）和 **RT**。 协程是一个gawk扩展。 （命令<u>command</u>也可以是一个套接字。请参阅下面的[特殊文件名](#SpecialFileNames)小节。）|
+|next|停止处理当前输入记录。 读取下一个输入记录并使用 AWK 程序中的第一个模式重新开始处理。 到达输入数据的末尾后，执行任何**END** 规则(如果有)。|
+|nextfile|停止处理当前输入文件。 读取的下一个输入记录来自下一个输入文件。 更新 **FILENAME** 和 **ARGIND**，将 **FNR** 重置为 1，并使用 AWK 程序中的第一个模式重新开始处理。 到达输入数据的末尾后，执行任何 **ENDFILE** 和 **END** 规则(如果有)。|
+|print|打印当前记录。 输出记录以 **ORS** 的值终止。|
+|print expr-list|打印表达式。 每个表达式都由 **OFS** 的值分隔。 输出记录以 **ORS** 的值终止。|
+|print expr-list \>file|打印表达式到文件<u>file</u>。每个表达式都由 **OFS** 的值分隔。 输出记录以 **ORS** 的值终止。|
+|printf fmt, expr-list|格式化打印。请参阅下面的[printf](#printf)语句。|
+|printf fmt, expr-list \>file|格式化打印到文件中。请参阅下面的[printf](#printf)语句。|
+ |system(cmd-line)|执行命令<u>cmd-line</u>，返回退出状态。 （这在非 POSIX 系统上可能不可用。）有关退出状态的完整详细信息，请参阅 GAWK：Effective AWK Programming。
+|fflush(\[file]) |
+|print ... \>\> file|
+|print ... \| command|
+|print ... \|& command|
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+
+
 
 
 
