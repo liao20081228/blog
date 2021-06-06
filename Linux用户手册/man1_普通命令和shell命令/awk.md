@@ -494,7 +494,7 @@ AWK 中的运算符按优先级递减的顺序是：
 |print expr-list \>file|打印表达式到文件<u>file</u>。每个表达式都由 **OFS** 的值分隔。 输出记录以 **ORS** 的值终止。|
 |printf fmt, expr-list|格式化打印。请参阅下面的[printf](#printf)语句。|
 |printf fmt, expr-list \>file|格式化打印到文件中。请参阅下面的[printf](#printf)语句。|
- |system(cmd-line)|执行命令<u>cmd-line</u>，返回退出状态。 （这在非 POSIX 系统上可能不可用。）有关退出状态的完整详细信息，请参阅 GAWK：Effective AWK Programming。
+ |system(cmd-line)|执行命令<u>cmd-line</u>，返回退出状态。 （这在非 POSIX 系统上可能不可用。）有关退出状态的完整详细信息，请参阅《高效AWK编程》。
 |fflush(\[file]) |
 |print ... \>\> file|
 |print ... \| command|
