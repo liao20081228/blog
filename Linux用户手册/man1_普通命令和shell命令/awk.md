@@ -617,10 +617,10 @@ gawk 可以感知多字节。 这意味着 **index**()、**length**()、**substr
 由于 AWK 程序的主要用途之一是处理包含时间戳信息的日志文件，gawk 提供了以下函数来获取时间戳并对其进行格式化。
 |函数|说明|
 |:--|:--|
-|mktime(datespec \[, utc-flag\])|将 <u>datespec</u> 转换为与 **systime**() 返回的格式相同的时间戳，并返回结果。 <u>datespec</u> 是格式为 <u>YYYY</u> <u>MM</u> <u>DD</u> <u>HH</u> <u>MM</u> <u>SS</u>\[ <u>DST</u>\] 的字符串。字符串的内容是六位或七位数字，分别代表完整的年份，包括世纪、月分（1~12）、月的天数（1~31）、小时（0~23）、分钟（0~59），秒（0 60），以及一个可选的夏令时标志。这些数字的值不必在规定的范围内；例如，-1 小时表示午夜前 1 小时。假定为零起点公历，第 0 年在第 1 年之前，第 -1 年在第 0 年之前。如果 <u>utc-flag</u> 存在且非零或非空，则假定时间在 UTC 时区;否则，时间被假定为本地时区。如果 <u>DST</u> 夏令时标志为正，则假定时间为夏令时；如果为零，则假定时间为标准时间；如果为负值（默认值）， **mktime**() 会尝试确定夏令时是否在指定时间生效。如果 <u>datespec</u> 没有包含足够的元素或者结果时间超出范围，则 **mktime**() 返回 -1。|
+|mktime(datespec \[, utc-flag\])|将 <u>datespec</u> 转换为与 **systime**() 返回的格式相同的时间戳，并返回结果。 <u>datespec</u> 是格式为 <u>YYYY</u> <u>MM</u> <u>DD</u> <u>HH</u> <u>MM</u> <u>SS</u>\[ <u>DST</u>\] 的字符串。字符串的内容是六位或七位数字，分别代表完整的年份，包括世纪、月分（1 ~ 12）、月的天数（1 ~ 31）、小时（0 ~ 23）、分钟（0 ~ 59），秒（0 ~ 60），以及一个可选的夏令时标志。这些数字的值不必在规定的范围内；例如，-1 小时表示午夜前 1 小时。假定为零起点公历，第 0 年在第 1 年之前，第 -1 年在第 0 年之前。如果 <u>utc-flag</u> 存在且非零或非空，则假定时间在 UTC 时区;否则，时间被假定为本地时区。如果 <u>DST</u> 夏令时标志为正，则假定时间为夏令时；如果为零，则假定时间为标准时间；如果为负值（默认值）， **mktime**() 会尝试确定夏令时是否在指定时间生效。如果 <u>datespec</u> 没有包含足够的元素或者结果时间超出范围，则 **mktime**() 返回 -1。|
 |strftime(\[format \[, timestamp\[, utc-flag\]\]\])|根据格式<u>format</u>中的规范格式化时间戳<u>timestamp</u>。 如果 <u>utc-flag</u> 存在且非零或非空，则结果采用 UTC，否则结果采用本地时间。 时间戳应与 **systime**() 返回的格式相同。 如果缺少时间戳<u>timestamp</u>，则使用当前时间。 如果缺少格式<u>format</u>，则使用与 **date**(1) 的输出等效的默认格式。 默认格式在 **PROCINFO\["strftime"\]** 中可用。 有关保证可用的格式转换，请参阅 ISO C 中 **strftime**() 函数的规范。
 |systime()| 返回当前时间，自纪元以来的秒数（POSIX 系统上的 1970-01-01 00:00:00 UTC）。|
-|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
 
 ## 8.12 位操作函数
@@ -648,6 +648,15 @@ Gawk 提供以下位操作函数。 它们的工作方式是将双精度浮点�
 
 
 ## 8.14 国际化函数
+可以在 AWK 程序中使用以下函数在运行时翻译字符串。 有关完整的详细信息，请参阅 《GAWK：高效AWK 编程》。
+
+
+|函数|说明|
+|:--|:--|
+|bindtextdomain(directory \[, domain\])|指定 gawk 查找 **.gmo** 文件的目录，以防它们不会或不能放置在“标准”位置（例如，在测试期间）。它返回<u>domain</u>被“绑定”的目录。<br />默认<u>domain</u>是 **TEXTDOMAIN** 的值。如果目录<u>directory</u>是空字符串 ("")，则 **bindtextdomain**() 返回给定<u>domain</u>的当前绑定。|
+|dcgettext(string \[, domain \[, category\]\])|返回语言环境类别<u>category</u>的文本域<u>domain</u>域中的字符串<u>string</u>的翻译。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。<u>category</u>的默认值为“**LC_MESSAGES**”。<br />如果您为 <u>category</u> 提供值，则它必须是等于 《GAWK：高效AWK 编程》中描述的已知语言环境类别之一的字符串。您还必须提供文本域。如果您想使用当前域，请使用 **TEXTDOMAIN**。|
+|dcngettext(string1, string2, number \[, domain \[, category\]\])|返回用于语言环境类别<u>category</u>的文本域<u>domain</u>中 <u>string1 </u>和 <u>string2</u> 的翻译的数字的复数形式。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。 类别的默认值为“**LC_MESSAGES**”。 <br />如果您为 <u>category</u> 提供值，则它必须是等于 《GAWK：高效AWK 编程》中描述的已知语言环境类别之一的字符串。 您还必须提供文本域。 如果您想使用当前域，请使用 **TEXTDOMAIN**。 |
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
 # 9 用户定义函数
 
