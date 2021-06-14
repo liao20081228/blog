@@ -655,7 +655,7 @@ AWK 具有以下内置输数学函数：
 |:--|:--|
 |bindtextdomain(directory \[, domain\])|指定 <u>gawk</u> 查找 **.gmo** 文件的目录，以防它们不会或不能放置在“标准”位置（例如，在测试期间）。它返回<u>domain</u>被“绑定”的目录。<br />默认<u>domain</u>是 **TEXTDOMAIN** 的值。如果目录<u>directory</u>是空字符串 ("")，则 **bindtextdomain**() 返回给定<u>domain</u>的当前绑定。|
 |dcgettext(string \[, domain \[, category\]\])|返回语言环境类别<u>category</u>的文本域<u>domain</u>域中的字符串<u>string</u>的翻译。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。<u>category</u>的默认值为“**LC_MESSAGES**”。<br />如果您为 <u>category</u> 提供值，则它必须是等于 《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中描述的已知语言环境类别之一的字符串。您还必须提供文本域。如果您想使用当前域，请使用 **TEXTDOMAIN**。|
-|dcngettext(string1, string2, number \[, domain \[, category\]\])|返回用于语言环境类别<u>category</u>的文本域<u>domain</u>中 <u>string1 </u>和 <u>string2</u> 的翻译的数字的复数形式。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。 类别<u>category</u>的默认值为“**LC_MESSAGES**”。 <br />如果您为 <u>category</u> 提供值，则它必须是等于 《<u>gawk</u>：高效AWK 编程》中描述的已知语言环境类别之一的字符串。 您还必须提供文本域。 如果您想使用当前域，请使用 **TEXTDOMAIN**。 |
+|dcngettext(string1, string2, number \[, domain \[, category\]\])|返回用于语言环境类别<u>category</u>的文本域<u>domain</u>中 <u>string1 </u>和 <u>string2</u> 的翻译的数字的复数形式。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。 类别<u>category</u>的默认值为“**LC_MESSAGES**”。 <br />如果您为 <u>category</u> 提供值，则它必须是等于《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中描述的已知语言环境类别之一的字符串。 您还必须提供文本域。 如果您想使用当前域，请使用 **TEXTDOMAIN**。 |
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
 # 9 用户定义函数
@@ -711,12 +711,12 @@ function myfunc()
 字符串常量是用双引号括起来的字符序列。在非英语环境中，可以将 AWK 程序中的字符串标记为需要翻译为当地自然语言。此类字符串在 AWK 程序中用前导下划线 (“\_”) 标记。例如，
 
 ``` awk
-<u>gawk</u> 'BEGIN { print "hello, world" }'
+gawk 'BEGIN { print "hello, world" }'
 ```
 始终打印 hello, world. 但是,
 
 ``` awk
-<u>gawk</u> 'BEGIN { print _"hello, world" }'
+gawk 'BEGIN { print _"hello, world" }'
 ```
 在法国，可能会打印 bonjour, monde。
 
@@ -795,7 +795,7 @@ a = length($0)
 
 AWK 书没有定义 **close**() 函数的返回值。 在关闭输出文件或管道时，<u>gawk</u> 的 **close**() 分别从 **fclose**(3) 或 **pclose**(3) 返回值。它在关闭输入管道时返回进程的退出状态。如果指定文件、管道或协进程未通过重定向打开，则返回值为 -1。
 
-当使用 **--traditional** 选项调用 <u>gawk</u> 时，如果 **-F** 选项的 **fs** 参数为“t”，则 **FS** 设置为制表符。请注意，键入 **<u>gawk</u> -F\\t ...** 只会导致 shell 引用“t”，而不会将“\\t”传递给 **-F** 选项。由于这是一个相当丑陋的特殊情况，因此它不是默认行为。如果指定了 **--posix**，也不会发生此行为。要真正获得制表符作为字段分隔符，最好使用单引号： **<u>gawk</u> -F'\\t' ....**。
+当使用 **--traditional** 选项调用 <u>gawk</u> 时，如果 **-F** 选项的 **fs** 参数为“t”，则 **FS** 设置为制表符。请注意，键入 **gawk -F\\t ...** 只会导致 shell 引用“t”，而不会将“\\t”传递给 **-F** 选项。由于这是一个相当丑陋的特殊情况，因此它不是默认行为。如果指定了 **--posix**，也不会发生此行为。要真正获得制表符作为字段分隔符，最好使用单引号： **gawk -F'\\t' ....**。
 # 16 环境变量
 环境变量 **AWKPATH** 用于提供 <u>gawk</u> 在查找通过 **-f**、**--file**、**-i** 和 **--include** 选项以及 **@include** 指令 指定的文件时的搜索目录列表。如果初始搜索失败，则在将 **.awk** 附加到文件名后再次搜索路径。
 
