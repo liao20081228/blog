@@ -724,20 +724,21 @@ gawk 'BEGIN { print _"hello, world" }'
 
 1. 添加一个 **BEGIN** 动作来为 **TEXTDOMAIN** 变量赋值，从而将文本域设置为与您的程序关联的名称：
 
-``` awk
-BEGIN { TEXTDOMAIN = "myprog" }
-```
-这允许 gawk 找到与您的程序关联的 .gmo 文件。如果没有这一步，gawk 使用消息文本域，它可能不包含您程序的翻译。
+	``` awk
+	BEGIN { TEXTDOMAIN = "myprog" }
+	```
+	
+	这允许 gawk 找到与您的程序关联的 **.gmo** 文件。如果没有这一步，gawk 使用**messages**文本域，它可能不包含您程序的翻译。
 
 2. 用前导下划线标记所有应翻译的字符串。
 
-3. 如有必要，请根据需要在您的程序中使用 dcgettext() 和/或 bindtextdomain() 函数。
+3. 如有必要，请根据需要在您的程序中使用 **dcgettext**() 或 **bindtextdomain**() 函数。
 
-4. 运行 gawk --gen-pot -f myprog.awk > myprog.pot 为您的程序生成一个 .pot 文件。
+4. 运行 **gawk --gen-pot -f myprog.awk > myprog.pot** 为您的程序生成一个 **.pot** 文件。
 
-5. 提供适当的翻译，并构建和安装相应的 .gmo 文件。
+5. 提供适当的翻译，并构建和安装相应的 **.gmo** 文件。
 
-GAWK：Effective AWK Programming 中详细描述了国际化功能。 
+《GAWK：高效AWK编程》 中详细描述了国际化功能。 
 # 13 POSIX兼容
 
 # 14 历史特性
