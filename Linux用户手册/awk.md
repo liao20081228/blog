@@ -43,7 +43,7 @@ gawk [ POSIX or GNU style options ] [ -- ] program-text file ...
 |短选项|长选项|说明|
 |:--|:--|:--|
 |-b|--characters-as-bytes|将所有输入数据视为单字节字符。 换句话说，在尝试将字符串作为多字节字符处理时，不必特别注意语言环境信息。 **--posix** 选项将覆盖此选项。|
-|-c|--traditional|以兼容模式运行。 在兼容模式下，<u>gawk</u>的行为与Brian Kernighan awk相同； 无法识别特定于GNU的扩展。 有关更多信息，请参见下面的[GNU扩展](#GNU_EXTENSIONS)。|
+|-c|--traditional|以兼容模式运行。 在兼容模式下，<u>gawk</u>的行为与Brian Kernighan awk相同； 无法识别特定于GNU的扩展。 有关更多信息，请参见下面的[GNU扩展](#GNUEXTENSIONS)。|
 |-C|--copyright|在标准输出上打印GNU版权信息的简短版本，然后成功退出。|
 |-d\[file]|--dump-variables\[=file]|将全局变量以及它们的类型和最终值的排序列表打印到文件<u>file</u>中。如果未提供文件<u>file</u>，则<u>gawk</u>在当前目录中输出名为**awkvars.out**的文件。列出所有全局变量是在程序中查找“按错键错误”的好方法。如果您的大型程序具有很多函数，并且还希望确保您的函数不会无意中使用本应是局部变量的全局变量，那么您也可以使用此选项。（使用i，j等简单变量名称时，这是一个特别容易犯的错误。）|
 |-D\[file]|--debug\[=file]|启用AWK程序调试。默认情况下，调试器从键盘（标准输入）以交互方式读取命令。可选的<u>file</u>参数指定一个文件，其中包含命令列表，以供调试器以非交互方式执行。|
@@ -763,7 +763,7 @@ a = length($0)
 ```
 使用此功能是一种糟糕的做法，如果在命令行中指定了 **--lint**，<u>gawk</u> 会发出有关其使用的警告。
 # 15 GNU扩展
-<u>gawk</u> 对 POSIX awk 的扩展太多了。本节对它们进行了描述。可以通过使用 **--traditional** 或 **--posix** 选项调用 <u>gawk</u> 来禁用此处描述的所有扩展。
+<u>gawk</u> 对 POSIX awk 的<span id='GNUEXTENSIONS'>扩展</span>太多了。本节对它们进行了描述。可以通过使用 **--traditional** 或 **--posix** 选项调用 <u>gawk</u> 来禁用此处描述的所有扩展。
 
 <u>gawk</u> 的以下特性在 POSIX awk 中不可用。
 
