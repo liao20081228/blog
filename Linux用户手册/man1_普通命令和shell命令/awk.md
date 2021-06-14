@@ -17,8 +17,8 @@ gawk——模式扫描和处理语言。
 # 2 概要
 
 ``` shell
-	gawk [ POSIX or GNU style options ] -f program-file [ -- ] file ...
-	gawk [ POSIX or GNU style options ] [ -- ] program-text file ...
+gawk [ POSIX or GNU style options ] -f program-file [ -- ] file ...
+gawk [ POSIX or GNU style options ] [ -- ] program-text file ...
 ```
 # 3 说明
 
@@ -655,10 +655,54 @@ Gawk 提供以下位操作函数。 它们的工作方式是将双精度浮点�
 |:--|:--|
 |bindtextdomain(directory \[, domain\])|指定 gawk 查找 **.gmo** 文件的目录，以防它们不会或不能放置在“标准”位置（例如，在测试期间）。它返回<u>domain</u>被“绑定”的目录。<br />默认<u>domain</u>是 **TEXTDOMAIN** 的值。如果目录<u>directory</u>是空字符串 ("")，则 **bindtextdomain**() 返回给定<u>domain</u>的当前绑定。|
 |dcgettext(string \[, domain \[, category\]\])|返回语言环境类别<u>category</u>的文本域<u>domain</u>域中的字符串<u>string</u>的翻译。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。<u>category</u>的默认值为“**LC_MESSAGES**”。<br />如果您为 <u>category</u> 提供值，则它必须是等于 《GAWK：高效AWK 编程》中描述的已知语言环境类别之一的字符串。您还必须提供文本域。如果您想使用当前域，请使用 **TEXTDOMAIN**。|
-|dcngettext(string1, string2, number \[, domain \[, category\]\])|返回用于语言环境类别<u>category</u>的文本域<u>domain</u>中 <u>string1 </u>和 <u>string2</u> 的翻译的数字的复数形式。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。 类别的默认值为“**LC_MESSAGES**”。 <br />如果您为 <u>category</u> 提供值，则它必须是等于 《GAWK：高效AWK 编程》中描述的已知语言环境类别之一的字符串。 您还必须提供文本域。 如果您想使用当前域，请使用 **TEXTDOMAIN**。 |
+|dcngettext(string1, string2, number \[, domain \[, category\]\])|返回用于语言环境类别<u>category</u>的文本域<u>domain</u>中 <u>string1 </u>和 <u>string2</u> 的翻译的数字的复数形式。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。 类别<u>category</u>的默认值为“**LC_MESSAGES**”。 <br />如果您为 <u>category</u> 提供值，则它必须是等于 《GAWK：高效AWK 编程》中描述的已知语言环境类别之一的字符串。 您还必须提供文本域。 如果您想使用当前域，请使用 **TEXTDOMAIN**。 |
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
 # 9 用户定义函数
+AWK 中的函数定义如下：
+```awk
+function name(parameter list) { statements }
+```
+当函数在模式或动作中的表达式中被调用时，函数就会执行。 函数调用中提供的实际参数用于实例化函数中声明的形式参数。 数组按引用传递，其他变量按值传递。
+
+由于函数最初不是 AWK 语言的一部分，因此对局部变量的规定相当笨拙：它们在参数列表中被声明为额外的参数。 约定通过参数列表中的额外空格将局部变量与实际参数分开。 例如：
+
+``` awk
+function  f(p, q,     a, b)   # a 和 b 是本地变量
+{
+    ...
+}
+
+/abc/     { ... ; f(1, 2) ; ... }
+```
+函数调用中的左括号必须紧跟在函数名之后，中间没有任何空格。 这避免了连接运算符的句法歧义。 此限制不适用于上面列出的内置函数。
+
+函数可以相互调用并且可以递归。 用作局部变量的函数参数在函数调用时被初始化为空字符串和数字零。
+
+使用 **return** <u>expr</u> 从函数返回一个值。 如果没有提供任何值，或者如果函数通过“falling off”结束返回，则返回值是未定义的。
+
+作为 gawk 的扩展，函数可以被间接调用。 为此，请将要调用的函数的名称作为字符串赋值给变量。 然后像使用函数名一样使用该变量，并以 @ 符号为前缀，如下所示：
+
+``` awk
+function myfunc()
+{
+     print "myfunc called"
+    ...
+}
+
+{
+     ...
+     the_func = "myfunc"
+     @the_func()    # call through the_func to myfunc
+     ...
+}
+
+```
+从版本 4.1.2 开始，这适用于用户定义的函数、内置函数和扩展函数。
+
+如果提供了 **--lint**，gawk 会在解析时而不是在运行时警告对未定义函数的调用。 在运行时调用未定义的函数是一个致命错误。
+
+**func** 这个词可以用来代替 **function**，尽管这已被弃用。
 # 10 动态载入新函数
 您可以使用`@load` 语句将用 C 或 C++ 编写的新函数动态添加到正在运行的 gawk 解释器中。 完整的细节超出了本手册页的范围； 请参阅 《GAWK：高效AWK 编程》。
 # 11 信号
