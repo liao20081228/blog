@@ -419,8 +419,8 @@ mi posuere lectus.
 
 **代码块的每一行用四个空格或一个tab开头**。例如：
 ```markdown
-int a=10;
-int b=20;
+	int a=10;
+	int b=20;
 ```
 显示效果：
 
