@@ -708,7 +708,36 @@ function myfunc()
 # 11 信号
 gawk 分析器接受两个信号。 **SIGUSR1** 使其将配置文件和函数调用堆栈转储到配置文件，该文件是 **awkprof.out** 或任何使用 **--profile** 选项指定的文件。 然后它继续运行。 **SIGHUP** 导致 gawk 转储配置文件和函数调用堆栈，然后退出。
 # 12 国际化
+字符串常量是用双引号括起来的字符序列。在非英语环境中，可以将 AWK 程序中的字符串标记为需要翻译为当地自然语言。此类字符串在 AWK 程序中用前导下划线 (“\_”) 标记。例如，
 
+``` awk
+gawk 'BEGIN { print "hello, world" }'
+```
+始终打印 hello, world. 但是,
+
+``` awk
+gawk 'BEGIN { print _"hello, world" }'
+```
+在法国，可能会打印 bonjour, monde。
+
+生成和运行可本地化的 AWK 程序涉及几个步骤。
+
+1. 添加一个 **BEGIN** 动作来为 **TEXTDOMAIN** 变量赋值，从而将文本域设置为与您的程序关联的名称：
+
+``` awk
+BEGIN { TEXTDOMAIN = "myprog" }
+```
+这允许 gawk 找到与您的程序关联的 .gmo 文件。如果没有这一步，gawk 使用消息文本域，它可能不包含您程序的翻译。
+
+2. 用前导下划线标记所有应翻译的字符串。
+
+3. 如有必要，请根据需要在您的程序中使用 dcgettext() 和/或 bindtextdomain() 函数。
+
+4. 运行 gawk --gen-pot -f myprog.awk > myprog.pot 为您的程序生成一个 .pot 文件。
+
+5. 提供适当的翻译，并构建和安装相应的 .gmo 文件。
+
+GAWK：Effective AWK Programming 中详细描述了国际化功能。 
 # 13 POSIX兼容
 
 # 14 历史特性
