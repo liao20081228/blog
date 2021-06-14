@@ -740,18 +740,92 @@ gawk 'BEGIN { print _"hello, world" }'
 
 《GAWK：高效AWK编程》 中详细描述了国际化功能。 
 # 13 POSIX兼容
+gawk 的主要目标是兼容 POSIX 标准以及Brian Kernighan awk 的最新版本。为此，gawk 结合了以下用户可见的特性，这些特性在 AWK 书中没有描述，但属于 Brian Kernighan 的 awk 版本，并且属于 POSIX 标准。
 
+这本书指出，当 awk 将参数作为文件打开时，就会发生命令行变量赋值，这是在执行 **BEGIN** 规则之后。但是，在早期的实现中，当这样的赋值出现在任何文件名之前时，赋值将在运行 **BEGIN** 规则之前发生。应用程序开始依赖于这个“特性”。当 awk 更改以匹配其文档时，添加了用于在程序执行之前赋值变量的 **-v** 选项，以适应依赖于旧行为的应用程序。 （此功能得到了贝尔实验室开发人员和 GNU 开发人员的同意。）
+
+在处理参数时，gawk 使用特殊选项“--”来表示参数结束。在兼容模式下，它会警告但忽略未定义的选项。在正常操作中，此类参数会传递给 AWK 程序以供其处理。
+
+AWK 书没有定义 **srand**() 的返回值。 POSIX 标准让它返回它正在使用的种子，以允许跟踪随机数序列。因此 gawk 中的 **srand**() 也返回其当前种子。
+
+其他特性是： 使用多个 **-f** 选项（来自 MKS awk）； **ENVIRON** 数组； **\\a** 和 **\\v** 转义序列（最初在 gawk 中完成并反馈到贝尔实验室版本）； **tolower**() 和 **toupper**() 内置函数（来自贝尔实验室版本）；和 **printf** 中的 ISO C 转换规范（首先在贝尔实验室版本中完成）。
 # 14 历史特性
+gawk 支持的历史 AWK 实现的一项特性是：可以调用 **length**() 内置函数，不仅可以不带参数，甚至可以不带括号！ 因此，
 
+``` awk
+a = length     # Holy Algol 60, Batman!
+```
+与下面任何一个相同
+
+``` awk
+a = length()
+a = length($0)
+```
+使用此功能是一种糟糕的做法，如果在命令行中指定了 **--lint**，gawk 会发出有关其使用的警告。
 # 15 GNU扩展
+Gawk 对 POSIX awk 的扩展太多了。本节对它们进行了描述。可以通过使用 **--traditional** 或 **--posix** 选项调用 gawk 来禁用此处描述的所有扩展。
 
+gawk 的以下特性在 POSIX awk 中不可用。
+
+* 不对通过 **-f** 选项指定的文件执行路径搜索。因此变量**AWKPATH** 并不是特殊变量。
+* 无法进行文件包含（gawk 的 **@include** 机制）
+* 无法动态添加用C 编写的新函数（gawk 的 **@load** 机制）
+* **\\x** 转义序列。
+* 在 **？** 和 **:** 之后续行的能力。
+* AWK 程序中的八进制和十六进制常量。
+* 变量**ARGIND**、**BINMODE**、**ERRNO**、**LINT**、**PREC**、**ROUNDMODE**、**RT** 和 **TEXTDOMAIN** 并不是特殊变量。
+* **IGNORECASE** 变量及其副作用不可用。
+* **FIELDWIDTHS**变量和固定宽度字段拆分。
+* **FPAT** 变量和基于字段值的字段拆分。
+* **FUNCTAB**、**SYMTAB** 和 **PROCINFO** 数组不可用。
+* 使用 RS 作为正则表达式。
+* 无法识别用于 I/O 重定向的特殊文件名。
+* 用于创建协进程的 **|&** 运算符。
+* **BEGINFILE** 和 **ENDFILE** 特殊模式不可用。
+* 使用空字符串作为 **FS** 的值以及 **split**() 的第三个参数来拆分单个字符串。
+* **split**() 的可选第四个参数，用来接收分隔符文本。
+* **close**() 函数的可选第二个参数。
+* **match**() 函数的可选第三个参数。
+* 在 **printf** 和 **sprintf**() 中使用位置说明符。
+* 将数组传递给**length**() 。
+* **and**()、**asort**()、**asorti**()、**bindtextdomain**()、**compl**()、**dcgettext**()、**dcngettext**()、**gensub**()、**lshift**()、**mktime**()、**or**()、**patsplit**()、 **rshift**()、**strftime**()、**strtonum**()、**systime**() 和 **xor**() 函数。
+* 可本地化的字符串。
+* 非致命I/O。
+* 可重试的 I/O。
+
+AWK 书没有定义 **close**() 函数的返回值。 在关闭输出文件或管道时，Gawk 的 **close**() 分别从 **fclose**(3) 或 **pclose**(3) 返回值。它在关闭输入管道时返回进程的退出状态。如果指定文件、管道或协进程未通过重定向打开，则返回值为 -1。
+
+当使用 **--traditional** 选项调用 gawk 时，如果 **-F** 选项的 **fs** 参数为“t”，则 **FS** 设置为制表符。请注意，键入 **gawk -F\\t ...** 只会导致 shell 引用“t”，而不会将“\\t”传递给 **-F** 选项。由于这是一个相当丑陋的特殊情况，因此它不是默认行为。如果指定了 **--posix**，也不会发生此行为。要真正获得制表符作为字段分隔符，最好使用单引号： **gawk -F'\\t' ....**。
 # 16 环境变量
+环境变量 **AWKPATH** 用于提供 gawk 在查找通过 **-f**、**--file**、**-i** 和 **--include** 选项以及 **@include** 指令 指定的文件时的搜索目录列表。如果初始搜索失败，则在将 **.awk** 附加到文件名后再次搜索路径。
+
+**AWKLIBPATH** 环境变量可用于提供 gawk 在查找通过 **-l** 和 **--load** 选项指定的文件时的搜索目录列表。
+
+**GAWK_READ_TIMEOUT** 环境变量可用于指定从终端、管道或双向通信（包括套接字）读取输入的超时（以毫秒为单位）。
+
+对于通过套接字连接到远程主机， **GAWK_SOCK_RETRIES** 控制重试次数， **GAWK_MSEC_SLEEP** 控制重试间隔。间隔以毫秒为单位。在不支持 **usleep**(3) 的系统上，该值向上取整为整数秒。
+
+如果 **POSIXLY_CORRECT** 存在于环境中，则 gawk 的行为就像在命令行中指定了 **--posix** 一样。如果指定了 **--lint**，gawk 会发出一条警告消息。
 
 # 17 退出状态
+如果 **exit** 语句与一个值一起使用，则 gawk 会以给定的数值退出。
+
+否则，如果在执行过程中没有问题，gawk 会以 C 常量 **EXIT_SUCCESS** 的值退出。 这通常为0。
+
+如果发生错误，gawk 会以 C 常量 **EXIT_FAILURE** 的值退出。 这通常是1。
+
+如果 gawk 由于致命错误而退出，则退出状态为 2。在非 POSIX 系统上，此值可能会映射到 **EXIT_FAILURE**。
 
 # 18 版本信息
-
+本手册页说明了 gawk，版本 5.0。
 # 19 作者
+UNIX awk 的原始版本是由贝尔实验室的 Alfred Aho、Peter Weinberger 和 Brian Kernighan 设计和实现的。 Brian Kernighan 继续维护和增强它。
+
+自由软件基金会的 Paul Rubin 和 Jay Fenlason 编写了 gawk，以便与在 UNIX 第七版中分发的原始版本的 awk 兼容。John Woods 贡献了许多错误修复。 在 Arnold Robbins 的贡献下，David Trueman 使 gawk 与新版本的 UNIX awk 兼容。 Arnold Robbins 是当前的维护者。
+
+有关 gawk 及其文档的贡献者的完整列表，请参阅 《GAWK：高效AWK 编程》。
+
+有关维护者的最新信息以及当前支持的端口，请参阅 gawk 发行版中的 **README** 文件。
 
 # 20 bug报告
 # 21 bug
