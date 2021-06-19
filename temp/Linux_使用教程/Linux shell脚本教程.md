@@ -298,12 +298,12 @@ source filename
 |TERM |			  颜色模式，16级或256级
 |UID|				 用户ID
 |USER  |          用户名
-|XDG_SESSION_ID | 终端会话id
+|XDG_SESSION：_ID | 终端会话id
 |XDG_RUNTIME_DIR|系统用户独立的运行目录
-|LINENO|行号|
-|BASH_LINENO|行号|
+|LINENO|当前行号|
+|BASH_LINENO|函数被调用的行号|
 |BASH_SOURCE[0]|当前文件|
-|FUNCNAME[]|函数调用数组|
+|FUNCNAME[]|函数调用数组,0表示当前函数，1表示调用函数，依此类推|
 
 
 
