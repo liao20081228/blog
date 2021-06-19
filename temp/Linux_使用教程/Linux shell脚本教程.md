@@ -300,6 +300,10 @@ source filename
 |USER  |          用户名
 |XDG_SESSION_ID | 终端会话id
 |XDG_RUNTIME_DIR|系统用户独立的运行目录
+|LINENO|行号|
+|BASH_LINENO|行号|
+|BASH_SOURCE[0]|当前文件|
+|FUNCNAME[]|函数调用数组|
 
 
 
