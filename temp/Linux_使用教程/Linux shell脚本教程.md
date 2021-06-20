@@ -301,8 +301,8 @@ source filename
 |XDG_SESSION：_ID | 终端会话id
 |XDG_RUNTIME_DIR|系统用户独立的运行目录
 |LINENO|LINENO出现时的当前行号|
-|BASH_LINENO|BASH_LINENO所在函数被调用的行号|
-|BASH_SOURCE[0]|当前文件|
+|BASH_LINENO[]|函数被调用时的行号，0表示所在函数的调用语句在源文件中的行号|
+|BASH_SOURCE[]|函数所在文件，0表示当前函数所在文件，1表示调用函数所在文件，以此类推|
 |FUNCNAME[]|函数调用数组,0表示当前函数，1表示调用函数，依此类推|
 
 
