@@ -67,14 +67,14 @@ expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 |命令|命令|命令|命令|命令|
 |:--|:--|:--|:--|:--|
 |[close](#close)|[debug](#debug)|[disconnect](#disconnect)|[exit](#exit)|[exp_continue](#exp_continue)|
-|exp_internal|exp_open|exp_pid|exp_send|exp_send_error|
-|exp_send_log|exp_send_tty|exp_send_user|exp_version|expect|
-|expect_after|expect_background|expect_before|expect_tty|expect_user|
-|fork|interact|interpreter|log_file|log_user|
-|match_max|overlay|parity|remove_nulls|send|
-|send_error|send_log|send_tty|send_user|sleep|
-|spawn|strace|stty|system|timestamp|
-|trap|wait|
+|[exp_internal](#exp_internal)|[exp_open](#exp_open)|[exp_pid](#exp_pid)|[exp_send](#exp_send)|[exp_send_error](#exp_send_error)|
+|[exp_send_log](#exp_send_log)|[exp_send_tty](#exp_send_tty)|[exp_send_user](#exp_send_user)|[exp_version](#exp_version)|[expect](#expect)|
+|[expect_after](#expect_after)|[expect_background](#expect_background)|[expect_before](#expect_before)|[expect_tty](#expect_tty)|[expect_user](#expect_user)|
+|[fork](#fork)|[interact](#interact)|[interpreter](#interpreter)|[log_file](#log_file)|[log_user](#log_user)|
+|[match_max](#match_max)|[overlay](#overlay)|[parity](#parity)|[remove_nulls](#remove_nulls)|[send](#send)|
+|[send_error](#send_error)|[send_log](#send_log)|[send_tty](#send_tty)|[send_user](#send_user)|[sleep](#sleep)|
+|[spawn](#spawn)|[strace](#strace)|[stty](#stty)|[system](#system)|[timestamp](#timestamp) |
+|[trap](#trap)|[wait](#wait)|[asd ](#asd )
 ## 5.1 close
 ```tcl
 close [-slave] [-onexec 0|1] [-i spawn_id]
