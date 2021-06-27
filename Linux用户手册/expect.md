@@ -44,7 +44,7 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 |cmdfile||**Expect**读取<u>cmdfile</u>以获取要执行的命令列表。在支持 `＃!` 的系统上，**Expect**也可以被隐式调用，通过将脚本标记为可执行文件，并在脚本的第一行中添加<br />&emsp;&emsp;`#!/usr/bin/Expect -f`。<br />当然，路径必须准确地描述**Expect**的安装位置。 `/usr/bin`只是一个示例。|
 |-c cmds|-command cmds|在执行脚本前先执行<u>cmds</u>。该命令应加引号，以防止被shell破坏。此选项可以多次使用。可以使用单个 **-c** 执行多个命令，多个命令之间用分号";"分开。命令按照它们出现的顺序被执行。
 |-d|-diag|启用一些诊断输出，该诊断输出主要报告命令的内部活动，例如**expect**和**interact**。此标志与在**Expect**脚本开头的“exp_internal 1”具有相同的作用，并且还会打印**Expect**的版本。（**strace**命令用于跟踪语句，**trace**命令用于跟踪变量赋值。）|
-|-D num|-Debug num|启用交互式调试器。应该跟一个整数值。如果该值不为零或按下Ctrl+C（或达到断点，或脚本中出现其他合适的调试器命令），则调试器将在下一个Tcl过程之前获得控制权。有关调试器的更多信息，请参见README文件或[另请参阅](#SeeAlso)。| 
+|-D num|-Debug num|<span id="Debug">启用交互式调试器</span>。应该跟一个整数值。如果该值不为零或按下Ctrl+C（或达到断点，或脚本中出现其他合适的调试器命令），则调试器将在下一个Tcl过程之前获得控制权。有关调试器的更多信息，请参见README文件或[另请参阅](#SeeAlso)。| 
 |-f| -file|在执行脚本先执行<u>file</u>。该标志本身是可选的，因为它仅在使用`#!`注释时才有用（请参见上文），以便可以在命令行上提供其他参数。|
 |-b|-buffer|默认情况下，命令文件被读入内存并完整执行。有时希望一次读取一行文件。 例如，stdin 就是这样读取的。 为了强制以这种方式处理任意文件，请使用 **-b** 标志。 请注意，stdio-buffering 可能仍会发生，但从 fifo 或 stdin 读取时不会引起问题。|
 |-||如果字符串“-”作为文件名提供，则改为读取标准输入。 （“./-”从实际名为“-”的文件中读取。）
@@ -57,7 +57,7 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 # 5 命令
 **Expect**使用了Tcl（工具命令语言）。 Tcl提供控制流（例如，if、for、break）、表达式求值和其他一些特性，如递归、过程定义等。本文中使用了但没有定义的命令（例如，set，if，exec）是Tcl命令（请参阅tcl(3)）。 **Expect**支持其他命令如下所述。除非另有说明，否则命令将返回空字符串。
 
-命令按字母顺序列出，以便可以快速找到它们。但是，新用户可能会发现按**spawn**、**send**、**expect**和**interact**的顺序会更容易开始。
+命令按字母顺序列出，以便可以快速找到它们。但是，新用户可能会发现按 **[spawn](#spawn)**、**[send](#send)**、**[expect](#expect)** 和 **[interact](#interact)** 的顺序会更容易开始。
 
 请注意，在《探索Expect》一书中提供了对语言（**Expect**和**Tcl**）的最佳介绍（请参阅下面的[另请参阅](#SeeAlso)）。此手册页包含了一些示例，但由于本手册页主要是作为参考资料，因此它们的使用范围非常有限。
 
@@ -85,44 +85,45 @@ debug [[-now] 0|1]
 
 不带参数的情况下，如果调试器未运行，则返回1，否则返回0。
 
-参数为1时，将启动调试器。如果参数为0，则调试器将停止。如果1参数前面带有-now标志，则调试器将立即启动（即，在debug命令本身中）。否则，调试器将随下一个Tcl语句启动。
+参数为1时，将启动调试器。如果参数为0，则调试器将停止。如果1参数前面带有 **-now** 标志，则调试器将立即启动（即，在**debug**命令本身中）。否则，调试器将随下一个Tcl语句启动。
 
-debug命令不会更改任何trap。将其与以-D标志开头的**expect**（请参见上文）进行比较。
+**debug**命令不会更改任何trap。将其与以 **-D** 标志开头的**expect**（请[参见上文](#Debug)）进行比较。
 
-有关调试器的更多信息，请参见README文件或另请参阅（以下）。
+有关调试器的更多信息，请参见README文件或[另请参阅](#SeeAlso)。
 
 ## 5.3 disconnect
-断开分支（forked）进程与终端的连接。它继续在后台运行。该进程将被还给他自己的进程组（如果可能）。标准I/O重定向到/dev/null。
+断开fork进程与终端的连接。fork进程继续在后台运行。该fork进程将被还给他自己的进程组（如果可能）。标准I/O重定向到`/dev/null`。
 
-以下片段使用**disconnect**接在后台继续运行脚本。
+以下片段使用**disconnect**在后台继续运行脚本。
 
-``` bash
-	if {[fork]!=0} exit
-		disconnect
-		. . .
+``` tcl
+if {[fork]!=0} exit
+disconnect
+. . .
 ```
 
-下面的脚本读取一个密码，然后每小时运行一个程序，每次运行该程序都需要输入密码。该脚本提供了密码，因此您只需键入一次即可。 （请参阅stty命令，该命令演示了如何关闭密码回显。）
+下面的脚本读取一个密码，然后每小时运行一个程序，每次运行该程序都需要输入密码。该脚本提供了密码，因此您只需键入一次即可。 （请参阅[stty](#stty)命令，该命令演示了如何关闭密码回显。）
 
-``` c
-	send_user "password?\ "
-	expect_user -re "(.*)\n"
-	for {} 1 {} {
-		if {[fork]!=0} {sleep 3600;continue}
-		disconnect
-		spawn priv_prog
-		expect Password:
-		send "$expect_out(1,string)\r"
-		. . .
-		exit
-	}
+``` tcl
+send_user "password?\ "
+expect_user -re "(.*)\n"
+for {} 1 {} {
+	if {[fork]!=0} {sleep 3600;continue}
+	disconnect
+	spawn priv_prog
+	expect Password:
+	send "$expect_out(1,string)\r"
+	. . .
+	exit
+}
 
 ```
 与shell异步进程特性(＆)相比，使用**disconnect**的优点是**Expect**可以在断开连接之前保存终端参数，然后将其应用于新的ptys。使用＆，**Expect**没有机会读取终端的参数，因为在**Expect**收到控制权之前，终端已经断开连接。
+
 ## 5.4 exit
 
-``` bash
-	exit [-opts] [status]
+``` tcl
+exit [-opts] [status]
 ```
 导致**Expect**退出或准备退出。
 
