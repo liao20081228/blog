@@ -71,7 +71,7 @@ close [-slave] [-onexec 0|1] [-i spawn_id]
 
 **expect** 和 **interact** 都会检测当前进程何时退出并隐式执行**close**。 但是，如果您通过`exec kill $pid`来终止进程，则需要显式调用 **close**。
 
-**-onexec**标志确定在任何新派生的进程中或该进程被覆盖时 是否关闭spawn ID。要使spawn ID保持打开状态，请使用值0。非0整数值将在所有新派生进程中强制关闭spawn ID（默认值）。
+**-onexec**标志确定在任何新派生进程中或该进程被覆盖时 是否关闭spawn ID。要使spawn ID保持打开状态，请使用值0。非0整数值将在所有新派生进程中强制关闭spawn ID（默认值）。
 
 **-slave** 标志关闭与 spawn id 关联的从属程序。 （参见“[spawn -pty](spawn_pty)”。）当连接关闭时，如果从属程序仍然打开，它也会自动关闭。
 
@@ -129,22 +129,22 @@ exit [-opts] [status]
 
 **-onexit**标志使下一个参数用作退出处理程序。不带参数的情况下，将返回当前的退出处理程序。
 
-**-noexit**标志使Expect准备退出，停止将控制权真正返回给操作系统。用户定义的退出处理程序以及Expect自己的内部处理程序都将运行。不再执行其他Expect命令。如果您在运行带有其他Tcl扩展的Expect，这将很有用。保留当前的解释器（如果在Tk环境中，则保留主窗口），以便其他Tcl扩展可以clean up。如果再次调用Expect的exit（但是可能会发生这种情况），则不会重新运行处理程序。
+**-noexit**标志使**Expect**准备退出，但没有将控制权真正返回给操作系统。用户定义的退出处理程序以及Expect自己的内部处理程序都将运行。不再执行其他Expect命令。主要用于运行带有其他Tcl扩展的Expect。保留当前的解释器（和主窗口，如果在Tk环境中）以便其他Tcl扩展可以clean up。如果再次调用Expect的**exit**（可能会发生这种情况），则不会重新运行处理程序。
 
-退出后，与派生进程的所有连接都将关闭。生成的进程会将关闭视为EOF。除了正常的_exit(2)过程，exit不会执行其他任何操作。因此，不检查EOF的派生进程可能会继续运行。 （例如，确定发送信号到到一个派生进程的条件是很重要的，但这些条件取决于系统，通常记录在exit(3)下。）继续运行的spawn进程将被init继承。
+退出后，与派生进程的所有连接都将关闭。派生进程会将关闭当作EOF。除了正常的_exit(2)过程，exit不会执行其他任何操作。因此，不检查EOF的派生进程可能会继续运行。 （例如，各种条件对于确定发送什么信号到一个派生进程是很重要的，但这些条件取决于系统，通常记录在exit(3)下。）继续运行的spawn进程将被init继承。
 
 返回<u>status</u>（如果未指定，则为0）作为Expect的退出状态。如果到达脚本末尾，则隐式执行**exit**。
 
 ## 5.5 exp_continue
 
-``` bash
-	exp_continue [-continue_timer]
+```tcl
+exp_continue [-continue_timer]
 ```
-命令**exp_continue**允许**expect**自身继续执行，而不是像往常那样返回。默认情况下，**exp_continue**重置超时计时器。 **-continue_timer**标志可防止重新启动计时器。 （请参阅**expect**以获取更多信息。）
+命令**exp_continue**允许**expect**自身继续执行，而不是像往常那样返回。默认情况下，**exp_continue**重置超时计时器。 <u>-continue_timer</u>标志可防止重新启动计时器。 （请参阅 **[expect](#expect)** 以获取更多信息。）
 ## 5.6 exp_internal
 
-``` bash
-	exp_internal [-f file] value
+``` tcl
+exp_internal [-f file] value
 ```
 如果<u>value</u>非零，则导致其他命令将**Expect**内部的诊断信息发送到stderr。如果<u>value</u>为0，则禁用输出。诊断信息包括接收到的每个字符，以及将当前输出与模式进行匹配的所有尝试。
 
