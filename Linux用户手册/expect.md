@@ -5,7 +5,7 @@ tags: 普通命令
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《Expect manpages》。</font>当前版本为5.45.4。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《Expect manpages》，</font>当前版本为5.45.4，手册更新日期为1994-12-29。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
 
@@ -21,21 +21,21 @@ Expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 
 **Expect**是一个根据脚本来与其他交互式程序“对话”的程序。随着脚本执行，**Expect**知道可以从程序中得到什么以及正确的响应应该是什么。解释型语言提供了分支和高级控制结构来引导对话。此外，用户可以根据需要取得控制权并直接与程序交互，然后将控制权返回给脚本。
 
-**Expectk**是**Expect**和**Tk**的混合物。它的行为就像**Expect**和**Tk**所期望的那样。 **Expect**也可以直接在C或C ++中使用（即不使用Tcl）。参见lib**Expect**(3)。
+**Expectk**是**Expect**和**Tk**的混合物。它的行为就像**Expect**和**Tk**所期望的那样。 **Expect**也可以直接在C或C\+\+中使用（即不使用Tcl）。参见libexpect(3)。
 
-名称“**Expect**”来自在uucp，kermit和其他调制解调器控制程序中流行的send/**Expect**序列的概念。但是，与uucp不同，**Expect**是通用的，因此可以在考虑任何程序和任务的情况下将其作为用户级命令运行。**Expect**实际上可以同时与多个程序对话。
+名称“**Expect**”来自在uucp，kermit和其他调制解调器控制程序中流行的<u>send/expect</u>序列的概念。但是，与uucp不同，**Expect**是通用的，因此可以作为用户级命令与任何程序和任务一起运行。**Expect**实际上可以同时与多个程序对话。
 
 例如，以下是**Expect**可以做的一些事情：
 
 * 使计算机回拨给您，以便您无需付费即可登录。
-* 启动游戏（例如rogue），如果没有出现最佳配置，（一次又一次）重新启动它，直到完成为止，然后将控制权移交给您。
-* 运行fsck，并根据预先确定的标准回答问题，回答“yes”，“no”或将控制权还给您。
-* 连接到另一个网络或BBS（例如MCI Mail，CompuServe），并自动检索您的邮件，使其看起来就像原本就发送到本地系统一样。
-* 在rlogin，telnet，tip，su，chgrp等之间携带环境变量，当前目录或任何类型的信息。
+* 启动游戏（例如rogue），如果没有出现最佳配置，（一次又一次）重新启动它，直到出现最佳配置为止，然后将控制权移交给您。
+* 运行fsck，并根据预先确定的规则回答问题，回答“yes”、“no”或将控制权还给您。
+* 连接到另一个网络或BBS（例如MCI Mail，CompuServe），并自动取回您的邮件，使其看起来就像原本就发送到本地系统一样。
+* 在rlogin，telnet，tip，su，chgrp等之间携带环境变量，当前目录或任何重量的信息。
 
  Shell无法执行这些任务的原因有多种（尝试一下，您会看到的）。使用**Expect**，一切皆有可能。
 
-通常，**Expect**主要用于运行那些需要与用户之间进行交互的程序，前提是可以交互可以字符串化和可以编程话。 如果需要，**Expect**还可以向用户返回控制权（而不会暂停受控制的程序）。 同样，用户可以随时将控制权返回给脚本。
+通常，**Expect**主要用于运行那些需要与用户进行交互的程序，前提是交互可以字符串化和编程化。 如果需要，**Expect**也可以向用户返回控制权（而不会暂停受控制的程序）。 同样，用户可以随时将控制权返回给脚本。
 
 # 4 用法
 
@@ -440,6 +440,6 @@ send "hello world\r"
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《**Expect** manpages》。</font>当前版本为5.45.4。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《Expect manpages》</font>，当前版本为5.45.4，手册更新日期为1994-12-29。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
