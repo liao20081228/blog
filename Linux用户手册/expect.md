@@ -74,8 +74,7 @@ expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 |[match_max](#match_max)|[overlay](#overlay)|[parity](#parity)|[remove_nulls](#remove_nulls)|[send](#send)|
 |[send_error](#send_error)|[send_log](#send_log)|[send_tty](#send_tty)|[send_user](#send_user)|[sleep](#sleep)|
 |[spawn](#spawn)|[strace](#strace)|[stty](#stty)|[system](#system)|[timestamp](#timestamp) |
-|[trap](#trap)|[wait](#wait)|[asd ](#asd )
-## 5.1 close
+|[trap](#trap)|[wait](#wait)|
 ```tcl
 close [-slave] [-onexec 0|1] [-i spawn_id]
 ```
