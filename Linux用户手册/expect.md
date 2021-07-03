@@ -1,5 +1,5 @@
 ---
-title: **Expect**
+title: Expect
 tags: 普通命令
 ---
 
