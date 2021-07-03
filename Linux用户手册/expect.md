@@ -75,10 +75,12 @@ expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 |[send_error](#send_error)|[send_log](#send_log)|[send_tty](#send_tty)|[send_user](#send_user)|[sleep](#sleep)|
 |[spawn](#spawn)|[strace](#strace)|[stty](#stty)|[system](#system)|[timestamp](#timestamp) |
 |[trap](#trap)|[wait](#wait)|
+
+## 5.1 close
 ```tcl
 close [-slave] [-onexec 0|1] [-i spawn_id]
 ```
-关闭与当前进程的连接。大多数交互式程序会在其标准输入stdin中检测 EOF 并退出； 因此 **close** 通常也足以终止进程。 **-i** 标志根据指定的 **spawn_id** 声明要关闭的进程。
+<span id="close">关闭</span>与当前进程的连接。大多数交互式程序会在其标准输入stdin中检测 EOF 并退出； 因此 **close** 通常也足以终止进程。 **-i** 标志根据指定的 **spawn_id** 声明要关闭的进程。
 
 **expect** 和 **interact** 都会检测当前进程何时退出并隐式执行**close**。 但是，如果您通过`exec kill $pid`来终止进程，则需要显式调用 **close**。
 
@@ -92,7 +94,7 @@ close [-slave] [-onexec 0|1] [-i spawn_id]
 ``` tcl
 debug [[-now] 0|1]
 ```
-控制Tcl调试器，使您可以单步执行语句，设置断点等。
+<span id="debug">控制</span>Tcl调试器，使您可以单步执行语句，设置断点等。
 
 不带参数的情况下，如果调试器未运行，则返回1，否则返回0。
 
@@ -103,7 +105,7 @@ debug [[-now] 0|1]
 有关调试器的更多信息，请参见README文件或[另请参阅](#SeeAlso)。
 
 ## 5.3 disconnect
-断开fork进程与终端的连接。fork进程继续在后台运行。该fork进程将被还给他自己的进程组（如果可能）。标准I/O重定向到`/dev/null`。
+<span id="disconnect">断开</span>fork进程与终端的连接。fork进程继续在后台运行。该fork进程将被还给他自己的进程组（如果可能）。标准I/O重定向到`/dev/null`。
 
 以下片段使用**disconnect**在后台继续运行脚本。
 
@@ -136,7 +138,7 @@ for {} 1 {} {
 ``` tcl
 exit [-opts] [status]
 ```
-导致**Expect**退出或准备退出。
+导致**Expect**退出或准备<span id="exit">退出</span>。
 
 **-onexit**标志使下一个参数用作退出处理程序。不带参数的情况下，将返回当前的退出处理程序。
 
@@ -151,13 +153,13 @@ exit [-opts] [status]
 ```tcl
 exp_continue [-continue_timer]
 ```
-命令**exp_continue**允许**expect**自身继续执行，而不是像往常那样返回。默认情况下，**exp_continue**重置超时计时器。 <u>-continue_timer</u>标志可防止重新启动计时器。 （请参阅 **[expect](#expect)** 以获取更多信息。）
+命令 **<span id="exp_continue">exp_continue</span>** 允许 **expect**自身继续执行，而不是像往常那样返回。默认情况下，**exp_continue**重置超时计时器。 <u>-continue_timer</u>标志可防止重新启动计时器。 （请参阅 **[expect](#expect)** 以获取更多信息。）
 ## 5.6 exp_internal
 
 ``` tcl
 exp_internal [-f file] value
 ```
-如果<u>value</u>非零，则导致其他命令将**Expect**内部的诊断信息发送到stderr。如果<u>value</u>为0，则禁用输出。诊断信息包括接收到的每个字符，以及将当前输出与模式进行匹配的所有尝试。
+如果<u>value</u>非零，则<span id="exp_internal">导致</span>其他命令将**Expect**内部的诊断信息发送到stderr。如果<u>value</u>为0，则禁用输出。诊断信息包括接收到的每个字符，以及将当前输出与模式进行匹配的所有尝试。
 
 如果提供了可选<u>file</u>，则所有普通输出和调试输出都将写入该文件（与value的值无关）。任何先前的诊断输出文件都将被关闭。
 
@@ -168,7 +170,7 @@ exp_internal [-f file] value
 ``` tcl
 exp_open [args] [-i spawn_id]
 ```
-返回与原始spawn ID对应的Tcl文件标识符。 然后可以使用文件标识符，就好像它是由Tcl的**open**命令打开的一样。 （spawn ID不应再使用）。不应执行**wait**。
+返回与原始spawn ID对应的Tcl文件标识符。 然后可以使用文件标识符，就好像它是由Tcl的 **<span id="exp_open">open</span>** 命令打开的一样。 （spawn ID不应再使用）。不应执行**wait**。
 
 **-leaveopen**标志使spawn ID保持打开状态，以便通过Expect命令进行访问。 必须在spawn ID上执行**wait**。
 
@@ -177,25 +179,25 @@ exp_open [args] [-i spawn_id]
 ``` tcl
 exp_pid [-i spawn_id]
 ```
-返回与当前派生进程相对应的进程ID。 如果使用 **-i** 标志，则返回给定spawn ID的pid。
+返回与当前派生进程相对应的进程<span id="exp_id">ID</span>。 如果使用 **-i** 标志，则返回给定spawn ID的pid。
 
 ## 5.9 exp_send
-**send**的别名。
+**<span id="exp_send">send</span>** 的别名。
 ## 5.10 exp_send_error
-**send_error**的别名。
+**<span id="exp_send_error">send_error</span>** 的别名。
 ## 5.11 exp_send_log
-**send_log**的别名。
+**<span id="exp_send_log">send_log</span>** 的别名。
 ## 5.12 exp_send_tty
-**send_tty**的别名。
+**<span id="exp_send_tty">send_tty</span>** 的别名。
 ## 5.13 exp_send_user
-**send_user**的别名。
+**<span id="exp_send_user">send_user</span>** 的别名。
 
 ## 5.14 exp_version
 ``` tcl
 exp_version [[-exit] version]
 ```
 
-主要用于确保脚本与Expect的当前版本兼容。
+主要用于确保脚本与Expect的当前<span id="exp_version">版本</span>兼容。
 
 不带任何参数的情况下，返回**Expect**的当前版本。然后可以将此版本编码在您的脚本中。如果您知道自己没有使用最新版本的特性，则可以指定一个较早的版本。
 
@@ -359,24 +361,24 @@ expect_after {
 默认情况下，**exp_continue**重置超时计时器。 如果使用 **-continue_timer**标志调用**exp_continue**，则计时器不会重新启动。
 
 ## 5.16 expect_after
-
+<span id="expect_after">editorSelectionText</span>
 ## 5.17 expect_background
-
+<span id="expect_background">editorSelectionText</span>
 ## 5.18 expect_before
-
+<span id="expect_before">editorSelectionText</span>
 
 ## 5.19 expect_tty
 
 ``` tcl
 	expect_tty [expect_args]
 ```
-就像**expect**一样，但是它从/dev/tty中读取字符（即，用户击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stt**y更改（请参见下面的**stty**命令）。
+<span id="expect_tty">就像</span>**expect**一样，但是它从/dev/tty中读取字符（即，用户击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stt**y更改（请参见下面的**stty**命令）。
 ## 5.20 expect_user
 
 ``` tcl
 expect_user [expect_args]
 ```
-就像**expect**一样，但是它从stdin读取字符（即，用户的击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾才能期望看到它们。 这可以通过**stty**更改（请参见下面的**stty**命令）。
+<span id="expect_user">就像</span>**expect**一样，但是它从stdin读取字符（即，用户的击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾才能期望看到它们。 这可以通过**stty**更改（请参见下面的**stty**命令）。
 
 ## 5.21 fork
 
@@ -405,7 +407,7 @@ expect_user [expect_args]
 ## 5.30 send
 
 ``` tcl
-	send [-flags] string
+send [-flags] string
 ```
 发送字符串到当前进程。例如，命令
 
@@ -414,50 +416,49 @@ send "hello world\r"
 ```
 发送字符`hello空格world回车`到当前进程。 （Tcl引入了类似printf的命令（称为**format**），可以构建任意复杂的字符串。）
 
-尽管具有行缓冲输入的程序在发送回车字符之前不会读取字符，但仍会立即发送字符。回车字符表示为“\r”。
---标志强制将下一个参数解释为字符串而不是标志。任何字符串都可以以“--”开头，无论它实际上是否看起来像一个标志。这提供了一种可靠的机制来指定可变字符串，而不会被那些偶然看起来像标志的字符串妨碍。 （所有以“-”开头的字符串都保留用于将来的选项。）
+尽管具有行缓冲输入的程序在发送回车字符之前不会读取字符，但**Expect**仍会立即发送字符。回车字符表示为“\r”。
 
-**-i**标志声明将字符串发送到指定的spawn_id。如果spawn_id为<u>user_spawn_id</u>，并且终端处于原始模式，则将字符串中的换行符转换为回车换行符，以便它们看起来像终端处于cooked模式。 **-raw**标志禁用此转换。
+**--** 标志强制将下一个参数解释为字符串而不是标志。任何字符串都可以以“ **--** ”开头，无论它实际上是否看起来像一个标志。这提供了一种可靠的机制来指定可变字符串，而不会被那些偶然看起来像标志的字符串妨碍。 （所有以“**-**”开头的字符串都保留用于将来的选项。）
 
-**-null**标志发送空字符（0字节）。默认情况下，发送一个空值。可以在**-null**后面跟随一个整数，以指示要发送多少个null。
+**-i** 标志指明将字符串发送到指定的spawn_id。如果spawn_id为<u>user_spawn_id</u>，并且终端处于原始模式，则将字符串中的换行符转换为回车换行符，以便它们看起来像终端处于cooked模式。 **-raw** 标志禁用此转换。
 
-**-break**标志生成一个中断条件。仅当spawn id引用了通过“spawn -open”打开的tty设备时，才有意义。如果生成了诸如tip之类的进程，则应使用tip的约定来生成中断。
+**-null** 标志发送空字符（0字节）。默认情况下，发送一个空值。可以在 **-null** 后面跟随一个整数，以指示要发送多少个null。
 
+**-break** 标志生成一个中断条件。仅当spawn id引用了通过“spawn -open”打开的tty设备时，才有意义。如果生成了诸如tip之类的进程，则应使用tip的约定来生成中断。
 
+**-s** 标志强制输出“缓慢地”发送，因此避免了一种场景，即计算机键出（outtype）一个输入缓冲区，该缓冲区为人类设设计的，而人类永远不会键出（outtype）。该输出由变量“send_slow”的值控制，该变量是一个有两个元素的列表。第一个元素是整数，它描述要原子发送的字节数。第二个元素是一个实数，它描述原子发送必须间隔的秒数。例如，“`set send_slow {10 .001}`”将强制“`send -s`”以每发送10个字符之间间隔1毫秒的方式发送字符串。
 
-**-s**标志强制输出“缓慢地”发送，因此避免了通常情况，即计算机键出（outtype）一个为永远不会键出（outtype）相同buffer的人类设计的输入buffer。该输出由变量“send_slow”的值控制，该变量带有两个元素列表。第一个元素是整数，它描述要原子发送的字节数。第二个元素是一个实数，它描述原子发送必须间隔的秒数。例如，“set send_slow {10 .001}”将强制“send -s”每发送10个字符之间间隔1毫秒的方式发送字符串。
-
- **-h**标志强制输出（以某种方式）像人类实际键入一样发送。类似人一样的延迟会出现字符之间。（该算法基于Weibull分布，并进行了修改以适合该特定应用。）此输出由变量“send_human”的值控制，该变量具有五个元素。前两个元素是字符的平均到达时间，以秒为单位。默认情况下使用第一个。第二个用于单词结尾，以模拟这种过渡时偶尔发生的微妙的停顿。第三个参数是可变性的度量，其中.1十分可变，1是合理可变，而10十分不可变。极限是0到无穷大。最后两个参数分别是最小和最大到达间隔时间。最小值和最大值被用于维持(last)和剪断(clip)最终时间。如果最小值和最大值足够大，则最终平均值可能与给定平均值有很大不同。
+ **-h** 标志强制输出（以某种方式）像人类实际键入一样地发送。类似人一样的延迟会出现字符之间。（该算法基于Weibull分布，并进行了修改以适合该特定应用。）此输出由变量“send_human”的值控制，该变量是一个五元素列表。前两个元素是字符的平均间隔到达时间，以秒为单位。默认情况下使用第一个。第二个用于单词结尾，以模拟这种过渡时偶尔发生的微妙的停顿。第三个参数是可变性的度量，其中.1十分可变，1是合理可变，而10十分不可变。极限是0到无穷大。最后两个参数分别是最小和最大到达间隔时间。最小值和最大值被用于维持(last)和剪断(clip)最终时间。如果最小值和最大值差距足够大，则最终平均值可能与给定平均值有很大不同。
 
 例如，以下命令模拟快速一致的打字员：
 
 ``` tcl
-	set send_human {.1 .3 1 .05 2}
-	send -h "I'm hungry.  Let's do lunch."
+set send_human {.1 .3 1 .05 2}
+send -h "I'm hungry.  Let's do lunch."
 
 ```
 
 而宿醉后，以下各项可能更适合：
 
 ``` tcl
-	set send_human {.4 .4 .2 .5 100}
-	send -h "Goodd party lash night!"
+set send_human {.4 .4 .2 .5 100}
+send -h "Goodd party lash night!"
 ```
 请注意，虽然您可以通过将错误和更正嵌入到send参数中来自行设置错误更正情况，但不会模拟错误。
 
-用于发送空字符，用于发送中断，用于强制缓慢输出和用于人类风格输出的标志是互斥的。仅使用指定的最后一个。用于发送空字符或中断的标志不能指定字符串参数。
+用于发送空字符、发送中断、强制缓慢输出、人类风格输出的标志是互斥的。仅使用指定的最后一个。用于发送空字符或中断的标志不能指定<u>string</u>参数。
 
-在第一次发送到进程之前，最好有一个**expect**。 **expect**将等待进程启动，而**send**不会。 特别是，如果第一次发送在进程开始运行之前完成，则可能会导致数据被忽略。 在交互式程序不提供初始提示的情况下，您可以在发送之前先进行延迟，如下所示：
+在第一次用**send**发送到进程之前，最好有一个 **expect**。 **expect** 将等待进程启动，而 **send** 不会。 特别是，如果第一次发送在进程开始运行之前完成，则可能会导致数据被忽略。 在交互式程序不提供启动提示的情况下，您可以在发送之前先进行延迟，如下所示：
 
 ``` tcl
-	# To avoid giving hackers hints on how to break in,
-	# this system does not prompt for an external password.
-	# Wait for 5 seconds for exec to complete
-	spawn telnet very.secure.gov
-	sleep 5
-	send password\r
+# To avoid giving hackers hints on how to break in,
+# this system does not prompt for an external password.
+# Wait for 5 seconds for exec to complete
+spawn telnet very.secure.gov
+sleep 5
+send password\r
 ```
-**exp_send**是发送的别名。 如果在Tk环境中使用**Expectk** 或**Expect**的某些其他变体，则send由Tk定义，目的完全不同。 提供**exp_send**是为了实现环境之间的兼容性。 为其他Expect的其他发送命令提供了类似的别名。
+**exp_send** 是**send**的别名。 如果在Tk环境中使用 **Expectk** 或 **Expect** 的某些其他变体，则**send**由Tk定义，目的完全不同。 提供 **exp_send** 是为了实现环境之间的兼容性。 为其他Expect的其他发送命令提供了类似的别名。
 
 ## 5.31 send_error
 
