@@ -16,7 +16,7 @@ tags: 用户命令,文本流编辑
 
 # 2 概要
 
-``` shell
+``` bash
 gawk [ POSIX or GNU style options ] -f program-file [ -- ] file ...
 gawk [ POSIX or GNU style options ] [ -- ] program-text file ...
 ```
