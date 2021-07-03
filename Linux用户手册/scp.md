@@ -1,6 +1,6 @@
 ---
 title: scp
-tags: 未分类
+tags: BSD通用命令,目录文件管理
 ---
 
 
