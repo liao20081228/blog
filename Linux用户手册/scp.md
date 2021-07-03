@@ -10,7 +10,16 @@ tags: BSD普通命令, 目录文件管理
 
 ------
 
+# 1 名称
 
+**scp**——OpenSSH安全文件传输。
+
+# 2 概要
+
+``` bash
+scp [-346BCpqrTv] [-c cipher] [-F ssh_config] [-i identity_file] [-J destination] [-l limit] [-o ssh_option] [-P port] [-S program] source ... target
+```
+# 3 说明
 
 ------
 
