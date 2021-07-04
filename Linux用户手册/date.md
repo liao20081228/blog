@@ -19,7 +19,7 @@ date——打印或设置系统日期和时间
 date [OPTION]... [+FORMAT]
 date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
 ```
-# 3 说明
+# 3 描述
 以给定的格式显示当前时间或设置系统日期。
 
 长选项的必须参数对于短选项也是必需的。
@@ -130,7 +130,7 @@ GNU coreutils联机帮助：<https://www.gnu.org/software/coreutils/>，将日�
 
 这是自由软件：您可以自由更改和重新分发它。在法律允许的范围内，没有任何担保。
 
-# 另请参阅
+# 参见
 
 完整文档位于：<https://www.gnu.org/software/coreutils/date>或通过以下方式在本地获得：info'（coreutils）date invocation'
 
