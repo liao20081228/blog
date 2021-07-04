@@ -12,7 +12,12 @@ tags: 用户命令
 # 1 名称
 stty——更改和打印终端行设置。
 # 2 概要
-
+```bash
+stty [-F DEVICE | --file=DEVICE] [SETTING]...
+stty [-F DEVICE | --file=DEVICE] [-a|--all]
+stty [-F DEVICE | --file=DEVICE] [-g|--save]
+```
+# 3 描述
 
 
 ------
