@@ -24,7 +24,7 @@ date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
 
 长选项的必须参数对于短选项也是必需的。
 
-|短选项|长选项|说明|
+|短选项|长选项|描述|
 |:--|:--|:--|
 |-d STRING|--date=STRING|显示由STRING描述的时间，而非“当前时间”|
 ||--debug|注释解析的日期，对有疑问的用法输出告警到stderr|
