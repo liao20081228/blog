@@ -58,7 +58,7 @@ stty [-F DEVICE | --file=DEVICE] [-g|--save]
 |\* |\[-]drain|  在应用设置之前等待传输（默认开启）。|
 | |ispeed N|将输入速度设置为 N。|
 | \* |line N| 使用线规 N。|
-||min N -icanon|为完整读取设置最少 N 个字符。|
+||min N -icanon|为完整读取，设置最少 N 个字符。|
 | |ospeed N| 将输出速度设置为 N。|
 |\* |rows N|告诉内核终端有 N 行。|
 | * |size|  根据内核打印行数和列数。|
@@ -100,16 +100,90 @@ stty [-F DEVICE | --file=DEVICE] [-g|--save]
 ## 3.5 输出设置
 |非POSIX设置|输出设置|描述|
 |:--|:--|:--|
+|\* | bsN | 退格延迟风格，N 在 \[0..1]中。|
+|\* |crN|回车延迟风格，N 在 \[0..3]中。|
+|\* |ffN |  换页延迟风格，N 在 \[0..1]中。|
+|\* |nlN | 换行延迟风格，N 在 \[0..1]中。|
+|\* | \[-]ocrnl|将回车转换为换行符。|
+|\* |\[-]ofdel|使用删除字符代替 NUL 字符进行填充。|
+|\* |\[-]ofill|使用填充（填充）字符代替延迟时间。|
+|\* |\[-]olcuc|将小写字符转换为大写。|
+|\* | \[-]onlcr|将换行符转换为回车换行符。|
+|\* |\[-]onlret|换行符表现为回车。|
+|\* | \[-]onocr|不要在第一列打印回车。|
+|  |\[-]opost|后处理输出。|
+|\* | tabN |水平制表符延迟风格，N 在 \[0..3]中。|
+|\* |tabs|与tab0一样。|
+|\* |-tabs|与tab3一样。|
+|\* |vtN| 垂直制表符延迟风格，N 在 \[0..3]中。|
+
 ## 3.5 本地设置
 |非POSIX设置|本地设置|描述|
 |:--|:--|:--|
+|  |\[-]crterase| 回显擦除字符，就像退格-空格-退格。|
+|\* |crtkill|通过遵守 echoprt 和 echoe 设置kill所有行。|
+|\* |-crtkill|通过遵守 echoctl 和 echok 设置kill所有行。|
+|\* |\[-]ctlecho| 以帽子表示法（'^c'）回显控制字符。|
+|  |\[-]echo| 回显输入字符。|
+|\* |\[-]echoctl|与 \[-]ctlecho 相同。|
+|  |\[-]echoe|与 \[-]crterase 相同。|
+|  |\[-]echok|在kill字符后回显换行符。|
+|\* |\[-]echoke|与 \[-]crtkill 相同。|
+|  |\[-]echonl|即使不回显其他字符，也回显换行符。|
+|\* |\[-]echoprt|向后会先已擦除字符，在 '\\' 和 '/' 之间。 |
+|\* |\[-]extproc|启用“LINEMODE”； 对高延迟链接有用。|
+|\* |\[-]flusho|丢弃输出。|
+|  |\[-]icanon| 启用特殊字符：erase、kill、werase、rprnt。|
+|  |\[-]iexten|启用非 POSIX 特殊字符|
+|  |\[-]isig|启用 interrupt、quit和suspend 特殊字符。|
+|  |\[-]noflsh|中断后禁用冲刷并停止特殊字符。| 
+|\* |\[-]prterase|与 \[-] echort 相同。|
+|\* |\[-]tostop|停止尝试写入终端的后台作业。|
+|\* |\[-]xcase|与 icanon一起使用，用 '\\' 转义大写字符|
+
+
 ## 3.6 组合设置
 |非POSIX设置|组合设置|描述|
 |:--|:--|:--|
-|\*| bsN | 退格延迟样式，N 在 \[0..1]中。|
+|\* |\[-]LCASE|与\[-]lcase相同。|
+||cbreak| 与-icanon相同。|
+||-cbreak|与icanon相同。|
+||cooked| 与 brkint ignpar istrip icrnl ixon opost isig icanon, eof 和 eol 字符相同到它们的默认值。|
+||-cooked|与 raw相同。|
+||crt|与 echoe echoctl echoke相同。|
+||dec|与 echoe echoctl echoke -ixany intr ^c erase 0177 kill ^u相同。|
+|\*| \[-]decctlq|与 \[-]ixany相同。|
+||ek |erase和kill字符到它们的默认值。|
+||evenp |与  parenb -parodd cs7相同。|
+||-evenp|与 -parenb cs8相同。|
+|\*| \[-]lcase|与 xcase iuclc olcuc相同。|
+||litout|与 -parenb -istrip -opost cs8相同。|
+||-litout|与parenb istrip opost cs7相同。|
+||nl |与   -icrnl -onlcr相同。|
+||-nl |与 icrnl -inlcr -igncr onlcr -ocrnl -onlret相同。|
+||oddp|与   parenb parodd cs7相同。|
+||-oddp |与  -parenb cs8相同。|
+||\[-]parity|与 \[-]evenp相同。|
+||pass8 |与  -parenb -istrip cs8相同。|
+||-pass8| 与 parenb istrip cs7相同。|
+||raw |与 -ignbrk -brkint -ignpar -parmrk -inpck -istrip -inlcr -igncr -icrnl -ixon -ixoff -icanon -opost -isig -iuclc -ixany -imaxbel -xcase min 1 time 0相同。|
+||-raw|与cooked相同。|
+||sane |与cread -ignbrk brkint -inlcr -igncr icrnl icanon iexten echo echoe echok -echonl -noflsh -ixoff -iutf8 -iuclc -ixany imaxbel -xcase -olcuc -ocrnl opost -ofill onlcr -onocr -onlret nl0 cr0 tab0 bs0 vt0 ff0 isig -tostop -ofdel  -echoprt  echoctl  echoke  -extproc -flusho相同，所有特殊字符为其默认值。|
 
+处理连接到标准输入的 tty 行。 不带参数，打印波特率、行规则和与 stty sane 的偏差。在设置中，CHAR 是按字面意思理解的，或者像 ^c、0x37、0177 或 127 那样编码； 特殊值 ^- 或 undef 用于禁用特殊字符。
 
+# 4 作者
+David MacKenzie。
+# 5 报告错误
+GNU coreutils 在线帮助：<https://www.gnu.org/software/coreutils/>
+报告 stty 翻译错误：<https://translationproject.org/team/> 
 
+# 6 版权
+版权所有 © 2018 自由软件基金会, Inc. 许可证 GPLv3+：GNU GPL 版本 3 或更高版本 <https://gnu.org/licenses/gpl.html>。
+
+这是免费软件：您可以自由更改和重新分发它。 在法律允许的范围内，不提供任何保证。
+# 7 参见
+完整文档位于：<https://www.gnu.org/software/coreutils/stty> 或通过本地获取：info '(coreutils) stty invocation'。
 
 ------
 
