@@ -513,7 +513,7 @@ if {[info vars tty_spawn_id]} {
 ## 5.39 system
 ## 5.40 timestamp
 ## 5.41 trap
-## 5.42 wait
+## 5.42 wait校对完毕
 ```tcl
 wait [args]
 ```
