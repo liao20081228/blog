@@ -370,7 +370,7 @@ expect_after {
 ## 5.19 expect_tty
 
 ``` tcl
-	expect_tty [expect_args]
+expect_tty [expect_args]
 ```
 <span id="expect_tty">就像</span>**expect**一样，但是它从/dev/tty中读取字符（即，用户击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stt**y更改（请参见下面的**stty**命令）。
 ## 5.20 expect_user
@@ -391,7 +391,7 @@ expect_user [expect_args]
 ## 5.25 log_user
 
 ``` tcl
-	log_user -info|0|1
+log_user -info|0|1
 ```
 默认情况下，send/expect对话框记录到stdout（如果一个日志文件被打开，则记录到该日志文件）。 通过命令“log_user 0”禁用到stdout的日志记录，并通过“log_user 1”重新启用。 到日志文件的记录不变。
 
@@ -409,7 +409,7 @@ expect_user [expect_args]
 ``` tcl
 send [-flags] string
 ```
-发送字符串到当前进程。例如，命令
+<span id="send">发送</span>字符串到当前进程。例如，命令
 
 ``` tcl
 send "hello world\r"
