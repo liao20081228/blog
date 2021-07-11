@@ -372,13 +372,13 @@ expect_after {
 ``` tcl
 expect_tty [expect_args]
 ```
-<span id="expect_tty">就像</span>**expect**一样，但是它从/dev/tty中读取字符（即，用户击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stt**y更改（请参见下面的**stty**命令）。
+<span id="expect_tty">就像</span>**expect**一样，但是它从/dev/tty中读取字符（即，用户击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stt**y更改（请参见下面的 **[stty](#stty)** 命令）。
 ## 5.20 expect_user
 
 ``` tcl
 expect_user [expect_args]
 ```
-<span id="expect_user">就像</span>**expect**一样，但是它从stdin读取字符（即，用户的击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾才能期望看到它们。 这可以通过**stty**更改（请参见下面的**stty**命令）。
+<span id="expect_user">就像</span>**expect**一样，但是它从stdin读取字符（即，用户的击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stty**更改（请参见下面的 **[stty](#stty)** 命令）。
 
 ### 5.21 fork
 
@@ -466,7 +466,7 @@ send password\r
 ## 5.33 send_tty
 ## 5.34 send_user
 ## 5.35 sleep
-## 5.36 spawn
+## 5.36 spawn 校对完毕
 ```tcl
 spawn [args] program [args]
 ```
