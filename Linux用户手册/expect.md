@@ -17,7 +17,7 @@ Expect——使用交互式程序进行程序化对话，版本5。
 ``` bash
 expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 ```
-# 3 介绍
+# 3 介绍 校对完
 
 **Expect**是一个根据脚本来与其他交互式程序“对话”的程序。随着脚本执行，**Expect**知道可以从程序中得到什么以及正确的响应应该是什么。解释型语言提供了分支和高级控制结构来引导对话。此外，用户可以根据需要取得控制权并直接与程序交互，然后将控制权返回给脚本。
 
@@ -54,12 +54,12 @@ expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 |-v|-version|使**Expect**打印其版本号并退出。|
 |args||可选的<u>args</u>被构造到一个列表中，并存储在名为<u>argv</u>的变量中。 <u>argc</u>初始化为<u>argv</u>的长度。<br /><br /><u>argv0</u>定义为脚本的名称（如果未使用脚本，则为二进制程序名）。例如`send_user "$argv0 [lrange $argv 0 2]\n"`打印出脚本的名称和前三个参数。|
 
-# 5 命令
-**Expect**使用了Tcl（工具命令语言）。 Tcl提供控制流（例如，if、for、break）、表达式求值和其他一些特性，如递归、过程定义等。本文中使用了但没有定义的命令（例如，set，if，exec）是Tcl命令（请参阅tcl(3)）。 **Expect**支持其他命令如下所述。除非另有说明，否则命令将返回空字符串。
+# 5 命令 校对完
+**Expect**使用了Tcl（工具命令语言）。 Tcl提供控制流（例如，if、for、break）、表达式求值和其他一些特性，如递归、过程定义等。本文中使用了但没有定义的命令（例如，set，if，exec）是Tcl命令（请参阅tcl(3)）。 **Expect**支持的其他命令如下所述。除非另有说明，否则命令将返回空字符串。
 
 命令按字母顺序列出，以便可以快速找到它们。但是，新用户可能会发现按 **[spawn](#spawn)**、**[send](#send)**、**[expect](#expect)** 和 **[interact](#interact)** 的顺序会更容易开始。
 
-请注意，在《探索Expect》一书中提供了对语言（**Expect**和**Tcl**）的最佳介绍（请参阅下面的[另请参阅](#SeeAlso)）。此手册页包含了一些示例，但由于本手册页主要是作为参考资料，因此它们的使用范围非常有限。
+请注意，在《探索Expect》一书中提供了对语言（**Expect**和**Tcl**）的最佳介绍（请参阅下面的[另请参阅](#SeeAlso)）。此手册页包含了一些示例，但由于本手册页主要是作为参考资料，因此它们是非常有限。
 
 请注意，在此手册页的文本中，带有大写字母“E”的“**Expect**”指的是**Expect**程序，而带有小写字母“e”的“**expect**”指的是**Expect**程序中的**expect**命令。
 
@@ -76,21 +76,21 @@ expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 |[spawn](#spawn)|[strace](#strace)|[stty](#stty)|[system](#system)|[timestamp](#timestamp) |
 |[trap](#trap)|[wait](#wait)|
 
-## 5.1 close
+## 5.1 close校对完
 ```tcl
 close [-slave] [-onexec 0|1] [-i spawn_id]
 ```
-<span id="close">关闭</span>与当前进程的连接。大多数交互式程序会在其标准输入stdin中检测 EOF 并退出； 因此 **close** 通常也足以终止进程。 **-i** 标志根据指定的 **spawn_id** 声明要关闭的进程。
+<span id="close">关闭</span>与当前进程的连接。大多数交互式程序会在其标准输入stdin中检测 EOF 并退出； 因此 **close** 通常也足以终止进程。 **-i** 标志声明了要关闭的进程，该进程与指定的spawn_id对应。
 
-**expect** 和 **interact** 都会检测当前进程何时退出并隐式执行**close**。 但是，如果您通过`exec kill $pid`来终止进程，则需要显式调用 **close**。
+当前进程退出时，**expect** 和 **interact** 都会检测到，并隐式执行**close**。 但是，如果您通过`exec kill $pid`来终止进程，则需要显式调用 **close**。
 
-**-onexec**标志确定在任何新派生进程中或该进程被覆盖时 是否关闭spawn ID。要使spawn ID保持打开状态，请使用值0。非0整数值将在所有新派生进程中强制关闭spawn ID（默认值）。
+**-onexec**标志确定在任何新派生进程中或该进程被覆盖时 是否关闭spawn id。要使spawn id保持打开状态，请使用值0。非0整数值将在所有新派生进程中强制关闭spawn id（默认值）。
 
-**-slave** 标志关闭与 spawn id 关联的从属程序。 （参见“[spawn -pty](spawn_pty)”。）当连接关闭时，如果从属程序仍然打开，它也会自动关闭。
+**-slave** 标志关闭与 spawn id 关联的slave。 （参见“[spawn -pty](#spawn_pty)”。）当连接关闭时，如果slave仍然打开，它也会自动关闭。
 
-无论是隐式还是显式关闭连接，都应调用**wait**清除相应的内核进程插槽。 **close**不会调用**wait**，因为不能保证关闭进程连接将导致这个进程退出。请参阅下面的 **[wait](#wait)** 以获取更多信息。
+无论是隐式还是显式关闭连接，都应调用**wait**清除相应的内核进程槽。 **close**不会调用**wait**，因为不能保证关闭进程连接将导致这个进程退出。请参阅下面的 **[wait](#wait)** 以获取更多信息。
 
-## 5.2 debug
+## 5.2 debug校对完
 ``` tcl
 debug [[-now] 0|1]
 ```
@@ -100,11 +100,11 @@ debug [[-now] 0|1]
 
 参数为1时，将启动调试器。如果参数为0，则调试器将停止。如果1参数前面带有 **-now** 标志，则调试器将立即启动（即，在**debug**命令本身中）。否则，调试器将随下一个Tcl语句启动。
 
-**debug**命令不会更改任何trap。将其与以 **-D** 标志开头的**expect**（请[参见上文](#Debug)）进行比较。
+**debug**命令不会更改任何[trap](#trap)。将其与用 **-D** 启动的**Expect**（请[参见上文](#Debug)）进行比较。
 
 有关调试器的更多信息，请参见README文件或[另请参阅](#SeeAlso)。
 
-## 5.3 disconnect
+## 5.3 disconnect校对完
 <span id="disconnect">断开</span>fork进程与终端的连接。fork进程继续在后台运行。该fork进程将被还给他自己的进程组（如果可能）。标准I/O重定向到`/dev/null`。
 
 以下片段使用**disconnect**在后台继续运行脚本。
@@ -133,7 +133,7 @@ for {} 1 {} {
 ```
 与shell异步进程特性(＆)相比，使用**disconnect**的优点是**Expect**可以在断开连接之前保存终端参数，然后将其应用于新的ptys。使用＆，**Expect**没有机会读取终端的参数，因为在**Expect**收到控制权之前，终端已经断开连接。
 
-## 5.4 exit
+## 5.4 exit校对完
 
 ``` tcl
 exit [-opts] [status]
@@ -142,19 +142,19 @@ exit [-opts] [status]
 
 **-onexit**标志使下一个参数用作退出处理程序。不带参数的情况下，将返回当前的退出处理程序。
 
-**-noexit**标志使**Expect**准备退出，但没有将控制权真正返回给操作系统。用户定义的退出处理程序以及Expect自己的内部处理程序都将运行。不再执行其他Expect命令。主要用于运行带有其他Tcl扩展的Expect。保留当前的解释器（和主窗口，如果在Tk环境中）以便其他Tcl扩展可以clean up。如果再次调用Expect的**exit**（可能会发生这种情况），则不会重新运行处理程序。
+**-noexit**标志使**Expect**准备退出，但没有将控制权真正返回给操作系统。用户定义的退出处理程序以及Expect自己的内部处理程序都将运行。不再执行其他Expect命令。主要用于运行带有其他Tcl扩展的Expect。保留当前的解释器（和主窗口，如果在Tk环境中）以便其他Tcl扩展可以清理（clean up）。如果再次调用Expect的**exit**（可能会发生这种情况），则不会重新运行处理程序。
 
-退出后，与派生进程的所有连接都将关闭。派生进程会将关闭当作EOF。除了正常的_exit(2)过程，exit不会执行其他任何操作。因此，不检查EOF的派生进程可能会继续运行。 （例如，各种条件对于确定发送什么信号到一个派生进程是很重要的，但这些条件取决于系统，通常记录在exit(3)下。）继续运行的spawn进程将被init继承。
+退出后，与派生进程的所有连接都将关闭。派生进程会将关闭当作EOF。除了正常的_exit(2)过程，exit不会执行其他任何操作。因此，不检查EOF的派生进程可能会继续运行。 （例如，各种条件对于确定发送什么信号到一个派生进程是很重要的，但这些条件取决于系统，通常记录在exit(3)下。）继续运行的派生进程将被init继承。
 
-返回<u>status</u>（如果未指定，则为0）作为Expect的退出状态。如果到达脚本末尾，则隐式执行**exit**。
+返回<u>status</u>（如果未指定，则为0）作为**Expect**的退出状态。如果到达脚本末尾，则隐式执行**exit**。
 
-## 5.5 exp_continue
+## 5.5 exp_continue校对完
 
 ```tcl
 exp_continue [-continue_timer]
 ```
 命令 **<span id="exp_continue">exp_continue</span>** 允许 **expect**自身继续执行，而不是像往常那样返回。默认情况下，**exp_continue**重置超时计时器。 <u>-continue_timer</u>标志可防止重新启动计时器。 （请参阅 **[expect](#expect)** 以获取更多信息。）
-## 5.6 exp_internal
+## 5.6 exp_internal校对完
 
 ``` tcl
 exp_internal [-f file] value
@@ -165,34 +165,34 @@ exp_internal [-f file] value
 
 **-info**标志使exp_internal返回给定的最新non-info参数的描述。
 
-## 5.7 exp_open
+## 5.7 exp_open校对完
 
 ``` tcl
 exp_open [args] [-i spawn_id]
 ```
-返回与原始spawn ID对应的Tcl文件标识符。 然后可以使用文件标识符，就好像它是由Tcl的 **<span id="exp_open">open</span>** 命令打开的一样。 （spawn ID不应再使用）。不应执行**wait**。
+返回与原始spawn id对应的Tcl文件标识符。 然后可以使用文件标识符，就好像它是由Tcl的 **<span id="exp_open">open</span>** 命令打开的一样。 （spawn id不应再使用）。不应执行**wait**。
 
-**-leaveopen**标志使spawn ID保持打开状态，以便通过Expect命令进行访问。 必须在spawn ID上执行**wait**。
+**-leaveopen**标志使spawn id保持打开状态，以便通过Expect命令进行访问。 必须在spawn id上执行**wait**。
 
-## 5.8 exp_pid
+## 5.8 exp_pid校对完
 
 ``` tcl
 exp_pid [-i spawn_id]
 ```
-返回与当前派生进程相对应的进程<span id="exp_id">ID</span>。 如果使用 **-i** 标志，则返回给定spawn ID的pid。
+返回与当前派生进程相对应的进程<span id="exp_id">id</span>。 如果使用 **-i** 标志，则返回给定spawn id的pid。
 
-## 5.9 exp_send
+## 5.9 exp_send校对完
 **<span id="exp_send">send</span>** 的别名。
-## 5.10 exp_send_error
+## 5.10 exp_send_error校对完
 **<span id="exp_send_error">send_error</span>** 的别名。
-## 5.11 exp_send_log
+## 5.11 exp_send_log校对完
 **<span id="exp_send_log">send_log</span>** 的别名。
-## 5.12 exp_send_tty
+## 5.12 exp_send_tty校对完
 **<span id="exp_send_tty">send_tty</span>** 的别名。
-## 5.13 exp_send_user
+## 5.13 exp_send_user校对完
 **<span id="exp_send_user">send_user</span>** 的别名。
 
-## 5.14 exp_version
+## 5.14 exp_version校对完
 ``` tcl
 exp_version [[-exit] version]
 ```
@@ -201,7 +201,7 @@ exp_version [[-exit] version]
 
 不带任何参数的情况下，返回**Expect**的当前版本。然后可以将此版本编码在您的脚本中。如果您知道自己没有使用最新版本的特性，则可以指定一个较早的版本。
 
-版本由点号分隔的三个数字组成。首先是主版本号。为主版本号与当前版本不同的**Expect**编写的脚本几乎肯定无法工作。如果主数版本号不匹配，则exp_version返回错误。
+版本由点号分隔的三个数字组成。首先是主版本号。为主版本号与当前版本不同的**Expect**编写的脚本几乎肯定无法工作。如果主数版本号不匹配，则**exp_version**返回错误。
 
 第二个是次版本号。为次版本号比当前版本更大的**Expect**编写的脚本可能依赖某些新特性，且可能无法运行。如果脚本的主版本号匹配，但次版本号比当前运行的**Expect**更大，则**exp_version**返回一个错误。
 
@@ -299,7 +299,7 @@ set expect_out(buffer) abbbcabkkkk
 
 通常，匹配的输出会从Expect的内部缓冲区中丢弃。 可以通过在模式前面加上 **-notransfer**标志来阻止这种情况。 该标志在实验中特别有用（为方便起见，在实验中可以缩写为“-not”）。
 
-与匹配的输出（或eof或full_buffer）关联的spawn ID被存储在<u>expect_out(spawn_id)</u>中。
+与匹配的输出（或eof或full_buffer）关联的spawn id被存储在<u>expect_out(spawn_id)</u>中。
 
 **-timeout**标志使当前的**expect**命令使用跟随的值作为超时，而不是使用**timeout**变量的值。
 
@@ -317,7 +317,7 @@ expect {
 ```
 全局变量<u>any_spawn_id</u>的值可用于将模式与当前**expect**命令中所有其他 **-i**标志列出的任何spawn_id进行匹配。 来自 **-i** 标志的没有关联模式的spawn_id（即另一个“-i”紧随其后）可用于 与<u>any_spawn_id</u>关联的同一<u>expect</u>命令中的任何其他模式。
 
-**-i**标志还可以指明全局变量，在这种情况下，这个全局变量用于读取spawn ID列表。 变量每次变化时都会重新读取。 这提供了一种在命令执行期间更改I/O源的方法。 通过这种方式提供的spawn ID被称为“间接”spawn ID。 
+**-i**标志还可以指明全局变量，在这种情况下，这个全局变量用于读取spawn id列表。 变量每次变化时都会重新读取。 这提供了一种在命令执行期间更改I/O源的方法。 通过这种方式提供的spawn id被称为“间接”spawn id。 
 
 **break**和**continue**之类的动作会导致控制结构（即，**for**，**proc**）以常规的方式运行。 命令**exp_continue**允许**expect**自己继续执行，而不是像往常那样返回。 
 
@@ -367,13 +367,12 @@ expect_after {
 ## 5.18 expect_before
 <span id="expect_before">editorSelectionText</span>
 
-## 5.19 expect_tty
-
+## 5.19 expect_tty校对完
 ``` tcl
 expect_tty [expect_args]
 ```
-<span id="expect_tty">就像</span>**expect**一样，但是它从/dev/tty中读取字符（即，用户击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stt**y更改（请参见下面的 **[stty](#stty)** 命令）。
-## 5.20 expect_user
+<span id="expect_tty">就像</span>**expect**一样，但是它从/dev/tty中读取字符（即，用户击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stty**更改（请参见下面的 **[stty](#stty)** 命令）。
+## 5.20 expect_user校对完
 
 ``` tcl
 expect_user [expect_args]
@@ -388,7 +387,7 @@ expect_user [expect_args]
 
 ## 5.24 log_file
 
-## 5.25 log_user
+## 5.25 log_user校对完
 
 ``` tcl
 log_user -info|0|1
@@ -470,16 +469,44 @@ send password\r
 ```tcl
 spawn [args] program [args]
 ```
-<span id="spawn">创建</span>一个运行program args的新进程。它的 stdin、stdout 和 stderr 都连接到 Expect，以便它们可以被其他 Expect 命令读取和写入。连接因close或进程本身关闭任意文件标识符而中断。
+<span id="spawn">创建</span>一个运行<u>program</u> <u>args</u>的新进程。它的 stdin、stdout 和 stderr 都连接到 **Expect**，以便它们可以被其他 **Expect** 命令读取和写入。连接因**close**或进程本身关闭任意文件标识符而中断。
 
-当进程由 spawn 启动时，变量 spawn_id 被设置为引用该进程的描述符。 spawn_id 描述的进程被认为是当前进程。 spawn_id 可以被读取或写入，实际上提供了作业控制。
+当进程由 **spawn** 启动时，变量 <u>spawn_id</u> 被设置为引用该进程的描述符。 <u>spawn_id</u> 描述的进程被认为是<u>当前进程</u>。 <u>spawn_id</u> 可以被读取或写入，实际上提供了作业控制。
 
-user_spawn_id 是一个全局变量，包含引用用户的描述符。例如，当 spawn_id 设置为该值时，expect 的行为类似于 expect_user。
+<u>user_spawn_id</u> 是一个全局变量，包含一个引用用户的描述符。例如，当 <u>spawn_id</u> 设置为该值时，**expect** 的行为类似于 **expect_user**。
 
-             error_spawn_id 是一个全局变量，包含一个引用标准错误的描述符。例如，当 spawn_id 设置为此值时，send 的行为类似于 send_error。
+<u>error_spawn_id</u> 是一个全局变量，包含一个引用标准错误的描述符。例如，当 <u>spawn_id</u> 设置为此值时，**send** 的行为类似于 **send_error**。
 
-             tty_spawn_id 是一个全局变量，包含一个指向 /dev/tty 的描述符。如果 /dev/tty 不存在（例如在 cron、at 或批处理脚本中），则未定义 tty_spawn_id。
-             这可以测试为：
+<u>tty_spawn_id</u> 是一个全局变量，包含一个指向 /dev/tty 的描述符。如果 /dev/tty 不存在（例如在 cron、at 或批处理脚本中），则 <u>tty_spawn_id</u>是未定义的。
+
+这可以被测试：
+```tcl
+if {[info vars tty_spawn_id]} {
+	# /dev/tty exists
+} else {
+	# /dev/tty doesn't exist
+	# probably in cron, batch, or at script
+}
+```
+**spawn** 返回 UNIX 进程 id。 如果没有派生进程，则返回 0。 变量 <u>spawn_out(slave,name</u>) 设置为 pty 从设备的名称。
+
+默认情况下， **spawn** 会回显命令名称和参数。 **-noecho** 标志会阻止 **spawn** 这样做。
+
+**-console** 标志导致控制台输出被重定向到派生进程。 并非所有系统都支持此功能。
+
+在内部， **spawn** 使用 pty，以与用户的 tty 相同的方式初始化。 这将进一步初始化，以便所有设置都是“sane”（根据 stty(1)）。 如果定义了变量 <u>stty_init</u>，它将以 stty 参数的样式被解释为进一步的配置。 例如，“set stty_init raw”将导致之后派生进程的终端以原始模式（raw mode）启动。 **-nottycopy** 根据用户的 tty 跳过初始化。 **-nottyinit** 跳过“sane”初始化。
+
+通常， **spawn** 执行所需的时间很少。 如果您注意到 **spawn** 花费了大量时间，则可能是遇到了挤入的 pty（wedged pty）。 在 ptys 上运行了许多测试，以避免与出错进程纠缠。 （每个挤入的pty 需要 10 秒。）使用 **-d** 选项运行 **Expect** 将显示 **Expect** 是否遇到许多处于奇怪状态的 pty。 如果您无法终止这些 pty 所连接的进程，您唯一的办法可能是重新启动。
+
+如果由于 exec(2) 失败（例如，当<u>program</u>不存在时）无法成功派生<u>program</u>，则下一个**interact**或**expect**命令将返回错误消息，就像<u>program</u>已运行并产生错误消息作为输出一样。 这种行为是执行 **spawn** 的自然结果。 在内部，spawn forks，之后产生的进程无法与原始的 **Expect** 进程进行通信，除非通过 spawn_id 进行通信。
+
+**-open** 标志导致下一个参数被解释为 Tcl 文件标识符（即，由 **open** 返回）。然后可以使用 spawn id，就好像它是一个 派生进程一样。 （不应再使用文件标识符。）这使您可以将原始（raw）设备、文件和管道视为派生进程，而无需使用 pty。 返回 0 表示没有关联的进程。 当与派生进程的连接关闭时，Tcl 文件标识符也关闭。 **-leaveopen** 标志与 **-open** 类似，除了 **-leaveopen** 导致文件标识符即使在 spawn id 关闭后仍保持打开状态。
+
+**<span id="spawn_pty">-pty</span>** 标志导致打开一个 pty 但不派生进程。 返回 0 表示没有关联的进程。 spawn_id 照常设置。
+
+变量 <u>spawn_out(slave,fd)</u> 设置为对应于 pty slave 的文件标识符。 它可以使用“close -slave”关闭。
+
+**-ignore** 标志指明了要在派生进程中忽略的信号。 否则，信号将获得默认行为。 除了每个信号都需要一个单独的标志外，信号就像在 **trap** 命令中指明一样。
 
 ## 5.37 strace
 ## 5.38 stty
@@ -500,7 +527,7 @@ wait [args]
 
 **-nowait** 标志使wait立即返回并指示wait成功。当进程退出（稍后）时，它会自动消失，无需显式等待。
 
- **wait** 命令也可以用于等待使用参数“-i -1”的fork进程。与用于派生进程不同的是，该命令可以随时执行。无法控制等到的进程，但可以检查进程 ID 的返回值。
+ **wait** 命令也可以用于等待使用参数“-i -1”的fork进程。与用于派生进程不同的是，该命令可以随时执行。无法控制等到的进程，但可以检查进程 id 的返回值。
 
 
 
