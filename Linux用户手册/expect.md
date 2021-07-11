@@ -209,7 +209,7 @@ exp_version [[-exit] version]
 
 如果版本过时，**-exit** 使得**Expect**打印错误并退出。
 
-## 5.15 expect
+## 5.15 expect校对完
 
 ``` tcl
 expect [[-opts] pat1 body1] ... [-opts] patn [bodyn]
@@ -225,9 +225,9 @@ expect [[-opts] pat1 body1] ... [-opts] patn [bodyn]
 
 如果一个模式匹配了派生进程的输出，则执行相应的body。 **expect**返回body的执行结果（如果没有匹配的模式，则返回空字符串）。如果有多个模式匹配，则执行首先出现的模式的body。
 
-每次新输出到达时，都会按照列出的顺序将其与每个模式进行比较。因此，您可以通过确保最后一个模式（如提示）的出现来测试是否缺少匹配项，例如提示。在没有提示的情况下，您必须使用**timeout**（就像您手动进行交互一样）。
+每次新输出到达时，都会按照列出的顺序将其与每个模式进行比较。因此，您可以通过确保最后一个模式的出现来测试是否缺少匹配项，例如提示。在没有提示的情况下，您必须使用**timeout**（就像您手动进行交互一样）。
 
-模式以三种方式指定。默认情况下，使用Tcl的**字符串匹配**命令指定模式。 （这种模式也类似于通常称为“glob”模式的C shell正则表达式）。 **-gl**标志可用于保护可能与**Expect**标志匹配的模式。任何以“-”开头的模式都应采用这种方式进行保护。 （所有以“-”开头的字符串都保留用于将来的选项。）
+模式以三种方式指定。默认情况下，使用Tcl的**字符串匹配**命令指定模式。 （这种模式也类似于通常称为“glob”模式的C shell正则表达式）。 **-gl**标志可用于保护可能与**expect**标志匹配的模式。任何以“-”开头的模式都应采用这种方式进行保护。 （所有以“-”开头的字符串都保留用于将来的选项。）
 
 例如，以下片段查找一个成功的登录。 （请注意，推测**abort**是脚本中其他地方定义的过程。）
 
@@ -243,7 +243,7 @@ expect {
 ```
 第三个模式必须用引号引起来，因为它包含一个空格，否则该空格会将模式与动作分开。 具有相同动作的模式（例如第三和第四）需要再次列出动作。 可以通过使用正则表达式样式的模式来避免这种情况（请[参阅下文](#regexp)）。 在Tcl手册中可以找到有关形成glob-style模式的更多信息。
 
-[Regexp](#regexp)风格的模式遵循Tcl的**regexp**（“正则表达式”的缩写）命令定义的语法。 **-re**表示要使用正则表达式模式。 可以使用regexp将前面的示例重写为：
+<span id="regexp">Regexp</span>风格的模式遵循Tcl的**regexp**（“正则表达式”的缩写）命令定义的语法。 **-re**表示要使用正则表达式模式。 可以使用regexp将前面的示例重写为：
 
 ``` tcl
 expect {
@@ -265,7 +265,7 @@ expect {
 
 如果<u>patlist</u>是关键字**null**，并且允许使用nulls（通过**remove_nulls**命令），则匹配到单个ASCII 0时则将执行相应的body。无法通过glob或regexp模式匹配0字节。
 
-一旦匹配模式（或eof或full_buffer）后，所有匹配的和以前不匹配的输出都将保存在变量<u>expect_out(buffer)</u>中。最多9个正则表达式子字串匹配项保存在<u>expect_out(1，string)</u>到<u>expect_out(9，string)</u>中。如果在一个模式前使用 **-indices**标志，则这10个字符串的开始和结束索引（以适合**lrange**的形式）存储在变量<u>expect_out(X，start)</u>和<u>expect_out(X，end)</u>中，其中X为数字，对应缓冲区中子串的位置。 0表示与整个模式匹配的字符串，由glob模式和regexp模式产生。例如，如果某个进程的输出为“abcdefgh\\n”，则：
+一旦匹配模式（或eof或full_buffer）后，所有匹配的和先前不匹配的输出都将保存在变量<u>expect_out(buffer)</u>中。最多9个正则表达式子字串匹配项保存在<u>expect_out(1，string)</u>到<u>expect_out(9，string)</u>中。如果在一个模式前使用 **-indices**标志，则这10个字符串的开始和结束索引（以适合**lrange**的形式）存储在变量<u>expect_out(X，start)</u>和<u>expect_out(X，end)</u>中，其中X为数字，对应缓冲区中子串的位置。 0表示与整个模式匹配的字符串，由glob模式和regexp模式产生。例如，如果某个进程的输出为“abcdefgh\\n”，则：
 
 ``` tcl
 expect "cd"
@@ -303,9 +303,9 @@ set expect_out(buffer) abbbcabkkkk
 
 **-timeout**标志使当前的**expect**命令使用跟随的值作为超时，而不是使用**timeout**变量的值。
 
-默认情况下，模式与当前进程的输出匹配，但是 **-i**标志指明来自指定spawn_id列表的输出可以与后面跟随的任何模式匹配（直到下一个 **-i**）。 spawn_id列表应该是空白符分隔的spawn_ids列表，或者是引用此类spawn_ids列表的变量。
+默认情况下，模式与当前进程的输出匹配，但是 **-i**标志指明来自指定spawn_id列表的输出可以与后面跟随的任何模式匹配（直到下一个 **-i**）。 spawn_id列表应该是空白符分隔的spawn_ids列表，或者是引用此类spawn_id列表的变量。
 。
-例如，以下示例等待当前进程的“conneced”，或者等待\$proc2指定的spawn_id的“busy”，“fail”或“invalid password”。
+例如，以下示例等待当前进程的“connected”，或者等待\$proc2指定的spawn_id的“busy”，“fail”或“invalid password”。
 
 ``` tcl
 expect {
