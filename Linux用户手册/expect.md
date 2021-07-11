@@ -380,7 +380,7 @@ expect_user [expect_args]
 ```
 <span id="expect_user">就像</span>**expect**一样，但是它从stdin读取字符（即，用户的击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾才能期望看到它们。 这可以通过**stty**更改（请参见下面的**stty**命令）。
 
-## 5.21 fork
+### 5.21 fork
 
 ## 5.22 interact
 
@@ -467,12 +467,42 @@ send password\r
 ## 5.34 send_user
 ## 5.35 sleep
 ## 5.36 spawn
+```tcl
+spawn [args] program [args]
+```
+<span id="spawn">创建</span>一个运行program args的新进程。它的 stdin、stdout 和 stderr 都连接到 Expect，以便它们可以被其他 Expect 命令读取和写入。连接因close或进程本身关闭任意文件标识符而中断。
+
+当进程由 spawn 启动时，变量 spawn_id 被设置为引用该进程的描述符。 spawn_id 描述的进程被认为是当前进程。 spawn_id 可以被读取或写入，实际上提供了作业控制。
+
+user_spawn_id 是一个全局变量，包含引用用户的描述符。例如，当 spawn_id 设置为该值时，expect 的行为类似于 expect_user。
+
+             error_spawn_id 是一个全局变量，包含一个引用标准错误的描述符。例如，当 spawn_id 设置为此值时，send 的行为类似于 send_error。
+
+             tty_spawn_id 是一个全局变量，包含一个指向 /dev/tty 的描述符。如果 /dev/tty 不存在（例如在 cron、at 或批处理脚本中），则未定义 tty_spawn_id。
+             这可以测试为：
+
 ## 5.37 strace
 ## 5.38 stty
 ## 5.39 system
 ## 5.40 timestamp
 ## 5.41 trap
 ## 5.42 wait
+```tcl
+wait [args]
+```
+<span id="wait">延迟</span>直到派生的进程（或当前进程，如果没有指明）终止。
+
+ **wait** 通常返回一个包含四个整数的列表。第一个整数是等待的进程的 pid。第二个整数是对应的 spawn id。如果发生操作系统错误，则第三个整数为 -1，否则为 0。如果第三个整数是 0，则第四个整数是派生进程返回的状态。如果第三个整数是-1，那么第四个整数就是操作系统设置的errno的值。此外，还设置了全局变量 errorCode。
+
+其他元素可以会出现在**wait**返回值的末尾。可选的第五个元素标识一类信息。目前，此元素的唯一可能值是 CHILDKILLED，在这种情况下，接下来的两个值是 C 样式信号名称和简短的文本描述。
+
+**-i** 标志声明了要等待的进程对应于指明的 spawn_id（不是进程 id）。在 SIGCHLD 处理程序中，可以使用 spawn id -1 等待任何派生进程。
+
+**-nowait** 标志使wait立即返回并指示wait成功。当进程退出（稍后）时，它会自动消失，无需显式等待。
+
+ **wait** 命令也可以用于等待使用参数“-i -1”的fork进程。与用于派生进程不同的是，该命令可以随时执行。无法控制等到的进程，但可以检查进程 ID 的返回值。
+
+
 
 
 ------
