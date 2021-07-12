@@ -5,7 +5,7 @@ tags: 普通命令
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《Expect manpages》，</font>当前版本为5.45.4，手册更新日期为1994-12-29。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《Expect manpages》，</font>expect当前版本为5.45.4，手册更新日期为1994-12-29。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
 
@@ -37,20 +37,20 @@ expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 
 通常，**Expect**主要用于运行那些需要与用户进行交互的程序，前提是交互可以字符串化和编程化。 如果需要，**Expect**也可以向用户返回控制权（而不会暂停受控制的程序）。 同样，用户可以随时将控制权返回给脚本。
 
-# 4 用法
+# 4 用法校对完
 
 |Expect&emsp;|Expectk&emsp;&emsp;&emsp;&emsp;|说明|
 |:--|:--|:--|
-|cmdfile||**Expect**读取<u>cmdfile</u>以获取要执行的命令列表。在支持 `＃!` 的系统上，**Expect**也可以被隐式调用，通过将脚本标记为可执行文件，并在脚本的第一行中添加<br />&emsp;&emsp;`#!/usr/bin/Expect -f`。<br />当然，路径必须准确地描述**Expect**的安装位置。 `/usr/bin`只是一个示例。|
-|-c cmds|-command cmds|在执行脚本前先执行<u>cmds</u>。该命令应加引号，以防止被shell破坏。此选项可以多次使用。可以使用单个 **-c** 执行多个命令，多个命令之间用分号";"分开。命令按照它们出现的顺序被执行。
-|-d|-diag|启用一些诊断输出，该诊断输出主要报告命令的内部活动，例如**expect**和**interact**。此标志与在**Expect**脚本开头的“exp_internal 1”具有相同的作用，并且还会打印**Expect**的版本。（**strace**命令用于跟踪语句，**trace**命令用于跟踪变量赋值。）|
+|cmdfile||**Expect**读取<u>cmdfile</u>以获取要执行的命令列表。通过将脚本标记为可执行文件，并在脚本的第一行中添加<br />&emsp;&emsp;`#!/usr/bin/Expect -f`。<br />在支持 `＃!` 的系统上，**Expect**也可以被隐式调用，当然，路径必须准确地描述**Expect**的安装位置。 `/usr/bin`只是一个示例。|
+|-c cmds|-command cmds|在执行脚本中的命令前先执行<u>cmds</u>。该命令应加引号，以防止被shell破坏。此选项可以多次使用。可以使用单个 **-c** 执行多个命令，多个命令之间用分号";"分开。命令按照它们出现的顺序被执行。
+|-d|-diag|启用一些诊断输出，该诊断输出主要报告命令的内部活动，例如**expect**和**interact**。此标志与在**Expect**脚本开头的“exp_internal 1”具有相同的作用，并且还会打印**Expect**的版本。（**[strace](#strace)** 命令用于跟踪语句，**trace**命令用于跟踪变量赋值。）|
 |-D num|-Debug num|<span id="Debug">启用交互式调试器</span>。应该跟一个整数值。如果该值不为零或按下Ctrl+C（或达到断点，或脚本中出现其他合适的调试器命令），则调试器将在下一个Tcl过程之前获得控制权。有关调试器的更多信息，请参见README文件或[另请参阅](#SeeAlso)。| 
 |-f| -file|在执行脚本先执行<u>file</u>。该标志本身是可选的，因为它仅在使用`#!`注释时才有用（请参见上文），以便可以在命令行上提供其他参数。|
-|-b|-buffer|默认情况下，命令文件被读入内存并完整执行。有时希望一次读取一行文件。 例如，stdin 就是这样读取的。 为了强制以这种方式处理任意文件，请使用 **-b** 标志。 请注意，stdio-buffering 可能仍会发生，但从 fifo 或 stdin 读取时不会引起问题。|
+|-b|-buffer|默认情况下，命令文件被读入内存并完整执行。有时希望一次读取一行文件。 例如，stdin 就是这样读取的。 为了强制以这种方式处理任意文件，请使用 **-b** 标志。 请注意，标准IO缓存可能仍会发生，但从 fifo 或 stdin 读取时不会引起问题。|
 |-||如果字符串“-”作为文件名提供，则改为读取标准输入。 （“./-”从实际名为“-”的文件中读取。）
-|-i|-interactive|**Expect**以交互方式提示用户输入命令，而不是从文件中读取命令。通过**exit**命令或EOF终止提示。有关更多信息，请参见[解释器](#interpreter)（见后文）。如果既不指定命令文件也不使用-c，则假定为-i。|
-|--||可以用来分隔选项的结尾。主要用于将类似选项的参数传递给脚本而不要**Expect**进行解释。可以将其放在`＃!`行中，以防止**Expect**进行任何类似标志的解析。例如，`#!/usr/bin/Expect`会将原始参数（包括脚本名称）保留在变量argv中。<br /><br />请注意，在向`#!`行添加参数时，必须遵守getopt(3)和execve(2)通常约定。|
-|-N,-n|-NORC,-norc|除非使用-N标志，否则文件`$exp_library/Expect.rc`（如果存在）会自动引入。 此后，除非使用-n标志，否则将自动引入文件`~/.Expect.rc`。如果定义了环境变量**DOTDIR**，则将其视为目录，并从该目录中读取`.Expect.rc`。仅在执行-**c**标志之后才进行这种引入。
+|-i|-interactive|**Expect**以交互方式提示用户输入命令，而不是从文件中读取命令。通过**exit**命令或EOF终止提示。有关更多信息，请参见[解释器](#interpreter)（见后文）。如果既不指定命令文件也不使用 **-c**，则假定为 **-i**。|
+|--||可以用来分隔选项的结尾。主要用于将类似选项的参数传递给脚本而不要**Expect**进行解释。可以将其放在`＃!`行中，以防止**Expect**进行任何类似标志的解析。例如，`#!/usr/bin/expect`会将原始参数（包括脚本名称）保留在变量argv中。<br /><br />请注意，在向`#!`行添加参数时，必须遵守getopt(3)和execve(2)通常约定。|
+|-N,-n|-NORC,-norc|除非使用-N标志，否则文件`$exp_library/expect.rc`（如果存在）会自动引入。 此后，除非使用-n标志，否则将自动引入文件`~/.expect.rc`。如果定义了环境变量**DOTDIR**，则将其视为目录，并从该目录中读取`.expect.rc`。仅在执行-**c**标志之后才进行这种引入。
 |-v|-version|使**Expect**打印其版本号并退出。|
 |args||可选的<u>args</u>被构造到一个列表中，并存储在名为<u>argv</u>的变量中。 <u>argc</u>初始化为<u>argv</u>的长度。<br /><br /><u>argv0</u>定义为脚本的名称（如果未使用脚本，则为二进制程序名）。例如`send_user "$argv0 [lrange $argv 0 2]\n"`打印出脚本的名称和前三个参数。|
 
@@ -534,6 +534,6 @@ wait [args]
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《Expect manpages》</font>，当前版本为5.45.4，手册更新日期为1994-12-29。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《Expect manpages》</font>，expect当前版本为5.45.4，手册更新日期为1994-12-29。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
