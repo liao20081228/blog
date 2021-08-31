@@ -22,8 +22,9 @@ tags: 3gpp,翻译
 |specification|规格; 规范|
 |specify |具体说明; 明确规定|
 |the non-access stratum |非接入层|NAS|
-
-
+|the present document|当前文档|
+|The EPS Session Management|EPS会话管理| ESM|
+|The EPS Mobility Management|EPS移动性管理| EMM |
 
 ------
 
