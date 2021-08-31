@@ -25,6 +25,8 @@ tags: 3gpp,翻译
 |the present document|当前文档|
 |The EPS Session Management|EPS会话管理| ESM|
 |The EPS Mobility Management|EPS移动性管理| EMM |
+|Mobility |移动性；移动能力|
+
 
 ------
 
