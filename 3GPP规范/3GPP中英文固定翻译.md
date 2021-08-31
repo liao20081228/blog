@@ -1,0 +1,21 @@
+---
+title: 3GPP中英文固定翻译
+tags: 3gpp,翻译
+---
+
+
+------
+
+***<font color=blue>版权声明</font>：<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+
+------
+
+|英文|中文|缩写|
+|:--|:--|
+|演进分组系统|
+
+------
+
+***<font color=blue>版权声明</font>：<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+
+------
