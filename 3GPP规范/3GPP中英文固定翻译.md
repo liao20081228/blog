@@ -11,8 +11,17 @@ tags: 3gpp,翻译
 ------
 
 |英文|中文|缩写|
-|:--|:--|
-|演进分组系统|
+|:--|:--|:--|
+|3rd Generation Partnership Project|第三代合作伙伴项目|3GPP|
+| the Evolved Packet System|演进分组系统|EPS|
+|Elementary |基本（的）|
+|procedure |流程|
+|specific |特定(的)|
+|specification|规格; 规范|
+|specify |具体说明; 明确规定|
+
+
+
 
 ------
 
