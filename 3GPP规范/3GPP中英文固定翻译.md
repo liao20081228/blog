@@ -19,7 +19,7 @@ tags: 3gpp,翻译
 |specific |特定(的)|
 |specification|规格; 规范|
 |specify |具体说明; 明确规定|
-
+|the non-access stratum |非接入层|NAS|
 
 
 
