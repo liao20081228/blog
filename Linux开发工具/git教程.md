@@ -61,7 +61,7 @@ Git提供了一个叫做`git config` 的工具（也可以叫命令），专门�
 
 每一个级别的配置都会覆盖上层的相同配置，所以 .git/config 里的配置会覆盖 /etc/gitconfig 中的同名变量。
 
-在 Windows 系统上也类似，Git会找寻用户主目录下的 .gitconfig 文件。主目录即 \$HOME 变量指定的目录，一般都是 C:\USER\\$USER\Documents and Settings。此外，Git 还会尝试找寻 /etc/gitconfig文件，一般都位于git安装目录。
+在 Windows 系统上也类似，Git会找寻用户主目录下的 .gitconfig 文件。主目录即 `$HOME` 变量指定的目录，一般都是 `C:\USER\$USER\Documents and Settings`。此外，Git 还会尝试找寻 `/etc/gitconfig`文件，一般都位于git安装目录。
 
 ### 1.2.1 配置用户信息
 ```bash
