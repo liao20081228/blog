@@ -119,8 +119,6 @@ $ git config user.name
 #克隆远程仓库到本地目标目录中,省略本地目录则克隆到当前目录下,-b 选项指定要克隆的分支
 git clone [-b branname] 仓库 [本地目录名] 
 
-
-
 #git clone  支持多种协议： 
 #   git clone ssh://[user@]hostname[:port]/path/to/repo.git/
 #   git clone git://hostname[:port]/path/to/repo.git/
