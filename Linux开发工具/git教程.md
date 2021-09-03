@@ -116,7 +116,10 @@ $ git config user.name
 ```
 ### 2.1.2 拷贝远程仓库到本地
 ```bash
-git clone [-b branname] 仓库 [本地目录名]   #克隆远程仓库到本地目标目录中,省略本地目录则克隆到当前目录下
+#克隆远程仓库到本地目标目录中,省略本地目录则克隆到当前目录下,-b 选项指定要克隆的分支
+git clone [-b branname] 仓库 [本地目录名] 
+
+
 
 #git clone  支持多种协议： 
 #   git clone ssh://[user@]hostname[:port]/path/to/repo.git/
@@ -128,6 +131,7 @@ git clone [-b branname] 仓库 [本地目录名]   #克隆远程仓库到本地�
 #   git clone --local /opt/git/project.git   #本地仓库
 #   git clone file:///opt/git/project.git    #本地仓库
 ```
+
 通常，URL包含有关传输协议、远程服务器地址和存储库路径。Git支持ssh、git、http和https协议（另外，ftp和ftps可用于fetch，但效率低下，不推荐使用）。git协议不进行身份验证，因此在不安全的网络上应谨慎使用。
 
 ssh协议也可以使用另一种类似scp的语法，这种语法只有在第一个冒号前没有斜线时才能识别。这有助于与包含冒号的本地路径区分。
