@@ -13,7 +13,7 @@ tags:  程序员基础知识
 * gitlib是实现git功能的函数库。
 * [github](github.com) 是一个用git做版本控制的基于Web的项目托管平台，是官方的。
 * [gitlab](gitlab.com) 是一个用git做版本控制的基于Web的项目托管平台，**此外还提了软件包用于搭建自己的项目托管平台**。
-* [gitee](gitee.com) 是一个用git做版本控制的基于Web的项目托管平台。
+* [gitee](gitee.com) 是一个用git做版本控制的基于Web的项目托管平台，和[github](github.com)一样的，只不过运营公司不同。
 
 **GitHub、GitLab、Gitee的异同？**
 
