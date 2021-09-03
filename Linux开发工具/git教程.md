@@ -198,7 +198,7 @@ git commit –m “注释”  #将删除提交版本库
 git rm -f filename   #如果在commit后，进行了修改且已经add到暂存区，则使用-f选项强制删除
 git rm --cached filename   #只删除暂存区文件，不删除工作区文件
 ```
-## 4.6 移动文件和重命名
+## 4.6 移动、重命名文件
 ```bash
 git mv src dest #移动文件和重命名
 ```
@@ -218,7 +218,7 @@ git log --graph --pretty=oneline --abbrev-commit #图形化查看提交和合并
 git reflog #查看所有分支的所有操作记录（包括commit和reset的操作），包括已删除的commit记录
 ```
 
-## 5.2 分支的创建、切换、查看、删除
+## 5.2 创建、切换、查看、删除分支
 
 ```bash
 git checkout -b 分支名  #创建并切换，相当于以下两条命令： 
@@ -239,7 +239,7 @@ git branch  [-v|vv|vvv]  #列出所有分支，当前分支前面会标一个*�
                                 #HEAD指针指向当前分支，master指针指向主分支。**
 ```
 
-## 5.3 分支合并
+## 5.3 合并分支
 ```bash
 git merge 分支名 -m "合并说明"         #用于合并指定分支到当前分支。在之前应切换到主分支。默认使用fast forward
 git merge --no-ff -m "合并说明" 分支名 #禁用fast forward，避免删除分支时丢掉分支信息。
@@ -258,14 +258,12 @@ git stash pop    #恢复现场并删除快照，相当于以下两个命令
 git stash apply  #恢复现场但并不删除快照
 git stash drop   #删除快照；
 ```
-# 5 远程仓库
-## 5.1 查看远程仓库信息
+# 6 共享与更新项目
+## 6.1 管理远程仓库
 ```bash
 git remote    #查看远程库信息
 git remote -v #查看远程库的详细信息
-```
-## 5.2 管理远程主机
-```bash
+
 git remote show 主机名               #可以查看该主机的详细信息。
 
 git remote add  主机名 地址          #添加远程主机。 默认主机为origin
