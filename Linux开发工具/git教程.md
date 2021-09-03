@@ -51,7 +51,7 @@ git --version       #查看git版本
 
 此外还有中文GUI的git：<https://tortoisegit.org/>。
 
-## 1.2 配置
+# 2 启动与配置
 
 Git提供了一个叫做`git config` 的工具（也可以叫命令），专门用来配置或读取相应的工作环境变量。这些环境变量，决定了 Git 在各个环节的具体工作方式和行为。这些变量可以存放在以下三个不同的地方：
 
@@ -63,7 +63,7 @@ Git提供了一个叫做`git config` 的工具（也可以叫命令），专门�
 
 在 Windows 系统上也类似，Git会找寻用户主目录下的 .gitconfig 文件。主目录即 `$HOME` 变量指定的目录，一般都是 `C:\USER\$USER\Documents and Settings`。此外，Git 还会尝试找寻 `/etc/gitconfig`文件，一般都位于git安装目录。
 
-### 1.2.1 配置用户信息
+## 2.1 配置用户信息
 ```bash
 $ git config --global user.name "user_naem"   #配置用户名
 $ git config --global user.email "user_Email" #配置用户邮箱
@@ -71,18 +71,18 @@ $ git config --global user.email "user_Email" #配置用户邮箱
 如果用了 `--global` 选项，那么更改的配置文件就是位于你用户主目录下的那个，以后你所有的项目都会默认使用这里配置的用户信息。
 如果要在某个特定的项目中使用其他名字或者电邮，只要去掉 `--global` 选项重新配置即可，新的设定保存在当前项目的 `.git/config` 文件里。
 
-### 1.2.2 配置文本编辑器
+## 2.2 配置文本编辑器
 设置Git默认使用的文本编辑器, 一般可能会是 Vi 或者 Vim。如果你有其他偏好，比如 Emacs 的话，可以重新设置：:
 ```bash
 $ git config --global core.editor emacs
 ```
-### 1.2.3 配置差异分析工具
+## 2.3 配置差异分析工具
 还有一个比较常用的是，在解决合并冲突时使用哪种差异分析工具。比如要改用 vimdiff 的话：
 ```bash
 $ git config --global merge.tool vimdiff
 ```
 Git 可以理解kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。
-### 1.2.4 配置颜色和别名
+## 2.4 配置颜色和别名
 
  让Git显示颜色，会让命令输出看起来更醒目:
 ```bash
@@ -93,10 +93,10 @@ git config --global color.ui # true让Git显示颜色，会让命令输出看起
 ```bash
 git config --global alias.别名 git命令名 #为git命令配置别名
 ```
-### 1.2.5 其它
+## 2.5 其它
 在Git工作区的根目录下创建一个特殊的`.gitignore`文件，然后把要忽略的文件名填进去，Git就会自动忽略这些文件。
 
-### 1.2.6 查看配置信息
+## 2.6 查看配置信息
 要检查已有的配置信息，可以使用 `git config --list` 命令：
 ```bash
 $ git config --list #查看所有的配置信息
@@ -107,14 +107,13 @@ $ git config --list #查看所有的配置信息
 ```bash
 $ git config user.name
 ```
-# 2 基本操作
-## 2.1 创建仓库
-### 2.1.1 直接创建本地仓库
+# 3 创建和获取仓库
+## 3.1 直接创建本地仓库
 ```bash
  git init         #将当前文件夹初始化为仓库
  git init dirname #将dirname初始化为仓库，如果不存在则新建
 ```
-### 2.1.2 拷贝远程仓库到本地
+## 3.2 拷贝远程仓库到本地
 ```bash
 #克隆远程仓库到本地目标目录中,省略本地目录则克隆到当前目录下,-b 选项指定要克隆的分支
 git clone [-b branname] 仓库URL [本地目录名] 
@@ -149,9 +148,8 @@ git clone [user@]host.xz:/~[user]/path/to/repo.git/
 ```bash
 <transport>::<address>
 ```
-
-
-## 2.2 提交文件到仓库s|
+# 4 基本快照
+## 4.1 提交文件到仓库
 ```bash
 git add filename                        #将文件提交到暂存区
 git commit –m “提交说明” [-s|--signoff] #将暂存区文件提交到版本库,并且添加提示信息，
@@ -162,19 +160,50 @@ git commit –m “提交说明” [-s|--signoff] #将暂存区文件提交到�
 git commit -am “提交说明” [-s|--signoff] #将工作区中发生变化的已经跟踪文件以及已经暂存区中的文件一起提交到版本库，
                                         #等效于git add;git commit
 ```
-## 2.3 查看仓库状态
+## 4.2 查看仓库状态
 ```bash
 git status     #查看仓库详细状态，工作区已经发送变化的文件，这些文件是否添加到暂存区，暂存区文件是否提交到版本库
 git status -s  #查看仓库简述状态
 ```
-## 2.4 查看仓库状态变化的内容
+## 4.3 查看仓库状态变化的内容
 ```bash
 git diff filename            #查看工作区文件与上一次git add后的不同之处
 git diff --cached  filename  #查看暂存区文件与上一次git commit后的不同之处
 git diff HEAD filename       #查看工作区和暂存区中的文件与版本库里面最新版本的区别
 git diff --stat              #只显示摘要
+git diff [startnode] [endnode]  #查看两次commit之间的差异
 ```
-## 2.5 查看提交历史
+## 4.4 撤销修改与版本回退
+```bash
+git checkout filename  #将工作区回退到最近一次git add后（没有提交到暂存区）
+git checkout commitID 文件名  #将某个文件恢复到某个版本时的状态
+
+git reset HEAD filename #将暂存区回退到最近一次git commit后的，
+                        #再用git checkout就能丢弃修改（已经提交到暂存区，但没有提交到版本库）
+
+git reset --hard        #版本回退，撤销修改（已经commit到版本库，但还没有推送到远程仓库）
+git reset --hard HEAD^  #版本回退一次
+git reset --hard HEAD^^ #版本回退两次
+git reset --hard HEAD~n #版本回退n次
+git reset --hard 版本id  #回退到指定版本号
+```
+## 4.5 删除文件
+```bash
+rm filename              #从目录中删除文件
+
+git rm filename          #删除暂存区和工作区文件
+git commit –m “注释”  #将删除提交版本库
+#执行这两个命令就可以从版本库中删除文件，如果不想删除 git checkout filename撤销删除
+   
+git rm -f filename   #如果在commit后，进行了修改且已经add到暂存区，则使用-f选项强制删除
+git rm --cached filename   #只删除暂存区文件，不删除工作区文件
+```
+## 4.6 移动文件和重命名
+```bash
+git mv src dest #移动文件和重命名
+```
+# 5 分支与合并
+## 5.1 查看提交历史
 ```bash
 git log                                        #查看详细commit历史，可以看到各版本的id,但看不到已经删除的commit
 git log --oneline                              #查看简洁的commit历史
@@ -188,37 +217,9 @@ git log --no-merges                            #隐藏合并提交历史
 git log --graph --pretty=oneline --abbrev-commit #图形化查看提交和合并历史
 git reflog #查看所有分支的所有操作记录（包括commit和reset的操作），包括已删除的commit记录
 ```
-## 2.6 撤销修改与版本回退
-```bash
-git checkout filename  #将工作区回退到最近一次git add后（没有提交到暂存区）
 
-git reset HEAD filename #将暂存区回退到最近一次git commit后的，
-                        #再用git checkout就能丢弃修改（已经提交到暂存区，但没有提交到版本库）
+## 5.2 分支创建与切换
 
-git reset --hard        #版本回退，撤销修改（已经commit到版本库，但还没有推送到远程仓库）
-git reset --hard HEAD^  #版本回退一次
-git reset --hard HEAD^^ #版本回退两次
-git reset --hard HEAD~n #版本回退n次
-git reset --hard 版本id  #回退到指定版本号
-
-git checkout 版本id 文件名  #将某个文件恢复到某个版本时的状态
-```
-## 2.7 删除文件
-```bash
-rm filename              #从目录中删除文件
-
-git rm filename          #删除暂存区和工作区文件
-git commit –m “注释”  #将删除提交版本库
-#执行这两个命令就可以从版本库中删除文件，如果不想删除 git checkout filename撤销删除
-   
-git rm -f filename   #如果在commit后，进行了修改且已经add到暂存区，则使用-f选项强制删除
-git rm --cached filename   #只删除暂存区文件，不删除工作区文件
-```
-## 2.8 移动文件和重命名
-```bash
-git mv src dest #移动文件和重命名
-```
-# 3 分支管理
 ```bash
 git checkout -b 分支名  #创建并切换，相当于以下两条命令： 
 git branch 分支名       #创建分支
@@ -229,9 +230,11 @@ git checkout 分支名     #切换到分支
 git switch -c 分支名    #创建并切换到分支。
 git switch 分支名     #切换到分支
 
-git branch  [-v]        #列出所有分支，当前分支前面会标一个*号
-git show-branch         #查看分支信息
+git branch  [-v]  [-vv] [-vvv]      #列出所有分支，当前分支前面会标一个*号
+```
 
+## 5.3 分支合并
+```bash
 git merge 分支名 -m "合并说明"         #用于合并指定分支到当前分支。在之前应切换到主分支。默认使用fast forward
 git merge --no-ff -m "合并说明" 分支名 #禁用fast forward，避免删除分支时丢掉分支信息。
     
@@ -240,9 +243,9 @@ git branch -D 分支名    #强制删除未合并的分支
 
 #HEAD指针指向当前分支，master指针指向主分支。
 ```
-# 4 工作快照
+## 5.2 工作快照
 ```bash
-git stash        #把当前工作现场“储藏”起来，等以后恢复现场后继续工作。
+git stash [save 注释]  #把当前工作现场“储藏”起来，等以后恢复现场后继续工作。
 
 git stash list   #查看快照
 
