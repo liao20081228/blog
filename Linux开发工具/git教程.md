@@ -151,15 +151,15 @@ git clone [user@]host.xz:/~[user]/path/to/repo.git/
 ```
 
 
-## 2.2 提交文件到仓库
+## 2.2 提交文件到仓库s|
 ```bash
 git add filename                        #将文件提交到暂存区
-git commit –m “提交说明” [--signoff] #将暂存区文件提交到版本库,并且添加提示信息，
+git commit –m “提交说明” [-s|--signoff] #将暂存区文件提交到版本库,并且添加提示信息，
                                         #--signoff表示在“提交说明”末尾自动添加签名文字
  
 #或
 
-git commit -am “提交说明” [--signoff] #将工作区中发生变化的已经跟踪文件以及已经暂存区中的文件一起提交到版本库，
+git commit -am “提交说明” [-s|--signoff] #将工作区中发生变化的已经跟踪文件以及已经暂存区中的文件一起提交到版本库，
                                         #等效于git add;git commit
 ```
 ## 2.3 查看仓库状态
@@ -216,7 +216,7 @@ git rm --cached filename   #只删除暂存区文件，不删除工作区文件
 ```
 ## 2.8 移动文件和重命名
 ```bash
-git mv rsc dest #移动文件和重命名
+git mv src dest #移动文件和重命名
 ```
 # 3 分支管理
 ```bash
