@@ -218,7 +218,7 @@ git log --graph --pretty=oneline --abbrev-commit #图形化查看提交和合并
 git reflog #查看所有分支的所有操作记录（包括commit和reset的操作），包括已删除的commit记录
 ```
 
-## 5.2 分支创建、切换、查看、删除
+## 5.2 分支的创建、切换、查看、删除
 
 ```bash
 git checkout -b 分支名  #创建并切换，相当于以下两条命令： 
