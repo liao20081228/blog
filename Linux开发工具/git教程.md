@@ -44,8 +44,12 @@ git --version       #查看git版本
 
 ```
 ### 1.1.2 windows平台
-从<http://msysgit.github.io/> 或<https://git-scm.com/downloads>下载git，并运行。完成安装之后，就可以使用命令行的 git 工具（已经自带了 ssh 客户端）了，另外还有一个图形界面的 Git 项目管理工具。
+
+从<https://gitforwindows.org/> 或<https://git-scm.com/downloads>下载git，并运行。完成安装之后，就可以使用命令行的 git 工具（已经自带了 ssh 客户端）了，另外还有一个图形界面的 Git 项目管理工具。
+
 在开始菜单里找到"Git"->"Git Bash"，会弹出 Git 命令窗口。
+
+此外还有中文GUI的git：<https://tortoisegit.org/>。
 
 ## 1.2 配置
 Git提供了一个叫做git config 的工具（也可以叫命令），专门用来配置或读取相应的工作环境变量。这些环境变量，决定了 Git 在各个环节的具体工作方式和行为。这些变量可以存放在以下三个不同的地方：
