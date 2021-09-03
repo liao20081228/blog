@@ -273,7 +273,7 @@ git remote rename 原主机名 新主机名  #用于远程主机改名
 git remote set-url --add 主机名 地址 #为指定主机设置地址，可将同1主机名关联到不同的地址
 ```
 
-## 5.3 取回远程分支
+## 6.2 取回远程分支
 ```bash
 git fetch 远程主机名  [分支名] 
 #将远程主机的[某分支]更新全部取回本地。对本地代码没影响。
@@ -284,7 +284,7 @@ git checkout -b newBrach  远程主机/分支名   #创建并切换到远程分�
 git switch -c newBrach  远程主机/分支名     #创建并切换到远程分支
 git merge 远程主机/分支名    #将远程分支合并到当前分支
 ```
-## 5.4 推送本地分支
+## 6.3 推送本地分支
 ```bash
 git push  [远程主机]  [本地分支名]:[远程分支名]   
     #将本地分支的更新，推送到远程主机, 
@@ -298,7 +298,7 @@ git push  [远程主机]  [本地分支名]:[远程分支名]
 git push --all origin    #将所有本地分支都推送到origin主机。
 git push --force origin  #强制推送，覆盖远程分支。
 ```
-## 5.5 取回远程分支并合并
+## 6.4 取回远程分支并合并
 ```bash
 git pull [远程主机] [远程分支]:[本地分支] 
     #取回远程主机某分支，与本地的指定分支合并。
@@ -308,22 +308,7 @@ git pull [远程主机] [远程分支]:[本地分支]
     #如果当前分支与远程分支存在追踪关系，则本地分支与远程分支都可省略
     #如果当前分支只有一个追踪分支，则远程主机可以省略。
 ```   
-## 5.6 其它
-```bash   
-git branch (-u|--set-upstream) 本地分支 远程主机/分支名   #将本地分支追踪到远程分支
-git pull --rebase 远程主机 远程分支名:本地分支名      #合并远程分支与本地分支时采用rebase模式。
-   
-git pull -p    #在本地删除远程已经删除的分支。等同于下面的命令
-git fetch --prune origin 
-git fetch -p   #在本地删除远程已经删除的分支。
-
-git rebase #把本地未push的分叉提交历史整理成直线
-
-```
-
-
-
-# 6 标签
+## 6.5 标签
 ```bash
 git tag tagname          #为当前分支创建标签
 git tag tagname commitid #为指定commitid打上标签
@@ -339,6 +324,19 @@ git push origin :refs/tags/tagname #删除远程标签，如果标签已推送�
 
 git push origin tagname  #将指定标签推送到远程
 git push origin --tags   #将本地所有标签推送到远程
+```
+
+## 6.7 其它
+```bash   
+git branch (-u|--set-upstream) 本地分支 远程主机/分支名   #将本地分支追踪到远程分支
+git pull --rebase 远程主机 远程分支名:本地分支名      #合并远程分支与本地分支时采用rebase模式。
+   
+git pull -p    #在本地删除远程已经删除的分支。等同于下面的命令
+git fetch --prune origin 
+git fetch -p   #在本地删除远程已经删除的分支。
+
+git rebase #把本地未push的分叉提交历史整理成直线
+
 ```
 # 7 创建SSH Key。
 首先在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH：
