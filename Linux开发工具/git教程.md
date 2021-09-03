@@ -50,7 +50,7 @@ git --version       #查看git版本
 在开始菜单里找到"Git"->"Git Bash"，会弹出 Git 命令窗口。
 
 此外还有中文GUI的git：<https://tortoisegit.org/>。
-
+![图1](https://gitee.com/liao20081228/blog_pictures/raw/master/git教程/5c97409c6cc30fefea6c6f5c705227ec_图2.PNG)
 # 2 启动与配置
 
 Git提供了一个叫做`git config` 的工具（也可以叫命令），专门用来配置或读取相应的工作环境变量。这些环境变量，决定了 Git 在各个环节的具体工作方式和行为。这些变量可以存放在以下三个不同的地方：
@@ -218,7 +218,7 @@ git log --graph --pretty=oneline --abbrev-commit #图形化查看提交和合并
 git reflog #查看所有分支的所有操作记录（包括commit和reset的操作），包括已删除的commit记录
 ```
 
-## 5.2 分支创建与切换
+## 5.2 分支创建、切换、查看、删除
 
 ```bash
 git checkout -b 分支名  #创建并切换，相当于以下两条命令： 
@@ -230,6 +230,11 @@ git checkout 分支名     #切换到分支
 git switch -c 分支名    #创建并切换到分支。
 git switch 分支名     #切换到分支
 
+git branch -d 分支名    #删除已经合并的某分支
+git branch -D 分支名    #强制删除未合并的分支
+
+#HEAD指针指向当前分支，master指针指向主分支。
+
 git branch  [-v]  [-vv] [-vvv]      #列出所有分支，当前分支前面会标一个*号
 ```
 
@@ -237,11 +242,9 @@ git branch  [-v]  [-vv] [-vvv]      #列出所有分支，当前分支前面会�
 ```bash
 git merge 分支名 -m "合并说明"         #用于合并指定分支到当前分支。在之前应切换到主分支。默认使用fast forward
 git merge --no-ff -m "合并说明" 分支名 #禁用fast forward，避免删除分支时丢掉分支信息。
-    
-git branch -d 分支名    #删除已经合并的某分支
-git branch -D 分支名    #强制删除未合并的分支
+##
+git merge (--continue | --abort | --quit)
 
-#HEAD指针指向当前分支，master指针指向主分支。
 ```
 ## 5.2 工作快照
 ```bash
