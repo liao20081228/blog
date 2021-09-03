@@ -220,10 +220,14 @@ git mv src dest #移动文件和重命名
 ```
 # 3 分支管理
 ```bash
-git checkout -b 分支名  #创建并切换，相当于以下两条命令：
-
+git checkout -b 分支名  #创建并切换，相当于以下两条命令： 
 git branch 分支名       #创建分支
 git checkout 分支名     #切换到分支
+
+#等效于
+
+git switch -c 分支名    #创建并切换到分支。
+git switch 分支名     #切换到分支
 
 git branch  [-v]        #列出所有分支，当前分支前面会标一个*号
 git show-branch         #查看分支信息
