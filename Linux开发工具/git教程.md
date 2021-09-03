@@ -4,7 +4,7 @@ tags:  程序员基础知识
 ---
 ------
 
-<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《git官方网站》](https://git-scm.com/book/en/v2"点击跳转")。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《git官方手册》](https://git-scm.com/docs "点击跳转")。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
 
 ------
 # 0 基本概念
@@ -369,7 +369,7 @@ ssh-keygen -t rsa -b 4096 -C "youremail@example.com"
 
 ------
 
-<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《git官方网站》](https://git-scm.com/book/en/v2"点击跳转")。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>[《git官方手册》](https://git-scm.com/docs "点击跳转")。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
 
 ------
 
