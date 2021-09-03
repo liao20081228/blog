@@ -233,20 +233,21 @@ git switch 分支名     #切换到分支
 git branch -d 分支名    #删除已经合并的某分支
 git branch -D 分支名    #强制删除未合并的分支
 
-#HEAD指针指向当前分支，master指针指向主分支。
 
-git branch  [-v]  [-vv] [-vvv]      #列出所有分支，当前分支前面会标一个*号
+
+git branch  [-v|vv|vvv]  #列出所有分支，当前分支前面会标一个*号
+                                #HEAD指针指向当前分支，master指针指向主分支。**
 ```
 
 ## 5.3 分支合并
 ```bash
 git merge 分支名 -m "合并说明"         #用于合并指定分支到当前分支。在之前应切换到主分支。默认使用fast forward
 git merge --no-ff -m "合并说明" 分支名 #禁用fast forward，避免删除分支时丢掉分支信息。
-##
-git merge (--continue | --abort | --quit)
+
+git merge [--continue | --abort | --quit] #继续、终止 、停止合并
 
 ```
-## 5.2 工作快照
+## 5.4 暂存工作区
 ```bash
 git stash [save 注释]  #把当前工作现场“储藏”起来，等以后恢复现场后继续工作。
 
