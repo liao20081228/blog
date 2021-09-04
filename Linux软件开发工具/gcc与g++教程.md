@@ -10,8 +10,6 @@ tags: Linux项目管理
 ------
 
 <style>table{word-break:initial;}</style>
-
-
 # 1 简介
 
 * 对于 C 文件，可以采用 gcc 或 g++编译
