@@ -71,8 +71,11 @@ printf("int max: %s\n", STR(INT_MAX)); // INT_MAX,int型的最大值，为一个
                                        //STR(INT_MAX) -->  _STR(0x7fffffff) 
 printf("%d\n", CONS(A, A));           //输出为：200  , CONS(A, A)  --> _CONS((2), (2))  --> int((2)e(2)) 
 ```
-# 4 经典用法  
-## 4.1 合并匿名变量名  
+
+## 4 可变参数宏
+
+# 5 经典用法  
+## 5.1 合并匿名变量名  
 ```c
 #define   ___ANONYMOUS1(type, var, line)   type   var##line  
 #define   __ANONYMOUS0(type,  line)   ___ANONYMOUS1(type, _anonymous, line)  
@@ -86,7 +89,7 @@ printf("%d\n", CONS(A, A));           //输出为：200  , CONS(A, A)  --> _C
 每次只能解开当前层的宏，所以__LINE__在第二层才能被解开；
 
 
-## 4.2 记录文件名   
+## 5.2 记录文件名   
 ```c
 #define   _GET_FILE_NAME(f)    #f   
 #define   GET_FILE_NAME(f)  _GET_FILE_NAME(f)   
