@@ -1,5 +1,5 @@
 ---
-title: 源码搜索工具cscope
+title: cscope教程
 tags: vim插件
 ---
 
