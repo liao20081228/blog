@@ -5,7 +5,7 @@ tags: Linux项目管理
 
 ------
 
-&emsp;&emsp;<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>**陈皓**先生的[《跟我一起写makefile》](https://blog.csdn.net/haoel/article/details/2886)，并根据最新的[《GNU make手册》](http://www.gnu.org/software/make/manual/make.html)（截止2018年5月），以及[《Linux man pages》](https://linux.die.net/man/ "点击跳转")做了修改，增添了一部分内容。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>**陈皓**先生的[《跟我一起写makefile》](https://blog.csdn.net/haoel/article/details/2886)，并根据最新的[《GNU make手册》](http://www.gnu.org/software/make/manual/make.html)（截止2018年5月），以及[《Linux man pages》](https://linux.die.net/man/ "点击跳转")做了修改，增添了一部分内容。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
 
 ------
 
@@ -70,15 +70,15 @@ tags: Linux项目管理
 ||--no-print-directory|即使 -w 隐式开启，也要关闭 -w。
 |-W FILE|--what-if=file, --new-file=file,<br /> --assume-new=file|make将把file的最近修改时间视为当前时间，与-n联用时可以看到当文件修改后会发生的事情
 ||--warn-undefined-variables|当引用未定义的变量时打印警告信息。
-|&emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
+||&emsp;||
 
 
 
 # 2 Makefile简介
-&emsp;&emsp;Makefile存储着工程管理器Make进行工作所需的编译规则命令。
+Makefile存储着工程管理器Make进行工作所需的编译规则命令。
 
 ## 2.1 make的工作过程
-&emsp;&emsp;例如，有 Makefile 文件，内容如下：
+例如，有 Makefile 文件，内容如下：
 ```makefile
 main.exe:main.o func.o //有头文件时要加入头文件
 	g++ -o main.exe main.o func.o 
@@ -89,11 +89,11 @@ func.o:func.cpp
 ```
 对于该 Makefile 文件,程序 make 处理过程如下:
 
-&emsp;&emsp;1. make程序首先读到第1行的目标文件`main.exe`和它的两个依赖文件`main.o`和`func.o`;然后比较文件`main.exe`和`main.o`、`func.o`的产生时间，如果 `main.exe` 比 `main.o`或`func.o` 旧的话，则执行第2行命令，以产生目标文件`main.exe`。
-&emsp;&emsp;2. 在执行第2行的命令前,它首先会查看makefile中的其他定义，看有没有以第1行` main.o `和 `func.o`为目标文件的依赖文件，如果有的话，继续按照1、2的方式匹配下去。
-&emsp;&emsp;3. 根据2的匹配过程，make 程序发现第3行有目标文件` main.o` 依赖于`main.cpp`，则比较目` main.o `与它的依赖文件 `main.cpp` 的文件新旧,如果`main.o`比`main.cpp`旧,则执行第4行的命令以产生目标文件`main.o`。
-&emsp;&emsp;4. 在执行第 4 条命令时，`main.cpp`在文件makefile不再有依赖文件的定义，make程序不再继续往下匹配，而是执行第4条命令，产生目标文件`main.o`。目标文件 `func.o`按照上面的同样方式判断产生。
-&emsp;&emsp;5. 执行3、4产生完` main.o `和 `func.o `以后，则第 2 行的命令可以顺利地执行了，最终产生了第 1 行的目标文件` main.exe`。
+1. make程序首先读到第1行的目标文件`main.exe`和它的两个依赖文件`main.o`和`func.o`;然后比较文件`main.exe`和`main.o`、`func.o`的产生时间，如果 `main.exe` 比 `main.o`或`func.o` 旧的话，则执行第2行命令，以产生目标文件`main.exe`。
+2. 在执行第2行的命令前,它首先会查看makefile中的其他定义，看有没有以第1行` main.o `和 `func.o`为目标文件的依赖文件，如果有的话，继续按照1、2的方式匹配下去。
+3. 根据2的匹配过程，make 程序发现第3行有目标文件` main.o` 依赖于`main.cpp`，则比较目` main.o `与它的依赖文件 `main.cpp` 的文件新旧,如果`main.o`比`main.cpp`旧,则执行第4行的命令以产生目标文件`main.o`。
+4. 在执行第 4 条命令时，`main.cpp`在文件makefile不再有依赖文件的定义，make程序不再继续往下匹配，而是执行第4条命令，产生目标文件`main.o`。目标文件 `func.o`按照上面的同样方式判断产生。
+5. 执行3、4产生完` main.o `和 `func.o `以后，则第 2 行的命令可以顺利地执行了，最终产生了第 1 行的目标文件` main.exe`。
 
 ## 2.2 Makefile组成
 
@@ -109,25 +109,25 @@ func.o:func.cpp
 * Makefile使用`#`进行注释。
 
 ## 2.4 Makefile文件名
-&emsp;&emsp;默认的情况下，make命令会在当前目录下按顺序找寻文件名为“GNUmakefile”、“gnumakefile”，“makefile”、“Makefile”的文件。
-&emsp;&emsp;当然，你可以使用别的文件名来书写Makefile，比如：“xxxx”，但要用make的“-f FILE”选项指定该文件为Makefile文件，如：`make -f xxxx`。
+默认的情况下，make命令会在当前目录下按顺序找寻文件名为“GNUmakefile”、“gnumakefile”，“makefile”、“Makefile”的文件。
+当然，你可以使用别的文件名来书写Makefile，比如：“xxxx”，但要用make的“-f FILE”选项指定该文件为Makefile文件，如：`make -f xxxx`。
 
 ## 2.5 引入其它的Makefile
 
-&emsp;&emsp;在Makefile使用include关键字可以把别的Makefile包含进来，这很像C语言的`#include<xxx.h>`，被包含的文件会原模原样的放在当前文件的包含位置。include的语法是：
+在Makefile使用include关键字可以把别的Makefile包含进来，这很像C语言的`#include<xxx.h>`，被包含的文件会原模原样的放在当前文件的包含位置。include的语法是：
 ```makefile
 include filename1 filename2... #filename可以保含路径和shell通配符
 ```
-&emsp;&emsp;make处理include指令时，会找寻所指出的其它Makefile，并把其内容安置在当前的位置。就好像C/C++的`#include`一样。如果文件都没有指定绝对路径或是相对路径的话，make会在当前目录下首先寻找，如果当前目录下没有找到，那么，make还会在下面的几个目录下找：
+make处理include指令时，会找寻所指出的其它Makefile，并把其内容安置在当前的位置。就好像C/C++的`#include`一样。如果文件都没有指定绝对路径或是相对路径的话，make会在当前目录下首先寻找，如果当前目录下没有找到，那么，make还会在下面的几个目录下找：
 
 * 如果make执行时，有`-I`或`--include-dir`参数，那么make就会在这个参数所指定的目录下去寻找。
 * 如果目录`<prefix>/include`（一般是：`/usr/local/bin`或`/usr/include`）存在的话，make也会去找。
 
-&emsp;&emsp;如果有文件没有找到的话，make会生成一条警告信息，但不会马上出现致命错误。它会继续载入其它的文件，一旦完成makefile的读取，make会再重试这些没有找到，或是不能读取的文件，如果还是不行，make才会出现一条致命信息。如果你想让make不理那些无法读取的文件，而继续执行，你可以在include前加一个减号“-”，表示无论include过程中出现什么错误，都不要报错继续执行，如 `-include <filename>`。
+如果有文件没有找到的话，make会生成一条警告信息，但不会马上出现致命错误。它会继续载入其它的文件，一旦完成makefile的读取，make会再重试这些没有找到，或是不能读取的文件，如果还是不行，make才会出现一条致命信息。如果你想让make不理那些无法读取的文件，而继续执行，你可以在include前加一个减号“-”，表示无论include过程中出现什么错误，都不要报错继续执行，如 `-include <filename>`。
 
 ## 2.6 环境变量MAKEFILES
 
-&emsp;&emsp;如果你的makefile中定义了环境变量MAKEFILES，那么，make会把这个变量中的值做一个类似于include指令的动作。这个变量中的值是其它的Makefile，用空格分隔。它和include不同的是，从这个环境变中引入的Makefile的“目标”不会成为默认目标(但是可以手动指定），如果MAKEFILES中列出的文件未发现，make也不认为其是一个error。
+如果你的makefile中定义了环境变量MAKEFILES，那么，make会把这个变量中的值做一个类似于include指令的动作。这个变量中的值是其它的Makefile，用空格分隔。它和include不同的是，从这个环境变中引入的Makefile的“目标”不会成为默认目标(但是可以手动指定），如果MAKEFILES中列出的文件未发现，make也不认为其是一个error。
 
 
 
@@ -201,9 +201,9 @@ immediate : immediate ; deferred
 
 ## 2.9 再次展开 
 
-&emsp;&emsp;第一步变量的展开中，有时候我们并不希望某些变量在规则中的目标、先决条件确定之前或者其他变量赋值之前就展开，那样就无法得到我们想要的值，这个时候就需要对这个Makefile进行二次展开，就是说make程序在第一次解析完Makefile后，再次对Makefile进行解析，对一些推迟展开的变量进行展开。比如：默认情况下，自动变量是只能在命令中使用的，因为第一次展开之前make是无法知道这些自动变量的值的，等到第一次展开之后，所有的自动变量的值都已经确定，这时候就可以让make进行二次展开，从而在命令之外使用自动变量。
+第一步变量的展开中，有时候我们并不希望某些变量在规则中的目标、先决条件确定之前或者其他变量赋值之前就展开，那样就无法得到我们想要的值，这个时候就需要对这个Makefile进行二次展开，就是说make程序在第一次解析完Makefile后，再次对Makefile进行解析，对一些推迟展开的变量进行展开。比如：默认情况下，自动变量是只能在命令中使用的，因为第一次展开之前make是无法知道这些自动变量的值的，等到第一次展开之后，所有的自动变量的值都已经确定，这时候就可以让make进行二次展开，从而在命令之外使用自动变量。
 
-&emsp;&emsp;如果要让make知道需要对某个Makefile进行二次展开的话，那么就需要在Makefile中定义`.SECONDEXPANSION`这个特殊的目标，一般情况下只需要写明这个目标，然后prerequisite和recipe都可以放空。如果默认延后展开，则可以省略`.SECONDEXPANSION`。此外还需要在变量引用的时候再多加一个\$符号，就是说变量名前面有两个连续的\$符号，所以如果在二次展开使能的情况下，如果你想要在prerequisite中使用一个$符号的时候，这时候你就需要写连续的四个\$符号，即\$\$，因为在Makefile中都是以\$符号作为变量引用的开始，在每一次解析中，需要连续两个\$符号，make才会知道那是一个\$字符。
+如果要让make知道需要对某个Makefile进行二次展开的话，那么就需要在Makefile中定义`.SECONDEXPANSION`这个特殊的目标，一般情况下只需要写明这个目标，然后prerequisite和recipe都可以放空。如果默认延后展开，则可以省略`.SECONDEXPANSION`。此外还需要在变量引用的时候再多加一个\$符号，就是说变量名前面有两个连续的\$符号，所以如果在二次展开使能的情况下，如果你想要在prerequisite中使用一个$符号的时候，这时候你就需要写连续的四个\$符号，即\$\$，因为在Makefile中都是以\$符号作为变量引用的开始，在每一次解析中，需要连续两个\$符号，make才会知道那是一个\$字符。
 ```makefile
 #例1
 
@@ -330,7 +330,7 @@ $make rebuild //则先执行目标rebuild，先清除clean，再重新编译连�
 |.NOTPARALLEL|即使make指定-j选项，仍串行执行|无|
 |.ONESHELL|将一个规则的所有命令在同一个shell中执行，而不是每行命令调用一次shell|无|
 |.POSIX|makefile将以符合POSIX的模式进行解析和运行|有|
-|||&emsp;&emsp;&emsp;&emsp;|
+||||
 
 
 ### 3.1.7 一个规则多个目标
@@ -347,7 +347,7 @@ tarhet2 : dependency
     command
 ```
 ### 3.1.8 一个目标多个规则
-&emsp;&emsp;一个目标可有可以有多个规则，所有的先决条件都合并为先决条件列表，但是如果有多个命令则只有最后一个命令会执行。
+一个目标可有可以有多个规则，所有的先决条件都合并为先决条件列表，但是如果有多个命令则只有最后一个命令会执行。
 ```makefile
 target1 : dependency
     command
@@ -466,9 +466,9 @@ endef
 |$(var)|	取变量var的值
 
 # 5 变量
-&emsp;&emsp;在Makefile中的定义的变量，就像是C/C++语言中的宏一样，他代表了一个文本字串，在Makefile中执行的时候其会自动原模原样地展开在所使用的地方。在Makefile中，变量可以使用在“目标”，“依赖目标”，“命令”或是Makefile的其它部分中。
+在Makefile中的定义的变量，就像是C/C++语言中的宏一样，他代表了一个文本字串，在Makefile中执行的时候其会自动原模原样地展开在所使用的地方。在Makefile中，变量可以使用在“目标”，“依赖目标”，“命令”或是Makefile的其它部分中。
 
-&emsp;&emsp;变量的命名字可以包含字符、数字，下划线（可以是数字开头），但不应该含有“:”、“#”、“=”或是空字符（空格、回车等）。推荐使用大小写搭配的变量名,可以避免和系统变量冲突。
+变量的命名字可以包含字符、数字，下划线（可以是数字开头），但不应该含有“:”、“#”、“=”或是空字符（空格、回车等）。推荐使用大小写搭配的变量名,可以避免和系统变量冲突。
 
 
 ## 5.1 变量定义和引用
@@ -534,7 +534,7 @@ endef
 |+F |所有依赖文件的文件名部分（可存在重复文件）。
 |?D|当前规则中日期新于目标文件的所有依赖文件的目录部分。
 |?F|当前规则中日期新于目标文件的所有依赖文件的文件名部分。
-|&emsp;&emsp;||
+|||
 
 * 预定义（默认）变量：内部事先定义好的变量，但是它的值是固定的，并且有些的值是为空的。
 
@@ -1160,6 +1160,6 @@ AllObjs := $(addsuffix /src/*.o,$(Modules))
 
 ------
 
-&emsp;&emsp;<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>**陈皓**先生的[《跟我一起写makefile》](https://blog.csdn.net/haoel/article/details/2886)，并根据最新的[《GNU make手册》](http://www.gnu.org/software/make/manual/make.html)（截止2018年5月），以及[《Linux man pages》](https://linux.die.net/man/ "点击跳转")做了修改，增添了一部分内容。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
+<font color=blue>**_版权声明_**</font>：本文参考了<font color=blue>**陈皓**先生的[《跟我一起写makefile》](https://blog.csdn.net/haoel/article/details/2886)，并根据最新的[《GNU make手册》](http://www.gnu.org/software/make/manual/make.html)（截止2018年5月），以及[《Linux man pages》](https://linux.die.net/man/ "点击跳转")做了修改，增添了一部分内容。</font><font color=red>未经作者允许，<font color=blue>严禁用于商业出版</font>，否则追究法律责任。网络转载请注明出处，这是对原创者的起码的尊重！！！</font>
 
 ------
