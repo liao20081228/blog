@@ -15,8 +15,6 @@ main函数的返回值，用于说明程序的退出状态。如果返回0，则
 很多人甚至市面上的一些书籍，都使用了`void main( ) `，其实这是**错误的**。C/C++ 中从来没有定义过`void main( )`。
 
 # 2 C中的main
-
-
  在 C89 中，main()是可以接受的。Brian W. Kernighan 和 Dennis M. Ritchie 的经典巨著 The C programming Language 2e（《C 程序设计语言第二版》）用的就是 main( )。不过在最新的 C99 标准中，只有以下两种定义方式是正确的： 
 ```cpp
 int main( void )					//不接受从命令行中获取参数
