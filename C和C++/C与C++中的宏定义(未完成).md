@@ -9,21 +9,21 @@ tags: C_and_C++
 
 ------
 
-
-1、#
-为后面的宏形参添加双引号。
-例：
+# 1 \#
+`#`在宏被展开后为后面的宏形参添加双引号。
+```c
 #define SINGLESHARP(arg) #arg
-SINGLESHARP(singlesharp) <==> "singlesharp"
-
-2、#@
-为后面的宏形参添加单引号。
-例：
+SINGLESHARP(singlesharp) ==> "singlesharp"
+```
+# 2 \#@
+`#@`在宏被展开后为后面的宏形参添加单引号。
+```c
 #define SINGLESHARPWITHAT(arg) #@arg
-SINGLESHARPWITHAT(@) <==> '@'
+SINGLESHARPWITHAT(singlesharp) ==> 'singlesharp'
+```
+# 3 \##
+`##`用于连接前后的两个宏形参。
 
-3、##
-连接##前后的两个宏形参。
 具体的过程（为方便认知，主观认为如此，实际过程并非如此）：
 1）用空格替代##，则可以把宏分成几段，每段和宏形参比较，如果是宏形参，就用相应的实参替换；
 2）去掉所有空格，连接这些段。
