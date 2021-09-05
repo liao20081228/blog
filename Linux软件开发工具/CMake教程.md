@@ -297,7 +297,7 @@ endif()
 target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}")
 ```
 完成后，运行 `cmake` 可执行文件或 `cmake-gui` 来配置项目，然后使用您选择的构建工具或使用 `cmake --build` 从构建目录中构建它。
-# 4 安装与测试（第4步）
+# 4 安装与测试
 
 现在，我们可以开始向项目添加安装规则和测试支持。
 
