@@ -510,8 +510,8 @@ cpack --config CPackSourceConfig.cmake
 
 运行在二进制目录中找到的安装程序。 然后运行已安装的可执行文件，并验证其是否工作。
 
-# 8 添加对Testing Dashboard支持
-非常容易添加对提交测试结果到Dashboard的支持。 我们已经在 “[测试支持](#testsupport)” 中为我们的项目定义了许多测试。 现在，我们只需要运行这些测试并将其提交到Dashboard即可。 为了包含对Dashboard的支持，我们在顶层`CMakeLists.txt`中包含了`CTest`模块。
+# 8 添加对测试仪表板支持
+非常容易添加对提交测试结果到仪表板的支持。 我们已经在 “[测试支持](#testsupport)” 中为我们的项目定义了许多测试。 现在，我们只需要运行这些测试并将其提交到仪表板即可。 为了包含对仪表板的支持，我们在顶层`CMakeLists.txt`中包含了`CTest`模块。
 
 用
 ```cmake
@@ -523,9 +523,9 @@ include(CTest)
 # enable testing
 enable_testing()
 ```
-CTest模块将自动调用`enable_testing（）`，因此我们可以将其从CMake文件中删除。
+`CTest`模块将自动调用`enable_testing（）`，因此我们可以将其从CMake文件中删除。
 
-我们还需要在顶层目录中创建一个`CTestConfig.cmake`文件，在该目录中我们可以指定项目的名称以及提交Dashboard的位置。
+我们还需要在顶层目录中创建一个`CTestConfig.cmake`文件，在该目录中我们可以指定项目的名称以及提交到仪表板的位置。
 ```cmake
 set(CTEST_PROJECT_NAME "CMakeTutorial")
 set(CTEST_NIGHTLY_START_TIME "00:00:00 EST")
@@ -535,7 +535,7 @@ set(CTEST_DROP_SITE "my.cdash.org")
 set(CTEST_DROP_LOCATION "/submit.php?project=CMakeTutorial")
 set(CTEST_DROP_SITE_CDASH TRUE)
 ```
-CTest将在运行时读入该文件。 要创建一个简单的Dashboard，您可以运行cmake或cmake-gui来配置项目，但不构建它。 而是，将目录更改为二进制树，然后运行：
+`ctest`将在运行时读入该文件。 要创建一个简单的仪表板，您可以运行`cmake`或`cmake-gui`来配置项目，但不构建它。 而是，将目录更改到二进制树，然后运行：
 ```shell
 ctest [-VV] -D Experimental
 ```
@@ -545,7 +545,7 @@ ctest [-VV] -C Debug -D Experimental
 ```
 或者，从IDE中构建`Experimental`目标。
 
-`ctest`将构建和测试项目，并将结果提交给Kitware公共仪表板Dashboard。 Dashboard的结果将被上传到Kitware的公共Dashboard：<https://my.cdash.org/index.php?project=CMakeTutorial>。
+`ctest`将构建和测试项目，并将结果提交给Kitware公共仪表板：<https://my.cdash.org/index.php?project=CMakeTutorial>。
 
 # 9 混合静态和动态库（第9步）
 
