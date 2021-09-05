@@ -141,15 +141,15 @@ Tutorial
 ```
 
 # 2 添加库（第2步）
-现在，我们将添加一个库到我们的项目中。 该库是我们自己的实现的用于计算数字的平方根的库。 可执行文件可以使用此库，而不是使用编译器提供的标准平方根函数。
+现在，我们将添加一个库到我们的项目中。 该库含有我们自己对计算数字的平方根的实现。 可执行文件可以使用此库代替编译器提供的标准平方根函数。
 
-在本教程中，我们将库放入名为`MathFunctions`的子目录中。 该目录已包含头文件`MathFunctions.h`和源文件`mysqrt.cxx`。 源文件具有一个称为`mysqrt`的函数，该函数提供与编译器的`sqrt`函数类似的功能。
+在本教程中，我们将这个库放入名为`MathFunctions`的子目录中。 该子目录已包含头文件`MathFunctions.h`和源文件`mysqrt.cxx`。 源文件具有一个称为`mysqrt`的函数，该函数提供与编译器的`sqrt`函数类似的功能。
 
-将以下一行`CMakeLists.txt`文件添加到`MathFunctions`目录中：
+将以下仅一行的`CMakeLists.txt`文件添加到`MathFunctions`目录中：
 ```cmake
 add_library(MathFunctions mysqrt.cxx)
 ```
-为了使用新的库，我们将在顶层`CMakeLists.txt`文件中添加`add_subdirectory`调用，以便构建该库。 我们将新的库添加到可执行文件，并将`MathFunctions`添加为include目录，以便可以找到`mqsqrt.h`头文件。 顶级`CMakeLists.txt`文件的最后几行现在应如下所示：
+为了使用这个新的库，我们将在顶层`CMakeLists.txt`文件中添加`add_subdirectory()`调用，以便构建该库。 我们将新的库添加到可执行文件，并将`MathFunctions`添加为include目录，以便可以找到`mqsqrt.h`头文件。 顶级`CMakeLists.txt`文件的最后几行现在应如下所示：
 ```cmake
 # add the MathFunctions library
 add_subdirectory(MathFunctions)
@@ -167,16 +167,16 @@ target_link_libraries(Tutorial PUBLIC MathFunctions)
 target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/MathFunctions")
 ```
 
-现在让我们将MathFunctions库设为可选。 虽然对于本教程而言确实不需要这样做，但是对于大型项目来说，这是很常见的。 第一步是向顶层`CMakeLists.txt`文件添加一个选项。
+现在让我们将`MathFunctions`库设为可选。 虽然对于本教程而言确实不需要这样做，但是对于大型项目来说，这是很常见的。 第一步是向顶层`CMakeLists.txt`文件添加一个选项。
 ```cmake
 option(USE_MYMATH "Use tutorial provided math implementation" ON)
 
 # configure a header file to pass some of the CMake settings to the source code
 configure_file(TutorialConfig.h.in TutorialConfig.h)
 ```
-此选项将显示在CMake GUI和ccmake中，默认值ON，可由用户更改。 此设置将存储在缓存中，因此用户不必每次在构建目录上运行CMake时设置该值。
+此选项将显示在`cmake-gui`和`ccmake`中，默认值`ON`，可由用户更改。 此设置将存储在缓存中，因此每次在构建目录上运行CMake时，用户不必设置该值。
 
-下一个更改是使构建和链接MathFunctions库成为布尔选项。 为此，我们将顶层`CMakeLists.txt`文件的结尾更改为如下所示：
+下一个更改是使构建和链接`MathFunctions`库成为条件可选。 为此，我们将顶层`CMakeLists.txt`文件的结尾更改为如下所示：
 ```cmake
 if(USE_MYMATH)
   add_subdirectory(MathFunctions)
@@ -209,10 +209,10 @@ target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}" ${EXTRA_INCLU
 
 ```c++
 #ifdef USE_MYMATH
-#  include "MathFunctions.h"
+	#include "MathFunctions.h"
 #endif
 ```
-然后，在同一文件中，使USE_MYMATH控制使用哪个平方根函数：
+然后，在同一文件中，使`USE_MYMATH`控制使用哪个平方根函数：
 
 ```c++
 #ifdef USE_MYMATH
@@ -225,11 +225,20 @@ target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}" ${EXTRA_INCLU
 ```cmake.in
 #cmakedefine USE_MYMATH
 ```
-**练习**：为什么在`USE_MYMATH`选项之后配置TutorialConfig.h.in如此重要？ 如果我们将两者倒置会怎样？
+**练习**：为什么在`USE_MYMATH`选项之后配置`TutorialConfig.h.in`如此重要？ 如果我们将两者倒置会怎样？
 
-运行cmake或cmake-gui以配置项目，然后使用所选的构建工具进行构建。 然后运行构建的Tutorial可执行文件。
+运行`cmake`或`cmake-gui`以配置项目，然后使用所选的构建工具进行构建。 然后运行构建的Tutorial可执行文件。
 
-使用ccmake或CMake GUI更新`USE_MYMATH`的值。 重新生成并再次运行本教程。 sqrt或mysqrt哪个函数可提供更好的结果？
+现在让我们更新`USE_MYMATH`的值。 如果你在一个终端中，最简单的方式是运行`ccmake`或`cmake-gui`。重新生成并再次运行本教程。 sqrt或mysqrt哪个函数可提供更好的结果？
+
+现在让我们更新 `USE_MYMATH` 的值。如果您在终端中，最简单的方法是使用 `cmake-gui` 或 `ccmake`。或者，如果您想从命令行更改选项，请尝试：
+```bash
+cmake ../Step2 -DUSE_MYMATH=OFF
+```
+重新构建并再次运行tutorial。
+
+哪个函数给出更好的结果，`sqrt` 还是 `mysqrt`？
+
 
 完整的`CMakeLists.txt`文件如下：
 ```cmake
