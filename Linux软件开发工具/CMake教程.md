@@ -13,7 +13,7 @@ CMake教程提供了一步步的指导，涵盖了CMake helps解决的常见构�
 
 **示例的教程文档和源代码可在CMake源代码树的`Help/guide/tutorial`目录中找到**。 每个步骤都有其自己的子目录，其中包含可以用作起点的代码。 教程示例是渐进式的，因此每个步骤都为上一步提供了完整的解决方案。
 
-# 1 基本起点（第1步）
+# 1 基本起点
 最基本的项目是从源代码文件构建一个可执行文件。 对于简单的项目，只需三行`CMakeLists.txt`文件。 这是本教程的起点。 在Step1目录中创建一个`CMakeLists.txt`文件，如下所示：
 ```cmake
 cmake_minimum_required(VERSION 3.10)
@@ -140,7 +140,7 @@ Tutorial 10
 Tutorial
 ```
 
-# 2 添加库（第2步）
+# 2 添加库
 现在，我们将添加一个库到我们的项目中。 该库含有我们自己对计算数字的平方根的实现。 可执行文件可以使用此库代替编译器提供的标准平方根函数。
 
 在本教程中，我们将这个库放入名为`MathFunctions`的子目录中。 该子目录已包含头文件`MathFunctions.h`和源文件`mysqrt.cxx`。 源文件具有一个称为`mysqrt`的函数，该函数提供与编译器的`sqrt`函数类似的功能。
@@ -271,7 +271,7 @@ target_link_libraries(Tutorial PUBLIC ${EXTRA_LIBS})
 target_include_directories(Tutorial PUBLIC  "${PROJECT_BINARY_DIR}" ${EXTRA_INCLUDES}) 
 ```
 
-# 3 添加库的使用要求（第3步）
+# 3 添加库的使用要求
 使用要求可以更好地控制库或可执行文件的链接和include行，同时还可以更好地控制CMake内部目标的传递属性。 利用使用要求的主要命令是：
 * target_compile_definitions
 * target_compile_options
