@@ -411,18 +411,17 @@ endif()
 现在哪个函数可以提供更好的结果，`sqrt` 还是 `mysqrt`？
 # 6 添加自定义命令和已生成文件
 
-出于本教程的目的,假设我们决定不再使用平台`log`和`exp`函数，而是希望生成一个可在`mysqrt`函数中使用的预计算值表。 在本节中，我们将在构建过程中创建表，然后将该表编译到我们的应用程序中。
+出于本教程的目的,假设我们决定永远不再使用平台的`log`和`exp`函数，而是希望生成一个可在`mysqrt`函数中使用的已预先计算出值的表。 在本节中，我们将在构建过程中创建这样的表，然后将该表编译到我们的应用程序中。
 
-首先，让我们删除`MathFunctions/CMakeLists.txt`中对`log`和`exp`函数的检查。 然后从mysqrt.cxx中删除对`HAVE_LOG`和`HAVE_EXP`的检查。 同时，我们可以删除`#include <cmath>`。
+首先，让我们删除`MathFunctions/CMakeLists.txt`中对`log`和`exp`函数的检查。 然后从`mysqrt.cxx`中删除对`HAVE_LOG`和`HAVE_EXP`的检查。 同时，我们可以删除`#include <cmath>`。
 
+在`MathFunctions`子目录中，提供了一个名为`MakeTable.cxx`的新的源文件以生成已预先计算出值的表。
 
-在`MathFunctions`子目录中，提供了一个名为`MakeTable.cxx`的新的源文件以生成表。
+查看完文件后，我们可以看到该表是作为有效的C\+\+代码生成的，并且输出文件名作为一个参数传入。
 
-查看完文件后，我们可以看到该表是作为有效的C\+\+代码生成的，并且输出文件名作为参数传入。
+下一步是将适当的命令添加到`MathFunctions/CMakeLists.txt`文件中，以构建 MakeTable 可执行文件，然后在构建过程中运行它。 需要很少的命令来完成此操作。
 
-下一步是将适当的命令添加到`MathFunctions/CMakeLists.txt`文件中，以构建MakeTable可执行文件，然后在构建过程中运行它。 需要一些命令来完成此操作。
-
-首先，在`MathFunctions/CMakeLists.txt`的顶部，添加`MakeTable`的可执行文件，就像添加任何其他可执行文件一样。
+首先，在顶层`MathFunctions/CMakeLists.txt`的顶部，添加`MakeTable`的可执行文件，就像添加任何其他可执行文件一样。
 ```cmake
 add_executable(MakeTable MakeTable.cxx)
 ```
