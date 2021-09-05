@@ -5,10 +5,10 @@ tags: cmake
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《[CMake tutorial v3.16](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。网络转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《[CMake tutorial v3.21.2](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。网络转载请注明出处！！！</font>***
 
 ------
-
+# 0 简介
 CMake教程提供了逐步指南，涵盖了CMake可以帮助解决的常见构建系统问题。 了解示例项目中各个主题如何协同工作将非常有帮助。 **示例的教程文档和源代码可在CMake源代码树的`Help/guide/tutorial`目录中找到**。 每个步骤都有其自己的子目录，其中包含可以用作起点的代码。 教程示例是渐进式的，因此每个步骤都为上一步提供了完整的解决方案。
 
 # 1 基本起点（第1步）
@@ -924,6 +924,6 @@ cpack --config ../../MultiPackage/MultiCPackConfig.cmake
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《[CMake tutorial v3.16](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。网络转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《[CMake tutorial v3.21.2](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。网络转载请注明出处！！！</font>***
 
 ------
