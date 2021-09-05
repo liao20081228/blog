@@ -140,7 +140,7 @@ Tutorial 10
 Tutorial
 ```
 
-# 2 添加库
+# 2 添加一个库
 现在，我们将添加一个库到我们的项目中。 该库含有我们自己对计算数字的平方根的实现。 可执行文件可以使用此库代替编译器提供的标准平方根函数。
 
 在本教程中，我们将这个库放入名为`MathFunctions`的子目录中。 该子目录已包含头文件`MathFunctions.h`和源文件`mysqrt.cxx`。 源文件具有一个称为`mysqrt`的函数，该函数提供与编译器的`sqrt`函数类似的功能。
@@ -272,13 +272,14 @@ target_include_directories(Tutorial PUBLIC  "${PROJECT_BINARY_DIR}" ${EXTRA_INCL
 ```
 
 # 3 添加库的使用要求
-使用要求可以更好地控制库或可执行文件的链接和include行，同时还可以更好地控制CMake内部目标的传递属性。 利用使用要求的主要命令是：
-* target_compile_definitions
-* target_compile_options
-* target_include_directories
-* target_link_libraries
+使用要求可以更好地控制库或可执行文件的链接和包含行，同时还可以更好地控制CMake内部目标的传递属性。 利用使用要求的主要命令是：
 
-让我们从第2步中重构代码，以利用现代的CMake方法编写使用要求。 我们首先声明，链接到MathFunctions的任何东西都需要包括当前源码目录，而MathFunctions本身不需要。 因此，这可以成为`INTERFACE`使用要求。
+* `target_compile_definitions`
+* `target_compile_options`
+* `target_include_directories`
+* `target_link_libraries`
+
+让我们从 添加一个库 重构代码，以利用现代的CMake方法编写使用要求。 我们首先声明，链接到MathFunctions的任何东西都需要包括当前源码目录，而MathFunctions本身不需要。 因此，这可以成为`INTERFACE`使用要求。
 
 请记住，`INTERFACE`是指消费者需要的，而生产者不需要东西。 将以下行添加到`MathFunctions/CMakeLists.txt`的末尾：
 ```cmake
