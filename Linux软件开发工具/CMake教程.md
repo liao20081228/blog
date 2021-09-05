@@ -36,30 +36,16 @@ cmake_minimum_required(VERSION 3.10)
 
 # set the project name and version
 project(Tutorial VERSION 1.0)
-
-
-###早期版本的写法
-###		project(Tutorial）
-###		set (Tutorial_VERSION_MAJOR 1)
-###		set (Tutorial_VERSION_MINOR 0)
 ```
 然后，配置一个头文件，将版本号传递给源代码:
 ```cmake
 configure_file(TutorialConfig.h.in TutorialConfig.h)
-
-###早期版本的写法
-###		configure_file ("${PROJECT_SOURCE_DIR}/TutorialConfig.h.in" "${PROJECT_BINARY_DIR}/TutorialConfig.h")
 ```
 由于配置的文件将被写入二进制树中，所以我们必须将该目录添加到搜索include文件的路径列表中。在`CMakeLists.txt`文件的末尾添加以下行:
 
 ```cmake
 #必须在add_excutable之后
 target_include_directories(Tutorial PUBLIC  "${PROJECT_BINARY_DIR}")
-
-
-###早期版本的写法:
-###可以位于任意位置，一般放在add_excutable之前
-###		include_directories("${PROJECT_BINARY_DIR}")
 ```
 使用您喜欢的编辑器在源码目录中创建`TutorialConfig.h.in`，内容如下:
 ```c++
@@ -160,9 +146,6 @@ add_executable(Tutorial tutorial.cxx)
 #必须位于add_excutable之后
 target_link_libraries(Tutorial PUBLIC MathFunctions)
 
-###早期版本的写法
-###		target_link_libraries(Tutorial MathFunctions)
-
 #add the binary tree to the search path for include files so that we will find TutorialConfig.h
 target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/MathFunctions")
 ```
@@ -192,16 +175,6 @@ target_link_libraries(Tutorial PUBLIC ${EXTRA_LIBS})
 
 # add the binary tree to the search path for include files so that we will find TutorialConfig.h
 target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}" ${EXTRA_INCLUDES})
-
-###早期版本的写法
-###		if(USE_MYMATH)
-###		  	include_directories ("${PROJECT_SOURCE_DIR}/MathFunctions")
-###	  		add_subdirectory (MathFunctions)
-###	  		set(EXTRA_LIBS ${EXTRA_LIBS} MathFunctions)
-###		endif(USE_MYMATH)
-###		include_directories("${PROJECT_BINARY_DIR}")
-###		add_executable(Tutorial tutorial.cxx)
-###		target_link_libraries(Tutorial ${EXTRA_LIBS})
 ```
 请注意，使用变量`EXTRA_LIBS`来收集任意可选库，以供以后链接到可执行文件中。 变量`EXTRA_INCLUDES`类似地用于可选的头文件。 当处理许多可选组件时，这是一种经典方法，我们将在下一步中介绍现代方法。
 
@@ -362,31 +335,6 @@ do_test(Tutorial 7 "7 is 2.645")
 do_test(Tutorial 25 "25 is 5")
 do_test(Tutorial -25 "-25 is [-nan|nan|0]")
 do_test(Tutorial 0.0001 "0.0001 is 0.01")
-
-###早期版本的写法
-###		include(CTest)
-###		add_test (TutorialRuns Tutorial 25)
-###
-###		add_test (TutorialComp25 Tutorial 25)
-###		set_tests_properties (TutorialComp25 PROPERTIES PASS_REGULAR_EXPRESSION "25 is 5")
-###
-###		add_test (TutorialUsage Tutorial)
-###		set_tests_properties (TutorialUsage PROPERTIES PASS_REGULAR_EXPRESSION "Usage:.*number")
-###
-###		#define a macro to simplify adding tests, then use it
-###		macro (do_test arg result)
-###		  add_test (TutorialComp${arg} Tutorial ${arg})
-###		  set_tests_properties (TutorialComp${arg} PROPERTIES PASS_REGULAR_EXPRESSION ${result})
-###		endmacro (do_test)
-###
-###		do_test(4 "4 is 2")
-###		do_test(9 "9 is 3")
-###		do_test(5 "5 is 2.236")
-###		do_test(7 "7 is 2.645")
-###		do_test(25 "25 is 5")
-###		do_test(-25 "-25 is [-nan|nan|0]")
-###		do_test(0.0001 "0.0001 is 0.01")
-
 ```
 第一个测试只是验证应用程序你能否运行，没有段错误或其他崩溃，并且返回值为零。 这是CTest测试的基本形式。
 
@@ -398,21 +346,49 @@ do_test(Tutorial 0.0001 "0.0001 is 0.01")
 
 # 5 添加系统自检
 
-让我们考虑向我们的项目中添加一些代码，这些代码取决于目标平台可能不具备的功能。 对于此示例，我们将添加一些代码，具体取决于目标平台是否具有`log`和`exp`函数。 当然，几乎每个平台都具有这些函数，但对于本教程而言，假设它们并不常见。
+让我们考虑向我们的项目中添加一些代码，这些代码依赖目标平台可能不具备的功能。 对于此示例，我们将添加一些代码，依赖目标平台是否具有`log`和`exp`函数。 当然，几乎每个平台都具有这些函数，但对于本教程而言，假设它们并不常见。
 
-如果平台具有`log`和`exp`，那么我们将使用它们来计算`mysqrt`函数中的平方根。 我们首先使用顶级`CMakeLists.txt`中的`CheckSymbolExists`模块测试这些函数的可用性。 我们将在`TutorialConfig.h.in`中使用新定义，因此请确保在配置该文件之前进行设置。
+如果平台具有`log`和`exp`，那么我们将使用它们来计算`mysqrt`函数中的平方根。 我们首先在顶级`CMakeLists.txt`中使用`CheckSymbolExists`模块来测试这些函数的可用性。在一些平台，我们需要链接到`m`库。如果最初未找到 `log` 和 `exp`，则需要 `m` 库并重试。
 ```cmake
 include(CheckSymbolExists)
-set(CMAKE_REQUIRED_LIBRARIES "m")
 check_symbol_exists(log "math.h" HAVE_LOG)
 check_symbol_exists(exp "math.h" HAVE_EXP)
-
-###早期版本的写法
-###		include (CheckFunctionExists)
-###		check_function_exists (log HAVE_LOG)
-###		check_function_exists (exp HAVE_EXP)
-
+if(NOT (HAVE_LOG AND HAVE_EXP))
+  unset(HAVE_LOG CACHE)
+  unset(HAVE_EXP CACHE)
+  set(CMAKE_REQUIRED_LIBRARIES "m")
+  check_symbol_exists(log "math.h" HAVE_LOG)
+  check_symbol_exists(exp "math.h" HAVE_EXP)
+  if(HAVE_LOG AND HAVE_EXP)
+    target_link_libraries(MathFunctions PRIVATE m)
+  endif()
+endif()
 ```
+如果可用，请使用 `target_compile_definitions() `将 `HAVE_LOG` 和 `HAVE_EXP` 指定为`PRIVATE`编译定义。
+```cmake
+if(HAVE_LOG AND HAVE_EXP)
+  target_compile_definitions(MathFunctions
+                             PRIVATE "HAVE_LOG" "HAVE_EXP")
+endif()
+```
+如果在系统上 `log` 和 `exp`是可用的，那么我们将使用它们来计算 `mysqrt` 函数中的平方根。将以下代码添加到 `MathFunctions/mysqrt.cxx`中的 `mysqrt` 函数中（在返回结果之前不要忘记 `#endif`！）：
+```c++
+#if defined(HAVE_LOG) && defined(HAVE_EXP)
+  double result = exp(log(x) * 0.5);
+  std::cout << "Computing sqrt of " << x << " to be " << result
+            << " using log and exp" << std::endl;
+#else
+  double result = x;
+```
+我们还需要修改 `mysqrt.cxx` 以包含 `cmath`。
+```c++
+#include <cmath>
+```
+运行`cmake`或`cmake-gui`以配置项目，然后使用所选的构建工具进行构建，然后运行构建的Tutorial可执行文件。
+
+
+我们将在`TutorialConfig.h.in`中使用新定义，因此请确保在配置该文件之前进行设置。
+
 现在，将这些定义添加到`TutorialConfig.h.in`中，以便我们可以从`mysqrt.cxx中`使用它们：
 
 ```cmake
@@ -432,52 +408,7 @@ check_symbol_exists(exp "math.h" HAVE_EXP)
 ```
 运行cmake或cmake-gui来配置项目，然后使用所选的构建工具进行构建并运行Tutorial可执行文件。
 
-您会注意到，我们也没有使用`log`和`exp`，即使我们认为它们应该是可用。 我们应该很快意识到，我们忘记在`mysqrt.cxx`中包含`TutorialConfig.h`。
-
-我们还需要更新`MathFunctions/CMakeLists.txt`，以便`mysqrt.cxx`知道此文件的位置：
-```cmake
-target_include_directories(MathFunctions INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} PRIVATE ${CMAKE_BINARY_DIR})
-```
-完成此更新后，继续并再次构建项目，然后运行构建的Tutorial可执行文件。 如果仍未使用`log`和`exp`，请从构建目录中打开生成的TutorialConfig.h文件。 也许它们在当前系统上不可用？
-
-哪个函数现在可以提供更好的结果,`sqrt`或`mysqrt`？
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## 5.1 指定编译定义
-除了在`TutorialConfig.h`中保存`HAVE_LOG`和`HAVE_EXP`值，对我们来说还有更好的地方吗？ 让我们尝试使用`target_compile_definitions`。
-
-首先，从`TutorialConfig.h.in`中删除定义。 我们不再需要包含`mysqrt.cxx`中的`TutorialConfig.h`或`MathFunctions/CMakeLists.txt`中的其他包含内容。
-
-接下来，我们可以将`HAVE_LOG`和`HAVE_EXP的`检查移至`MathFunctions/CMakeLists.txt`，然后将这些值指定为`PRIVATE`编译定义。
-```cmake
-include(CheckSymbolExists)
-set(CMAKE_REQUIRED_LIBRARIES "m")
-check_symbol_exists(log "math.h" HAVE_LOG)
-check_symbol_exists(exp "math.h" HAVE_EXP)
-
-if(HAVE_LOG AND HAVE_EXP)
-  target_compile_definitions(MathFunctions
-                             PRIVATE "HAVE_LOG" "HAVE_EXP")
-endif()
-```
-完成这些更新后，继续并重新构建项目。 运行内置的Tutorial可执行文件，并验证结果与本步骤前面的内容相同。
-
+现在哪个函数可以提供更好的结果，`sqrt` 还是 `mysqrt`？
 # 6 添加自定义命令和生成的文件(第6步)
 
 出于本教程的目的,假设我们决定不再使用平台`log`和`exp`函数，而是希望生成一个可在`mysqrt`函数中使用的预计算值表。 在本节中，我们将在构建过程中创建表，然后将该表编译到我们的应用程序中。
