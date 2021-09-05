@@ -9,7 +9,9 @@ tags: cmake
 
 ------
 # 0 简介
-CMake教程提供了逐步指南，涵盖了CMake可以帮助解决的常见构建系统问题。 了解示例项目中各个主题如何协同工作将非常有帮助。 **示例的教程文档和源代码可在CMake源代码树的`Help/guide/tutorial`目录中找到**。 每个步骤都有其自己的子目录，其中包含可以用作起点的代码。 教程示例是渐进式的，因此每个步骤都为上一步提供了完整的解决方案。
+CMake教程提供了一步步的指导，涵盖了CMake helps解决的常见构建系统问题。 了解示例项目中各个主题如何协同工作将非常有帮助。 
+
+**示例的教程文档和源代码可在CMake源代码树的`Help/guide/tutorial`目录中找到**。 每个步骤都有其自己的子目录，其中包含可以用作起点的代码。 教程示例是渐进式的，因此每个步骤都为上一步提供了完整的解决方案。
 
 # 1 基本起点（第1步）
 最基本的项目是从源代码文件构建一个可执行文件。 对于简单的项目，只需三行`CMakeLists.txt`文件。 这是本教程的起点。 在Step1目录中创建一个`CMakeLists.txt`文件，如下所示：
@@ -26,9 +28,9 @@ add_executable(Tutorial tutorial.cxx)
 
 
 ## 1.1 添加版本号和配置头文件
-我们将添加的第一个功能是为我们的可执行文件和项目提供版本号。 虽然我们可以仅在源代码中执行此操作，但是使用`CMakeLists.txt`可以提供更大的灵活性。
+我们将添加的第一个功能是为我们的可执行文件和项目提供版本号。 虽然我们可以专门在源代码中执行此操作，但是使用`CMakeLists.txt`可以提供更大的灵活性。
 
-首先，修改`CMakeLists.txt`文件来设置版本号。
+首先，修改`CMakeLists.txt`文件以使用`project()`命令来设置项目名和版本号。
 ```cmake
 cmake_minimum_required(VERSION 3.10)
 
@@ -67,7 +69,7 @@ target_include_directories(Tutorial PUBLIC  "${PROJECT_BINARY_DIR}")
 ```
 当CMake配置这个头文件时，`@Tutorial_VERSION_MAJOR@`和`@Tutorial_VERSION_MINOR@`的值将被替换。
 
-接下来，修改`tutorial.cxx`以包括配置的头文件TutorialConfig.h。
+接下来，修改`tutorial.cxx`以包括配置头文件`TutorialConfig.h`。
 
 最后，通过更新`tutorial.cxx`来打印出版本号，如下所示：
 
@@ -98,11 +100,11 @@ target_include_directories(Tutorial PUBLIC  "${PROJECT_BINARY_DIR}"  )
 
 ## 1.2 指定c++标准
 
-接下来，通过在`tutorial.cxx`中用`std::stod`替换atof，将一些C ++ 11功能添加到我们的项目中。 同时，删除`#include <cstdlib>`。
+接下来，通过在`tutorial.cxx`中用`std::stod`替换atof，将一些C++ 11功能添加到我们的项目中。 同时，删除`#include <cstdlib>`。
 ```c++
 const double inputValue = std::stod(argv[1]);
 ```
-我们需要在CMake代码中明确声明应使用正确的标志。 在CMake中启用对特定C ++标准的支持的最简单方法是使用`CMAKE_CXX_STANDARD`变量。 对于本教程，请将`CMakeLists.txt`文件中的`CMAKE_CXX_STANDARD`变量设置为11，并将`CMAKE_CXX_STANDARD_REQUIRED`设置为True：
+我们需要在CMake代码中明确声明应使用正确的标志。 在CMake中启用对特定C ++标准的支持的最简单方法是使用`CMAKE_CXX_STANDARD`变量。 对于本教程，请将`CMakeLists.txt`文件中的`CMAKE_CXX_STANDARD`变量设置为`11`，并将`CMAKE_CXX_STANDARD_REQUIRED`设置为`True`。确保在调用 `add_executable` 的上方添加了 `CMAKE_CXX_STANDARD` 声明：
 
 ```cmake
 cmake_minimum_required(VERSION 3.10)
@@ -115,17 +117,23 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 ```
 ## 1.3 构建和测试
-运行cmake或cmake-gui以配置项目，然后使用所选的构建工具进行构建。
+运行`cmake`或`cmake-gui`以配置项目，然后使用所选的构建工具进行构建。
 
-例如，从命令行我们可以导航到CMake源代码树的`Help /guide/tutorial`目录并运行以下命令：
-```shell
+例如，从命令行我们可以导航到CMake源代码树的`Help/guide/tutorial`目录并创建一个构建目录：
+```bash
 mkdir Step1_build
+```
+接下来，导航到构建目录，运行 CMake 以配置项目并生成本地构建系统：
+```bash
 cd Step1_build
 cmake ../Step1
+```
+然后调用该构建系统来实际编译/链接项目：
+
+```bash
 cmake --build .
 ```
-
-导航到构建教程的目录（可能是make目录或Debug或Release构建配置子目录），然后运行以下命令：
+最后，尝试通过以下命令使用新构建的`Tutorial`：
 ```shell
 Tutorial 4294967296
 Tutorial 10
