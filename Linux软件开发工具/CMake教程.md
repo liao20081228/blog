@@ -547,7 +547,7 @@ ctest [-VV] -C Debug -D Experimental
 
 `ctest`将构建和测试项目，并将结果提交给Kitware公共仪表板：<https://my.cdash.org/index.php?project=CMakeTutorial>。
 
-# 9 混合静态和动态库（第9步）
+# 9 选择静态库或共享库
 
 在本节中，我们将展示如何使用`BUILD_SHARED_LIBS`变量来控制`add_library`的默认行为，并允许控制如何构建没有显式类型（`STATIC，SHARED，MODULE或OBJECT`）的库。
 
