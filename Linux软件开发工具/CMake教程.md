@@ -135,7 +135,7 @@ Tutorial
 ```cmake
 add_library(MathFunctions mysqrt.cxx)
 ```
-为了使用这个新的库，我们将在顶层`CMakeLists.txt`文件中添加`add_subdirectory()`调用，以便构建该库。 我们将新的库添加到可执行文件，并将`MathFunctions`添加为include目录，以便可以找到`mqsqrt.h`头文件。 顶级`CMakeLists.txt`文件的最后几行现在应如下所示：
+为了使用这个新的库，我们将在顶层`CMakeLists.txt`文件中添加`add_subdirectory()`调用，以便构建该库。 我们将新的库添加到可执行文件，并将`MathFunctions`添加为include目录，以便可以找到`mqsqrt.h`头文件。 顶层`CMakeLists.txt`文件的最后几行现在应如下所示：
 ```cmake
 # add the MathFunctions library
 add_subdirectory(MathFunctions)
@@ -258,7 +258,7 @@ target_include_directories(Tutorial PUBLIC  "${PROJECT_BINARY_DIR}" ${EXTRA_INCL
 ```cmake
 target_include_directories(MathFunctions INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 ```
-现在，我们已经指定了`MathFunctions`的使用要求，我们可以安全地从顶级`CMakeLists.txt`中删除对`EXTRA_INCLUDES`变量的使用：
+现在，我们已经指定了`MathFunctions`的使用要求，我们可以安全地从顶层`CMakeLists.txt`中删除对`EXTRA_INCLUDES`变量的使用：
 ```cmake
 if(USE_MYMATH)
   add_subdirectory(MathFunctions)
@@ -282,7 +282,7 @@ target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}")
 install(TARGETS MathFunctions DESTINATION lib)
 install(FILES MathFunctions.h DESTINATION include)
 ```
-然后在顶级`CMakeLists.txt`的末尾添加
+然后在顶层`CMakeLists.txt`的末尾添加
 
 ```cmake
 install(TARGETS Tutorial DESTINATION bin)
@@ -305,7 +305,7 @@ cmake --install . --prefix "/home/myuser/installdir"
 
 ## 4.2 测试支持
 
-<span id="testsupport">接下来</span>，测试我们的应用程序。 在顶级`CMakeLists.txt`文件的末尾，我们可以启用测试，然后添加一些基本测试以验证应用程序是否正常运行。
+<span id="testsupport">接下来</span>，测试我们的应用程序。 在顶层`CMakeLists.txt`文件的末尾，我们可以启用测试，然后添加一些基本测试以验证应用程序是否正常运行。
 
 ```cmake
 enable_testing()
@@ -348,7 +348,7 @@ do_test(Tutorial 0.0001 "0.0001 is 0.01")
 
 让我们考虑向我们的项目中添加一些代码，这些代码依赖目标平台可能不具备的功能。 对于此示例，我们将添加一些代码，依赖目标平台是否具有`log`和`exp`函数。 当然，几乎每个平台都具有这些函数，但对于本教程而言，假设它们并不常见。
 
-如果平台具有`log`和`exp`，那么我们将使用它们来计算`mysqrt`函数中的平方根。 我们首先在顶级`CMakeLists.txt`中使用`CheckSymbolExists`模块来测试这些函数的可用性。在一些平台，我们需要链接到`m`库。如果最初未找到 `log` 和 `exp`，则需要 `m` 库并重试。
+如果平台具有`log`和`exp`，那么我们将使用它们来计算`mysqrt`函数中的平方根。 我们首先在顶层`CMakeLists.txt`中使用`CheckSymbolExists`模块来测试这些函数的可用性。在一些平台，我们需要链接到`m`库。如果最初未找到 `log` 和 `exp`，则需要 `m` 库并重试。
 ```cmake
 include(CheckSymbolExists)
 check_symbol_exists(log "math.h" HAVE_LOG)
@@ -482,7 +482,7 @@ double mysqrt(double x)
 
 # 7 打包安装程序
 
-接下来，假设我们想将项目分发给其他人，以便他们可以使用它。 我们希望在各种平台上提供二进制和源代码分发。 这与我们之前在 [安装和测试](#installandtesting) 中进行的安装有些不同，在那里我们是安装根据源代码构建的二进制文件。 在此示例中，我们将构建支持二进制安装和包管理功能的安装程序包。 为此，我们将使用CPack创建平台特定的安装程序。 具体来说，我们需要在顶级`CMakeLists.txt `文件的底部添加几行。
+接下来，假设我们想将项目分发给其他人，以便他们可以使用它。 我们希望在各种平台上提供二进制和源代码分发。 这与我们之前在 [安装和测试](#installandtesting) 中进行的安装有些不同，在那里我们是安装根据源代码构建的二进制文件。 在此示例中，我们将构建支持二进制安装和包管理功能的安装程序包。 为此，我们将使用CPack创建平台特定的安装程序。 具体来说，我们需要在顶层`CMakeLists.txt `文件的底部添加几行。
 ```cmake
 include(InstallRequiredSystemLibraries)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
@@ -490,7 +490,7 @@ set(CPACK_PACKAGE_VERSION_MAJOR "${Tutorial_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${Tutorial_VERSION_MINOR}")
 include(CPack)
 ```
-这就是全部需要做的事。 我们首先包含`InstallRequiredSystemLibraries`。 该模块将包括项目当前平台所需的任何运行时库。 接下来，我们将一些CPack变量设置为存储该项目的许可证和版本信息的位置。 版本信息是在本教程的前面设置的，并且`license.txt`已包含在顶级源目录中。
+这就是全部需要做的事。 我们首先包含`InstallRequiredSystemLibraries`。 该模块将包括项目当前平台所需的任何运行时库。 接下来，我们将一些CPack变量设置为存储该项目的许可证和版本信息的位置。 版本信息是在本教程的前面设置的，并且`license.txt`已包含在顶层源目录中。
 
 最后，我们包含`CPack`模块，该模块将使用这些变量和当前系统的其他一些属性来设置安装程序。
 
@@ -525,7 +525,7 @@ enable_testing()
 ```
 CTest模块将自动调用`enable_testing（）`，因此我们可以将其从CMake文件中删除。
 
-我们还需要在顶级目录中创建一个`CTestConfig.cmake`文件，在该目录中我们可以指定项目的名称以及提交Dashboard的位置。
+我们还需要在顶层目录中创建一个`CTestConfig.cmake`文件，在该目录中我们可以指定项目的名称以及提交Dashboard的位置。
 ```cmake
 set(CTEST_PROJECT_NAME "CMakeTutorial")
 set(CTEST_NIGHTLY_START_TIME "00:00:00 EST")
@@ -551,11 +551,11 @@ ctest [-VV] -C Debug -D Experimental
 
 在本节中，我们将展示如何使用`BUILD_SHARED_LIBS`变量来控制`add_library`的默认行为，并允许控制如何构建没有显式类型（`STATIC，SHARED，MODULE或OBJECT`）的库。
 
-为此，我们需要将`BUILD_SHARED_LIBS`添加到顶级`CMakeLists.txt`。 我们使用`option`命令，因为它允许用户可以选择该值是On还是Off。
+为此，我们需要将`BUILD_SHARED_LIBS`添加到顶层`CMakeLists.txt`。 我们使用`option`命令，因为它允许用户可以选择该值是On还是Off。
 
 接下来，我们将重构MathFunctions使其成为使用mysqrt或sqrt封装的真实库，而不是要求调用代码执行此逻辑。 这也意味着`USE_MYMATH`将不会控制构建MathFuctions，而是将控制此库的行为。
 
-第一步是将顶级`CMakeLists.txt`的开始部分更新为：
+第一步是将顶层`CMakeLists.txt`的开始部分更新为：
 ```cmake
 cmake_minimum_required(VERSION 3.10)
 
@@ -763,7 +763,7 @@ install(TARGETS MathFunctions tutorial_compiler_flags
         EXPORT MathFunctionsTargets)
 install(FILES MathFunctions.h DESTINATION include)
 ```
-现在我们已经导出了MathFunctions，我们还需要显式安装生成的`MathFunctionsTargets.cmake`文件。 这是通过将以下内容添加到顶级`CMakeLists.txt`的底部来完成的：
+现在我们已经导出了MathFunctions，我们还需要显式安装生成的`MathFunctionsTargets.cmake`文件。 这是通过将以下内容添加到顶层`CMakeLists.txt`的底部来完成的：
 
 ```cmake
 install(EXPORT MathFunctionsTargets
@@ -798,7 +798,7 @@ target_include_directories(MathFunctions
 
 include ( "${CMAKE_CURRENT_LIST_DIR}/MathFunctionsTargets.cmake" )
 ```
-然后，要正确配置和安装该文件，请将以下内容添加到顶级`CMakeLists.txt`的底部：
+然后，要正确配置和安装该文件，请将以下内容添加到顶层`CMakeLists.txt`的底部：
 ```cmake
 install(EXPORT MathFunctionsTargets
   FILE MathFunctionsTargets.cmake
@@ -826,7 +826,7 @@ install(FILES
   DESTINATION lib/cmake/MathFunctions
   )
 ```
-至此，我们为项目生成了可重定位的CMake配置，可以在安装或打包项目后使用它。 如果我们也希望从构建目录中使用我们的项目，则只需将以下内容添加到顶级`CMakeLists.txt`的底部：
+至此，我们为项目生成了可重定位的CMake配置，可以在安装或打包项目后使用它。 如果我们也希望从构建目录中使用我们的项目，则只需将以下内容添加到顶层`CMakeLists.txt`的底部：
 ```cmake
 export(EXPORT MathFunctionsTargets
   FILE "${CMAKE_CURRENT_BINARY_DIR}/MathFunctionsTargets.cmake"
