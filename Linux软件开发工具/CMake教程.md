@@ -421,7 +421,7 @@ endif()
 
 下一步是将适当的命令添加到`MathFunctions/CMakeLists.txt`文件中，以构建 MakeTable 可执行文件，然后在构建过程中运行它。 需要很少的命令来完成此操作。
 
-首先，在顶层`MathFunctions/CMakeLists.txt`的顶部，添加`MakeTable`的可执行文件，就像添加任何其他可执行文件一样。
+首先，在`MathFunctions/CMakeLists.txt`的顶部，添加`MakeTable`的可执行文件，就像添加任何其他可执行文件一样。
 ```cmake
 add_executable(MakeTable MakeTable.cxx)
 ```
@@ -434,7 +434,7 @@ add_custom_command(
   DEPENDS MakeTable
   )
 ```
-接下来，我们必须让CMake知道`mysqrt.cxx`依赖于生成的文件`Table.h`。 这是通过将生成的`Table.h`添加到库MathFunctions的源列表中来完成的。
+接下来，我们必须让CMake知道`mysqrt.cxx`依赖于已生成的文件`Table.h`。 这是通过将已生成的`Table.h`添加到库MathFunctions的源列表中来完成的。
 
 ```cmake
 add_library(MathFunctions mysqrt.cxx ${CMAKE_CURRENT_BINARY_DIR}/Table.h )
@@ -446,7 +446,7 @@ target_include_directories(MathFunctions
           PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
           )
 ```
-现在，我们来使用生成的表。 首先，修改`mysqrt.cxx`以包含`Table.h`。 接下来，我们可以重写`mysqrt`函数以使用该表：
+现在，我们来使用已生成的表。 首先，修改`mysqrt.cxx`以包含`Table.h`。 接下来，我们可以重写`mysqrt`函数以使用该表：
 ```cpp
 double mysqrt(double x)
 {
@@ -474,13 +474,13 @@ double mysqrt(double x)
   return result;
 }
 ```
-运行cmake或cmake-gui以配置项目，然后使用所选的构建工具进行构建。
+运行`cmake`或`cmake-gui`以配置项目，然后使用所选的构建工具进行构建。
 
-构建此项目时，它将首先构建`MakeTable`可执行文件。 然后它将运行`MakeTable`来生成`Table.h`。 最后，它将编译包括了`Table.h`的`mysqrt.cxx`，以生成MathFunctions库。
+当构建此项目时，将首先构建`MakeTable`可执行文件。 然后它将运行`MakeTable`来生成`Table.h`。 最后，它将编译包括了`Table.h`的`mysqrt.cxx`，以生成`MathFunctions`库。
 
 运行Tutorial可执行文件，并验证它是否正在使用该表。
 
-:wq# 7 构建一个安装程序（第7步）
+# 7 打包安装程序
 
 接下来，假设我们想将项目分发给其他人，以便他们可以使用它。 我们希望在各种平台上提供二进制和源代码。 这与我们之前在“安装和测试”（第4步）中进行的安装有些不同，在“安装和测试”中，我们是安装根据源代码构建的二进制文件。 在此示例中，我们将构建支持二进制安装和包管理功能的安装程序包。 为此，我们将使用CPack创建平台特定的安装程序。 具体来说，我们需要在顶级`CMakeLists.txt `文件的底部添加几行。
 ```cmake
