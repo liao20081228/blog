@@ -272,7 +272,7 @@ target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}")
 完成后，运行 `cmake` 可执行文件或 `cmake-gui` 来配置项目，然后使用您选择的构建工具或使用 `cmake --build` 从构建目录中构建它。
 # 4 安装与测试
 
-现在，我们可以开始向项目添加安装规则和测试支持。
+<span id="installandtesting">现在</span>，我们可以开始向项目添加安装规则和测试支持。
 
 ## 4.1 安装规则
 安装规则非常简单：对于`MathFunctions`，我们想要安装库和头文件，对于应用程序，我们要安装可执行文件和已配置的头文件。
@@ -482,7 +482,7 @@ double mysqrt(double x)
 
 # 7 打包安装程序
 
-接下来，假设我们想将项目分发给其他人，以便他们可以使用它。 我们希望在各种平台上提供二进制和源代码。 这与我们之前在“安装和测试”（第4步）中进行的安装有些不同，在“安装和测试”中，我们是安装根据源代码构建的二进制文件。 在此示例中，我们将构建支持二进制安装和包管理功能的安装程序包。 为此，我们将使用CPack创建平台特定的安装程序。 具体来说，我们需要在顶级`CMakeLists.txt `文件的底部添加几行。
+接下来，假设我们想将项目分发给其他人，以便他们可以使用它。 我们希望在各种平台上提供二进制和源代码分发。 这与我们之前在 [安装和测试](#installandtesting) 中进行的安装有些不同，在那里我们是安装根据源代码构建的二进制文件。 在此示例中，我们将构建支持二进制安装和包管理功能的安装程序包。 为此，我们将使用CPack创建平台特定的安装程序。 具体来说，我们需要在顶级`CMakeLists.txt `文件的底部添加几行。
 ```cmake
 include(InstallRequiredSystemLibraries)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
@@ -490,15 +490,15 @@ set(CPACK_PACKAGE_VERSION_MAJOR "${Tutorial_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${Tutorial_VERSION_MINOR}")
 include(CPack)
 ```
-这就是全部需要做的事。 我们首先包含`InstallRequiredSystemLibraries`。 该模块将包括项目当前平台所需的任何运行时库。 接下来，我们将一些CPack变量设置为存储该项目的许可证和版本信息的位置。 版本信息是在本教程的前面设置的，并且`license.txt`已包含在此步骤的顶级源目录中。
+这就是全部需要做的事。 我们首先包含`InstallRequiredSystemLibraries`。 该模块将包括项目当前平台所需的任何运行时库。 接下来，我们将一些CPack变量设置为存储该项目的许可证和版本信息的位置。 版本信息是在本教程的前面设置的，并且`license.txt`已包含在顶级源目录中。
 
-最后，我们包含CPack模块，该模块将使用这些变量和当前系统的其他一些属性来设置安装程序。
+最后，我们包含`CPack`模块，该模块将使用这些变量和当前系统的其他一些属性来设置安装程序。
 
-下一步是以常规方式构建项目，然后在其上运行CPack。 要构建二进制发行版，请从二进制目录运行：
-```shell
+下一步是以常规方式构建项目，然后运行`cpack`。 要构建二进制发行版，请从二进制目录运行：
+```bash
 cpack
 ```
-要指定生成器，请使用-G选项。 对于多配置构建，请使用-C指定配置。 例如：
+要指定生成器，请使用`-G`选项。 对于多配置构建，请使用`-C`指定配置。 例如：
 ```shell
 cpack -G ZIP -C Debug
 ```
@@ -508,7 +508,7 @@ cpack --config CPackSourceConfig.cmake
 ```
 或者，运行`make package`或在IDE中右键单击`Package`目标和`Build Project`。
 
-运行在二进制目录中找到的安装程序。 然后运行已安装的可执行文件，并验证其是否有效。
+运行在二进制目录中找到的安装程序。 然后运行已安装的可执行文件，并验证其是否工作。
 
 # 8 添加Dashboard支持（第8步）
 添加支持以将测试结果提交到Dashboard非常容易。 我们已经在“测试支持”中为我们的项目定义了许多测试。 现在，我们只需要运行这些测试并将其提交到Dashboard即可。 为了包含对Dashboard的支持，我们在顶层`CMakeLists.txt`中包含了CTest模块。
