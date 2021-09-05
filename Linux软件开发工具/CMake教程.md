@@ -713,7 +713,7 @@ double DECLSPEC sqrt(double x);
  ```
  **练习**：我们修改了`MathFunctions.h`以使用dll导出定义。 您可以使用CMake文档找到一个辅助模块来简化此过程吗？
  
- # 10 添加生成器表达式（第10步）
+ # 10 添加生成器表达式
 在构建系统生成期间会评估生成器表达式，以生成特定于每个构建配置的信息。
 
 在许多目标属性（例如`LINK_LIBRARIES，INCLUDE_DIRECTORIES，COMPLIE_DEFINITIONS`等）的上下文中允许生成器表达式。 在使用命令填充这些属性（例如`target_link_libraries（），target_include_directories（） ,target_compile_definitions（）`等）时，也可以使用它们。
