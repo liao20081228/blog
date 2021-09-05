@@ -841,7 +841,7 @@ export(EXPORT MathFunctionsTargets
 通过此输出调用，我们现在生成一个`Targets.cmake`，这个文件允许在构建目录中配置的`MathFunctionsConfig.cmake`由其他项目使用，而无需安装它。
 
 
-# 12 打包调试和发布(多个包)
+# 12 打包调试和发布
 默认情况下，CMake的模型是一个构建目录仅包含一个配置，可以是Debug，Release，MinSizeRel或RelWithDebInfo。
 
 但是可以将CPack设置为同时捆绑多个构建目录，以构建一个包含同一项目的多个配置的软件包。
