@@ -305,7 +305,7 @@ cmake --install . --prefix "/home/myuser/installdir"
 
 ## 4.2 测试支持
 
-接下来，测试我们的应用程序。 在顶级`CMakeLists.txt`文件的末尾，我们可以启用测试，然后添加一些基本测试以验证应用程序是否正常运行。
+<span id="testsupport">接下来</span>，测试我们的应用程序。 在顶级`CMakeLists.txt`文件的末尾，我们可以启用测试，然后添加一些基本测试以验证应用程序是否正常运行。
 
 ```cmake
 enable_testing()
@@ -510,8 +510,8 @@ cpack --config CPackSourceConfig.cmake
 
 运行在二进制目录中找到的安装程序。 然后运行已安装的可执行文件，并验证其是否工作。
 
-# 8 添加Dashboard支持（第8步）
-添加支持以将测试结果提交到Dashboard非常容易。 我们已经在“测试支持”中为我们的项目定义了许多测试。 现在，我们只需要运行这些测试并将其提交到Dashboard即可。 为了包含对Dashboard的支持，我们在顶层`CMakeLists.txt`中包含了CTest模块。
+# 8 添加对Testing Dashboard支持
+非常容易添加对提交测试结果到Dashboard的支持。 我们已经在“[测试支持](#testsupport)”中为我们的项目定义了许多测试。 现在，我们只需要运行这些测试并将其提交到Dashboard即可。 为了包含对Dashboard的支持，我们在顶层`CMakeLists.txt`中包含了CTest模块。
 
 用
 ```cmake
