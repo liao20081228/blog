@@ -842,36 +842,66 @@ export(EXPORT MathFunctionsTargets
 
 
 # 12 打包调试和发布
-默认情况下，CMake的模型是一个构建目录仅包含一个配置，可以是Debug，Release，MinSizeRel或RelWithDebInfo。
+**注意**：<span id="packagedebugrelease">此示例</span>适用于单配置生成器，不适用于多配置生成器（例如 Visual Studio）。
 
-但是可以将CPack设置为同时捆绑多个构建目录，以构建一个包含同一项目的多个配置的软件包。
+默认情况下，CMake的模型是一个仅包含一个配置的构建目录，可以是Debug，Release，MinSizeRel或RelWithDebInfo。但是可以将CPack设置为同时捆绑多个构建目录，以构建一个包含同一项目的多个配置的软件包。
 
-首先，我们需要构建一个名为`multi_config`的目录，该目录将包含我们要打包在一起的所有构建。
 
-其次，在`multi_config`下创建一个`debug`和`release`目录。 最后，您应该具有如下布局：
+首先，我们要确保debug和Release构建对将要安装的可执行文件和库使用不同的名称。让我们使用 *d* 作为debug可执行文件和库的后缀。
 
+在顶层`CMakeLists.txt` 文件的开头附近设置 `CMAKE_DEBUG_POSTFIX`：
+
+```cmake
+set(CMAKE_DEBUG_POSTFIX d)
+
+add_library(tutorial_compiler_flags INTERFACE)
 ```
-─ multi_config
-    ├── debug
-    └── release
-```
-现在，我们需要设置调试和发布版本，这大致需要以下内容：
+在tutorial可执行文件设置`DEBUG_POSTFIX`属性：
+```cmake
+add_executable(Tutorial tutorial.cxx)
+set_target_properties(Tutorial PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 
-```shell
-cmake -DCMAKE_BUILD_TYPE=Debug ../../../MultiPackage/
+target_link_libraries(Tutorial PUBLIC MathFunctions)
+```
+将版本号添加到 `MathFunctions` 库中。在 `MathFunctions/CMakeLists.txt` 中，设置 `VERSION` 和 `SOVERSION`属性：
+
+```cmake
+set_property(TARGET MathFunctions PROPERTY VERSION "1.0.0")
+set_property(TARGET MathFunctions PROPERTY SOVERSION "1")
+```
+在 [打包调试和发布](#packagedebugrelease) 的目录中，创建 `debug` 和 `release` 子目录。布局将如下所示：
+```
+- Step12
+   - debug
+   - release
+```
+现在我们需要设置debug和release版本。我们可以使用 `CMAKE_BUILD_TYPE` 来设置配置类型：
+
+``` bash
+cd debug
+cmake -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build .
 cd ../release
-cmake -DCMAKE_BUILD_TYPE=Release ../../../MultiPackage/
+cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
-cd ..
 ```
-既然调试和发行版本均已完成，我们就可以使用自定义的`MultiCPackConfig.cmake`文件将两个版本打包到一个发行版中。
+既然debug和release构建都已完成，我们可以使用自定义配置文件将这两个构建打包到一个发布中。在 [打包调试和发布](#packagedebugrelease) 目录中，创建一个名为 `MultiCPackConfig.cmake` 的文件。在此文件中，首先包含由 `cmake` 可执行文件创建的默认配置文件。
 
-```shell
-cpack --config ../../MultiPackage/MultiCPackConfig.cmake
+接下来，使用 `CPACK_INSTALL_CMAKE_PROJECTS` 变量指定要安装的项目。在这种情况下，我们要安装debug和release。
+
+``` cmake
+include("release/CPackConfig.cmake")
+
+set(CPACK_INSTALL_CMAKE_PROJECTS
+    "debug;Tutorial;ALL;/"
+    "release;Tutorial;ALL;/"
+    )
 ```
+从  [打包调试和发布](#packagedebugrelease) 目录中，运行 `cpack` 并使用 `config` 选项指定我们的自定义配置文件：
 
-
+```bash
+cpack --config MultiCPackConfig.cmake
+```
 
 
 ------
