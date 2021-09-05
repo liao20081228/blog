@@ -141,7 +141,7 @@ Tutorial
 ```
 
 # 2 添加一个库
-现在，我们将添加一个库到我们的项目中。 该库含有我们自己对计算数字的平方根的实现。 可执行文件可以使用此库代替编译器提供的标准平方根函数。
+<span id="addalibary">现在</span>，我们将添加一个库到我们的项目中。 该库含有我们自己对计算数字的平方根的实现。 可执行文件可以使用此库代替编译器提供的标准平方根函数。
 
 在本教程中，我们将这个库放入名为`MathFunctions`的子目录中。 该子目录已包含头文件`MathFunctions.h`和源文件`mysqrt.cxx`。 源文件具有一个称为`mysqrt`的函数，该函数提供与编译器的`sqrt`函数类似的功能。
 
@@ -279,13 +279,13 @@ target_include_directories(Tutorial PUBLIC  "${PROJECT_BINARY_DIR}" ${EXTRA_INCL
 * `target_include_directories`
 * `target_link_libraries`
 
-让我们从 添加一个库 重构代码，以利用现代的CMake方法编写使用要求。 我们首先声明，链接到MathFunctions的任何东西都需要包括当前源码目录，而MathFunctions本身不需要。 因此，这可以成为`INTERFACE`使用要求。
+让我们从 [添加一个库](#添加一个库)中重构代码，以利用使用要求的现代的CMake方法。 我们首先声明，链接到`MathFunctions`的任何东西都需要包括当前源码目录，而`MathFunctions`自身不需要。 因此这可以成为`INTERFACE`使用要求。
 
 请记住，`INTERFACE`是指消费者需要的，而生产者不需要东西。 将以下行添加到`MathFunctions/CMakeLists.txt`的末尾：
 ```cmake
-target_include_directories(MathFunctions INTERFACE ${CMAKE_CURRENT_SOURCE_DIR)
+target_include_directories(MathFunctions INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 ```
-现在，我们已经指定了MathFunction的使用要求，我们可以安全地从顶级`CMakeLists.txt`中删除对`EXTRA_INCLUDES`变量的使用：
+现在，我们已经指定了`MathFunctions`的使用要求，我们可以安全地从顶级`CMakeLists.txt`中删除对`EXTRA_INCLUDES`变量的使用：
 ```cmake
 if(USE_MYMATH)
   add_subdirectory(MathFunctions)
@@ -296,7 +296,7 @@ endif()
 
 target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}")
 ```
-
+完成后，运行 `cmake` 可执行文件或 `cmake-gui` 来配置项目，然后使用您选择的构建工具或使用 `cmake --build` 从构建目录中构建它。
 # 4 安装与测试（第4步）
 
 现在，我们可以开始向项目添加安装规则和测试支持。
