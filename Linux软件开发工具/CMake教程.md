@@ -549,11 +549,11 @@ ctest [-VV] -C Debug -D Experimental
 
 # 9 选择静态库或共享库
 
-在本节中，我们将展示如何使用`BUILD_SHARED_LIBS`变量来控制`add_library`的默认行为，并允许控制如何构建没有显式类型（`STATIC，SHARED，MODULE或OBJECT`）的库。
+在本节中，我们将展示如何使用`BUILD_SHARED_LIBS`变量来控制`add_library()`的默认行为，并允许控制如何构建没有显式类型（`STATIC，SHARED，MODULE或OBJECT`）的库。
 
-为此，我们需要将`BUILD_SHARED_LIBS`添加到顶层`CMakeLists.txt`。 我们使用`option`命令，因为它允许用户可以选择该值是On还是Off。
+为此，我们需要将`BUILD_SHARED_LIBS`添加到顶层`CMakeLists.txt`。 我们使用`option()`命令，因为它允许用户可以选择该值是`On`还是`OFF`。
 
-接下来，我们将重构MathFunctions使其成为使用mysqrt或sqrt封装的真实库，而不是要求调用代码执行此逻辑。 这也意味着`USE_MYMATH`将不会控制构建MathFuctions，而是将控制此库的行为。
+接下来，我们将重构`MathFunctions`使其成为使用`mysqrt`或`sqrt`封装的实时库，而不是要求调用代码执行此逻辑。 这也意味着`USE_MYMATH`将不会控制构建`MathFuctions`，而是将控制此库的行为。
 
 第一步是将顶层`CMakeLists.txt`的开始部分更新为：
 ```cmake
@@ -584,7 +584,7 @@ add_subdirectory(MathFunctions)
 add_executable(Tutorial tutorial.cxx)
 target_link_libraries(Tutorial PUBLIC MathFunctions)
 ```
-既然我们已经使MathFunctions始终被使用，我们将需要更新该库的逻辑。 因此，在`MathFunctions/CMakeLists.txt`中，我们需要创建一个`SqrtLibrary`，当启用`USE_MYMATH`时有条件地对其进行构建。 现在，由于这是一个教程，我们将明确要求SqrtLibrary是静态构建的。
+既然我们已经使`MathFunctions`始终被使用，我们将需要更新该库的逻辑。 因此，在`MathFunctions/CMakeLists.txt`中，我们需要创建一个`SqrtLibrary`，当启用`USE_MYMATH`时有条件地对其进行构建和安装。 现在，由于这是一个教程，我们将明确要求SqrtLibrary是静态构建的。
 
 最终结果是`MathFunctions/CMakeLists.txt`应该如下所示：
 ```cmake
@@ -632,7 +632,11 @@ endif()
 target_compile_definitions(MathFunctions PRIVATE "EXPORTING_MYMATH")
 
 # install rules
-install(TARGETS MathFunctions DESTINATION lib)
+set(installable_libs MathFunctions)
+if(TARGET SqrtLibrary)
+  list(APPEND installable_libs SqrtLibrary)
+endif()
+install(TARGETS ${installable_libs} DESTINATION lib)
 install(FILES MathFunctions.h DESTINATION include)
 ```
 接下来，更新`MathFunctions/mysqrt.cxx`以使用`mathfunctions`和`detail`命名空间：
@@ -645,29 +649,27 @@ install(FILES MathFunctions.h DESTINATION include)
 // include the generated table
 #include "Table.h"
 
-namespace mathfunctions
-{
-namespace detail 
-{
+namespace mathfunctions {
+namespace detail {
 // a hack square root calculation using simple operations
 double mysqrt(double x)
 {
-  if (x <= 0) 
+  if (x <= 0) {
     return 0;
+  }
 
   // use the table to help find an initial value
   double result = x;
-  if (x >= 1 && x < 10) 
-  {
+  if (x >= 1 && x < 10) {
     std::cout << "Use the table to help find an initial value " << std::endl;
     result = sqrtTable[static_cast<int>(x)];
   }
 
   // do ten iterations
-  for (int i = 0; i < 10; ++i)
-  {
-    if (result <= 0) 
+  for (int i = 0; i < 10; ++i) {
+    if (result <= 0) {
       result = 0.1;
+    }
     double delta = x - (result * result);
     result = result + 0.5 * delta / result;
     std::cout << "Computing sqrt of " << x << " to be " << result << std::endl;
@@ -683,7 +685,7 @@ double mysqrt(double x)
 2. 始终使用`mathfunctions::sqrt`
 3. 不要包含 `cmath`
 
-最后，更新 `MathFunctions/MathFunctions.h`以使用dll导出定义:
+最后，更新 `MathFunctions/MathFunctions.h`以使用dll输出定义:
 ```c++
 #if defined(_WIN32)
 #  if defined(EXPORTING_MYMATH)
@@ -709,7 +711,7 @@ double DECLSPEC sqrt(double x);
 
   target_link_libraries(MathFunctions PRIVATE SqrtLibrary)
  ```
- 练习：我们修改了`MathFunctions.h`以使用dll导出定义。 使用CMake文档，您可以找到一个帮助器模块来简化此过程吗？
+ **练习**：我们修改了`MathFunctions.h`以使用dll导出定义。 您可以使用CMake文档找到一个辅助模块来简化此过程吗？
  
  # 10 添加生成器表达式（第10步）
 在构建系统生成期间会评估生成器表达式，以生成特定于每个构建配置的信息。
