@@ -482,7 +482,7 @@ double mysqrt(double x)
 
 # 7 打包安装程序
 
-接下来，假设我们想将项目分发给其他人，以便他们可以使用它。 我们希望在各种平台上提供二进制和源代码分发。 这与我们之前在 [安装和测试](#installandtesting) 中进行的安装有些不同，在那里我们是安装根据源代码构建的二进制文件。 在此示例中，我们将构建支持二进制安装和包管理功能的安装程序包。 为此，我们将使用CPack创建平台特定的安装程序。 具体来说，我们需要在顶层`CMakeLists.txt `文件的底部添加几行。
+<span id="packageinstaller">接下来</span>，假设我们想将项目分发给其他人，以便他们可以使用它。 我们希望在各种平台上提供二进制和源代码分发。 这与我们之前在 [安装和测试](#installandtesting) 中进行的安装有些不同，在那里我们是安装根据源代码构建的二进制文件。 在此示例中，我们将构建支持二进制安装和包管理功能的安装程序包。 为此，我们将使用CPack创建平台特定的安装程序。 具体来说，我们需要在顶层`CMakeLists.txt `文件的底部添加几行。
 ```cmake
 include(InstallRequiredSystemLibraries)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
@@ -751,9 +751,9 @@ target_compile_options(tutorial_compiler_flags INTERFACE
 
 **练习**：修改`MathFunctions/CMakeLists.txt`，以便所有目标都有到`tutorial_compiler_flags`的 `target_link_libraries()`调用。
 
-# 11 增加输出配置（第11步）
+# 11 增加输出配置
 
-在本教程的“安装和测试”（第4步）中，我们添加了CMake的功能，以安装项目的库和头文件。 在"构建安装程序"（第7步）期间，我们添加了打包此资料的功能，以便可以将其分发给其他人。
+在本教程的 “[安装和测试](#installandtesting)” 中，我们增加了CMake的功能以安装项目的库和头文件。 在“[打包安装程序](#packageinstaller)”（第7步）期间，我们添加了打包此资料的功能，以便可以将其分发给其他人。
 
 下一步是添加必要的信息，以便其他CMake项目可以使用我们的项目，无论是从构建目录，本地安装还是打包的文件。
 
