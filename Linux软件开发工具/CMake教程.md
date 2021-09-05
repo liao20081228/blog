@@ -511,7 +511,7 @@ cpack --config CPackSourceConfig.cmake
 运行在二进制目录中找到的安装程序。 然后运行已安装的可执行文件，并验证其是否工作。
 
 # 8 添加对Testing Dashboard支持
-非常容易添加对提交测试结果到Dashboard的支持。 我们已经在“[测试支持](#testsupport)”中为我们的项目定义了许多测试。 现在，我们只需要运行这些测试并将其提交到Dashboard即可。 为了包含对Dashboard的支持，我们在顶层`CMakeLists.txt`中包含了CTest模块。
+非常容易添加对提交测试结果到Dashboard的支持。 我们已经在 “[测试支持](#testsupport)” 中为我们的项目定义了许多测试。 现在，我们只需要运行这些测试并将其提交到Dashboard即可。 为了包含对Dashboard的支持，我们在顶层`CMakeLists.txt`中包含了`CTest`模块。
 
 用
 ```cmake
