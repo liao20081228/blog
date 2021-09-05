@@ -720,11 +720,11 @@ double DECLSPEC sqrt(double x);
 
 生成器表达式可用于启用条件链接，编译时使用的条件定义，条件包含目录等。 条件可以基于构建配置，目标属性，平台信息或任何其他可查询信息。
 
-生成器表达式有不同类型，包括逻辑，信息和输出表达式。
+生成器表达式有不同类型，包括逻辑表达式，信息表达式和输出表达式。
 
-逻辑表达式用于创建条件输出。 基本表达式是0和1表达式。` $<0:...>`导致空字符串，而`<1:...>`导致内容“…”。 它们也可以嵌套。
+逻辑表达式用于创建条件输出。 基本表达式是`0`和`1`表达式。一个` $<0:...>`将导致空字符串，而`<1:...>`导致内容`…`。 它们也可以嵌套。
 
-生成器表达式的常见用法是有条件地添加编译器标志，例如用于语言级别或警告的标志。 一个不错的模式是将该信息与一个`INTERFACE`目标相关联，以允许该信息传播。 让我们从构造一个`INTERFACE`目标并指定所需的`C++`标准级别`11`开始，而不是使用`CMAKE_CXX_STANDARD`。 
+生成器表达式的常见用法是有条件地添加编译器标志，例如用于语言级别或警告的标志。 一个很好的模式是将此信息与允许此信息传播的 ·`INTERFACE`目标相关联。 让我们从构造一个`INTERFACE`目标并指定所需的`C++`标准级别`11`而不是使用`CMAKE_CXX_STANDARD`开始。 
 
 所以，下面的代码：
 ```cmake
@@ -737,19 +737,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_library(tutorial_compiler_flags INTERFACE)
 target_compile_features(tutorial_compiler_flags INTERFACE cxx_std_11)
 ```
-接下来，我们为项目添加所需的编译器警告标志。 由于警告标志根据编译器的不同而不同，因此我们使用`COMPILE_LANG_AND_ID`生成器表达式来控制在给定一种语言和一组编译器ID的情况下应应用的标志，如下所示：
+接下来，我们为项目添加所需的编译器警告标志。 由于警告标志根据编译器的不同而不同，因此我们使用`COMPILE_LANG_AND_ID`生成器表达式来控制在给定一种语言和一组编译器ID的情况下哪些标志该应用，如下所示：
  
  ```cmake
- set(gcc_like_cxx "$<COMPILE_LANG_AND_ID:CXX,ARMClang,AppleClang,Clang,GNU>")
+set(gcc_like_cxx "$<COMPILE_LANG_AND_ID:CXX,ARMClang,AppleClang,Clang,GNU>")
 set(msvc_cxx "$<COMPILE_LANG_AND_ID:CXX,MSVC>")
 target_compile_options(tutorial_compiler_flags INTERFACE
   "$<${gcc_like_cxx}:$<BUILD_INTERFACE:-Wall;-Wextra;-Wshadow;-Wformat=2;-Wunused>>"
   "$<${msvc_cxx}:$<BUILD_INTERFACE:-W3>>"
 )
  ```
-查看此内容，我们看到警告标志封装在`BUILD_INTERFACE`条件内。 这样做是为了使我们已安装项目的使用者不会继承我们的警告标志。
+我们看到警告标志封装在`BUILD_INTERFACE`条件内。 这样做是为了使我们已安装项目的消费者不会继承我们的警告标志。
 
-练习：修改`MathFunctions/CMakeLists.txt`，以便所有目标都具有对`tutorial_compiler_flags` `target_link_libraries()`调用。
+**练习**：修改`MathFunctions/CMakeLists.txt`，以便所有目标都有到`tutorial_compiler_flags`的 `target_link_libraries()`调用。
 
 # 11 增加输出配置（第11步）
 
