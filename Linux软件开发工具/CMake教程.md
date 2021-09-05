@@ -302,26 +302,33 @@ target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}")
 现在，我们可以开始向项目添加安装规则和测试支持。
 
 ## 4.1 安装规则
-安装规则非常简单：对于MathFunctions，我们要安装库和头文件，对于应用程序，我们要安装可执行文件和配置的头文件。
+安装规则非常简单：对于`MathFunctions`，我们想要安装库和头文件，对于应用程序，我们要安装可执行文件和已配置的头文件。
 
 因此，在`MathFunctions/CMakeLists.txt`的末尾添加：
 ```cmake
 install(TARGETS MathFunctions DESTINATION lib)
 install(FILES MathFunctions.h DESTINATION include)
 ```
-然后在顶级cmakelt .txt的末尾添加
+然后在顶级`CMakeLists.txt`的末尾添加
 
 ```cmake
 install(TARGETS Tutorial DESTINATION bin)
 install(FILES "${PROJECT_BINARY_DIR}/TutorialConfig.h" DESTINATION include)
   ```
-这就是创建本教程的基本本地安装所需的全部工作。
+这就是创建一个本教程的基本本地安装所需的全部工作。
 
-运行cmake或cmake-gui以配置项目，然后使用所选的构建工具进行构建。 从命令行键入`cmake --install`进行安装（自3.15中引入，较早版本的CMake必须使用make install），或从IDE构建`INSTALL`目标。 这将安装适当的头文件，库和可执行文件。
+现在，运行`cmake`或`cmake-gui`以配置项目，然后使用所选的构建工具进行构建。
 
-CMake变量`CMAKE_INSTALL_PREFIX`用于确定文件的安装根目录。 如果使用`cmake --install`，则可以通过`--prefix`参数指定自定义安装目录。 对于多配置工具，请使用`--config`参数指定配置。
+然后从命令行使用 `cmake` 命令的`install`选项（在 3.15 中引入，旧版本的 CMake 必须使用`make install`）运行安装步骤。对于多配置工具，不要忘记使用 `--config` 参数来指定配置。如果使用 IDE，只需构建 `INSTALL` 目标。此步骤将安装适当的头文件、库和可执行文件。例如：
+```bash
+cmake --install .
+```
+CMake变量`CMAKE_INSTALL_PREFIX`用于确定文件的安装根目录。 如果使用`cmake --install`，则可以通过`--prefix`参数覆盖安装目录前缀。 例如：
+```bash
+cmake --install . --prefix "/home/myuser/installdir"
+```
 
-验证已安装的Tutorial可以运行。
+导航到安装目录并验证安装的Tutorial是否可运行。
 ## 4.2 测试支持
 
 接下来，测试我们的应用程序。 在顶级`CMakeLists.txt`文件的末尾，我们可以启用测试，然后添加一些基本测试以验证应用程序是否正常运行。
