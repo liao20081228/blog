@@ -30,7 +30,7 @@ tags: 3gpp,翻译
 |specific | 特殊的，特定的)|
 |specification|规格; 规范|
 |specify |具体说明; 明确规定|
-|the present document|本文档|
+|the present document|当前文档，本文档|
 |Mobility |移动性；移动能力|
 
 
