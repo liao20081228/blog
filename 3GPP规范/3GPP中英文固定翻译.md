@@ -34,7 +34,7 @@ tags: 3gpp,翻译
 |the present document|当前文档，本文档|
 |Mobility |移动性；移动能力|
 |generic|一般的；通用的|
-
+|is applicable to |适用于|
 
 
 
