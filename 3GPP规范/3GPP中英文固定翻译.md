@@ -28,7 +28,7 @@ tags: 3gpp,翻译
 |:--|:--|:--|
 |elementary |基本的|
 |procedure |流程，程序|
-|specific | 特殊的，特定的)|
+|specific | 特殊的，特定的|
 |specification|规格; 规范|
 |specify |具体说明; 明确规定|
 |the present document|当前文档，本文档|
