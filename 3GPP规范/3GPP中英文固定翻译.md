@@ -22,6 +22,7 @@ tags: 3gpp,翻译
 |Mobility Management Entity|移动性管理实体|MME|
 |The EPS Session Management|EPS会话管理| ESM|
 |The EPS Mobility Management|EPS移动性管理| EMM |
+|bearer|承载|
 # 2 固定翻译
 |英文|中文|缩写|
 |:--|:--|:--|
