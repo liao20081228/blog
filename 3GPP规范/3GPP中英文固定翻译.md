@@ -24,7 +24,7 @@ tags: 3gpp,翻译
 |EPS Mobility Management|EPS移动性管理| EMM |
 |bearer|承载|
 # 2 正文中的固定翻译
-|英文|中文|缩写|
+|英文|中文|备注|
 |:--|:--|:--|
 |elementary |基本的|
 |procedure |流程，程序，过程|
@@ -39,15 +39,16 @@ tags: 3gpp,翻译
 |shall|应当；必须|
 |not shall|不应当；禁止|
 # 3 标题中的固定翻译
-|英文|中文|缩写|
+|英文|中文|备注|
 |:--|:--|:--|
-|General|总则；综述|
+|General|总则；综述|优先翻译为总则|
 |References|参考文献|
 |Scope|范围|
 |Forword|前言|
-|Introduction|引言；简介；序言；导论；|
-|Overview|概述；概览；综述|
-
+|Introduction|简介；引言；序言；导论；|优先翻译为简介|
+|Overview|概述；综述|到底是概述还是综述取决于语境|
+|clause|节；条款|优先翻译节|
+|subclause|小节；子条款|优先翻译小节|
 
 
 
