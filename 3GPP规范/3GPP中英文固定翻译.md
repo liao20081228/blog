@@ -48,7 +48,7 @@ tags: 3gpp,翻译
 |Introduction|简介；引言；序言；导论；|优先翻译为简介|
 |Overview|概述；综述|到底是概述还是综述取决于语境|
 |clause|节；条款|优先翻译节|
-|subclause|小节；子条款|优先翻译小节|
+|subclause|节；子条款|优先翻译小节|
 
 
 
