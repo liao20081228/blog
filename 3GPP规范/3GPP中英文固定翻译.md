@@ -16,14 +16,14 @@ tags: 3gpp,翻译
 |英文|中文|缩写|
 |:--|:--|:--|
 |3rd Generation Partnership Project|第三代合作伙伴项目|3GPP|
-| the Evolved Packet System|演进分组系统|EPS|
-|the non-access stratum |非接入层|NAS|
+| Evolved Packet System|演进分组系统|EPS|
+|non-access stratum |非接入层|NAS|
 |User Equipment|用户设备|UE|
 |Mobility Management Entity|移动性管理实体|MME|
-|The EPS Session Management|EPS会话管理| ESM|
-|The EPS Mobility Management|EPS移动性管理| EMM |
+|EPS Session Management|EPS会话管理| ESM|
+|EPS Mobility Management|EPS移动性管理| EMM |
 |bearer|承载|
-# 2 固定翻译
+# 2 正文中的固定翻译
 |英文|中文|缩写|
 |:--|:--|:--|
 |elementary |基本的|
@@ -31,10 +31,23 @@ tags: 3gpp,翻译
 |specific | 特殊的，特定的|
 |specification|规格; 规范|
 |specify |具体说明; 明确规定|
-|the present document|当前文档，本文档|
+|present document|当前文档，本文档|
 |Mobility |移动性；移动能力|
-|generic|一般的；通用的|
+|generic|通用的； 一般的|
+|general|通用的； 一般的|
 |is applicable to |适用于|
+|shall|应当；必须|
+|not shall|不应当；禁止|
+# 3 标题中的固定翻译
+|英文|中文|缩写|
+|:--|:--|:--|
+|General|总则；综述|
+|References|参考文献|
+|Scope|范围|
+|Forword|前言|
+|Introduction|引言；简介；序言；导论；|
+|Overview|概述；概览；综述|
+
 
 
 
