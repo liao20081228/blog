@@ -6,7 +6,7 @@ tags: 编译, 开发
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《stty manpages》</font>， stty当前版本为8.30，手册更新时间为2019.9。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《gcc manpages》</font>， gcc当前版本为11.2，手册更新时间为2021.11.28。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
 # 1 名称
@@ -187,6 +187,6 @@ GNU coreutils 在线帮助：<https://www.gnu.org/software/coreutils/>
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《stty manpages》</font>， stty当前版本为8.30，手册更新时间为2019.9。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《gcc manpages》</font>， gcc当前版本为11.2，手册更新时间为2021.11.28。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
