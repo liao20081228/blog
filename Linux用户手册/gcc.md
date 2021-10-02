@@ -13,10 +13,15 @@ tags: 用户命令
 gcc——GNU 项目 C 和 C++ 编译器。
 # 2 概要
 ```bash
-stty [-F DEVICE | --file=DEVICE] [SETTING]...
-stty [-F DEVICE | --file=DEVICE] [-a|--all]
-stty [-F DEVICE | --file=DEVICE] [-g|--save]
+gcc [-c|-S|-E] [-std=standard]
+	[-g] [-pg] [-Olevel]
+	[-Wwarn...] [-Wpedantic]
+	[-Idir...] [-Ldir...]
+	[-Dmacro[=defn]...] [-Umacro]
+	[-foption...] [-mmachine-option...]
+	[-o outfile] [@file] infile...
 ```
+这里只列出最有用的一些选项； 其余部分见下文。 **g++** 接受的选项几乎与 **gcc** 相同。
 # 3 描述
 打印或更改终端特性。
 
