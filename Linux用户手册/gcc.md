@@ -10,7 +10,7 @@ tags: 用户命令
 
 ------
 # 1 名称
-stty——更改和打印终端行设置。
+gcc——GNU 项目 C 和 C++ 编译器。
 # 2 概要
 ```bash
 stty [-F DEVICE | --file=DEVICE] [SETTING]...
