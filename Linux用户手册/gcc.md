@@ -86,7 +86,28 @@ gcc [-c|-S|-E] [-std=standard]
 |<u>file.</u>**.s**|不应进行预处理的汇编代码。|
 |<u>file.</u>**.S**<br /><u>file.</u>**.sx**|必须进行预处理的汇编代码。|
 |<u>other</u>|将被直接输入到链接器的目标文件。 任何没有可识别后缀的文件名都以这种方式处理。|
-# 4 作者i
+
+
+您可以使用 **-x** 选项显式指定输入语言：
+
+-x language
+
+为以下输入文件明确指定语言（而不是让编译器根据文件名后缀选择默认语言）。 此选项适用于所有后续输入文件，直到下一个 -x 选项。 语言的可能值是：
+
+                    c c-header cpp-output
+                    时间：2019-05-06 标签：c++c++-headerc++-system-headerc++-user-headerc++-cpp-output
+                    目标-c 目标-c-头 目标-c-cpp-输出
+                    目标-c++ 目标-c++-header 目标-c++-cpp-输出
+                    汇编器 汇编器与 cpp
+                    阿达
+                    d
+                    f77 f77-cpp-输入 f95 f95-cpp-输入
+                    走
+                    双桅船
+
+
+
+# 4 作者
 David MacKenzie。
 # 5 报告错误
 GNU coreutils 在线帮助：<https://www.gnu.org/software/coreutils/>
