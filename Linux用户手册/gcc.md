@@ -13,7 +13,7 @@ tags: 用户命令,gcc,g++
 gcc——GNU 项目 C 和 C++ 编译器。
 # 2 概要
 ```bash
-gcc [-c|-S|-E] [-std=standard]
+gcc [-c : -S : -E] [-std=standard]
 	[-g] [-pg] [-Olevel]
 	[-Wwarn...] [-Wpedantic]
 	[-Idir...] [-Ldir...]
@@ -60,50 +60,94 @@ gcc [-c|-S|-E] [-std=standard]
 
 对于任何给定的输入文件，文件名后缀决定了进行何种编译：
 
-|文件名|说明|
-|:--|:--|
-|<u>file</u>**.c**|必须进行预处理的C源代码。|
-|<u>file</u>**.i**|不应进行预处理的C源代码。|
-|<u>file</u>**.ii**|不应进行预处理的C++源代码。|
-|<u>file</u>**.m**|必须进行预处理的Objective-C源代码。请注意，必须链接 <u>libobjc</u> 库才能使 Objective-C 程序工作。|
-|<u>file</u>**.mi**|不应进行预处理的Objective-C源代码。|
-|<u>file</u>**.mm**<br /><u>file</u>**.M**|必须进行预处理的Objective-C++源代码。请注意，必须链接 <u>libobjc</u> 库才能使 Objective-C++ 程序工作。请注意，**.M** 指的是大写字母 M。|
-|<u>file</u>**.mii**|不应进行预处理的Objective-C源代码。|
-|<u>file</u>**.h**|将被转换为预编译头文件（默认）的C、C++、Objective-C 或 Objective-C++ 头文件，或将被转换为 Ada specs的 C、C++ 头文件（通过 -fdump-ada-spec 开关）。|
-|<u>file</u>**.cc**<br /><u>file</u>**.cp**<br /><u>file</u>**.cxx**<br /><u>file</u>**.cpp**<br /><u>file</u>**.CPP**<br /><u>file</u>**.c++**<br /><u>file</u>**.C**|必须进行预处理的C++源代码。请注意，在 **.cxx** 中，最后两个字母必须都是小写字母x。 同样，**.C** 指的是大写字母的 C。|
-|<u>file</u>**.hh**<br /><u>file</u>**.H**<br /><u>file</u>**.hp**<br /><u>file</u>**.hxx**<br /><u>file</u>**.hpp**<br /><u>file</u>**.HPP**<br /><u>file</u>**.h++**<br /><u>file</u>**.tcc**|将被转换为预编译头文件（默认）或Ada specs的C++头文件。|
-|<u>file</u>**.f**<br /><u>file</u>**.for**<br /><u>file</u>**.ftn**|不应进行预处理的固定形式的 Fortran 源代码。|
-|<u>file</u>**.F**<br /><u>file</u>**.FOR**<br /><u>file</u>**.fpp**<br /><u>file</u>**.FPP**<br /><u>file</u>**.FTN**|必须进行预处理（使用传统的预处理器）的固定形式的 Fortran 源代码。|
-|<u>file</u>**.f90**<br /><u>file</u>**.f95**<br /><u>file</u>**.f03**<br /><u>file</u>**.f08**|不应进行预处理的 Fortran 源代码。|
-|<u>file</u>**.f90**<br /><u>file</u>**.f95**<br /><u>file</u>**.f03**<br /><u>file</u>**.f08**|必须进行预处理（使用传统的预处理器）的 Fortran 源代码。|
-|<u>file</u>**.go**|GO源代码。|
-|<u>file</u>**.brig**|BRIG 文件（HSAIL 的二进制表示）。|
-|<u>file</u>**.d**|D源代码。|
-|<u>file</u>**.di**|D接口文件。|
-|<u>file</u>**.dd**|D文档代码(Ddoc)。|
-|<u>file</u>**.ads**|包含库单元声明（包、子程序或泛型或泛型实例化的声明）或库单元重命名声明（包、泛型或子程序重命名声明）的 Ada 源代码文件。 此类文件也称为<u>specs</u>。|
-|<u>file</u>**.adb**|包含库单元体（子程序或包体）的 Ada 源代码文件。 此类文件也称为<u>bodies</u>。|
-|<u>file.</u>**.s**|不应进行预处理的汇编代码。|
-|<u>file.</u>**.S**<br /><u>file.</u>**.sx**|必须进行预处理的汇编代码。|
-|<u>other</u>|将被直接输入到链接器的目标文件。 任何没有可识别后缀的文件名都以这种方式处理。|
+<u>file</u>**.c**
+: 必须进行预处理的C源代码。
+
+<u>file</u>**.i**
+: 不应进行预处理的C源代码。
+
+<u>file</u>**.ii**
+: 不应进行预处理的C++源代码。
+
+<u>file</u>**.m**
+: 必须进行预处理的Objective-C源代码。请注意，必须链接 <u>libobjc</u> 库才能使 Objective-C 程序工作。
+
+<u>file</u>**.mi**
+: 不应进行预处理的Objective-C源代码。
+
+<u>file</u>**.mm**<br /><u>file</u>**.M**
+: 必须进行预处理的Objective-C++源代码。请注意，必须链接 <u>libobjc</u> 库才能使 Objective-C++ 程序工作。请注意，**.M** 指的是大写字母 M。
+
+<u>file</u>**.mii**
+: 不应进行预处理的Objective-C源代码。
+
+<u>file</u>**.h**
+: 将被转换为预编译头文件（默认）的C、C++、Objective-C 或 Objective-C++ 头文件，或将被转换为 Ada specs的 C、C++ 头文件（通过 -fdump-ada-spec 开关）。
+
+<u>file</u>**.cc**<br /><u>file</u>**.cp**<br /><u>file</u>**.cxx**<br /><u>file</u>**.cpp**<br /><u>file</u>**.CPP**<br /><u>file</u>**.c++**<br /><u>file</u>**.C**
+: 必须进行预处理的C++源代码。请注意，在 **.cxx** 中，最后两个字母必须都是小写字母x。 同样，**.C** 指的是大写字母的 C。
+
+<u>file</u>**.hh**<br /><u>file</u>**.H**<br /><u>file</u>**.hp**<br /><u>file</u>**.hxx**<br /><u>file</u>**.hpp**<br /><u>file</u>**.HPP**<br /><u>file</u>**.h++**<br /><u>file</u>**.tcc**
+: 将被转换为预编译头文件（默认）或Ada specs的C++头文件。
+
+<u>file</u>**.f**<br /><u>file</u>**.for**<br /><u>file</u>**.ftn**
+: 不应进行预处理的固定形式的 Fortran 源代码。
+
+<u>file</u>**.F**<br /><u>file</u>**.FOR**<br /><u>file</u>**.fpp**<br /><u>file</u>**.FPP**<br /><u>file</u>**.FTN**
+: 必须进行预处理（使用传统的预处理器）的固定形式的 Fortran 源代码。
+
+<u>file</u>**.f90**<br /><u>file</u>**.f95**<br /><u>file</u>**.f03**<br /><u>file</u>**.f08**
+: 不应进行预处理的 Fortran 源代码。
+
+<u>file</u>**.f90**<br /><u>file</u>**.f95**<br /><u>file</u>**.f03**<br /><u>file</u>**.f08**
+: 必须进行预处理（使用传统的预处理器）的 Fortran 源代码。
+
+<u>file</u>**.go**
+: GO源代码。
+
+<u>file</u>**.brig**
+: BRIG 文件（HSAIL 的二进制表示）。
+
+<u>file</u>**.d**
+: D源代码。
+
+<u>file</u>**.di**
+: D接口文件。
+
+<u>file</u>**.dd**
+: D文档代码(Ddoc)。
+
+<u>file</u>**.ads**
+: 包含库单元声明（包、子程序或泛型或泛型实例化的声明）或库单元重命名声明（包、泛型或子程序重命名声明）的 Ada 源代码文件。 此类文件也称为<u>specs</u>。
+
+<u>file</u>**.adb**
+: 包含库单元体（子程序或包体）的 Ada 源代码文件。 此类文件也称为<u>bodies</u>。
+
+<u>file</u>**.s**
+: 不应进行预处理的汇编代码。
+
+<u>file</u>**.S**<br /><u>file</u>**.sx**
+: 必须进行预处理的汇编代码。
+
+<u>other</u>
+: 将被直接输入到链接器的目标文件。 任何没有可识别后缀的文件名都以这种方式处理。
 
 
 您可以使用 **-x** 选项显式指定输入语言：
 
--x language
+-x <u>language</u>
+: 为以下输入文件明确指定语言<u>language</u>（而不是让编译器根据文件名后缀选择默认语言）。 此选项适用于所有后续输入文件，直到下一个 **-x** 选项。 语言<u>language</u>的可能值是：
+&emsp;&emsp;c c-header cpp-output
+&emsp;&emsp;c++  c++-header  c++-system-header c++-user-header c++-cpp-output
+&emsp;&emsp;objective-c  objective-c-header  objective-c-cpp-output
+&emsp;&emsp;objective-c++ objective-c++-header objective-c++-cpp-output
+&emsp;&emsp;assembler  assembler-with-cpp
+&emsp;&emsp;ada
+&emsp;&emsp; d
+&emsp;&emsp;f77  f77-cpp-input f95  f95-cpp-input
+&emsp;&emsp;go
+&emsp;&emsp;brig
 
-为以下输入文件明确指定语言（而不是让编译器根据文件名后缀选择默认语言）。 此选项适用于所有后续输入文件，直到下一个 -x 选项。 语言的可能值是：
-
-                    c c-header cpp-output
-                    时间：2019-05-06 标签：c++c++-headerc++-system-headerc++-user-headerc++-cpp-output
-                    目标-c 目标-c-头 目标-c-cpp-输出
-                    目标-c++ 目标-c++-header 目标-c++-cpp-输出
-                    汇编器 汇编器与 cpp
-                    阿达
-                    d
-                    f77 f77-cpp-输入 f95 f95-cpp-输入
-                    走
-                    双桅船
 
 
 
