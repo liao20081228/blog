@@ -46,7 +46,20 @@ gcc [-c|-S|-E] [-std=standard]
 这是所有选项的摘要，按类型分组。 解释在后续章节。
 
 <u>总体选项</u>
-: **-c  -S  -E  -o** <u>file</u> **-dumpbase** <u>dumpbase</u>  **-dumpbase-ext** <u>auxdropsuf</u> **-dumpdir** <u>dumppfx</u>  **-x** <u>language</u> **-v  -###  --help**\[=<u>class</u>\[,...]]  **--target-help  --version -pass-exit-codes -pipe  -specs=**<u>file</u>  **-wrapper @**<u>file</u>  **-ffile-prefix-map**=<u>old</u>=<u>new</u> **-fplugin**=<u>file</u>  **-fplugin-arg-name=arg -fdump-ada-spec**\[**-slim**]  **-fada-spec-parent**=<u>unit</u>  -**fdump-go-spec**=<u>file</u>
+: **-c  -S  -E  -o** <u>file</u> **-dumpbase** <u>dumpbase</u>  **-dumpbase-ext** <u>auxdropsuf</u> **-dumpdir** <u>dumppfx</u>  **-x** <u>language</u> **-v  -###  --help**\[**=**<u>class</u>\[**,...**]]  **--target-help  --version -pass-exit-codes -pipe  -specs=**<u>file</u>  **-wrapper @**<u>file</u>  **-ffile-prefix-map=**<u>old</u>**=**<u>new</u> **-fplugin=**<u>file</u>  **-fplugin-arg-name=arg -fdump-ada-spec**\[**-slim**]  **-fada-spec-parent=**<u>unit</u>  -**fdump-go-spec=**<u>file</u>
+
+<u>C语言选项</u>
+: **-ansi  -std=**<u>standard</u>  **-fgnu89-inline  -fpermitted-flt-eval-methods=**<u>standard</u> **-aux-info** <u>filename</u>  **-fallow-parameterless-variadic-functions  -fno-asm  -fno-builtin -fno-builtin-**<u>function</u>  **-fgimple -fhosted  -ffreestanding -fopenacc  -fopenacc-dim=**<u>geom</u>  **-fopenmp  -fopenmp-simd -fms-extensions  -fplan9-extensions  -fsso-struct=**<u>endianness</u>  **-fallow-single-precision  -fcond-mismatch  -flax-vector-conversions  -fsigned-bitfields  -fsigned-char  -funsigned-bitfields  -funsigned-char**
+
+<u>C++语言选项</u>
+: **-fabi-version=**<u>n</u>  **-fno-access-control  -faligned-new=**<u>n</u>  **-fargs-in-order=**<u>n</u>  **-fchar8_t  -fcheck-new -fconstexpr-depth=**<u>n</u>  **-fconstexpr-cache-depth=**<u>n</u>  **-fconstexpr-loop-limit=**<u>n</u>  **-fconstexpr-ops-limit=**<u>n</u>  **-fno-elide-constructors -fno-enforce-eh-specs -fno-gnu-keywords -fno-implicit-templates -fno-implicit-inline-templates -fno-implement-inlines -fmodule-header**\[**=**<u>kind</u>] **-fmodule-only -fmodules-ts -fmodule-implicit-inline -fno-module-lazy -fmodule-mapper=**<u>specification</u> -fmodule-version-ignore -fms-extensions -fnew-inheriting-ctors -fnew-ttp-matching -fno-nonansi-builtins  -fnothrow-opt  -fno-operator-names -fno-optional-diags  -fpermissive -fno-pretty-templates -fno-rtti -fsized-deallocation -ftemplate-backtrace-limit=n -ftemplate-depth=n -fno-threadsafe-statics  -fuse-cxa-atexit -fno-weak  -nostdinc++ -fvisibility-inlines-hidden -fvisibility-ms-compat -fext-numeric-literals -flang-info-include-translate[=header] -flang-info-include-translate-not -flang-info-module-cmi[=module] -stdlib=libstdc++,libc++ -Wabi-tag  -Wcatch-value  -Wcatch-value=n -Wno-class-conversion  -Wclass-memaccess -Wcomma-subscript  -Wconditionally-supported -Wno-conversion-null  -Wctad-maybe-unsupported -Wctor-dtor-privacy  -Wno-delete-incomplete -Wdelete-non-virtual-dtor  -Wdeprecated-copy -Wdeprecated-copy-dtor -Wno-deprecated-enum-enum-conversion -Wno-deprecated-enum-float-conversion -Weffc++  -Wno-exceptions -Wextra-semi  -Wno-inaccessible-base -Wno-inherited-variadic-ctor -Wno-init-list-lifetime -Winvalid-imported-macros -Wno-invalid-offsetof  -Wno-literal-suffix -Wno-mismatched-new-delete -Wmismatched-tags -Wmultiple-inheritance -Wnamespaces  -Wnarrowing -Wnoexcept  -Wnoexcept-type  -Wnon-virtual-dtor -Wpessimizing-move  -Wno-placement-new  -Wplacement-new=n -Wrange-loop-construct -Wredundant-move -Wredundant-tags -Wreorder  -Wregister -Wstrict-null-sentinel  -Wno-subobject-linkage  -Wtemplates -Wno-non-template-friend  -Wold-style-cast -Woverloaded-virtual -Wno-pmf-conversions -Wsign-promo -Wsized-deallocation  -Wsuggest-final-methods -Wsuggest-final-types  -Wsuggest-override -Wno-terminate  -Wuseless-cast  -Wno-vexing-parse -Wvirtual-inheritance -Wno-virtual-move-assign  -Wvolatile  -Wzero-as-null-pointer-constant
+
+## 4.2 控制输出类型的选项
+
+编译最多可涉及四个阶段：预处理、完全编译、汇编和链接，始终按此顺序进行。 GCC 能够将多个文件预处理和编译为多个汇编器输入文件或一个汇编器输入文件； 然后每个汇编器输入文件生成一个目标文件，链接将所有目标文件（那些新编译的和指定为输入的）组合成一个可执行文件。
+
+对于任何给定的输入文件，文件名后缀决定了进行何种编译：
+
 # 4 作者
 David MacKenzie。
 # 5 报告错误
