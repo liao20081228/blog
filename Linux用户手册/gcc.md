@@ -41,9 +41,12 @@ gcc [-c|-S|-E] [-std=standard]
 
 指定某种大小阈值的选项的参数可以是任意大的十进制或十六进制整数，后跟指定字节倍数的字节大小后缀，例如“kB”和“KiB”分别代表千字节和千位字节，“MB”和“MiB”代表兆字节和兆位字节，“GB”和“GiB”代表千兆字节和千兆位字节，依此类推。此类参数在以下文本中由字节大小指定。有关二进制和十进制字节大小前缀的完整列表和说明，请参阅 NIST、IEC 和其他相关的国家和国际标准。
 
-## 3.1 特殊字符
+# 4 选项
+## 4.1 选项总结
+这是所有选项的摘要，按类型分组。 解释在后续章节。
 
-
+<u>总体选项</u>
+: **-c  -S  -E  -o** <u>file</u> **-dumpbase** <u>dumpbase</u>  **-dumpbase-ext** <u>auxdropsuf</u> **-dumpdir** <u>dumppfx</u>  **-x** <u>language</u> **-v  -###  --help**\[=<u>class</u>\[,...]]  **--target-help  --version -pass-exit-codes -pipe  -specs=**<u>file</u>  **-wrapper @**<u>file</u>  **-ffile-prefix-map**=<u>old</u>=<u>new</u> **-fplugin**=<u>file</u>  **-fplugin-arg-name=arg -fdump-ada-spec**\[**-slim**]  **-fada-spec-parent**=<u>unit</u>  -**fdump-go-spec**=<u>file</u>
 # 4 作者
 David MacKenzie。
 # 5 报告错误
