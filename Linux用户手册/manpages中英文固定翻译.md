@@ -1,5 +1,5 @@
 ---
-title: 翻译术语表
+title: manpages固定翻译
 tags: 未分类
 ---
 
