@@ -9,15 +9,15 @@ tags: 普通命令
 
 ------
 
-# 1 名称
+# 名称
 Expect——使用交互式程序进行程序化对话，版本5。
 
-# 2 总览
+# 总览
 
 ``` bash
 expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 ```
-# 3 介绍 校对完
+# 介绍 校对完
 
 **Expect**是一个根据脚本来与其他交互式程序“对话”的程序。随着脚本执行，**Expect**知道可以从程序中得到什么以及正确的响应应该是什么。解释型语言提供了分支和高级控制结构来引导对话。此外，用户可以根据需要取得控制权并直接与程序交互，然后将控制权返回给脚本。
 
@@ -37,7 +37,7 @@ expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 
 通常，**Expect**主要用于运行那些需要与用户进行交互的程序，前提是交互可以字符串化和编程化。 如果需要，**Expect**也可以向用户返回控制权（而不会暂停受控制的程序）。 同样，用户可以随时将控制权返回给脚本。
 
-# 4 用法校对完
+# 用法校对完
 
 |Expect&emsp;|Expectk&emsp;&emsp;&emsp;&emsp;|说明|
 |:--|:--|:--|
@@ -54,7 +54,7 @@ expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 |-v|-version|使**Expect**打印其版本号并退出。|
 |args||可选的<u>args</u>被构造到一个列表中，并存储在名为<u>argv</u>的变量中。 <u>argc</u>初始化为<u>argv</u>的长度。<br /><br /><u>argv0</u>定义为脚本的名称（如果未使用脚本，则为二进制程序名）。例如`send_user "$argv0 [lrange $argv 0 2]\n"`打印出脚本的名称和前三个参数。|
 
-# 5 命令 校对完
+# 命令 校对完
 **Expect**使用了Tcl（工具命令语言）。 Tcl提供控制流（例如，if、for、break）、表达式求值和其他一些特性，如递归、过程定义等。本文中使用了但没有定义的命令（例如，set，if，exec）是Tcl命令（请参阅tcl(3)）。 **Expect**支持的其他命令如下所述。除非另有说明，否则命令将返回空字符串。
 
 命令按字母顺序列出，以便可以快速找到它们。但是，新用户可能会发现按 **[spawn](#spawn)**、**[send](#send)**、**[expect](#expect)** 和 **[interact](#interact)** 的顺序会更容易开始。
@@ -76,7 +76,7 @@ expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
 |[spawn](#spawn)|[strace](#strace)|[stty](#stty)|[system](#system)|[timestamp](#timestamp) |
 |[trap](#trap)|[wait](#wait)|
 
-## 5.1 close校对完
+## close校对完
 ```tcl
 close [-slave] [-onexec 0|1] [-i spawn_id]
 ```
@@ -90,7 +90,7 @@ close [-slave] [-onexec 0|1] [-i spawn_id]
 
 无论是隐式还是显式关闭连接，都应调用**wait**清除相应的内核进程槽。 **close**不会调用**wait**，因为不能保证关闭进程连接将导致这个进程退出。请参阅下面的 **[wait](#wait)** 以获取更多信息。
 
-## 5.2 debug校对完
+## debug校对完
 ``` tcl
 debug [[-now] 0|1]
 ```
@@ -104,7 +104,7 @@ debug [[-now] 0|1]
 
 有关调试器的更多信息，请参见README文件或[另请参阅](#SeeAlso)。
 
-## 5.3 disconnect校对完
+## disconnect校对完
 <span id="disconnect">断开</span>fork进程与终端的连接。fork进程继续在后台运行。该fork进程将被还给他自己的进程组（如果可能）。标准I/O重定向到`/dev/null`。
 
 以下片段使用**disconnect**在后台继续运行脚本。
@@ -133,7 +133,7 @@ for {} 1 {} {
 ```
 与shell异步进程特性(＆)相比，使用**disconnect**的优点是**Expect**可以在断开连接之前保存终端参数，然后将其应用于新的ptys。使用＆，**Expect**没有机会读取终端的参数，因为在**Expect**收到控制权之前，终端已经断开连接。
 
-## 5.4 exit校对完
+## exit校对完
 
 ``` tcl
 exit [-opts] [status]
@@ -148,13 +148,13 @@ exit [-opts] [status]
 
 返回<u>status</u>（如果未指定，则为0）作为**Expect**的退出状态。如果到达脚本末尾，则隐式执行**exit**。
 
-## 5.5 exp_continue校对完
+## exp_continue校对完
 
 ```tcl
 exp_continue [-continue_timer]
 ```
 命令 **<span id="exp_continue">exp_continue</span>** 允许 **expect**自身继续执行，而不是像往常那样返回。默认情况下，**exp_continue**重置超时计时器。 <u>-continue_timer</u>标志可防止重新启动计时器。 （请参阅 **[expect](#expect)** 以获取更多信息。）
-## 5.6 exp_internal校对完
+## exp_internal校对完
 
 ``` tcl
 exp_internal [-f file] value
@@ -165,7 +165,7 @@ exp_internal [-f file] value
 
 **-info**标志使exp_internal返回给定的最新non-info参数的描述。
 
-## 5.7 exp_open校对完
+## exp_open校对完
 
 ``` tcl
 exp_open [args] [-i spawn_id]
@@ -174,25 +174,25 @@ exp_open [args] [-i spawn_id]
 
 **-leaveopen**标志使spawn id保持打开状态，以便通过Expect命令进行访问。 必须在spawn id上执行**wait**。
 
-## 5.8 exp_pid校对完
+## exp_pid校对完
 
 ``` tcl
 exp_pid [-i spawn_id]
 ```
 返回与当前派生进程相对应的进程<span id="exp_id">id</span>。 如果使用 **-i** 标志，则返回给定spawn id的pid。
 
-## 5.9 exp_send校对完
+## exp_send校对完
 **<span id="exp_send">send</span>** 的别名。
-## 5.10 exp_send_error校对完
+## exp_send_error校对完
 **<span id="exp_send_error">send_error</span>** 的别名。
-## 5.11 exp_send_log校对完
+## exp_send_log校对完
 **<span id="exp_send_log">send_log</span>** 的别名。
-## 5.12 exp_send_tty校对完
+## exp_send_tty校对完
 **<span id="exp_send_tty">send_tty</span>** 的别名。
-## 5.13 exp_send_user校对完
+## exp_send_user校对完
 **<span id="exp_send_user">send_user</span>** 的别名。
 
-## 5.14 exp_version校对完
+## exp_version校对完
 ``` tcl
 exp_version [[-exit] version]
 ```
@@ -209,7 +209,7 @@ exp_version [[-exit] version]
 
 如果版本过时，**-exit** 使得**Expect**打印错误并退出。
 
-## 5.15 expect校对完
+## expect校对完
 
 ``` tcl
 expect [[-opts] pat1 body1] ... [-opts] patn [bodyn]
@@ -360,19 +360,19 @@ expect_after {
 ```
 默认情况下，**exp_continue**重置超时计时器。 如果使用 **-continue_timer**标志调用**exp_continue**，则计时器不会重新启动。
 
-## 5.16 expect_after
+## expect_after
 <span id="expect_after">editorSelectionText</span>
-## 5.17 expect_background
+## expect_background
 <span id="expect_background">editorSelectionText</span>
-## 5.18 expect_before
+## expect_before
 <span id="expect_before">editorSelectionText</span>
 
-## 5.19 expect_tty校对完
+## expect_tty校对完
 ``` tcl
 expect_tty [expect_args]
 ```
 <span id="expect_tty">就像</span>**expect**一样，但是它从/dev/tty中读取字符（即，用户击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stty**更改（请参见下面的 **[stty](#stty)** 命令）。
-## 5.20 expect_user校对完
+## expect_user校对完
 
 ``` tcl
 expect_user [expect_args]
