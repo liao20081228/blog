@@ -28,7 +28,7 @@ date——打印或设置系统日期和时间
 |**-d** <u>STRING</u>|**--date**=<u>STRING</u>|显示由<u>STRING</u>描述的时间，而非“当前时间”|
 ||--debug|注释被解析的日期，对有疑问的用法输出告警到stderr|
 |-f DATEFILE| --file=DATEFILE|类似**--date**，对DATEFILE的每行都是执行一次|
-|-I[FMT]|--iso-8601[=FMT]|以ISO 8601格式输出日期或时间。 FMT='date'仅用于日期（默认），'hours'、'minutes'、'seconds'、'ns'用于日期和时间以指定精度。示例：2006-08-14T02:34:56-06:00|
+|-I\[FMT]|--iso-8601\[=FMT]|以ISO 8601格式输出日期或时间。 FMT='date'仅用于日期（默认），'hours'、'minutes'、'seconds'、'ns'用于日期和时间以指定精度。示例：2006-08-14T02:34:56-06:00|
 | -R|--rfc-email|以RFC5322格式输出日期和时间。示例： Mon, 14 Aug 2006 02:34:56 -0600|
 || --rfc-3339=FMT|以RFC3339格式输出日期/时间。 FMT='date'、'seconds'、'ns'用于指定日期和时间的精度。示例：2006-08-14 02:34:56-06:00|
 |-r FILE| --reference=FILE|显示FILE的最后修改时间|
