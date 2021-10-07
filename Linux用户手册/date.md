@@ -24,7 +24,7 @@ date——打印或设置系统日期和时间
 长选项的必须参数对于短选项也是必需的。
 
 **-d**, **--date**=<u>STRING</u>
-&emsp;&emsp;显示由STRING描述的时间，而非“当前时间”
+&ensp;&ensp;显示由STRING描述的时间，而非“当前时间”
 
 **--debug**
 &emsp;&emsp;注释解析的日期，对有疑问的用法输出告警到stderr
