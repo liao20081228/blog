@@ -1,6 +1,6 @@
 ---
 title: gcc
-tags: gcc,g++
+tags: gcc,g++,man1
 ---
 
 
