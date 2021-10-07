@@ -10,16 +10,16 @@ tags: 用户命令,时间管理
 ------
 
 
-# 名称
+# 1 名称
 date——打印或设置系统日期和时间
 
-# 概要
+# 2 概要
 
 
 **date** \[<u>OPTION</u>]... \[<u>+FORMAT</u>]
 **date** \[<u>-u|--utc|--universal</u>] \[<u>MMDDhhmm</u>\[\[<u>CC</u>]<u>YY</u>]\[<u>.ss</u>]]
 
-# 描述
+# 3 描述
 以给定的格式显示当前时间或设置系统日期。
 
 长选项的必须参数对于短选项也是必需的。
@@ -101,7 +101,7 @@ FORMAT用于控制输出。解析序列如下：
 
 在标志之后是可选的字段宽度，以十进制数表示；然后是一个可选的修饰符，E表示使用语言环境的替代表示形式，O表示使用语言环境的替代数字符号。
 
-# 示例
+# 4 示例
 将自纪元（1970-01-01 UTC）以来的秒数转换为日期
 ```bash
 date --date='@2147483647'
@@ -116,21 +116,21 @@ TZ='America/Los_Angeles' date
 ```bash
 date --date='TZ="America/Los_Angeles" 09:00 next Fri'
 ```
-# 日期字符串
+# 5 日期字符串
 `--date=STRING`是一种大多数格式的人类可读日期字符串，例如“Sun, 29 Feb 2004 16:21:42 -0800”或“Sun, 29 Feb 2004 16:21:42 -0800”，甚至是“next Thursday” 。日期字符串可能包含指示日历日期、一天中的时间、时区、星期几、相对时间、相对日期和数字的条目。空字符串表示一天的开始。日期字符串格式比这里容易记录的要复杂，但是在info文档中有完整的描述。
 
-# 作者
+# 6 作者
 由David MacKenzie撰写。
 
-# 报告错误
+# 7 报告错误
 GNU coreutils联机帮助：<https://www.gnu.org/software/coreutils/>，将日期转换错误报告给<https://translationproject.org/team/>
 
-# 版权
+# 8 版权
 版权所有©2018 Free Software Foundation，Inc。 许可证GPLv3+: GNU GPL version 3或更高版本<https://gnu.org/licenses/gpl.html>。
 
 这是自由软件：您可以自由更改和重新分发它。在法律允许的范围内，没有任何担保。
 
-# 参见
+# 9 参见
 
 完整文档位于：<https://www.gnu.org/software/coreutils/date>或通过以下方式在本地获得：info'（coreutils）date invocation'
 
