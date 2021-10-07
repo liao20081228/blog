@@ -69,9 +69,9 @@ tags:用户手册
 |thread|线程|
 |TIP|小技巧|
 |umask|umask|
-USAGE|用法|
-value|值|
-work|运转|
+|USAGE|用法|
+|value|值|
+|work|运转|
 
 ------
 
