@@ -1,6 +1,6 @@
 ---
 title:  stty
-tags: 用户命令
+tags: man1
 ---
 
 
