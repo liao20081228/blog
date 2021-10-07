@@ -9,9 +9,9 @@ tags: 用户命令,gcc,g++
 ***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《gcc manpages》</font>， gcc当前版本为11.2.0，手册更新时间为2021.7.28。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
-# 1 名称
+# 名称
 gcc——GNU 项目 C 和 C++ 编译器。
-# 2 概要
+# 概要
 ```bash
 gcc [-c : -S : -E] [-std=standard]
 	[-g] [-pg] [-Olevel]
@@ -22,7 +22,7 @@ gcc [-c : -S : -E] [-std=standard]
 	[-o outfile] [@file] infile...
 ```
 这里只列出最有用的一些选项； 其余部分见下文。 **g++** 接受的选项几乎与 **gcc** 相同。
-# 3 描述
+# 描述
 当您调用 GCC 时，它通常会进行预处理、编译、汇编和链接。 “整体选项”允许您在中间阶段停止此过程。例如，**-c** 选项表示不运行链接器输出由汇编器输出的目标文件组成。
 
 其他选项被传递到一个或多个处理阶段。一些选项控制预处理器，其他选项控制编译器本身。还有其他选项控制汇编器和链接器；其中大部分都没有在这里记录，因为您很少需要使用它们中的任何一个。
@@ -41,8 +41,8 @@ gcc [-c : -S : -E] [-std=standard]
 
 指定某种大小阈值的选项的参数可以是任意大的十进制或十六进制整数，后跟指定字节倍数的字节大小后缀，例如“kB”和“KiB”分别代表千字节和千位字节，“MB”和“MiB”代表兆字节和兆位字节，“GB”和“GiB”代表千兆字节和千兆位字节，依此类推。此类参数在以下文本中由字节大小指定。有关二进制和十进制字节大小前缀的完整列表和说明，请参阅 NIST、IEC 和其他相关的国家和国际标准。
 
-# 4 选项
-## 4.1 选项总结
+# 选项
+## 选项总结
 这是所有选项的摘要，按类型分组。 解释在后续章节。
 
 <u>总体选项</u>
@@ -54,7 +54,7 @@ gcc [-c : -S : -E] [-std=standard]
 <u>C++语言选项</u>
 : **-fabi-version=**<u>n</u>  **-fno-access-control  -faligned-new=**<u>n</u>  **-fargs-in-order=**<u>n</u>  **-fchar8_t  -fcheck-new -fconstexpr-depth=**<u>n</u>  **-fconstexpr-cache-depth=**<u>n</u>  **-fconstexpr-loop-limit=**<u>n</u>  **-fconstexpr-ops-limit=**<u>n</u>  **-fno-elide-constructors -fno-enforce-eh-specs -fno-gnu-keywords -fno-implicit-templates -fno-implicit-inline-templates -fno-implement-inlines -fmodule-header**\[**=**<u>kind</u>] **-fmodule-only -fmodules-ts -fmodule-implicit-inline -fno-module-lazy -fmodule-mapper=**<u>specification</u> -fmodule-version-ignore -fms-extensions -fnew-inheriting-ctors -fnew-ttp-matching -fno-nonansi-builtins  -fnothrow-opt  -fno-operator-names -fno-optional-diags  -fpermissive -fno-pretty-templates -fno-rtti -fsized-deallocation -ftemplate-backtrace-limit=n -ftemplate-depth=n -fno-threadsafe-statics  -fuse-cxa-atexit -fno-weak  -nostdinc++ -fvisibility-inlines-hidden -fvisibility-ms-compat -fext-numeric-literals -flang-info-include-translate[=header] -flang-info-include-translate-not -flang-info-module-cmi[=module] -stdlib=libstdc++,libc++ -Wabi-tag  -Wcatch-value  -Wcatch-value=n -Wno-class-conversion  -Wclass-memaccess -Wcomma-subscript  -Wconditionally-supported -Wno-conversion-null  -Wctad-maybe-unsupported -Wctor-dtor-privacy  -Wno-delete-incomplete -Wdelete-non-virtual-dtor  -Wdeprecated-copy -Wdeprecated-copy-dtor -Wno-deprecated-enum-enum-conversion -Wno-deprecated-enum-float-conversion -Weffc++  -Wno-exceptions -Wextra-semi  -Wno-inaccessible-base -Wno-inherited-variadic-ctor -Wno-init-list-lifetime -Winvalid-imported-macros -Wno-invalid-offsetof  -Wno-literal-suffix -Wno-mismatched-new-delete -Wmismatched-tags -Wmultiple-inheritance -Wnamespaces  -Wnarrowing -Wnoexcept  -Wnoexcept-type  -Wnon-virtual-dtor -Wpessimizing-move  -Wno-placement-new  -Wplacement-new=n -Wrange-loop-construct -Wredundant-move -Wredundant-tags -Wreorder  -Wregister -Wstrict-null-sentinel  -Wno-subobject-linkage  -Wtemplates -Wno-non-template-friend  -Wold-style-cast -Woverloaded-virtual -Wno-pmf-conversions -Wsign-promo -Wsized-deallocation  -Wsuggest-final-methods -Wsuggest-final-types  -Wsuggest-override -Wno-terminate  -Wuseless-cast  -Wno-vexing-parse -Wvirtual-inheritance -Wno-virtual-move-assign  -Wvolatile  -Wzero-as-null-pointer-constant
 
-## 4.2 控制输出类型的选项
+## 控制输出类型的选项
 
 编译最多可涉及四个阶段：预处理、完全编译、汇编和链接，始终按此顺序进行。 GCC 能够将多个文件预处理和编译为多个汇编器输入文件或一个汇编器输入文件； 然后每个汇编器输入文件生成一个目标文件，链接将所有目标文件（那些新编译的和指定为输入的）组合成一个可执行文件。
 
@@ -151,17 +151,17 @@ gcc [-c : -S : -E] [-std=standard]
 
 
 
-# 4 作者
+# 作者
 David MacKenzie。
-# 5 报告错误
+# 报告错误
 GNU coreutils 在线帮助：<https://www.gnu.org/software/coreutils/>
 报告 stty 翻译错误：<https://translationproject.org/team/> 
 
-# 6 版权
+# 版权
 版权所有 © 2018 自由软件基金会, Inc. 许可证 GPLv3+：GNU GPL 版本 3 或更高版本 <https://gnu.org/licenses/gpl.html>。
 
 这是免费软件：您可以自由更改和重新分发它。 在法律允许的范围内，不提供任何保证。
-# 7 参见
+# 参见
 完整文档位于：<https://www.gnu.org/software/coreutils/stty> 或通过本地获取：info '(coreutils) stty invocation'。
 
 ------
