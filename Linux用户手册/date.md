@@ -13,7 +13,7 @@ tags: 用户命令,时间管理
 # 名称
 date——打印或设置系统日期和时间
 
-# 概要
+# 总览
 
 **date** \[<u>OPTION</u>]... \[<u>+FORMAT</u>]
 **date** \[<u>-u|--utc|--universal</u>] \[<u>MMDDhhmm</u>\[\[<u>CC</u>]<u>YY</u>]\[<u>.ss</u>]]
