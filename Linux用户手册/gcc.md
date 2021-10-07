@@ -1,6 +1,6 @@
 ---
 title: gcc
-tags: 用户命令,gcc,g++
+tags: gcc,g++
 ---
 
 
