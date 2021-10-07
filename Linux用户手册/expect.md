@@ -379,15 +379,15 @@ expect_user [expect_args]
 ```
 <span id="expect_user">就像</span>**expect**一样，但是它从stdin读取字符（即，用户的击键）。 默认情况下，读取是在cooked模式下进行的。 因此，行必须以回车结尾以便expect看到它们。 这可以通过**stty**更改（请参见下面的 **[stty](#stty)** 命令）。
 
-### 5.21 fork
+## fork
 
-## 5.22 interact
+## interact
 
-## 5.23 interpreter
+## interpreter
 
-## 5.24 log_file
+## log_file
 
-## 5.25 log_user校对完
+## log_user校对完
 
 ``` tcl
 log_user -info|0|1
@@ -396,14 +396,14 @@ log_user -info|0|1
 
 **-info**标志使log_user返回给定的最新no-info参数的描述。
 
-## 5.26 match_max
+## match_max
 
-## 5.27 overlay
+## overlay
 
-## 5.28 parity
-## 5.29 remove_nulls
+## parity
+## remove_nulls
 
-## 5.30 send
+## send
 
 ``` tcl
 send [-flags] string
@@ -459,13 +459,13 @@ send password\r
 ```
 **exp_send** 是**send**的别名。 如果在Tk环境中使用 **Expectk** 或 **Expect** 的某些其他变体，则**send**由Tk定义，目的完全不同。 提供 **exp_send** 是为了实现环境之间的兼容性。 为其他Expect的其他发送命令提供了类似的别名。
 
-## 5.31 send_error
+## send_error
 
-## 5.32 send_log
-## 5.33 send_tty
-## 5.34 send_user
-## 5.35 sleep
-## 5.36 spawn 校对完毕
+## send_log
+## send_tty
+## send_user
+## sleep
+## spawn 校对完毕
 ```tcl
 spawn [args] program [args]
 ```
@@ -508,12 +508,12 @@ if {[info vars tty_spawn_id]} {
 
 **-ignore** 标志指明了要在派生进程中忽略的信号。 否则，信号将获得默认行为。 除了每个信号都需要一个单独的标志外，信号就像在 **trap** 命令中指明一样。
 
-## 5.37 strace
-## 5.38 stty
-## 5.39 system
-## 5.40 timestamp
-## 5.41 trap
-## 5.42 wait校对完毕
+## strace
+## stty
+## system
+## timestamp
+## trap
+## wait校对完毕
 ```tcl
 wait [args]
 ```
