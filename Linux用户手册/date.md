@@ -23,17 +23,16 @@ date——打印或设置系统日期和时间
 
 长选项的必须参数对于短选项也是必需的。
 
-**-d**, **--date**=<u>STRING</u>
-&emsp;&emsp;显示由STRING描述的时间，而非“当前时间”</p>
+- **-d**, **--date**=<u>STRING</u>显示由STRING描述的时间，而非“当前时间”</p>
 
-**--debug**
+- **--debug**
 &emsp;&emsp;注释解析的日期，对有疑问的用法输出告警到stderr
 
-**-f，--file**=<u>DATEFILE</u>
+- **-f，--file**=<u>DATEFILE</u>
 &emsp;&emsp;类似 **--date**。对<u>DATEFILE</u>的每行都是执行一次 。
 
-**-I**\[<u>FMT</u>]|，**--iso-8601**	\[=<u>FMT</u>]
-&emsp;&emsp;以ISO 8601格式输出日期或时间。 FMT='date'仅用于日期（默认），'hours'、'minutes'、'seconds'、'ns'用于日期和时间以指定精度。示例：2006-08-14T02:34:56-06:00
+- **-I**\[<u>FMT</u>]|，**--iso-8601**	\[=<u>FMT</u>]
+  以ISO 8601格式输出日期或时间。 FMT='date'仅用于日期（默认），'hours'、'minutes'、'seconds'、'ns'用于日期和时间以指定精度。示例：2006-08-14T02:34:56-06:00
 
 
 
