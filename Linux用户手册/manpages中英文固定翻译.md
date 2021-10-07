@@ -1,6 +1,6 @@
 ---
 title: manpages中英文固定翻译
-tags: 未分类
+tags: 用户手册
 ---
 
 
