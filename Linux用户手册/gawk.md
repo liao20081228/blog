@@ -30,7 +30,7 @@ gawk [ POSIX or GNU style options ] [ -- ] program-text file ...
 
 <u>gawk</u>还具有集成的调试器。可以通过在命令行中指定--debug选项来启动交互式调试会话。在这种执行方式下，<u>gawk</u>将加载AWK源代码，然后提示您调试程序。 <u>gawk</u>只能调试-f和--include选项提供的AWK程序源码。调试器在《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中说明。
 
-# 4 选项格式
+# 选项格式
 
 <u>gawk</u>选项可以是POSIX风格的单字符选项，或者GNU风格的长选项。POSIX选项是以“-”开始，而GNU长选项是以“--”开始。GNU特定功能和POSIX必须功能都提供了长选项。
 
@@ -38,7 +38,7 @@ gawk [ POSIX or GNU style options ] [ -- ] program-text file ...
 
 此外，每一个长选项有一个相应的短选项，以便可以在 **#!** 可执行脚本中使用该选项。
 
-# 5 选项
+# 选项
 <u>gawk</u>接受以下选项。 首先列出标准选项，然后列出<u>gawk</u>扩展的选项。按短选项按字母顺序列出。
 |短选项|长选项|说明|
 |:--|:--|:--|
@@ -76,7 +76,7 @@ gawk [ POSIX or GNU style options ] [ -- ] program-text file ...
 
 为了实现POSIX兼容性，可以使用 **-W**选项，后跟长选项的名称。
 
-# 6 AWK程序执行
+# AWK程序执行
 AWK程序由一系列可选指令、模式动作语句和可选的函数定义组成。
 
 ``` awk
