@@ -12,7 +12,7 @@ tags: 普通命令
 # 1 名称
 Expect——使用交互式程序进行程序化对话，版本5。
 
-# 2 概要
+# 2 总览
 
 ``` bash
 expect [ -dDinN ] [ -c cmds ] [ [ -[f|b] ] cmdfile ] [ args ]
