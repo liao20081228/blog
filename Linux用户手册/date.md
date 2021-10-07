@@ -129,7 +129,7 @@ GNU coreutils联机帮助：<https://www.gnu.org/software/coreutils/>，将日�
 
 这是自由软件：您可以自由更改和重新分发它。在法律允许的范围内，没有任何担保。
 
-# 另请参见
+# 另见
 
 完整文档位于：<https://www.gnu.org/software/coreutils/date>或通过以下方式在本地获得：info'（coreutils）date invocation'
 
