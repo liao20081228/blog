@@ -56,7 +56,7 @@ scp [-346BCpqrTv] [-c cipher] [-F ssh_config] [-i identity_file] [-J destination
 # 4 退出状态
 **scp** 实用程序在成功时退出状态 0，如果发生错误，则退出状态 >0。
 
-# 5 另请参阅
+# 5 另见
 sftp(1)、ssh(1)、ssh-add(1)、ssh-agent(1)、ssh-keygen(1)、ssh_config(5)、sshd(8)
 
 # 6 历史
