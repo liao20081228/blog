@@ -827,7 +827,7 @@ UNIX awk 的原始版本是由贝尔实验室的 Alfred Aho、Peter Weinberger �
 
 有关维护者的最新信息以及当前支持的端口，请参阅 <u>gawk</u> 发行版中的 **README** 文件。
 
-# 20 bug报告
+# 20 bugs报告
 
 如果您在 <u>gawk</u> 中发现错误，请发送电子邮件至 **bug-<u>gawk</u>@gnu.org**。请包括您的操作系统及其修订版、<u>gawk</u> 的版本（来自 **<u>gawk</u> --version**）、您用来编译它的 C 编译器，以及尽可能小的测试程序和数据以重现问题。
 
