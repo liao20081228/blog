@@ -1,6 +1,6 @@
 ---
 title: sed
-tags: 文本流编辑,未完成,man1
+tags: shell,未完成,man1
 ---
 
 
