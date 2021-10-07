@@ -10,16 +10,16 @@ tags: BSD普通命令, 目录文件管理
 
 ------
 
-# 1 名称
+# 名称
 
 **scp**——OpenSSH安全文件传输。
 
-# 2 总览
+# 总览
 
 ``` bash
 scp [-346BCpqrTv] [-c cipher] [-F ssh_config] [-i identity_file] [-J destination] [-l limit] [-o ssh_option] [-P port] [-S program] source ... target
 ```
-# 3 描述
+# 描述
 
 **scp** 在网络上的主机之间复制文件。 它使用 ssh(1) 进行数据传输，并使用与 ssh(1) 相同的身份验证，并提供相同的安全性。 如果身份验证需要，**scp** 将要求输入密码或密码短语。
 
@@ -53,16 +53,16 @@ scp [-346BCpqrTv] [-c cipher] [-F ssh_config] [-i identity_file] [-J destination
 |**-v** |详细模式。使 **scp** 和 ssh(1) 打印有关其进度的调试消息。这有助于调试连接、身份验证和配置问题。|
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
-# 4 退出状态
+# 退出状态
 **scp** 实用程序在成功时退出状态 0，如果发生错误，则退出状态 >0。
 
-# 5 另见
+# 另见
 sftp(1)、ssh(1)、ssh-add(1)、ssh-agent(1)、ssh-keygen(1)、ssh_config(5)、sshd(8)
 
-# 6 历史
+# 历史
 **scp** 基于加州大学 Regents 的 BSD 源代码中的 rcp 程序。
 
-# 7 作者
+# 作者
 Timo Rinne <tri@iki.fi>
 Tatu Ylonen <ylo@cs.hut.fi>
 
