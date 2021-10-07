@@ -1,6 +1,6 @@
 ---
 title: gawk
-tags: 用户命令,文本流编辑
+tags: 文本流编辑,man1
 ---
 
 
