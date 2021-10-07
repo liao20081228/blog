@@ -1,6 +1,6 @@
 ---
 title: date 
-tags: 用户命令,时间管理,man1
+tags: 时间管理,man1
 ---
 
 ------
