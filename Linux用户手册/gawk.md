@@ -14,7 +14,7 @@ tags: 用户命令,文本流编辑
 
 <u>gawk</u>——模式扫描和处理语言。
 
-# 2 概要
+# 总览
 
 ``` bash
 gawk [ POSIX or GNU style options ] -f program-file [ -- ] file ...
