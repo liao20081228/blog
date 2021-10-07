@@ -15,7 +15,6 @@ date——打印或设置系统日期和时间
 
 # 概要
 
-
 **date** \[<u>OPTION</u>]... \[<u>+FORMAT</u>]
 **date** \[<u>-u|--utc|--universal</u>] \[<u>MMDDhhmm</u>\[\[<u>CC</u>]<u>YY</u>]\[<u>.ss</u>]]
 
