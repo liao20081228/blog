@@ -15,10 +15,10 @@ date——打印或设置系统日期和时间
 
 # 概要
 
-```bash
-date [OPTION]... [+FORMAT]
-date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
-```
+
+**date** \[<u>OPTION</u>]... \[<u>+FORMAT</u>]
+**date** \[<u>-u|--utc|--universal</u>] \[<u>MMDDhhmm</u>\[\[<u>CC</u>]<u>YY</u>]\[<u>.ss</u>]]
+
 # 描述
 以给定的格式显示当前时间或设置系统日期。
 
