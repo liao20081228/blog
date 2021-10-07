@@ -1,6 +1,6 @@
 ---
 title: expect
-tags: 普通命令
+tags: man1
 ---
 
 ------
