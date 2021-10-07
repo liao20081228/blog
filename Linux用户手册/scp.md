@@ -14,12 +14,12 @@ tags: BSD普通命令, 目录文件管理
 
 **scp**——OpenSSH安全文件传输。
 
-# 2 概要
+# 2 总览
 
 ``` bash
 scp [-346BCpqrTv] [-c cipher] [-F ssh_config] [-i identity_file] [-J destination] [-l limit] [-o ssh_option] [-P port] [-S program] source ... target
 ```
-# 3 说明
+# 3 描述
 
 **scp** 在网络上的主机之间复制文件。 它使用 ssh(1) 进行数据传输，并使用与 ssh(1) 相同的身份验证，并提供相同的安全性。 如果身份验证需要，**scp** 将要求输入密码或密码短语。
 
