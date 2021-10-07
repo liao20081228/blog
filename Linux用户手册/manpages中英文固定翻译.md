@@ -28,7 +28,7 @@ tags:用户手册
 |FILES|相关文件|
 |INVOCATION|激活/调用|
 |LITERAL|文本|
-|NAME|名字|
+|NAME|名字，名称|
 |NOTES|注意|
 |PARAMETER|参数|
 |PROMPT|提示符|
