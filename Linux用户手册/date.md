@@ -30,7 +30,7 @@ date——打印或设置系统日期和时间
 &emsp;&emsp;注释解析的日期，对有疑问的用法输出告警到stderr
 
 **-f，--file**=<u>DATEFILE</u>
-&emsp;&emsp;类似 **--date**。对DATEFILE的每行都是执行一次 。
+&emsp;&emsp;类似 **--date**。对<u>DATEFILE</u>的每行都是执行一次 。
 
 |短选项|长选项|描述|
 |:--|:--|:--|
