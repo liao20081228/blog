@@ -47,7 +47,7 @@ date——打印或设置系统日期和时间
 | -u| --utc, --universal| 打印或设置世界标准时间（UTC）|
 | |--help|显示帮助并退出|
 ||--version|输出版本信息并退出|
-
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
 FORMAT用于控制输出。解析序列如下：
 
