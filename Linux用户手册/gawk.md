@@ -847,7 +847,7 @@ UNIX awk 的原始版本是由贝尔实验室的 Alfred Aho、Peter Weinberger �
 《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》，5.0 版，随 <u>gawk</u> 源码一起提供。文档的当前版本可在 <https://www.gnu.org/software/gawk/manual> 在线获得。
 
 GNU **gettext** <span id="gnu_gettext">文档</span>，可在 <https://www.gnu.org/software/gettext> 在线获得。
-# 23 示例
+# 示例
 打印并排序所有用户的登录名：
 
 ``` awk
