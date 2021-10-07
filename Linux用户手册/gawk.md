@@ -827,7 +827,7 @@ UNIX awk 的原始版本是由贝尔实验室的 Alfred Aho、Peter Weinberger �
 
 有关维护者的最新信息以及当前支持的端口，请参阅 <u>gawk</u> 发行版中的 **README** 文件。
 
-# 20 bugs报告
+# bugs报告
 
 如果您在 <u>gawk</u> 中发现错误，请发送电子邮件至 **bug-<u>gawk</u>@gnu.org**。请包括您的操作系统及其修订版、<u>gawk</u> 的版本（来自 **<u>gawk</u> --version**）、您用来编译它的 C 编译器，以及尽可能小的测试程序和数据以重现问题。
 
@@ -837,7 +837,7 @@ UNIX awk 的原始版本是由贝尔实验室的 Alfred Aho、Peter Weinberger �
 
 如果您使用的是基于 GNU/Linux 或 BSD 的系统，您可能希望向您的发行版的供应商提交错误报告。没关系，但也请向官方电子邮件地址发送一份副本，因为无法保证将错误报告转发给 <u>gawk</u> 维护者。
 
-# 21 bug
+# 21 bugs
  命令行变量赋值功能中，**-F** 选项不是必需的；它只是为了向后兼容。
 # 22 另请参阅
  **egrep**(1), **sed**(1), **getpid**(2), **getppid**(2), **getpgrp**(2), **getuid**(2), **geteuid**(2), **getgid**(2), **getegid**(2), **getgroups**(2), **printf**(3)、**strftime**(3)、**usleep**(3)。
