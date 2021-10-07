@@ -1,5 +1,5 @@
 ---
-title: awk
+title: gawk
 tags: 用户命令,文本流编辑
 ---
 
