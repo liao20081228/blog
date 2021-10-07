@@ -12,6 +12,37 @@ tags:用户手册
 # 文章结构类
 |英文|中文|
 |:--|:--|
+|AUTHOR|作者|
+|BUGS|BUGS，错误|
+|COMMENT|注释|
+|CONFORMING TO|遵循|
+|DEBUG|调试|
+|DECLARATION|声明|
+|DEFINITION|定义|
+|DESCRIPTION|描述|
+|DIAGNOSTICS|诊断|
+|ENVIRONMENT|环境|
+|ERROR HANDLING|错误处理|
+|ERRORS|常见错误|
+|EXIT STATUS|退出状态|
+|FILES|相关文件|
+|INVOCATION|激活/调用|
+|LITERAL|文本|
+|NAME|名字|
+|NOTES|注意|
+|PARAMETER|参数|
+|PROMPT|提示符|
+|RESERVED WORD|保留字|
+|RETURN VALUE|返回值|
+|SECURITY|安全|
+|SEE ALSO|另见|
+|SEGMENT|段|
+|SYNOPSIS|总览|
+|TIP|小技巧|
+|USAGE|用法|
+# 术语
+|英文|中文|
+|:--|:--|
 |Abort|放弃|
 |Aborting|正在退出|
 |Alert|警报|
