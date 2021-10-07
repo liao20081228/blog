@@ -9,15 +9,15 @@ tags: 用户命令
 ***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《stty manpages》</font>， stty当前版本为8.30，手册更新时间为2019.9。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
-# 1 名称
+# 名称
 stty——更改和打印终端行设置。
-# 2 概要
+# 总览
 ```bash
 stty [-F DEVICE | --file=DEVICE] [SETTING]...
 stty [-F DEVICE | --file=DEVICE] [-a|--all]
 stty [-F DEVICE | --file=DEVICE] [-g|--save]
 ```
-# 3 描述
+# 描述
 打印或更改终端特性。
 
 长选项的强制性参数对于短选项也是强制性的。
@@ -31,7 +31,7 @@ stty [-F DEVICE | --file=DEVICE] [-g|--save]
 
 在 <u>SETTING</u> 之前的可选的 - 表示否定。 \* 标记非 POSIX 设置。 底层系统定义了哪些设置可用。
 
-## 3.1 特殊字符
+## 特殊字符
 |非POSIX设置|特殊字符|描述|
 |:--|:--|:--|
 |\*| discard CHAR|CHAR 将切换丢弃输出。|
@@ -49,7 +49,7 @@ stty [-F DEVICE | --file=DEVICE] [-g|--save]
 ||susp CHAR|    CHAR 将发送终端停止信号。|
 |\*| swtch CHAR|  CHAR 将切换到不同的shell层。|
 |\*| werase CHAR|  CHAR 将删除最后输入的单词。|
-## 3.2 特殊设置
+## 特殊设置
 |非POSIX设置|特殊设置|描述|
 |:--|:--|:--|
 ||N|将输入和输出速度设置为 N 波特。|
@@ -64,7 +64,7 @@ stty [-F DEVICE | --file=DEVICE] [-g|--save]
 | * |size|  根据内核打印行数和列数。|
 | |speed|打印终端速度。|
 | |time N -icanon|  将读取超时设置为十分之一秒 。|
-## 3.3 控制设置
+## 控制设置
 |非POSIX设置|控制设置|描述|
 |:--|:--|:--|
 ||\[-]clocal| 禁用调制解调器控制信号|
@@ -78,7 +78,7 @@ stty [-F DEVICE | --file=DEVICE] [-g|--save]
 | |\[-]parodd|设置奇校验（带“-”为偶校验）|
 |\*| \[-]cmspar|使用“stick”（标记/空格）奇偶校验 |
 
-## 3.4 输入设置
+## 输入设置
 |非POSIX设置|输入设置|描述|
 |:--|:--|:--|
 || \[-]brkint|打断导致一个中断信号。|
@@ -97,7 +97,7 @@ stty [-F DEVICE | --file=DEVICE] [-g|--save]
 ||\[-]ixon|  启用 XON/XOFF 流量控制。|
 ||\[-]parmrk| 标记奇偶校验错误（具有 255-0 个字符的序列）。|
 ||\[-]tandem|与 \[-]ixoff 相同。 |
-## 3.5 输出设置
+## 输出设置
 |非POSIX设置|输出设置|描述|
 |:--|:--|:--|
 |\* | bsN | 退格延迟风格，N 在 \[0..1]中。|
@@ -117,7 +117,7 @@ stty [-F DEVICE | --file=DEVICE] [-g|--save]
 |\* |-tabs|与tab3一样。|
 |\* |vtN| 垂直制表符延迟风格，N 在 \[0..3]中。|
 
-## 3.5 本地设置
+## 本地设置
 |非POSIX设置|本地设置|描述|
 |:--|:--|:--|
 |  |\[-]crterase| 回显擦除字符，就像退格-空格-退格。|
@@ -142,7 +142,7 @@ stty [-F DEVICE | --file=DEVICE] [-g|--save]
 |\* |\[-]xcase|与 icanon一起使用，用 '\\' 转义大写字符|
 
 
-## 3.6 组合设置
+## 组合设置
 |非POSIX设置|组合设置|描述|
 |:--|:--|:--|
 |\* |\[-]LCASE|与\[-]lcase相同。|
@@ -172,17 +172,17 @@ stty [-F DEVICE | --file=DEVICE] [-g|--save]
 
 处理连接到标准输入的 tty 行。 不带参数，打印波特率、行规则和与 stty sane 的偏差。在设置中，CHAR 是按字面意思理解的，或者像 ^c、0x37、0177 或 127 那样编码； 特殊值 ^- 或 undef 用于禁用特殊字符。
 
-# 4 作者
+# 作者
 David MacKenzie。
-# 5 报告错误
+# 报告错误
 GNU coreutils 在线帮助：<https://www.gnu.org/software/coreutils/>
 报告 stty 翻译错误：<https://translationproject.org/team/> 
 
-# 6 版权
+# 版权
 版权所有 © 2018 自由软件基金会, Inc. 许可证 GPLv3+：GNU GPL 版本 3 或更高版本 <https://gnu.org/licenses/gpl.html>。
 
 这是自由软件：您可以自由更改和重新分发它。 在法律允许的范围内，不提供任何保证。
-# 7 参见
+# 参见
 完整文档位于：<https://www.gnu.org/software/coreutils/stty> 或通过本地获取：info '(coreutils) stty invocation'。
 
 ------
