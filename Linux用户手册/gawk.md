@@ -839,7 +839,7 @@ UNIX awk 的原始版本是由贝尔实验室的 Alfred Aho、Peter Weinberger �
 
 # 21 bugs
  命令行变量赋值功能中，**-F** 选项不是必需的；它只是为了向后兼容。
-# 22 另请参阅
+# 另见
  **egrep**(1), **sed**(1), **getpid**(2), **getppid**(2), **getpgrp**(2), **getuid**(2), **geteuid**(2), **getgid**(2), **getegid**(2), **getgroups**(2), **printf**(3)、**strftime**(3)、**usleep**(3)。
 
 《AWK编程语言》，Alfred V. Aho、Brian W. Kernighan、Peter J. Weinberger，Addison-Wesley，1988. ISBN 0-201-07981-X。
