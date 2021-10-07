@@ -15,7 +15,7 @@ tags: 目录文件管理,man1
 **scp**——OpenSSH安全文件传输。
 
 # 总览
-**scp** \[**-346BCpqrTv**] \[**-c** <u>cipher</u>] \[-F <u>ssh_config</u>] \[-i <u>identity_file</u>] \[-J <u>destination</u>] \[-l <u>limit</u>] \[-o <u>ssh_option</u>] \[-P <u>port</u>] \[-S <u>program</u>] source ... target
+**scp** \[**-346BCpqrTv**] \[**-c** <u>cipher</u>] \[**-F** <u>ssh_config</u>] \[**-i** <u>identity_file</u>] \[**-J** <u>destination</u>] \[**-l** <u>limit</u>] \[**-o** <u>ssh_option</u>] \[**-P** <u>port</u>] \[**-S** <u>program</u>] source ... target
 
 # 描述
 
