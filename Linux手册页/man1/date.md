@@ -125,7 +125,7 @@ date --date='TZ="America/Los_Angeles" 09:00 next Fri'
 GNU coreutils联机帮助：<https://www.gnu.org/software/coreutils/>，将日期转换错误报告给<https://translationproject.org/team/>
 
 # 版权
-版权所有©2018 Free Software Foundation，Inc。 许可证GPLv3+: GNU GPL version 3或更高版本<https://gnu.org/licenses/gpl.html>。
+版权所有©2018自由软件基金会。 许可证GPLv3+: GNU GPL第3版或更高版本<https://gnu.org/licenses/gpl.html>。
 
 这是自由软件：您可以自由更改和重新分发它。在法律允许的范围内，没有任何担保。
 
