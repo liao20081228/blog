@@ -1,6 +1,6 @@
 ---
 title:  scp
-tags: BSD普通命令, 目录文件管理
+tags: 目录文件管理,man1
 ---
 
 
