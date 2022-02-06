@@ -1,11 +1,11 @@
 ---
 title: date 
-tags: 系统上下文,man1
+tags: 时间管理,man1
 ---
 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《date manpages》。</font>date的版本为8.30，手册更新时间为2019-09。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《date manpages》。</font>date的版本为8.30，手册更新时间为2019-09。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
 
@@ -21,7 +21,7 @@ date——打印或设置系统日期和时间
 # 描述
 以给定的格式显示当前时间或设置系统日期。
 
-长选项的必须参数对于短选项也是必需的。
+长选项的强制性参数对于短选项也是强制性的。
 
 |短选项|长选项|描述|
 |:--|:--|:--|
@@ -137,6 +137,6 @@ GNU coreutils联机帮助：<https://www.gnu.org/software/coreutils/>
 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《date manpages》。</font>date的版本为8.30，手册更新时间为2019-09。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《date manpages》。</font>date的版本为8.30，手册更新时间为2019-09。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
