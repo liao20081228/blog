@@ -1,6 +1,6 @@
 ---
 title:  stty
-tags: man1
+tags: man1, 运行上下文
 ---
 
 
