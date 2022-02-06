@@ -14,14 +14,15 @@ tags: man1, 运行上下文
 stty——更改和打印终端行设置。
 # 总览
 
-**stty** \[-F DEVICE | --file=DEVICE] \[SETTING]...
-**stty** \[-F DEVICE | --file=DEVICE] \[-a|--all]
-**stty** \[-F DEVICE | --file=DEVICE] \[-g|--save]
+**stty** \[<u>-F</u> <u>DEVICE</u> | <u>--file=DEVICE</u>] \[<u>SETTING</u>]...
+**stty** \[<u>-F</u> <u>DEVICE</u> | <u>--file=DEVICE</u>] \[<u>-a|--all</u>]
+**stty** \[<u>-F</u> <u>DEVICE</u> | <u>--file=DEVICE</u>] \[<u>-g|--save</u>]
 
 # 描述
 打印或更改终端特性。
 
 长选项的强制性参数对于短选项也是强制性的。
+
 |短选项|长选项|描述|
 |:--|:--|:--|
 |-a|--all|  以人类可读的形式打印所有当前设置。|
