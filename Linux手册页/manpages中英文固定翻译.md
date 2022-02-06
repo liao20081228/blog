@@ -54,7 +54,7 @@ tags:用户手册
 |key|键|
 |keyword|关键字|
 |Mandatory|必需的，强制的|
-|name|名，名称|
+|name|名字，名称|
 |namedpipe|命名管道|
 |option|选项|
 |parameter|参数，形参|
@@ -65,7 +65,6 @@ tags:用户手册
 |stderr|标准错误|
 |stdin|标准输入|
 |stdout|标准输出|
-|value|值|
 |work|运转，工作|
 
 
