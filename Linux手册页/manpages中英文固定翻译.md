@@ -53,6 +53,7 @@ tags:用户手册
 |invoke，invocation|调用|
 |key|键|
 |keyword|关键字|
+|locale|本地环境|
 |Mandatory|必需的，强制的|
 |name|名字，名称|
 |namedpipe|命名管道|
