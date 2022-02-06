@@ -132,7 +132,7 @@ GNU coreutils联机帮助：<https://www.gnu.org/software/coreutils/>
 
 # 另见
 
-完整文档位于：<https://www.gnu.org/software/coreutils/date>或通过以下方式在本地获得：info'（coreutils）date invocation'
+完整文档位于：<https://www.gnu.org/software/coreutils/date>或通过以下方式在本地获得：`info '(coreutils) date invocation'`。
 
 
 ------
