@@ -128,7 +128,7 @@ GNU coreutils联机帮助：<https://www.gnu.org/software/coreutils/>
 # 版权
 版权所有©2018自由软件基金会公司。 许可证GPLv3+: GNU GPL第3版或更高版本<https://gnu.org/licenses/gpl.html>。
 
-这是自由软件：您可以自由更改和重新分发它。在法律允许的范围内，没有任何担保。
+这是自由软件：您可以自由更改和重新分发它。在法律允许的范围内，不提供任何保证
 
 # 另见
 
