@@ -18,7 +18,7 @@ date——打印或设置系统日期和时间
 **date** \[<u>OPTION</u>]... \[<u>+FORMAT</u>]
 **date** \[<u>-u|--utc|--universal</u>] \[<u>MMDDhhmm</u>\[\[<u>CC</u>]<u>YY</u>]\[<u>.ss</u>]]
 
-# 描述说明
+# 描述
 以给定的格式显示当前时间或设置系统日期。
 
 长选项的必须参数对于短选项也是必需的。
@@ -26,7 +26,7 @@ date——打印或设置系统日期和时间
 **-d**，**--date**=<u>STRING</u>
 &emsp;&emsp;&emsp;&emsp;显示由<u>STRING</u>描述的时间，而非“当前时间”
 
-**--debug**
+&emsp;**--debug**
 &emsp;&emsp;&emsp;&emsp;注释被解析的日期，对有疑问的用法输出告警到stderr
 
 **-f**，**--file**=<u>DATEFILE</u>
@@ -138,7 +138,7 @@ date --date='TZ="America/Los_Angeles" 09:00 next Fri'
 # 作者
 由David MacKenzie撰写。
 
-# 报告错误
+# 报告bug
 GNU coreutils联机帮助：<https://www.gnu.org/software/coreutils/>，将日期转换错误报告给<https://translationproject.org/team/>
 
 # 版权
