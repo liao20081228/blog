@@ -106,6 +106,6 @@ tags:用户手册
 
 ------
 
-***<fontcolor=blue>版权声明</font>：<fontcolor=red>未经作者允许</font>，<fontcolor=blue>严禁用于商业出版</font>，<fontcolor=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
