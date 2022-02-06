@@ -52,6 +52,7 @@ tags:用户手册
 |invoke，invocation|调用|
 |key|键|
 |keyword|关键字|
+|Mandatory|强制的|
 |name|名，名称|
 |namedpipe|命名管道|
 |option|选项|
