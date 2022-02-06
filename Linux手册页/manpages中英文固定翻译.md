@@ -19,7 +19,7 @@ tags:用户手册
 |DEBUG|调试|
 |DECLARATION|声明|
 |DEFINITION|定义|
-|DESCRIPTION|描述|
+|DESCRIPTION|描述说明|
 |DIAGNOSTICS|诊断|
 |ENVIRONMENT|环境|
 |ERROR HANDLING|错误处理|
@@ -29,9 +29,9 @@ tags:用户手册
 |INVOCATION|激活/调用|
 |LITERAL|文本|
 |NAME|名称|
-|NOTES|注意|
+|NOTES|注意事项|
 |PARAMETER|参数|
-|PROMPT|提示符|
+|PROMPT|提示|
 |RESERVED WORD|保留字|
 |RETURN VALUE|返回值|
 |SECURITY|安全|
@@ -49,7 +49,7 @@ tags:用户手册
 |ARGUMENTS|参数|
 |AUTHOR|作者|
 |BrowseClusters|流览集群|
-|BUGS|BUGS，臭虫，错误|
+|BUGS|BUGS，漏洞，错误|
 |cache|缓存|
 |callback|回调|
 |Clear|清除|
