@@ -5,7 +5,7 @@ tags: 时间管理,man1
 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《date的Linux手册页》。</font>date的版本为8.30，手册更新时间为2019-09。<font color=red>本文与原始文档采用相同的授权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《Linux手册页》。</font>date的版本为8.30，手册更新时间为2019-09。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
 
@@ -18,19 +18,19 @@ date——打印或设置系统日期和时间
 **date** \[<u>OPTION</u>]... \[<u>+FORMAT</u>]
 **date** \[<u>-u|--utc|--universal</u>] \[<u>MMDDhhmm</u>\[\[<u>CC</u>]<u>YY</u>]\[<u>.ss</u>]]
 
-# 描述
+# 描述说明
 以给定的格式显示当前时间或设置系统日期。
 
 长选项的必须参数对于短选项也是必需的。
 
-- **-d**，**--date**=<u>STRING</u>
-  显示由<u>STRING</u>描述的时间，而非“当前时间”
+**-d**，**--date**=<u>STRING</u>
+&emsp;&emsp;&emsp;&emsp;显示由<u>STRING</u>描述的时间，而非“当前时间”
 
-- **--debug**
-注释被解析的日期，对有疑问的用法输出告警到stderr
+**--debug**
+&emsp;&emsp;&emsp;&emsp;注释被解析的日期，对有疑问的用法输出告警到stderr
 
-- **-f**，**--file**=<u>DATEFILE</u>
-  类似 **--date**，对DATEFILE的每行都是执行一次
+**-f**，**--file**=<u>DATEFILE</u>
+&emsp;&emsp;&emsp;&emsp;类似 **--date**，对DATEFILE的每行都是执行一次
 
 |-I\[FMT]|--iso-8601\[=FMT]|以ISO 8601格式输出日期或时间。 FMT='date'仅用于日期（默认），'hours'、'minutes'、'seconds'、'ns'用于日期和时间以指定精度。示例：2006-08-14T02:34:56-06:00|
 | -R|--rfc-email|以RFC5322格式输出日期和时间。示例： Mon, 14 Aug 2006 02:34:56 -0600|
@@ -153,6 +153,6 @@ GNU coreutils联机帮助：<https://www.gnu.org/software/coreutils/>，将日�
 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《date的Linux手册页》。</font>date的版本为8.30，手册更新时间为2019-09。<font color=red>本文与原始文档采用相同的授权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《date的Linux手册页》。</font>date的版本为8.30，手册更新时间为2019-09。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
