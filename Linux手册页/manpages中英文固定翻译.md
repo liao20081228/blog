@@ -6,10 +6,10 @@ tags:用户手册
 
 ------
 
-***<fontcolor=blue>版权声明</font>：<fontcolor=red>未经作者允许</font>，<fontcolor=blue>严禁用于商业出版</font>，<fontcolor=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明</font>：<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
-# 文章结构类
+# 文章结构
 |英文|中文|
 |:--|:--|
 |AUTHOR|作者|
@@ -28,7 +28,7 @@ tags:用户手册
 |FILES|相关文件|
 |INVOCATION|激活/调用|
 |LITERAL|文本|
-|NAME|名字，名称|
+|NAME|名称|
 |NOTES|注意|
 |PARAMETER|参数|
 |PROMPT|提示符|
