@@ -61,7 +61,7 @@ tags:用户手册
 |DESCRIPTION|描述|
 |DIAGNOSTICS|诊断|
 |entity|记录|
-|example|例如|
+|example，e.g.|例如|
 |ENVIRONMENT|环境|
 |ERRORHANDLING|错误处理|
 |ERRORS|常见错误|
