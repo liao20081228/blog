@@ -13,11 +13,11 @@ tags: man1, 运行上下文
 # 名称
 stty——更改和打印终端行设置。
 # 总览
-```bash
-stty [-F DEVICE | --file=DEVICE] [SETTING]...
-stty [-F DEVICE | --file=DEVICE] [-a|--all]
-stty [-F DEVICE | --file=DEVICE] [-g|--save]
-```
+
+**stty** \[-F DEVICE | --file=DEVICE] \[SETTING]...
+**stty** \[-F DEVICE | --file=DEVICE] \[-a|--all]
+**stty** \[-F DEVICE | --file=DEVICE] \[-g|--save]
+
 # 描述
 打印或更改终端特性。
 
