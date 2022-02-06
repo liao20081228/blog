@@ -6,9 +6,10 @@ tags: man1, 运行上下文
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《stty manpages》</font>， stty当前版本为8.30，手册更新时间为2019.9。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《stty manpages》。</font>date的版本为8.30，手册更新时间为2019-09。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
+
 # 名称
 stty——更改和打印终端行设置。
 # 总览
@@ -187,6 +188,6 @@ GNU coreutils 在线帮助：<https://www.gnu.org/software/coreutils/>
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《stty manpages》</font>， stty当前版本为8.30，手册更新时间为2019.9。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《stty manpages》。</font>date的版本为8.30，手册更新时间为2019-09。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
