@@ -34,23 +34,23 @@ stty——更改和打印终端行设置。
 在 <u>SETTING</u> 之前的可选的 - 表示否定。 \* 标记非 POSIX 设置。 底层系统定义了哪些设置可用。
 
 ## 特殊字符
-|非POSIX设置|特殊字符|描述|
-|:--|:--|:--|
-|\*| discard CHAR|CHAR 将切换丢弃输出。|
-| |eof CHAR| CHAR 将发送文件结尾（终止输入）。|
-| |eol CHAR|CHAR将结束行。|
-|\*| eol2 CHAR| 用于结束行的备用 CHAR。|
-| | erase CHAR| CHAR 将删除最后输入的字符。|
-| |intr CHAR|   CHAR 会发送中断信号。|
-||kill CHAR| CHAR 将擦除当前行。|
-| \*| lnext CHAR|  CHAR 将输入引用的下一个字符。|
-||quit CHAR|  CHAR 将发送退出信号。|
-|\* |rprnt CHAR|CHAR 将重绘当前行。|
-| |start CHAR|CHAR 将在停止输出后重新启动输出。|
-||stop CHAR|CHAR 将停止输出。|
-||susp CHAR|    CHAR 将发送终端停止信号。|
-|\*| swtch CHAR|  CHAR 将切换到不同的shell层。|
-|\*| werase CHAR|  CHAR 将删除最后输入的单词。|
+| 非POSIX设置 | 特殊字符     | 描述                              |
+| ----------- | ------------ | --------------------------------- |
+| \*          | discard CHAR | CHAR 将切换丢弃输出。             |
+|             | eof CHAR     | CHAR 将发送文件结尾（终止输入）。 |
+|             | eol CHAR     | CHAR将结束行。                    |
+| \*          | eol2 CHAR    | 用于结束行的备用 CHAR。           |
+|             | erase CHAR   | CHAR 将删除最后输入的字符。       |
+|             | intr CHAR    | CHAR 会发送中断信号。             |
+|             | kill CHAR    | CHAR 将擦除当前行。               |
+| \*          | lnext CHAR   | CHAR 将输入引用的下一个字符。     |
+|             | quit CHAR    | CHAR 将发送退出信号。             |
+| \*          | rprnt CHAR   | CHAR 将重绘当前行。               |
+|             | start CHAR   | CHAR 将在停止输出后重新启动输出。 |
+|             | stop CHAR    | CHAR 将停止输出。                 |
+|             | susp CHAR    | CHAR 将发送终端停止信号。         |
+| \*          | swtch CHAR   | CHAR 将切换到不同的shell层。      |
+| \*          | werase CHAR  | CHAR 将删除最后输入的单词。       |
 ## 特殊设置
 |非POSIX设置|特殊设置|描述|
 |:--|:--|:--|
