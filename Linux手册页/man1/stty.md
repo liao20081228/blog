@@ -12,6 +12,7 @@ tags: man1, 运行上下文
 
 # 名称
 stty——更改和打印终端行设置。
+
 # 总览
 
 **stty** \[<u>-F</u> <u>DEVICE</u> | <u>--file=DEVICE</u>] \[<u>SETTING</u>]...
