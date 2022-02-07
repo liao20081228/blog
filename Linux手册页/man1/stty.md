@@ -34,23 +34,23 @@ stty——更改和打印终端行设置。
 在 <u>SETTING</u> 之前的可选的 - 表示否定。 \* 标记非 POSIX 设置。 底层系统定义了哪些设置可用。
 
 ## 特殊字符
-| 非POSIX设置 | 特殊字符| 描述|
+|非POSIX设置|特殊字符|描述|
 |:--|:--|:--|
-| \*          | discard CHAR | CHAR 将切换丢弃输出。             |
-|             | eof CHAR     | CHAR 将发送文件结尾（终止输入）。 |
-|             | eol CHAR     | CHAR将结束行。                    |
-| \*          | eol2 CHAR    | 用于结束行的备用 CHAR。           |
-|             | erase CHAR   | CHAR 将删除最后输入的字符。       |
-|             | intr CHAR    | CHAR 会发送中断信号。             |
-|             | kill CHAR    | CHAR 将擦除当前行。               |
-| \*          | lnext CHAR   | CHAR 将输入引用的下一个字符。     |
-|             | quit CHAR    | CHAR 将发送退出信号。             |
-| \*          | rprnt CHAR   | CHAR 将重绘当前行。               |
-|             | start CHAR   | CHAR 将在停止输出后重新启动输出。 |
-|             | stop CHAR    | CHAR 将停止输出。                 |
-|             | susp CHAR    | CHAR 将发送终端停止信号。         |
-| \*          | swtch CHAR   | CHAR 将切换到不同的shell层。      |
-| \*          | werase CHAR  | CHAR 将删除最后输入的单词。       |
+|\*|discard CHAR|CHAR将切换丢弃输出。|
+||eof CHAR|CHAR将发送文件结尾（终止输入）。|
+||eol CHAR|CHAR将结束行。|
+|\*|eol2 CHAR| 用于结束行的备用 CHAR。|
+|| erase CHAR| CHAR 将删除最后输入的字符。|
+|| intr CHAR| CHAR 会发送中断信号。|
+|| kill CHAR| CHAR 将擦除当前行。|
+| \*| lnext CHAR| CHAR 将输入引用的下一个字符。|
+|| quit CHAR| CHAR 将发送退出信号。|
+| \*| rprnt CHAR| CHAR 将重绘当前行。|
+|| start CHAR| CHAR 将在停止输出后重新启动输出。 |
+|| stop CHAR| CHAR 将停止输出。|
+|| susp CHAR| CHAR 将发送终端停止信号。|
+| \*| swtch CHAR| CHAR 将切换到不同的shell层。|
+| \*| werase CHAR| CHAR 将删除最后输入的单词。|
 ## 特殊设置
 |非POSIX设置|特殊设置|描述|
 |:--|:--|:--|
@@ -59,13 +59,13 @@ stty——更改和打印终端行设置。
 |\* |columns N|与 cols N 相同。|
 |\* |\[-]drain|  在应用设置之前等待传输（默认开启）。|
 | |ispeed N|将输入速度设置为 N。|
-| \* |line N| 使用线规 N。|
-||min N -icanon|为完整读取，设置最少 N 个字符。|
+| \* |line N| 使用行规（line discipline） N。|
+||min N -icanon|一个完整读取最少 N 个字符。|
 | |ospeed N| 将输出速度设置为 N。|
 |\* |rows N|告诉内核终端有 N 行。|
 | * |size|  根据内核打印行数和列数。|
 | |speed|打印终端速度。|
-| |time N -icanon|  将读取超时设置为十分之一秒 。|
+| |time N -icanon|  将读取超时设置为N个十分之一秒 。|
 ## 控制设置
 |非POSIX设置|控制设置|描述|
 |:--|:--|:--|
@@ -185,7 +185,7 @@ GNU coreutils 在线帮助：<https://www.gnu.org/software/coreutils/>
 
 这是自由软件：您可以自由更改和重新分发它。 在法律允许的范围内，不提供任何保证。
 # 另见
-完整文档位于：<https://www.gnu.org/software/coreutils/stty> 或通过本地获取：info '(coreutils) stty invocation'。
+完整文档位于：<https://www.gnu.org/software/coreutils/stty> 或通过本地获取：`info '(coreutils) stty invocation'`。
 
 ------
 
