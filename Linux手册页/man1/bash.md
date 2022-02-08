@@ -161,6 +161,8 @@ OR列表具有以下形式
 |**((<u>表达式</u>))**|根据下面[**算术评估**](#ARITHMETICEVALUATIO)中描述的规则计算<u>表达式</u>的值。 如果<u>表达式</u>的值为非零，则返回状态为0； 否则返回状态为 1。这完全等价于 **let "**<u>表达式</u>**"**。|
 |**\[\[ <u>表达式</u>]]**|
 
+
+
 ------
 
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《bash manpages》。</font>bash的版本为5.0.17，手册更新时间为2018-12-7。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
