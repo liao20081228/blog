@@ -14,45 +14,45 @@ tags: shell,man1
 bash--GNU Bourne-Again Shell
 
 # 总览
-**bash** \[options] \[command\_string | file]
+**bash** \[选项] \[命令字符串 | 文件]
 # 版权
-Bash 的版权©1989-2018由自由软件基金会公司所有。
+Bash 版权©1989-2018 由自由软件基金会公司所有。
 
 # 描述
-**Bash** 是一个 **sh** 兼容的命令语言解释器，它执行从标准输入或文件中读取的命令。 Bash 还引入了来自 Korn shell 和 C shell（即ksh 和 csh）的一些有用特性。
+**Bash** 是一个 **sh** 兼容的命令语言解释器，它执行从标准输入或文件中读取的命令。 **Bash** 还引入了来自 Korn shell 和 C shell（即ksh 和 csh）的一些有用特性。
 
 **Bash** 旨在成为 IEEE POSIX 规范（IEEE 标准 1003.1）的 Shell 和 Utilities 部分的一致实现。 默认情况下，Bash配置为符合 POSIX 标准。
 
 |短选项|描述|
 |:--|:--|
-|**-c**|如果存在 **-c** 选项，则从第一个非选项参数 <u>command_string</u> 中读取命令。 如果在 <u>command_string </u> 之后有参数，则将第一个参数分配给 **\$0**，并将剩余参数分配给位置参数。 对 **\$0** 的赋值设置了 shell 的名称，该名称用于警告和错误消息。|
+|**-c**|如果存在 **-c** 选项，则从第一个非选项参数 <u>命令字符串</u> 中读取命令。 如果在 <u>命令字符串</u> 之后有参数，则将第一个参数分配给 **\$0**，并将剩余参数分配给位置参数。 对 **\$0** 的赋值设置了 shell 的名称以用于警告和错误消息。|
 |**-i**|如果存在 **-i** 选项，则 shell 是交互式的。|
-|**-l**|使 **bash** 的表现得像作为<u>登录shell</u> 被调用一样（参见下面的 [**调用**](#INVOCATION)）。|
-|**-r**|如果存在 **-r** 选项，shell 将成为<u>restricted</u>（请参阅下面的 [**受限的SHELL**](#RESTRICTEDSHELL)）。|
+|**-l**|使**bash**行为像作为<u>登录shell</u>被调用一样（参见下面的 [**调用**](#INVOCATION)）。|
+|**-r**|如果存在 **-r** 选项，shell 将成为<u>受限的</u>（请参阅下面的 [**受限的SHELL**](#RESTRICTEDSHELL)）。|
 |**-s**|如果存在 **-s** 选项，或者在选项处理后没有留下任何参数，则从标准输入读取命令。此选项允许在调用 <u>交互式shell</u> 或通过管道读取输入时设置位置参数。|
 |**-v**|在读取 shell 输入行时打印它们。|
 |**-x**|在执行时打印命令及其参数。|
-|**-D**| 以 **\$** 开头的所有双引号字符串组成的列表将被打印在标准输出上。这些是当前本地环境不是 **C** 或 **POSIX** 时需要进行语言翻译的字符串。这隐含着 **-n** 选项；不会执行任何命令。|
-|**\[-+]O \[** <u>shopt\_option</u> **\]** | <u>shopt\_option</u> 是被内置命令 **shopt** 接受的 shell 选项之一（参见下面的 [**SHELL内建命令**](#SHELLBUILTINCOMMANDS)）。如果存在 <u>shopt\_option</u>，则 **-O** 设置该选项的值； **+O** 取消设置。如果未提供 <u>shopt_option</u>，则 **shopt** 接受的 shell 选项的名称和值将打印在标准输出中。如果调用选项为 **+O**，则输出以可重复用作输入的格式显示。|
+|**-D**| 以 **\$** 开头的所有双引号字符串组成的列表将被打印在标准输出上。这些是当前本地环境不是 **C** 或 **POSIX** 时需要进行语言翻译的字符串。这隐含着 **-n** 选项；且不会执行任何命令。|
+|**\[-+]O \[** <u>shopt选项</u> **\]** | <u>shopt选项</u> 是被内置命令 **shopt** 接受的 shell 选项之一（参见下面的 [**SHELL内建命令**](#SHELLBUILTINCOMMANDS)）。如果存在 <u>shopt选项</u>，则 **-O** 设置该选项的值； **+O** 取消设置。如果未提供 <u>shopt选项</u>，则 **shopt** 接受的 shell 选项的名称和值将打印在标准输出中。如果调用选项为 **+O**，则输出以可重复用作输入的格式显示。|
 |**--**|一个 -- 表示选项结束并禁用后续的选项处理。-- 之后的任何参数都被视为文件名和参数。 - 的一个参数等价于 --。|
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
 
-Bash 也会解析多字符选项。 这些选项必须出现在要识别的单字符选项之前的命令行中。
+Bash 也可以解析多字符选项。 这些选项必须出现在要识别的单字符选项之前的命令行中。
 
 |长选项|描述|
 |:--|:--|
-|**--debugger**|安排在 shell 启动之前执行调试器配置文件。 打开扩展调试模式（参见下面 **shopt** 内置的 [**extdebug**](#EXTDEBUG) 选项的描述）。|
+|**--debugger**|准备在shell启动之前要执行的调试器配置文件。 打开扩展调试模式（参见下面 **shopt** 内置的 [**extdebug**](#EXTDEBUG) 选项的描述）。|
 |**--dump-po-strings**|等效于 **-D**，但输出为 GNU <u>gettext</u> **po**（可移植对象）文件格式。|
 |**--dump-strings**|等效于 **-D**。|
-|**--help**|在标准输出上显示用法消息并成功退出。|
-|**--init-file** <u>file</u><br />**--rcfile** <u>file</u>|如果shell是交互式的，则从文件<u>file</u> 而不是系统范围的初始化文件 `/etc/bash.bashrc` 和标准的个人初始化文件 `~/.bashrc` 执行命令（参见下面的 [**调用**](#INVOCATION)）。）。
+|**--help**|在标准输出上显示用法并成功退出。|
+|**--init-file** <u>文件</u><br />**--rcfile** <u>文件</u>|如果shell是交互式的，则从<u>文件</u> 而不是系统范围的初始化文件 `/etc/bash.bashrc` 和标准的个人初始化文件 `~/.bashrc` 执行命令（参见下面的 [**调用**](#INVOCATION)）。）。
 |**--login**|相当于 **-l**。|
-|**--noediting**|当 shell 是交互式的时，不要使用 GNU <u>readline</u> 库来读取命令行。|
-|**--noprofile**|不要读取系统范围的启动文件 `/etc/profile` 或任何个人初始化文件 `~/.bash_profile`、`~/.bash_login` 或 `~/.profile`。默认情况下，bash 在作为登录 shell 调用时会读取这些文件（参见下面的 [**调用**](#INVOCATION)）。）。
-|**--norc** |如果 shell 是交互式的，则不要读取和执行系统范围的初始化文件 `/etc/bash.bashrc` 和个人初始化文件 `~/.bashrc`。如果 shell 作为 **sh** 调用，则默认情况下此选项处于启用状态。|
-|**--posix**|改变默认操作与 POSIX 标准不同的 bash 行为以匹配标准（<u>posix 模式</u>）。有关详细说明 posix 模式如何影响 bash 行为的文档，请参见下面的[**另见**](#SEEALSO)。
-|**--restricted**|shell 将成为<u>restricted</u>（请参阅下面的 [**受限的SHELL**](#RESTRICTEDSHELL)）。|
+|**--noediting**|当shell是交互式的时，不要使用 GNU <u>readline</u> 库来读取命令行。|
+|**--noprofile**|不要读取系统范围的启动文件`/etc/profile`或任何个人初始化文件`~/.bash_profile`、`~/.bash_login`或`~/.profile`。默认情况下，**bash** 在作为 <u>登录shell</u> 调用时会读取这些文件（参见下面的 [**调用**](#INVOCATION)）。）。
+|**--norc** |如果shell是交互式的，则不要读取和执行系统范围的初始化文件 `/etc/bash.bashrc` 和个人初始化文件`~/.bashrc`。如果shell作为**sh**调用，则默认情况下此选项处于启用状态。|
+|**--posix**|改变默认操作与POSIX标准不同的**bash**行为以匹配标准（<u>posix 模式</u>）。有关详细说明<u>posix 模式</u>如何影响**bash**行为的文档，请参见下面的[**另见**](#SEEALSO)。
+|**--restricted**|shell 将成为<u>受限的</u>（请参阅下面的[**受限的SHELL**](#RESTRICTEDSHELL)）。|
 |**--verbose**|等效于 **-v**。|
 |**--version**|在标准输出上显示此 bash 实例的版本信息并成功退出。|
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
