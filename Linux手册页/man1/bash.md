@@ -19,21 +19,21 @@ bash--GNU Bourne-Again Shell
 Bash 的版权©1989-2018由自由软件基金会公司所有。
 
 # 描述
-Bash 是一个 sh 兼容的命令语言解释器，它执行从标准输入或文件中读取的命令。 Bash 还结合了来自 Korn 和 C shell（ksh 和 csh）的有用特性。
+**Bash** 是一个 **sh** 兼容的命令语言解释器，它执行从标准输入或文件中读取的命令。 Bash 还引入了来自 Korn shell 和 C shell（即ksh 和 csh）的一些有用特性。
 
-Bash 旨在成为 IEEE POSIX 规范（IEEE 标准 1003.1）的 Shell 和 Utilities 部分的一致实现。 默认情况下，Bash配置为符合 POSIX 标准。
+**Bash** 旨在成为 IEEE POSIX 规范（IEEE 标准 1003.1）的 Shell 和 Utilities 部分的一致实现。 默认情况下，Bash配置为符合 POSIX 标准。
 
 |短选项|描述|
 |:--|:--|
 |**-c**|如果存在 **-c** 选项，则从第一个非选项参数 <u>command_string</u> 中读取命令。 如果在 <u>command_string </u> 之后有参数，则将第一个参数分配给 **\$0**，并将剩余参数分配给位置参数。 对 **\$0** 的赋值设置了 shell 的名称，该名称用于警告和错误消息。|
 |**-i**|如果存在 **-i** 选项，则 shell 是交互式的。|
-|**-l**|使 **bash** 的表现得像作为<u>登录shell</u> 被调用一样（参见下面的 [调用](#INVOCATION)）。|
-|**-r**|如果存在 **-r** 选项，shell 将成为<u>restricted</u>（请参阅下面的 [受限的SHELL](#RESTRICTEDSHELL)）。|
+|**-l**|使 **bash** 的表现得像作为<u>登录shell</u> 被调用一样（参见下面的 [**调用**](#INVOCATION)）。|
+|**-r**|如果存在 **-r** 选项，shell 将成为<u>restricted</u>（请参阅下面的 [**受限的SHELL**](#RESTRICTEDSHELL)）。|
 |**-s**|如果存在 **-s** 选项，或者在选项处理后没有留下任何参数，则从标准输入读取命令。此选项允许在调用 <u>交互式shell</u> 或通过管道读取输入时设置位置参数。|
 |**-v**|在读取 shell 输入行时打印它们。|
 |**-x**|在执行时打印命令及其参数。|
 |**-D**| 以 **\$** 开头的所有双引号字符串组成的列表将被打印在标准输出上。这些是当前本地环境不是 **C** 或 **POSIX** 时需要进行语言翻译的字符串。这隐含着 **-n** 选项；不会执行任何命令。|
-|**\[-+]O \[** <u>shopt\_option</u> **\]** | <u>shopt\_option</u> 是被内置命令 **shopt** 接受的 shell 选项之一（参见下面的 [SHELL内建命令](#SHELLBUILTINCOMMANDS)）。如果存在 <u>shopt\_option</u>，则 **-O** 设置该选项的值； **+O** 取消设置。如果未提供 <u>shopt_option</u>，则 **shopt** 接受的 shell 选项的名称和值将打印在标准输出中。如果调用选项为 **+O**，则输出以可重复用作输入的格式显示。|
+|**\[-+]O \[** <u>shopt\_option</u> **\]** | <u>shopt\_option</u> 是被内置命令 **shopt** 接受的 shell 选项之一（参见下面的 [**SHELL内建命令**](#SHELLBUILTINCOMMANDS)）。如果存在 <u>shopt\_option</u>，则 **-O** 设置该选项的值； **+O** 取消设置。如果未提供 <u>shopt_option</u>，则 **shopt** 接受的 shell 选项的名称和值将打印在标准输出中。如果调用选项为 **+O**，则输出以可重复用作输入的格式显示。|
 |**--**|一个 -- 表示选项结束并禁用后续的选项处理。-- 之后的任何参数都被视为文件名和参数。 - 的一个参数等价于 --。|
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
@@ -42,17 +42,17 @@ Bash 也会解析多字符选项。 这些选项必须出现在要识别的单�
 
 |长选项|描述|
 |:--|:--|
-|**--debugger**|安排在 shell 启动之前执行调试器配置文件。 打开扩展调试模式（参见下面 **shopt** 内置的 **[extdebug](#EXTDEBUG)** 选项的描述）。|
+|**--debugger**|安排在 shell 启动之前执行调试器配置文件。 打开扩展调试模式（参见下面 **shopt** 内置的 [**extdebug**](#EXTDEBUG) 选项的描述）。|
 |**--dump-po-strings**|等效于 **-D**，但输出为 GNU <u>gettext</u> **po**（可移植对象）文件格式。|
 |**--dump-strings**|等效于 **-D**。|
 |**--help**|在标准输出上显示用法消息并成功退出。|
-|**--init-file** <u>file</u><br />**--rcfile** <u>file</u>|如果shell是交互式的，则从文件<u>file</u> 而不是系统范围的初始化文件 `/etc/bash.bashrc` 和标准的个人初始化文件 `~/.bashrc` 执行命令（参见下面的 [调用](#INVOCATION)）。）。
+|**--init-file** <u>file</u><br />**--rcfile** <u>file</u>|如果shell是交互式的，则从文件<u>file</u> 而不是系统范围的初始化文件 `/etc/bash.bashrc` 和标准的个人初始化文件 `~/.bashrc` 执行命令（参见下面的 [**调用**](#INVOCATION)）。）。
 |**--login**|相当于 **-l**。|
 |**--noediting**|当 shell 是交互式的时，不要使用 GNU <u>readline</u> 库来读取命令行。|
-|**--noprofile**|不要读取系统范围的启动文件 `/etc/profile` 或任何个人初始化文件 `~/.bash_profile`、`~/.bash_login` 或 `~/.profile`。默认情况下，bash 在作为登录 shell 调用时会读取这些文件（参见下面的 [调用](#INVOCATION)）。）。
+|**--noprofile**|不要读取系统范围的启动文件 `/etc/profile` 或任何个人初始化文件 `~/.bash_profile`、`~/.bash_login` 或 `~/.profile`。默认情况下，bash 在作为登录 shell 调用时会读取这些文件（参见下面的 [**调用**](#INVOCATION)）。）。
 |**--norc** |如果 shell 是交互式的，则不要读取和执行系统范围的初始化文件 `/etc/bash.bashrc` 和个人初始化文件 `~/.bashrc`。如果 shell 作为 **sh** 调用，则默认情况下此选项处于启用状态。|
-|**--posix**|改变默认操作与 POSIX 标准不同的 bash 行为以匹配标准（<u>posix 模式</u>）。有关详细说明 posix 模式如何影响 bash 行为的文档，请参见下面的[另见](#SEEALSO)。
-|**--restricted**|shell 将成为<u>restricted</u>（请参阅下面的 [受限的SHELL](#RESTRICTEDSHELL)）。|
+|**--posix**|改变默认操作与 POSIX 标准不同的 bash 行为以匹配标准（<u>posix 模式</u>）。有关详细说明 posix 模式如何影响 bash 行为的文档，请参见下面的[**另见**](#SEEALSO)。
+|**--restricted**|shell 将成为<u>restricted</u>（请参阅下面的 [**受限的SHELL**](#RESTRICTEDSHELL)）。|
 |**--verbose**|等效于 **-v**。|
 |**--version**|在标准输出上显示此 bash 实例的版本信息并成功退出。|
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
@@ -67,7 +67,7 @@ Bash 也会解析多字符选项。 这些选项必须出现在要识别的单�
 
 <u>交互式shell</u> 启动时不带非选项参数（除非指定 **-s**）且不带 -c 选项，其标准输入和错误都连接到终端（由 <u>isatty</u>(3) 确定），或者以 **-i** 选项启动。 如果 **bash** 是交互式的，则已设置**PS1** 并且 **$-** 包括 **i** ，允许 shell 脚本或启动文件测试此状态。
 
-以下段落描述了 **bash** 如何执行其启动文件。如果文件存在但无法读取，bash 会报告错误。波浪号会按照下文 [展开](#EXPANSION) 章节中的 [波浪号展开](#TildeExpansion) 所述 在文件名中展开。
+以下段落描述了 **bash** 如何执行其启动文件。如果文件存在但无法读取，bash 会报告错误。波浪号会按照下文 [**展开**](#EXPANSION) 章节中的 [**波浪号展开**](#TildeExpansion) 所述 在文件名中展开。
 
 当 **bash** 作为 交互式登录shell 或作为带有 **--login** 选项的 非交互式shell 调用时，它首先从文件 `/etc/profile` 中读取并执行命令（如果该文件存在）。读取该文件后，它会按顺序查找 `~/.bash_profile`、`~/.bash_login` 和 `~/.profile`，然后从第一个存在且可读的文件中读取并执行命令。当 shell 启动时，可以使用 **--noprofile** 选项来禁止这种行为。
 
@@ -96,31 +96,75 @@ Bash 也会解析多字符选项。 这些选项必须出现在要识别的单�
 |**空白符**| 一个空格或制表符。|
 |**字**| 被 shell 视为一个单元的字符序列。 也称为**标记**。|
 |**名称**|仅由字母数字和下划线组成并以字母或下划线开头的词。 也称为**标识符**。|
-|**元字符**| 当不加引号时分隔单词的字符。 以下之一：<br />&emsp;&emsp;**`| & ; ( ) < > 空格 制表符 新行符`**|
+|**元字符**| 在不加引号时用来分隔标记的字符。 以下之一：<br />&emsp;&emsp;**`| & ; ( ) < > 空格 制表符 新行符`**|
 |**控制操作符**| 执行控制功能的**标记**。 它是以下符号之一：<br />&emsp;&emsp;**`|| & && ; ;; ;& ;;& ( ) | |& <新行符>`**|
 
 # 保留字
 
-<u>保留字</u> 是对 shell 具有特殊含义的字。 以下字在未引用时被识别为保留字，并且是简单命令的第一个字（见下面的[shell语法](#SHELLGRAMMAR)）或者是命令 **case**或**for**的第三个词：**`！ case coproc do done elif else esac fi for function if in select then until while { } time [[ ]]`**。
+<u>保留字</u> 是对 shell 具有特殊含义的字。 以下字在未加引号时被识别为保留字，并且是简单命令的第一个字（见下面的[**shell语法**](#SHELLGRAMMAR)）或者是命令 **case**或**for**的第三个词：
+&emsp;&emsp;**`！ case coproc do done elif else esac fi for function if in select then until while { } time [[ ]]`**
 
-# shell语
+# shell语法
 ## 简单命令
-一个<span id="SHELLGRAMMAR"><u>简单命令</u></span>是一系列可选的变量赋值，后跟空格分隔的单词和重定向，并由控制操作符终止。 第一个字指定要执行的命令，并作为参数零传递。 剩余的单词作为参数传递给调用的命令。
+
+<span id="SHELLGRAMMAR"><u>简单命令</u></span>是可选的变量赋值的序列，后跟空格分隔的字和重定向，并由控制操作符终止。 第一个字指定要执行的命令，并作为参数零传递。 剩余的单词作为参数传递给调用的命令。
 
 <u>简单命令</u>的返回值是它的退出状态，如果命令被信号 <u>n</u> 终止，则返回 128+<u>n</u>。
+
 ## 管道
+
 管道是由控制运算符 **`|`** 或 **`|&`** 分隔的一个或多个命令序列 。管道的格式是：
 &emsp;&emsp;[**time** [ **-p** ]] [ ! ] command [ [ **|** | **|&** ] command2 ... ]
-<u>command</u> 的标准输出通过管道连接到 <u>command2</u> 的标准输入。此连接在命令指定的任何重定向之前执行（请参阅下面的[重定向](#REDIRECTION)）。如果使用 **|&**，除了它的标准输出以外，<u>command</u> 的标准错误也会通过管道连接到<u>command2 </u>的标准输入；它是 **2>&1 |** 的简写。标准错误到标准输出的这种隐式重定向是在命令指定的任何重定向之后执行的。
+<u>command</u> 的标准输出通过管道连接到 <u>command2</u> 的标准输入。此连接在命令指定的任何重定向之前执行（请参阅下面的[**重定向**](#REDIRECTION)）。如果使用 **|&**，除了它的标准输出以外，<u>command</u> 的标准错误也会通过管道连接到<u>command2 </u>的标准输入；它是 **2>&1 |** 的简写。标准错误到标准输出的这种隐式重定向是在命令指定的任何重定向之后执行的。
 
 除非启用了 **pipefail** 选项, 否则管道的返回状态是最后一个命令的退出状态。如果启用了 **pipefail**，则管道的返回状态是最后一个（最右边）以非零状态退出的命令的值，如果所有命令都成功退出则返回零。如果保留字 **!** 在管道之前，该管道的退出状态是上述退出状态的逻辑否定。 shell 在返回值之前等待管道中的所有命令终止。
 
-如果保留字**time**在管道之前，则在管道终止时报告其执行所消耗的真实时间以及用户和系统时间。 **-p** 选项将输出格式更改为 POSIX 指定的格式。当 shell 处于 <u>posix 模式</u>时，如果下一个标记以 **-** 开头，它不会将**time**识别为保留字。 **TIMEFORMAT** 变量可以设置为格式字符串，用于指定计时信息的显示方式；请参阅下面的 [Shell变量](#ShellVariables)中对 **TIMEFORMAT** 的描述。
+如果保留字**time**在管道之前，则在管道终止时报告其执行所消耗的真实时间以及用户和系统时间。 **-p** 选项将输出格式更改为 POSIX 指定的格式。当 shell 处于 <u>posix 模式</u>时，如果下一个标记以 **-** 开头，它不会将**time**识别为保留字。 **TIMEFORMAT** 变量可以设置为格式字符串，用于指定计时信息的显示方式；请参阅下面的 [**Shell变量**](#ShellVariables)中对 **TIMEFORMAT** 的描述。
 
 当 shell 处于 <u>posix 模式</u>时，**time**后面可能会跟一个新行符。在这种情况下，shell 会显示 shell及其子进程消耗的总用户和系统时间。**TIMEFORMAT** 变量可用于指定时间信息的格式。
 
-       管道中的每个命令都作为单独的进程执行（即，在子 shell 中）。有关子 shell 环境的描述，请参阅命令执行环境。如果使用内置 shopt 启用了 lastpipe 选项（请参阅下面对 shopt 的描述），则管道的最后一个元素可能由 shell 进程运行。
+管道中的每个命令都作为单独的进程执行（即在subshell中）。有关subshell环境的描述，请参阅[**命令执行环境**](#COMMANDEXECUTIONENVIRONMENT)。如果使用内置 **shopt** 启用了 **lastpipe** 选项（请参阅下面对 [**shopt**](#shopt)  的描述），则管道的最后一个元素可能由 shell 进程运行。
+
+## 列表
+
+<u>列表</u>是由操作符 **`;`**、**`&`**、**`&&`** 或 **`||`** 之一分隔的且可选地由 **`;`**、**`&`** 或 **`<newline>`** 之一终止的一个或多个管道的序列。
+
+在这些列表运算符中，**`&&`** 和 **`||`** 具有相同的优先级，其次是 **`;`** 和 **`&`**，它们具有相同的优先级。
+
+一个或多个新行符的序列可能会出现在列表中，而不是用分号来分隔命令。
+
+如果命令由控制运算符 **`&`** 终止，则 shell 在subshell 的后台执行命令。 shell 不等待命令完成，返回状态为 0。这些称为<u>异步</u>命令。用 **`;`** 分隔的命令依次执行； shell 等待每个命令依次终止。返回状态是最后执行的命令的退出状态。
+
+AND 和 OR 列表是由控制操作符 **`&&`** 和 **`||`** 分别分隔的一个或多个管道的序列。 AND 和 OR 列表以左结合性执行。 
+
+AND 列表具有以下形式
+
+&emsp;&emsp;·<u>command1</u> **&&** <u>command2</u>
+
+当且仅当 <u>command1</u> 返回退出状态为零（成功）时，才会执行 <u>command2</u>。
+
+OR 列表具有以下形式
+
+&emsp;&emsp;·<u>command1</u> **||** <u>command2</u>
+
+当且仅当 <u>command1</u> 返回非零退出状态时，才会执行 <u>command2</u>。 AND 和 OR 列表的返回状态是列表中执行的最后一个命令的退出状态。
 
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《bash manpages》。</font>bash的版本为5.0.17，手册更新时间为2018-12-7。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+
+## 复合命令
+<u>复合命令</u>是以下之一。 在大多数情况下，命令描述中的<u>列表</u>可以通过一个或多个换行符与命令的其余部分分隔，并且后面可以用换行符代替分号。
+
+**(列表)**
+
+**{ list; }**
+
+
+**((expression))**
+
+根据下面[**算术评估**](#ARITHMETICEVALUATIO)中描述的规则计算<u>expression</u>的值。 如果<u>expression</u>的值为非零，则返回状态为0； 否则返回状态为 1。这完全等价于 **`let "expression"`**。
+
+**\[\[ expression ]]**
+
+
 
 ------
