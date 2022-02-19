@@ -6,7 +6,7 @@ tags: 文本流编辑,man1
 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《gawk manpages》。</font>gawk的版本为5.0.1，手册更新时间为2019-05-22。<font color=red></font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《gawk manpages》。</font>gawk的版本为8.30，手册更新时间为2019-05-22。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
 
@@ -890,6 +890,6 @@ Brian Kernighan 在测试和调试期间提供了宝贵的帮助。 我们感谢
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《GAWK manpages》</font>，GAWK版本为5.0.1，手册更新时间为2019-05-22。<font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《gawk manpages》。</font>gawk的版本为8.30，手册更新时间为2019-05-22。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
