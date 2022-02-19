@@ -172,7 +172,7 @@ stty——更改和打印终端行设置。
 ||raw |与 -ignbrk -brkint -ignpar -parmrk -inpck -istrip -inlcr -igncr -icrnl -ixon -ixoff -icanon -opost -isig -iuclc -ixany -imaxbel -xcase min 1 time 0相同。|
 ||-raw|与cooked相同。|
 ||sane |与cread -ignbrk brkint -inlcr -igncr icrnl icanon iexten echo echoe echok -echonl -noflsh -ixoff -iutf8 -iuclc -ixany imaxbel -xcase -olcuc -ocrnl opost -ofill onlcr -onocr -onlret nl0 cr0 tab0 bs0 vt0 ff0 isig -tostop -ofdel  -echoprt  echoctl  echoke  -extproc -flusho相同，所有特殊字符为其默认值。|
-
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|||
 处理连接到标准输入的 tty 行。 不带参数，打印波特率、行规则和与 stty sane 的偏差。在设置中，CHAR 是按字面意思理解的，或者像 ^c、0x37、0177 或 127 那样编码； 特殊值 ^- 或 undef 用于禁用特殊字符。
 
 # 作者
