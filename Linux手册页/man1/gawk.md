@@ -38,7 +38,7 @@ gawk——模式扫描和处理语言。
 
 # 选项
 <u>gawk</u>接受以下选项。 首先列出标准选项，然后列出<u>gawk</u>扩展的选项。按短选项的字母顺序列出。
-|短选项|长选项|说明|
+|短选项|长选项|描述|
 |:--|:--|:--|
 |**-b**|**--characters-as-bytes**|将所有输入数据视为单字节字符。 换句话说，在尝试将字符串作为多字节字符处理时，不必特别注意本地语言环境信息。 **--posix** 选项将覆盖此选项。|
 |**-c**|**--traditional**|以<u>兼容</u>模式运行。 在兼容模式下，<u>gawk</u>的行为与Brian Kernighan awk相同； 无法识别特定于GNU的扩展。 有关更多信息，请参见下面的[GNU扩展](#GNUEXTENSIONS)。|
@@ -123,106 +123,105 @@ AWK变量是动态的；它们在首次使用时就开始存在。它们的值�
 
 如果将变量**FIELDWIDTHS**设置为以空格分隔的数字列表，则每个字段应具有固定的宽度，且<u>gawk</u>使用指定的宽度拆分记录。每个字段宽度可以以冒号分隔的值（可选地）开头，该值指定在字段开始之前要跳过的字符数。 **FS**的值将被忽略。为**FS**或**FPAT**赋新值将覆盖**FIELDFIDTHS**的使用。
 
-类似的，如果将**FPAT**变量设置为表示正则表达式的字符串，则每个字段均由与该正则表达式匹配的文本组成。在这种情况下，正则表达式描述字段本身，而不是分割字段的文本。为**FS**或**FIELDWIDTHS**分配新值将覆盖**FPAT**的使用。
+类似的，如果将变量**FPAT**设置为表示正则表达式的字符串，则每个字段均由与该正则表达式匹配的文本组成。在这种情况下，正则表达式描述字段本身，而不是分割字段的文本。为**FS**或**FIELDWIDTHS**分配新值将覆盖**FPAT**的使用。
 
-输入的记录中的每个字段都可以通过其位置引用：**\$1**，**\$2**，依此类推。 **\$0**是整个记录，包括前导和尾随空白。字段不需通过常量引用：
+输入记录中的每个字段都可以通过其位置引用：**\$1**，**\$2**，依此类推。 **\$0**是整个记录，包括前导和尾随空白。字段不需通过常量引用：
 
-``` awk
-n = 5
-print $n
-```
+&emsp;&emsp;**n = 5**
+&emsp;&emsp;**print $n**
 
 打印输入记录中的第五个字段。
 
 变量**NF**为输入记录中字段的总数。
 
-对不存在的字段（即 **\$NF** 之后的字段）的引用将产生空字符串。但是，赋值给不存在的字段（例如，**\$(NF + 2)= 5**）会增加 **NF** 的值，创建以空字符串作为值的中间字段，并导致重新计算 **\$0** 的值，字段之间用**OFS**的值分割。引用负数字段会导致致命错误。减小**NF**会导致超过新值的字段的值丢失，并重新计算 **\$0** 的值，其字段之间用**OFS**值分割。
+对不存在的字段（即 **\$NF** 之后的字段）的引用将产生空字符串。但是，赋值给不存在的字段（例如，**\$(NF + 2)= 5**）会增加 **NF** 的值，并创建以空字符串作为值的中间字段，并导致重新计算 **\$0** 的值，字段之间用 **OFS** 的值分割。引用负数字段会导致致命错误。减小 **NF** 会导致超过新值的字段的值丢失，并重新计算 **\$0** 的值，其字段之间用**OFS**值分割。
 
-为已有字段赋值值会导致在引用 **\$0** 时重建整个记录。 同样，为 **\$0** 赋值会导致记录被重拆分，从而为字段创建新值。
+为已有字段赋值会导致在引用 **\$0** 时重建整个记录。 同样，为 **\$0** 赋值会导致记录被重拆分，从而为字段创建新值。
 
 ## 内建变量
+
 <u>gawk</u>的<span id="BuiltinVariables">内置变量</span>如下：
 
-|变量|说明|
+|变量|描述|
 |:--|:--|
-|ARGC|命令行参数的数量（不包括<u>gawk</u>的选项或程序源码）|
-|ARGIND|正在处理的当前文件在**ARGV**中的索引|
-|ARGV |命令行参数数组。该数组的索引从0到**ARGC**-1。动态更改**ARGV**的内容可以控制用于数据的文件。|
-|BINMODE|在非POSIX系统上，为所有文件I/O指定使用“二进制”模式。数值1、2、3分别指定输入文件、输出文件、所有文件应使用二进制I/O。字符串值"**r**"或"**w**"指定输入文件或输出文件使用二进制I/O。字符串值"**rw**"或"**wr**"指定所有文件应使用二进制I/O。任何其他字符串值都被视为"**rw**"，但会生成警告消息。|
-|CONVFMT|默认情况下，数字的转换格式为"**％.6g**"。|
-|ENVIRON|包含当前环境值的数组。该数组通过环境变量进行索引，每个元素都是对应环境变量的值（例如**ENVIRON\["HOME"]**可能是"**/home/arnold**"）。<br />在POSIX模式下，更改此数组不会影响<u>gawk</u>通过重定向或system()函数生成的程序所看到的环境。否则，<u>gawk</u>将更新其实际环境，以便其生成的程序可以看到更改。|
-| ERRNO|如果在重定向**getline**、读取**getline**、**close**()期间发生错误，则将**ERRNO**设置为描述该错误的字符串。该值可以在非英语语言环境中进行翻译。如果**ERRNO**中的字符串与<u>errno</u>(3)变量中的系统错误相匹配，则可以在 **PROCINFO\["errno"]** 中找到该数值。对于非系统错误，**PROCINFO\["errno"]** 将为零。|
-|FIELDWIDTHS|以空白分隔的字段宽度列表。设置后，<u>gawk</u>会将输入解析为固定宽度的字段，而不是使用**FS**变量的值作为字段分隔符。可选地，每个字段宽度前面都可以有一个冒号分隔的值，该值指定在字段开始之前要跳过的字符数。参见前面的[字段](#filed)。|
-|FILENAME| 当前输入文件的名称。如果在命令行上未指定文件，则**FILENAME**的值为“-”。但是，**FILENAME**在BEGIN规则内是未定义的（除非由**getline**设置）。|
+|**ARGC**|命令行参数的数量（不包括<u>gawk</u>的选项或程序源码）。|
+|**ARGIND**|当前正在处理的文件的**ARGV**的索引。|
+|**ARGV** |命令行参数数组。该数组的索引从0到**ARGC**-1。动态更改**ARGV**的内容可以控制用于数据的文件。|
+|**BINMODE**|在非POSIX系统上，为所有文件I/O指定使用“二进制”模式。数值1、2、3分别指定输入文件、输出文件、所有输入输出文件应使用二进制I/O。"**r**"或"**w**"的字符串值指定输入文件或输出文件应使用二进制I/O。"**rw**"或"**wr**"的字符串值指定所有输入输出文件应使用二进制I/O。任何其他字符串值都被视为"**rw**"，但会生成警告消息。|
+|**CONVFMT**|默认情况下，数字的转换格式为"**％.6g**"。|
+|**ENVIRON**|包含当前环境值的数组。该数组通过环境变量进行索引，每个元素都是对应环境变量的值（例如**ENVIRON\["HOME"]** 可能是 "**/home/arnold**"）。<br />在POSIX模式下，更改此数组不会影响<u>gawk</u>通过重定向或 **system()** 函数生成的程序所看到的环境。否则，<u>gawk</u>将更新其实际环境，以便其生成的程序可以看到更改。|
+|**ERRNO**|如果在**getline**的重定向、**getline**的读取、或者**close**()期间发生错误，则将**ERRNO**设置为描述错误的字符串。该值可以在非英语的本地语言环境中被翻译。如果**ERRNO**中的字符串与<u>errno</u>(3)变量中的系统错误相匹配，则可以在 **PROCINFO\["errno"]** 中找到该数值。对于非系统错误，**PROCINFO\["errno"]** 将为零。|
+|**FIELDWIDTHS**|以空白符分隔的字段宽度列表。设置后，<u>gawk</u>会将输入解析为固定宽度的字段，而不是使用**FS**变量的值作为字段分隔符。（可选地）每个字段宽度前面都可以有一个冒号分隔的值，该值指定在字段开始之前要跳过的字符数。参见前面的[字段](#filed)。|
+|**FILENAME**| 当前输入文件的名称。如果在命令行上未指定文件，则**FILENAME**的值为“-”。但是，**FILENAME**在**BEGIN**规则中是未定义的（除非由**getline**设置）。|
 |**FNR**|当前输入文件中的输入记录号。|
-|FPAT|描述记录中字段内容的正则表达式。设置后，<u>gawk</u>会将输入解析为与正则表达式匹配的字段，而不是使用**FS**的值作为字段分割符。参见前面的[字段](#filed)。|
+|**FPAT**|描述一个记录中的字段内容的正则表达式。设置后，<u>gawk</u>会将输入解析为与正则表达式匹配的字段，而不是使用**FS**的值作为字段分割符。参见前面的[字段](#filed)。|
 |**FS**|输入字段分割符，默认为空格。参见前面的[字段](#filed)。|
-|FUNCTAB |一个数组，其索引和对应值是程序中所有用户定义或扩展函数的名称。注意：您不能与**FUNCTAB**数组一起使用**delete**语句。|
-|<span id="IGNORECASE">IGNORECASE</span>|控制所有正则表达式和字符串操作的是否区分大小写。如果**IGNORECASE**具有非零值，则在规则中进行字符串比较和模式匹配，使用**FS**和**FPAT**进行字段拆分，使用**RS**进行记录分隔，使用 **\~** 和 **!\~** 匹配正则表达式，以及内置函数**gensub**()、**gsub**()、**index**()、**match**()、**patsplit**()、**split**()和**sub**()在进行正则表达式操作时都会忽略大小写。注意：数组下标不受影响，但是**asort**()和**asorti**()函数会受到影响。<br /><br />因此，如果**IGNORECASE**不等于零，则 **/aB/** 匹配所有字符串“**ab**”，“**aB**”，“**Ab**”和“**AB**”。与所有AWK变量一样，**IGNORECASE**的初始值为零，因此所有正则表达式和字符串操作通常区分大小写。|
-|LINT|在AWK程序中提供 **--lint**选项的动态控制。 如果为**true**，<u>gawk</u>将打印温和警告。 如果为**fasle**，则不会。 当为**LINT**赋值"**fatal**"时，温和警告将成为致命错误，与 **--lint=fatal**一样。 其他任何真值只会显示警告。|
+|**FUNCTAB** |一个数组，其索引和对应值是程序中所有用户定义函数或扩展函数的名称。注意：您不能与**FUNCTAB**数组一起使用**delete**语句。|
+|<span id="IGNORECASE">**IGNORECASE**</span>|控制所有正则表达式和字符串操作是否区分大小写。如果**IGNORECASE**具有非零值，那么在规则中进行字符串比较和模式匹配、使用**FS**和**FPAT**进行字段拆分、使用**RS**进行记录分隔，用 **\~** 和 **!\~** 的正则表达式匹配，以及内置函数**gensub**()、**gsub**()、**index**()、**match**()、**patsplit**()、**split**()和**sub**()在进行正则表达式操作时都会忽略大小写。注意：数组下标不受影响，但是**asort**()和**asorti**()函数会受到影响。<br /><br />因此，如果**IGNORECASE**不等于零，则 **/aB/** 匹配所有字符串**ab**”，“**aB**”，“**Ab**”和“**AB**”。与所有AWK变量一样，**IGNORECASE**的初始值为零，因此所有正则表达式和字符串操作正常情况下区分大小写。|
+|**LINT**|在AWK程序中提供 **--lint** 选项的动态控制。 如果为**true**，<u>gawk</u>将打温柔警告。 如果为**fasle**，则不会。**--lint** 选项允许的值也可以赋值给**LINT**，具有相同的作用。 其他任何真值只会显示警告。|
 |**NF**|当前输入记录中的字段数。|
-|**NR**|到目前为止看到的输入记录总数。|
-|OFMT|默认情况下，数字的输出格式为"**％.6g**"。|
+|**NR**|到目前为止的输入记录总数。|
+|**OFMT**|默认情况下，数字的输出格式为"**％.6g**"。|
 |**OFS**|输出字段分隔符，默认为空格。|
 |**ORS**|输出记录分隔符，默认情况下为新行符。|
-|PREC|任意精度浮点数的有效精度，默认为53。|
-|PROCINFO|该数组的元素提供了访问正在运行的AWK程序的信息的接口。参见下面的[PROCINFO](#PROCINFO)。|
-|ROUNDMODE|用于对数字进行任意精度算术的舍入模式，默认情况下为"N"（IEEE-754 roundTiesToEven模式）。可接受的值为：<br /><br /> "A" 或 "a"&emsp;&emsp;roundAwayFromZero。仅当您的GNU MPFR库版本支持roundAwayFromZero才可用。<br /><br />"D" 或 "d"&emsp;&emsp; roundTowardNegative。<br /><br />"N" 或 "n"&emsp;&emsp;roundTiesToEven。<br /><br />"U" or "u" &emsp;&emsp;roundTowardPositive。<br /><br />"Z" or "z" &emsp;&emsp;roundTowardZero。|
+|**PREC**|高精度浮点数的有效精度，默认为53。|
+|**PROCINFO**|该数组的元素提供了用于访问正在运行的AWK程序的信息的接口。参见下面的[PROCINFO](#PROCINFO)。|
+|**ROUNDMODE**|用于数字的高精度算术的舍入模式，默认情况下为"N"（IEEE-754 roundTiesToEven模式）。可接受的值为：<br /><br /> **"A"** 或 **"a"**<br />&emsp;&emsp;roundAwayFromZero。仅当您的GNU MPFR库的版本支持roundAwayFromZero才可用。<br /><br />**"D"** 或 **"d"**&emsp;&emsp; roundTowardNegative。<br /><br />**"N"** 或 **"n"**&emsp;&emsp;roundTiesToEven。<br /><br />**"U"** 或 **"u"** &emsp;&emsp;roundTowardPositive。<br /><br />**"Z"** 或 **"z"** &emsp;&emsp;roundTowardZero。|
 |**RS**|输入记录分隔符，默认情况下为新行符。|
 |**RT**|记录终止符。 <u>gawk</u>将**RT**设置为与**RS**指定的字符或正则表达式匹配的输入文本。|
-|RSTART|**match**()匹配的第一个字符的索引。如果没有匹配，则为0。（这意味着字符索引从1开始。）|
-|RLENGTH |**match**()匹配的字符串的长度；如果没有匹配，则为-1。|
-|SUBSPEP|默认情况下，用于分隔数组元素中多个下标的字符串“**\034**”。|
-|SYMTAB|一个数组，其索引是程序中所有当前定义的全局变量和全局数组的名称。该数组可用于间接访问以读取或写入变量的值：<br />&emsp;&emsp; foo = 5<br />&emsp;&emsp;SYMTAB["foo"] = 4<br />&emsp;&emsp;print foo    # prints 4<br />**typeof**()函数可用于测试**SYMTAB**中的元素是否为数组。您不能将**delete**语句与**SYMTAB**数组一起使用，也不能赋值给索引不是变量名的元素。|
-|TEXTDOMAIN |AWK程序的文本域；用于查找程序字符的本地化翻译。|
+|**RSTART**|**match**()匹配的第一个字符的索引。如果没有匹配，则为0。（这暗示着字符索引从1开始。）|
+|**RLENGTH** |**match**()匹配的字符串的长度；如果没有匹配，则为-1。|
+|**SUBSPEP**|在数组元素中用于分隔多个下标的字符串，默认为“**\034**”。|
+|**SYMTAB**|一个数组，其索引是程序中所有当前已定义的全局变量和全局数组的名称。该数组可用于间接访问以读取或写入变量的值：<br />&emsp;&emsp; **foo = 5**<br />&emsp;&emsp;**SYMTAB\["foo"] = 4**<br />&emsp;&emsp;**print foo    # prints 4**<br />**typeof**()函数可用于测试**SYMTAB**中的元素是否为数组。您不能将**delete**语句与**SYMTAB**数组一起使用，也不能赋值给索引不是变量名的元素。|
+|**TEXTDOMAIN** |AWK程序的文本域；用于查找程序字符的本地化翻译。|
 
-在某些系统上，**PROCINFO**数组中可能存在一些元素，从"**group1**"到"**groupn**"，<u>n</u>是进程具有的补充组的数量。使用**in**运算符测试这些元素。以下元素保证可以使用：
+在某些系统上，**PROCINFO**数组中可能存在一些元素，从"**group1**"到"**group<u>n</u>**"，<u>n</u>是进程具有的附加组的数量。使用**in**运算符测试这些元素。以下元素保证可以使用：
 
 |<span id='PROCINFO'>PROCINFO数组元素</span>|说明|
 |:--|:--|
-|PROCINFO["argv"]|<u>gawk</u>在C语言级别上接收到的命令行参数。下标从零开始。|
-|PROCINFO["egid"]|系统调用<u>getegid</u>(2)的值。|
-|PROCINFO["errno"] |当**ERRNO**设置为关联的错误消息时，<u>errno</u>(3)的值。|
-|PROCINFO["euid"]|系统调用<u>geteuid</u>(2)的值。|
-|PROCINFO ["FS"]| 如果使用**FS**进行字段拆分则为"**FS**"；如果使用**FPAT**进行字段拆分，则为"**FPAT**"；如果使用**FIELDWIDTHS**进行字段拆分，则为"FIELDWIDTHS"；如果使用**API**输入解析器拆分字段，则为"**API**"。|
-|PROCINFO["gid"]|系统调用**getgid**(2)的值。|
-|PROCINFO["identifiers"] |子数组，由AWK程序文本中使用的所有标识符的名称索引。这些值表示<u>gawk</u>在完成对程序的解析之后知晓了这些标识符；它们不会在程序运行时更新。对于每个标识符，元素的值是以下值之一：<br />"array"&emsp;&emsp;标识符是一个数组。<br />"builtin"&emsp;&emsp;标识符是内置函数。<br />"extension"&emsp;&emsp; 标识符是通过 **@load**或 **--load**加载的扩展函数。<br />"scalar"&emsp;&emsp;标识符是标量。<br />"untyped"&emsp;&emsp;标识符是无类型的（可以用作标量或数组，<u>gawk</u>尚不知道）。<br />"user"&emsp;&emsp;标识符是用户定义的函数。|
-|PROCINFO["pgrpid"]|系统调用<u>getpgrp</u>(2)的值。|
-|PROCINFO["pid"]|系统调用<u>getpid</u>(2)的值。
-|PROCINFO["platform"]|一个字符串，指示编译<u>gawk</u>的平台。它是以下之一：<br />"djgpp"&emsp;&emsp;Microsoft Windows使用DJGPP<br />"mingw" &emsp;&emsp;Microsoft Windows使用MinGW。<br />"os2"&emsp;&emsp;OS/2。<br />"posix"&emsp;&emsp;GNU/Linux，Cygwin，Mac OS X和传统的Unix系统。<br />"vms"&emsp;&emsp;OpenVMS或Vax/VMS。|
-|PROCINFO["ppid"]|系统调用<u>getppid</u>(2)的值。|
-|PROCINFO["strftime"]|**strftime**()的默认时间格式字符串。更改其值会影响无参数调用**strftime**()时格式化时间值的方式。|
-|PROCINFO["uid"]|系统调用**getuid**(2)的值。|
-|PROCINFO["version"]|<u>gawk</u>的版本。|
+|**PROCINFO\["argv"]**|<u>gawk</u>在C语言级别上接收到的命令行参数。下标从零开始。|
+|**PROCINFO\["egid"]**|系统调用<u>getegid</u>(2)的值。|
+|**PROCINFO\["errno"]**|当**ERRNO**设置为关联的错误消息时，<u>errno</u>(3)的值。|
+|**PROCINFO\["euid"]**|系统调用<u>geteuid</u>(2)的值。|
+|**PROCINFO \["FS"]**| 如果使用**FS**进行字段拆分有效则为"**FS**"；如果使用**FPAT**进行字段拆分有效，则为"**FPAT**"；如果使用**FIELDWIDTHS**进行字段拆分有效，则为"**FIELDWIDTHS**"；如果使用**API**输入解析器进行字段拆分有效，则为"**API**"。|
+|**PROCINFO\["gid"]**|系统调用**getgid**(2)的值。|
+|**PROCINFO\["identifiers"]** |子数组，按AWK程序文本中使用的所有标识符的名称索引。这些值表示<u>gawk</u>在完成对程序的解析之后知晓了这些标识符；它们不会在程序运行时更新。对于每个标识符，元素的值是以下值之一：<br />**"array"**<br />&emsp;&emsp;标识符是一个数组。<br />**"builtin"**<br />&emsp;&emsp;标识符是内置函数。<br />**"extension"**<br />&emsp;&emsp; 标识符是通过 **@load**或 **--load**加载的扩展函数。<br />**"scalar"**<br />&emsp;&emsp;标识符是标量。<br />**"untyped"**<br />&emsp;&emsp;标识符是无类型的（可以用作标量或数组，<u>gawk</u>尚不知道）。<br />**"user"**<br />&emsp;&emsp;标识符是用户定义的函数。|
+|**PROCINFO\["pgrpid"]**|系统调用<u>getpgrp</u>(2)的值。|
+|**PROCINFO\["pid"]**|系统调用<u>getpid</u>(2)的值。
+|**PROCINFO\["platform"]**|一个字符串，指示编译<u>gawk</u>的平台。它是以下之一：<br />**"djgpp"**，**"mingw"** &emsp;&emsp;<br />&emsp;&emsp;Microsoft Windows，分别使用DJGPP或MinGW。<br />**"os2"**<br />&emsp;&emsp;OS/2。<br />**"posix"**<br />&emsp;&emsp;GNU/Linux，Cygwin，Mac OS X和传统的Unix系统。<br />**"vms"**<br />&emsp;&emsp;OpenVMS或Vax/VMS。|
+|**PROCINFO\["ppid"]**|系统调用<u>getppid</u>(2)的值。|
+|**PROCINFO\["strftime"]**|**strftime**()的默认时间格式字符串。更改其值会影响无参数调用**strftime**()时格式化时间值的方式。|
+|**PROCINFO\["uid"]**|系统调用**getuid**(2)的值。|
+|**PROCINFO\["version"]**|<u>gawk</u>的版本。|
 
 如果可以加载动态扩展，则存在以下元素：
 |PROCINFO数组元素|说明|
 |:--|:--|
-| PROCINFO["api_major"]|扩展API的主要版本。|
-|PROCINFO["api_minor"]|扩展API的次要版本。|
+|**PROCINFO\["api_major"]**|扩展API的主要版本。|
+|**PROCINFO\["api_minor"]**|扩展API的次要版本。|
 
-如果将MPFR支持编译到<u>gawk</u>中，则可以使用以下元素：
+如果将MPFR编译到<u>gawk</u>中，则可以使用以下元素：
 |PROCINFO数组元素|说明|
 |:--|:--|
-|PROCINFO["gmp_version"]| Gaw GMP中用于任意精度数字支持的GNU GMP库版本。|
-| PROCINFO["mpfr_version"]| Gaw MP中用于任意精度数字支持的GNU MPFR库版本。|
-|PROCINFO["prec_max"]|GNU MPFR库支持的任意精度浮点数的最大精度。|
-|PROCINFO["prec_min"]|GNU MPFR库允许的任意精度浮点数的最低精度。|
+|**PROCINFO\["gmp_version"]**| gawK中用于高精度数字支持的GNU GMP库版本。|
+|**PROCINFO\["mpfr_version"]**|gawK中用于高精度数字支持的GNU MPFR库版本。|
+|**PROCINFO\["prec_max"]**|GNU MPFR库支持的高精度浮点数的最大精度。|
+|**PROCINFO\["prec_min"]**|GNU MPFR库允许的高精度浮点数的最低精度。|
 
-一格程序可以设置以下元素来更改<u>gawk</u>的行为：
+程序可以设置以下元素来更改<u>gawk</u>的行为：
 
 |PROCINFO数组元素|说明|
 |:--|:--|
-|PROCINFO["NONFATAL"]|如果存在，则所有重定向的I/O错误都不会致命。|
-|PROCINFO["name", "NONFATAL"]|使<u>name</u>指明的I/O错误非致命。|
-|PROCINFO["command", "pty"]|使用伪tty与命令<u>command</u>进行双向通信，而不是设置两个单向管道。|
-|PROCINFO["input", "READ_TIMEOUT"]|从输入读取数据的超时时间（以毫秒为单位），其中输入是重定向字符串或文件名。零或小于零的值表示没有超时设置。|
-|PROCINFO["input", "RETRY"]|如果从输入读取数据时可能发生重试I/O错误，并且此数组项存在，则**getline**返回-2，而不是遵循默认行为返回-1，并将输入配置为不返回其他数据。可能重试的I/O错误是<u>errno</u>(3)的值为**EAGAIN**，**EWOULDBLOCK**，**EINTR**或**ETIMEDOUT**的错误。这在与 **PROCINFO["input", "READ_TIMEOUT"]** 联用，或在文件描述符已配置为以非阻塞方式运行的情况下很有用。|
-|PROCINFO["sorted_in"]|如果**PROCINFO**中存在此元素，则其值控制在**for**循环中遍历数组元素的顺序。 支持的值是"**@ind_str_asc**"、"**@ind_num_asc**"、"**@val_type_asc**"、"**@val_str_asc**"、"**@val_num_asc**"、"**@ind_str_desc**"、"**@ind_num_desc**"、"**@val_type_desc**"、"**@val_str_desc**"、"**@val_num_desc**"和 "**@unsorted**"。 该值也可以是如下定义的比较函数的名称（以字符串形式）：<br />&emsp;&emsp;function cmp_func(i1,v1,i2,v2)<br />其中<u>i1</u>和<u>i2</u>是索引，而<u>v1</u>和<u>v2</u>是要比较的两个元素的对应值。 它应返回小于、等于或大于0的数字，具体取决于数组元素的排序方式。|
-<span id='arrays'> </span>
+|**PROCINFO\["NONFATAL"]**|如果存在，则所有重定向的I/O错误都变成非致命的。|
+|**PROCINFO\["**<u>name</u>**", "NONFATAL"]**|使<u>name</u>指明的I/O错误非致命。|
+|**PROCINFO\["**<u>command</u>**", "pty"]**|使用伪tty与命令<u>command</u>进行双向通信，而不是设置两个单向管道。|input
+|**PROCINFO\["**<u>input</u>**", "READ_TIMEOUT"]**|从<u>input</u>读取数据的超时时间（以毫秒为单位），其中<u>input</u>是重定向字符串或文件名。零或小于零的值表示没有超时设置。|
+|**PROCINFO\["input", "RETRY"]**|如果从输入读取数据时可能发生重试I/O错误，并且此数组项存在，则**getline**返回-2，而不是遵循默认行为返回-1，并将输入配置为不返回其他数据。可能重试的I/O错误是<u>errno</u>(3)的值为**EAGAIN**，**EWOULDBLOCK**，**EINTR**或**ETIMEDOUT**的错误。这在与 **PROCINFO["input", "READ_TIMEOUT"]** 联用，或在文件描述符已配置为以非阻塞方式运行的情况下很有用。|
+|**PROCINFO\["sorted_in"]**|如果**PROCINFO**中存在此元素，则其值控制在**for**循环中遍历数组元素的顺序。 支持的值是"**@ind_str_asc**"、"**@ind_num_asc**"、"**@val_type_asc**"、"**@val_str_asc**"、"**@val_num_asc**"、"**@ind_str_desc**"、"**@ind_num_desc**"、"**@val_type_desc**"、"**@val_str_desc**"、"**@val_num_desc**"和 "**@unsorted**"。 该值也可以是如下定义的比较函数的名称（以字符串形式）：<br />&emsp;&emsp;function cmp_func(i1,v1,i2,v2)<br />其中<u>i1</u>和<u>i2</u>是索引，而<u>v1</u>和<u>v2</u>是要比较的两个元素的对应值。 它应返回小于、等于或大于0的数字，具体取决于数组元素的排序方式。|
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
+
 ## 数组
-
-数组用方括号（[]）之间的表达式作为下标。如果表达式是表达式列表（expr，expr ...），则数组下标是由每个表达式的（字符串）值的串联组成的一个字符串，并由**SUBSEP**变量的值分隔。此功能用于模拟多维数组。例如：
+<span id='arrays'>数组 </span>用方括号（[]）之间的表达式作为下标。如果表达式是表达式列表（expr，expr ...），则数组下标是由每个表达式的（字符串）值的串联组成的一个字符串，并由**SUBSEP**变量的值分隔。此功能用于模拟多维数组。例如：
 
 ``` awk
 i = "A"; j = "B"; k = "C"
