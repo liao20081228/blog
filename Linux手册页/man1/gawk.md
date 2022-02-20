@@ -214,7 +214,7 @@ AWK变量是动态的；它们在首次使用时就开始存在。它们的值�
 |:--|:--|
 |**PROCINFO\["NONFATAL"]**|如果存在，则所有重定向的I/O错误都变成非致命的。|
 |**PROCINFO\["**<u>name</u>**", "NONFATAL"]**|使<u>name</u>指明的I/O错误非致命。|
-|**PROCINFO\["**<u>command</u>**", "pty"]**|使用伪tty与命令<u>command</u>进行双向通信，而不是设置两个单向管道。|input
+|**PROCINFO\["**<u>command</u>**", "pty"]**|使用伪tty与命令<u>command</u>进行双向通信，而不是设置两个单向管道。|
 |**PROCINFO\["**<u>input</u>**", "READ_TIMEOUT"]**|从<u>input</u>读取数据的超时时间（以毫秒为单位），其中<u>input</u>是重定向字符串或文件名。零或小于零的值表示没有超时设置。|
 |**PROCINFO\["**<u>input</u>**", "RETRY"]**|如果当从<u>input</u>读取数据时，可以被重试的I/O错误发生，并且此数组项存在，则**getline**返回-2，而不是遵循默认行为返回-1，并将<u>input</u>配置为不返回其他数据。可能重试的I/O错误是<u>errno</u>(3)的值为**EAGAIN**，**EWOULDBLOCK**，**EINTR**或**ETIMEDOUT**的错误。这在与 **PROCINFO\["**<u>input</u>**", "READ_TIMEOUT"]** 联用或在文件描述符已配置为以非阻塞方式运行的情况下很有用。|
 |**PROCINFO\["sorted_in"]**|如果**PROCINFO**中存在此元素，则其值控制在**for**循环中遍历数组元素的顺序。 支持的值是"**@ind_str_asc**"、"**@ind_num_asc**"、"**@val_type_asc**"、"**@val_str_asc**"、"**@val_num_asc**"、"**@ind_str_desc**"、"**@ind_num_desc**"、"**@val_type_desc**"、"**@val_str_desc**"、"**@val_num_desc**"和 "**@unsorted**"。 该值也可以是如下定义的比较函数的名称（以字符串形式）：<br />&emsp;&emsp;**function cmp_func(i1,v1,i2,v2)**<br />其中<u>i1</u>和<u>i2</u>是索引，而<u>v1</u>和<u>v2</u>是要比较的两个元素的对应值。 它应返回小于、等于或大于0的数字，具体取决于数组元素的排序方式。|
