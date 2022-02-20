@@ -20,11 +20,11 @@ gawk——模式扫描和处理语言。
 
 # 说明
 
-<u>gawk</u>是GNU工程对AWK编程语言的实现。它符合POSIX 1003.1标准。该版本反过来是基于Aho、Kernighan和Weinberger撰写的《The AWK Programming Language》中的描述开发。 <u>gawk</u>提供了Brian Kernighan awk中的额外功能以及许多特定于GNU的扩展。
+<u>Gawk</u>是GNU项目对AWK编程语言的实现。它符合POSIX 1003.1标准中的语言定义。此版本也是基于Aho、Kernighan和Weinberger在《<u>AWK编程语言</u>》中的描述。 <u>Gawk</u>提供了Brian Kernighan awk中的额外功能以及许多特定于GNU的扩展功能。
 
-命令行由<u>gawk</u>本身选项、AWK程序文本（如果未通过 **-f** 或 **--include** 选项提供程序文件）、在 **ARGC** 和 **ARGV** 预定义的AWK变量中的可用值组成。
+命令行由<u>gawk</u>本身选项、AWK程序文本（如果未通过 **-f** 或 **--include** 选项提供程序文件）、在预定义的AWK变量 **ARGC** 和 **ARGV** 中的可用值组成。
 
-当使用 **--profile** 选项调用<u>gawk</u>时，<u>gawk</u>将开始从程序的执行中收集性能分析统计信息。 <u>gawk</u>在这种模式下运行速度较慢，并且在完成后会自动在文件 **awkprof.out** 中生成一个执行配置文件。请参阅下面的 **--profile** 选项。
+当使用 **--profile** 选项调用<u>gawk</u>时，<u>gawk</u>将开始从程序的执行中收集性能分析统计信息。 <u>Gawk</u>在这种模式下运行速度较慢，并且在完成后会自动在文件 **awkprof.out** 中生成一个执行性能文件。请参见下面的 [**--profile**](#profile) 选项。
 
 <u>gawk</u>还具有集成的调试器。可以通过在命令行中指定--debug选项来启动交互式调试会话。在这种执行方式下，<u>gawk</u>将加载AWK源代码，然后提示您调试程序。 <u>gawk</u>只能调试-f和--include选项提供的AWK程序源码。调试器在《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中说明。
 
@@ -59,7 +59,7 @@ gawk——模式扫描和处理语言。
 |-N|--use-lc-numeric|强制<u>gawk</u>在解析输入数据时使用语言环境的小数点字符。尽管POSIX标准要求此行为，并且当 **--posix**生效时<u>gawk</u>会这样做，但默认情况是遵循传统行为，并使用句点作为小数点，即使在句点不是小数点字符的语言环境中也是如此。此选项将覆盖默认行为，而没有 **--posix**选项的严格要求。|
 |-o\[file]|--pretty-print\[=file]|将程序的完美打印版本输出到文件<u>file</u>中。如果未提供文件<u>file</u>，则<u>gawk</u>在当前目录中输出名为**awkprof.out**的文件。此选项暗示 **-no-optimize**。|
 |-O| --optimize|在程序的内部表示形式上启用<u>gawk</u>的默认优化。当前，这仅包括简单的常量折叠（一种编译优化技术）。默认情况下，此选项处于启用状态。|
-|-p\[prof-file]|-profile\[=prof-file]|启动性能分析会话，然后将性能数据发送到<u>prof-file</u>。默认值为**awkprof.out**。该配置文件在左边包含程序中每个语句的执行计数，以及每个用户定义函数的函数调用计数。此选项暗示 **--no-optimize**。|
+|-p\[prof-file]|-profile\[=prof-file]|<span id="profile">启动</span>性能分析会话，然后将性能数据发送到<u>prof-file</u>。默认值为**awkprof.out**。该配置文件在左边包含程序中每个语句的执行计数，以及每个用户定义函数的函数调用计数。此选项暗示 **--no-optimize**。|
 |-P|--posix|这将打开兼容模式，并具有以下限制：<ul><li>无法识别 **\\x** 转义序列</li><li>在 **?** 和 **:** 后无法继续</li><li>无法识别关键字**function**的同义词**func**</li><li>不能使用 \*\* 和 \*\*= 来代替\^和\^=</li></ul>|
 |-r|--re-interval|在正则表达式匹配中启用<u>间隔表达式</u>的使用（请参见下面的[正则表达式](#regexp)）。传统上，<u>间隔表达式</u>在AWK语言中不可用。 POSIX标准添加了它们，以使awk和<u>egrep</u>彼此一致。它们是默认启用的，但此选项仍可与 **--traditional**一起使用。|
 |-s|--no-optimize|在程序的内部表示形式上禁用<u>gawk</u>的默认优化。|
