@@ -20,17 +20,17 @@ gawk——模式扫描和处理语言。
 
 # 说明
 
-<u>Gawk</u>是GNU项目对AWK编程语言的实现。它符合POSIX 1003.1标准中的语言定义。此版本也是基于Aho、Kernighan和Weinberger在《<u>AWK编程语言</u>》中的描述。 <u>Gawk</u>提供了Brian Kernighan awk中的额外功能以及许多特定于GNU的扩展功能。
+<u>gawk</u>是GNU项目对AWK编程语言的实现。它符合POSIX 1003.1标准中的语言定义。此版本也是基于Aho、Kernighan和Weinberger在《<u>AWK编程语言</u>》中的描述。 <u>gawk</u>提供了Brian Kernighan awk中的额外功能以及许多特定于GNU的扩展功能。
 
 命令行由<u>gawk</u>本身选项、AWK程序文本（如果未通过 **-f** 或 **--include** 选项提供程序文件）、在预定义的AWK变量 **ARGC** 和 **ARGV** 中的可用值组成。
 
-当使用 **--profile** 选项调用<u>gawk</u>时，<u>gawk</u>将开始从程序的执行中收集性能分析统计信息。 <u>Gawk</u>在这种模式下运行速度较慢，并且在完成后会自动在文件 **awkprof.out** 中生成一个执行性能文件。请参见下面的 [**--profile**](#profile) 选项。
+当使用 **--profile** 选项调用<u>gawk</u>时，<u>gawk</u>将开始从程序的执行中收集性能分析统计信息。 <u>gawk</u>在这种模式下运行速度较慢，并且在完成后会自动在文件 **awkprof.out** 中生成一个执行性能文件。请参见下面的 [**--profile**](#profile) 选项。
 
-<u>Gawk</u>还具有集成的调试器。可以通过在命令行中指定 **--debug** 选项来启动交互式调试会话。在这种执行方式下，<u>awk</u>将加载AWK源码，然后提示调试命令。 <u>Gawk</u>只能调试 **-f** 和 **--include**  选项提供的AWK程序源码。调试器在《<u>[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)</u>》中有说明。
+<u>gawk</u>还具有集成的调试器。可以通过在命令行中指定 **--debug** 选项来启动交互式调试会话。在这种执行方式下，<u>awk</u>将加载AWK源码，然后提示调试命令。 <u>gawk</u>只能调试 **-f** 和 **--include**  选项提供的AWK程序源码。调试器在《<u>[gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)</u>》中有说明。
 
 # 选项格式
 
-<u>gawk</u>选项可以是POSIX风格的单字符选项，或者GNU风格的长选项。POSIX选项是以“-”开始，而GNU长选项是以“--”开始。GNU特定功能和POSIX必须功能都提供了长选项。
+<u>gawk</u>选项可以是POSIX风格的单字符选项，或者GNU风格的长选项。POSIX选项以“-”开始，而GNU长选项是以“--”开始。GNU特定功能和POSIX强制功能都提供了长选项。
 
 特定于<u>gawk</u>的选项通常以长选项形式使用。 长选项的参数可以紧跟在选项后的“=”符号之后（中间没有空格），也可以在下一个命令行参数中提供。 只要缩写保持唯一，长选项就可以缩写。
 
@@ -258,7 +258,7 @@ a[2][2] = 7
 
 您可以使用`@namespace "name"`指令更改当前命名空间。
 
-标准的预定义内置函数名不能用作命名空间名。由<u>gawk</u>提供的附加函数名可以用作命名空间名或其他命名命名空间中的简单标识符。有关更多详细信息，请参见<<GAWK：[effective_awk_programing)>>。
+标准的预定义内置函数名不能用作命名空间名。由<u>gawk</u>提供的附加函数名可以用作命名空间名或其他命名命名空间中的简单标识符。有关更多详细信息，请参见<<gawk：[effective_awk_programing)>>。
 
 ## 变量键入和转换
  变量和字段可以是（浮点）数字、字符串或两者都是，也可以是正则表达式。变量的值如何解释取决于其上下文。如果在数字表达式中使用，它将被视为数字。如果用作字符串，它将被视为字符串。
@@ -492,7 +492,7 @@ AWK 中的运算符按优先级递减的顺序是：
 |print expr-list \>file|打印表达式到文件<u>file</u>。每个表达式都由 **OFS** 的值分隔。 输出记录以 **ORS** 的值终止。|
 |printf fmt, expr-list|格式化打印。请参阅下面的[printf](#printf)语句。|
 |printf fmt, expr-list \>file|格式化打印到文件中。请参阅下面的[printf](#printf)语句。|
- |system(cmd-line)|执行命令<u>cmd-line</u>，返回退出状态。 （这在非 POSIX 系统上可能不可用。）有关退出状态的完整详细信息，请参阅《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》。
+ |system(cmd-line)|执行命令<u>cmd-line</u>，返回退出状态。 （这在非 POSIX 系统上可能不可用。）有关退出状态的完整详细信息，请参阅《[gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》。
 |fflush(\[file]) |冲刷与打开的输出文件或管道文件<u>file</u>关联的所有缓冲区。 如果没有指定<u>file</u>或为空字符串，则冲刷所有打开的输出文件和管道。|
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 **print**和 **printf** 允许额外的输出重定向。
@@ -594,7 +594,7 @@ AWK 具有以下内置输数学函数：
 |asort(s \[, d \[, how\] \])|返回源数组 <u>s</u> 中的元素数量。使用<u>gawk</u>比较值的普通规则对<u>s</u>的内容进行排序，并将排序后<u>s</u>的索引替换为从1开始的连续整数。 如果指定了可选目标数组<u>d</u>，则先将<u>s</u>复制到<u>d</u>中，然后对<u>d</u>进行排序，源数组 <u>s</u> 的索引不变。可选字符串<u>how</u>控制排序方向和比较模式。<u>how</u>的有效值是对 `PROCINFO["sorted_in"]` 有效的任意字符串。它也可以是如 `PROCINFO["sorted_in"]` 中所述的用户定义的比较函数的名字。|
 |asorti(s \[, d \[, how\] \])|返回源数组 <u>s</u> 中的元素数量。 行为与 **asort**() 相同，除了数组索引用于排序，而不是数组值。 完成排序后，数组以数字索引，值是原始索引的值。 原始值丢失； 因此，如果您希望保留原始数组，请提供第二个数组<u>d</u>。 可选字符串 how 的用途与前面描述的 **asort**() 相同。|
 |gensub(r, s, h \[, t\]) | 在目标字符串 <u>t</u> 中搜索正则表达式 <u>r</u> 的匹配项。如果 <u>h</u> 是以 **g** 或 **G** 开头的字符串，则将 <u>r</u> 的所有匹配项替换为 <u>s</u>。否则，<u>h</u> 是一个数字，指示要替换 <u>r</u> 的哪个匹配项。如果未提供 <u>t</u>，则改用 **\$0**。在替换文本 <u>s</u>中，序列 \\<u>n</u>（其中 <u>n</u> 是从 1 到 9 的数字）可用于指示与第 <u>n</u> 个带括号的子表达式匹配的文本。序列 **\\0** 表示整个匹配的文本，字符 **&** 也是如此。与 **sub**() 和 **gsub**() 不同的是，修改后的字符串作为函数的结果返回，而不改变原始目标字符串。|
-|gsub(r, s \[, t\])|对于字符串 <u>t</u> 中与正则表达式 <u>r</u> 匹配的每个子字符串，替换为字符串 <u>s</u>，并返回替换次数。如果未提供 <u>t</u>，则使用 **\$0**。替换文本中的 **&** 被替换为实际匹配的文本。使用 **\\&** 获得文字 **&**。 （这必须输入为“**\\\\&**”；请参阅《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》，以更全面地讨论 **sub**()、**gsub**() 和 **gensub**() 的替换文本中“逻辑与符号和反斜杠”的规则。）|
+|gsub(r, s \[, t\])|对于字符串 <u>t</u> 中与正则表达式 <u>r</u> 匹配的每个子字符串，替换为字符串 <u>s</u>，并返回替换次数。如果未提供 <u>t</u>，则使用 **\$0**。替换文本中的 **&** 被替换为实际匹配的文本。使用 **\\&** 获得文字 **&**。 （这必须输入为“**\\\\&**”；请参阅《[gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》，以更全面地讨论 **sub**()、**gsub**() 和 **gensub**() 的替换文本中“逻辑与符号和反斜杠”的规则。）|
 |index(s, t) |返回字符串 <u>s</u> 中的字符串 <u>t</u> 的索引，如果 <u>t</u> 不存在，则返回零。 （这意味着字符索引从 1 开始。）对 t 使用正则表达式常量是一个致命的错误。    |
 | length(\[s\])|返回字符串 <u>s</u> 的长度，如果未提供 <u>s</u>，则返回 **\$0** 的长度。作为非标准扩展，使用数组作为参数，**length**() 返回数组中的元素数量。|
 |match(s, r \[, a\])|返回 <u>s</u> 中正则表达式 <u>r</u> 出现的位置，如果 <u>r</u> 不出现则返回零，并设置 **RSTART** 和 **RLENGTH** 的值。请注意，参数顺序与 **~** 运算符相同：<u>str</u> **~** <u>re</u>。如果提供了数组 <u>a</u>，则会清空 <u>a</u>，然后用 <u>s</u> 中与 <u>r</u> 中相应括号内的子表达式匹配的部分填充元素 1 到 <u>n</u>。 <u>a</u> 的第零个元素包含<u>s</u> 与整个正则表达式 <u>r</u> 匹配的部分。下标 **a\[** <u>n</u>**, "start"\]** 和 **a\[** <u>n</u>**, "length"\]** 分别提供每个匹配子字符串在字符串中的起始索引和长度。|
@@ -646,14 +646,14 @@ AWK 具有以下内置输数学函数：
 
 
 ## 国际化函数
-可以在 AWK 程序中使用以下函数在运行时翻译字符串。 有关完整的详细信息，请参阅 《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》。
+可以在 AWK 程序中使用以下函数在运行时翻译字符串。 有关完整的详细信息，请参阅 《[gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》。
 
 
 |函数|说明|
 |:--|:--|
 |bindtextdomain(directory \[, domain\])|指定 <u>gawk</u> 查找 **.gmo** 文件的目录，以防它们不会或不能放置在“标准”位置（例如，在测试期间）。它返回<u>domain</u>被“绑定”的目录。<br />默认<u>domain</u>是 **TEXTDOMAIN** 的值。如果目录<u>directory</u>是空字符串 ("")，则 **bindtextdomain**() 返回给定<u>domain</u>的当前绑定。|
-|dcgettext(string \[, domain \[, category\]\])|返回语言环境类别<u>category</u>的文本域<u>domain</u>域中的字符串<u>string</u>的翻译。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。<u>category</u>的默认值为“**LC_MESSAGES**”。<br />如果您为 <u>category</u> 提供值，则它必须是等于 《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中描述的已知语言环境类别之一的字符串。您还必须提供文本域。如果您想使用当前域，请使用 **TEXTDOMAIN**。|
-|dcngettext(string1, string2, number \[, domain \[, category\]\])|返回用于语言环境类别<u>category</u>的文本域<u>domain</u>中 <u>string1 </u>和 <u>string2</u> 的翻译的数字的复数形式。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。 类别<u>category</u>的默认值为“**LC_MESSAGES**”。 <br />如果您为 <u>category</u> 提供值，则它必须是等于《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中描述的已知语言环境类别之一的字符串。 您还必须提供文本域。 如果您想使用当前域，请使用 **TEXTDOMAIN**。 |
+|dcgettext(string \[, domain \[, category\]\])|返回语言环境类别<u>category</u>的文本域<u>domain</u>域中的字符串<u>string</u>的翻译。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。<u>category</u>的默认值为“**LC_MESSAGES**”。<br />如果您为 <u>category</u> 提供值，则它必须是等于 《[gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中描述的已知语言环境类别之一的字符串。您还必须提供文本域。如果您想使用当前域，请使用 **TEXTDOMAIN**。|
+|dcngettext(string1, string2, number \[, domain \[, category\]\])|返回用于语言环境类别<u>category</u>的文本域<u>domain</u>中 <u>string1 </u>和 <u>string2</u> 的翻译的数字的复数形式。 <u>domain</u> 的默认值是 **TEXTDOMAIN** 的当前值。 类别<u>category</u>的默认值为“**LC_MESSAGES**”。 <br />如果您为 <u>category</u> 提供值，则它必须是等于《[gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中描述的已知语言环境类别之一的字符串。 您还必须提供文本域。 如果您想使用当前域，请使用 **TEXTDOMAIN**。 |
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
 # 用户定义函数
@@ -702,7 +702,7 @@ function myfunc()
 
 **func** 这个词可以用来代替 **function**，尽管这已被弃用。
 # 动态载入新函数
-您可以使用`@load` 语句将用 C 或 C++ 编写的新函数动态添加到正在运行的 <u>gawk</u> 解释器中。 完整的细节超出了本手册页的范围； 请参阅 《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》。
+您可以使用`@load` 语句将用 C 或 C++ 编写的新函数动态添加到正在运行的 <u>gawk</u> 解释器中。 完整的细节超出了本手册页的范围； 请参阅 《[gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》。
 # 信号
 <u>gawk</u> 分析器接受两个信号。 **SIGUSR1** 使其将配置文件和函数调用堆栈转储到配置文件，该文件是 **awkprof.out** 或任何使用 **--profile** 选项指定的文件。 然后它继续运行。 **SIGHUP** 导致 <u>gawk</u> 转储配置文件和函数调用堆栈，然后退出。
 # 国际化
@@ -736,7 +736,7 @@ gawk 'BEGIN { print _"hello, world" }'
 
 5. 提供适当的翻译，并构建和安装相应的 **.gmo** 文件。
 
-《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中详细描述了国际化功能。 
+《[gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中详细描述了国际化功能。 
 # POSIX兼容
 <u>gawk</u> 的主要目标是兼容 POSIX 标准以及Brian Kernighan awk 的最新版本。为此，<u>gawk</u> 结合了以下用户可见的特性，这些特性在 AWK 书中没有描述，但属于 Brian Kernighan 的 awk 版本，并且属于 POSIX 标准。
 
@@ -801,7 +801,7 @@ AWK 书没有定义 **close**() 函数的返回值。 在关闭输出文件或�
 
 **<u>gawk</u>_READ_TIMEOUT** 环境变量可用于指定从终端、管道或双向通信（包括套接字）读取输入的超时（以毫秒为单位）。
 
-对于通过套接字连接到远程主机， **GAWK_SOCK_RETRIES** 控制重试次数， **<u>gawk</u>_MSEC_SLEEP** 控制重试间隔。间隔以毫秒为单位。在不支持 **usleep**(3) 的系统上，该值向上取整为整数秒。
+对于通过套接字连接到远程主机， **gawk_SOCK_RETRIES** 控制重试次数， **<u>gawk</u>_MSEC_SLEEP** 控制重试间隔。间隔以毫秒为单位。在不支持 **usleep**(3) 的系统上，该值向上取整为整数秒。
 
 如果 **POSIXLY_CORRECT** 存在于环境中，则 <u>gawk</u> 的行为就像在命令行中指定了 **--posix** 一样。如果指定了 **--lint**，<u>gawk</u> 会发出一条警告消息。
 
@@ -821,7 +821,7 @@ UNIX awk 的原始版本是由贝尔实验室的 Alfred Aho、Peter Weinberger �
 
 自由软件基金会的 Paul Rubin 和 Jay Fenlason 编写了 <u>gawk</u>，以便与在 UNIX 第七版中分发的原始版本的 awk 兼容。John Woods 贡献了许多错误修复。 在 Arnold Robbins 的贡献下，David Trueman 使 <u>gawk</u> 与新版本的 UNIX awk 兼容。 Arnold Robbins 是当前的维护者。
 
-有关 <u>gawk</u> 及其文档的贡献者的完整列表，请参阅 《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》。
+有关 <u>gawk</u> 及其文档的贡献者的完整列表，请参阅 《[gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》。
 
 有关维护者的最新信息以及当前支持的端口，请参阅 <u>gawk</u> 发行版中的 **README** 文件。
 
@@ -842,7 +842,7 @@ UNIX awk 的原始版本是由贝尔实验室的 Alfred Aho、Peter Weinberger �
 
 《AWK编程语言》，Alfred V. Aho、Brian W. Kernighan、Peter J. Weinberger，Addison-Wesley，1988. ISBN 0-201-07981-X。
 
-《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》，5.0 版，随 <u>gawk</u> 源码一起提供。文档的当前版本可在 <https://www.gnu.org/software/gawk/manual> 在线获得。
+《[gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》，5.0 版，随 <u>gawk</u> 源码一起提供。文档的当前版本可在 <https://www.gnu.org/software/gawk/manual> 在线获得。
 
 GNU **gettext** <span id="gnu_gettext">文档</span>，可在 <https://www.gnu.org/software/gettext> 在线获得。
 # 示例
