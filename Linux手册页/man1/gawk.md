@@ -12,14 +12,12 @@ tags: 文本流编辑,man1
 
 # 名称
 
-<u>gawk</u>——模式扫描和处理语言。
+gawk——模式扫描和处理语言。
 
 # 总览
+**gawk** \[ POSIX or GNU style options ] **-f** program-file \[ -- ] file ...
+**gawk** \[ POSIX or GNU style options ] \[ -- ] program-text file ...
 
-``` bash
-gawk [ POSIX or GNU style options ] -f program-file [ -- ] file ...
-gawk [ POSIX or GNU style options ] [ -- ] program-text file ...
-```
 # 说明
 
 <u>gawk</u>是GNU工程对AWK编程语言的实现。它符合POSIX 1003.1标准。该版本反过来是基于Aho、Kernighan和Weinberger撰写的《The AWK Programming Language》中的描述开发。 <u>gawk</u>提供了Brian Kernighan awk中的额外功能以及许多特定于GNU的扩展。
