@@ -26,7 +26,7 @@ gawk——模式扫描和处理语言。
 
 当使用 **--profile** 选项调用<u>gawk</u>时，<u>gawk</u>将开始从程序的执行中收集性能分析统计信息。 <u>Gawk</u>在这种模式下运行速度较慢，并且在完成后会自动在文件 **awkprof.out** 中生成一个执行性能文件。请参见下面的 [**--profile**](#profile) 选项。
 
-<u>gawk</u>还具有集成的调试器。可以通过在命令行中指定--debug选项来启动交互式调试会话。在这种执行方式下，<u>gawk</u>将加载AWK源代码，然后提示您调试程序。 <u>gawk</u>只能调试-f和--include选项提供的AWK程序源码。调试器在《[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)》中说明。
+<u>Gawk</u>还具有集成的调试器。可以通过在命令行中指定 **--debug** 选项来启动交互式调试会话。在这种执行方式下，<u>awk</u>将加载AWK源码，然后提示调试命令。 <u>Gawk</u>只能调试 **-f** 和 **--include**  选项提供的AWK程序源码。调试器在《<u>[Gawk:高效AWK编程](https://www.gnu.org/software/gawk/manual)</u>》中有说明。
 
 # 选项格式
 
