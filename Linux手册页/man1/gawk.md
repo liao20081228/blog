@@ -68,7 +68,7 @@ gawk——模式扫描和处理语言。
 |**-v** 变量=值|**--assign** 变量=值|在程序开始执行之前，将<u>值</u>赋值给<u>变量</u>。这样的变量值可用于AWK程序的**BEGIN**规则。|
 |**-V**|**--version**|在标准输出上打印此<u>gawk</u>特定副本的版本信息。 这主要用于了解当前系统上的<u>gawk</u>是否是自由软件基金会正在分发的最新版本。 报告bug时，这也很有用。 （根据**GNU编码标准**，此选项会导致<u>gawk</u>立即成功退出。）
 |--||选项结束信号。 这允许AWK程序自身的更多参数可以用“-”开头。 这与大多数其他POSIX程序使用的参数解析约定保持一致。|
-|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 
 在兼容模式下，任何其他选项均标记为无效，否则将被忽略。 在正常操作中，只要提供了程序文本，未知选项会传递给AWK程序的**ARGV**数组以进行处理。这对于通过 **＃!** 可执行解释器机制运行AWK程序特别有用。
 
@@ -462,18 +462,18 @@ AWK 中的运算符按优先级递减的顺序是：
 控制语句如下
 |控制语句|说明|
 |:--|:--|
-|if (condition) statement \[ else statement \]|条件语句|
-|while (condition) statement|当循环|
-|do statement while (condition)|直到循环|
-|for (expr1; expr2; expr3) statement|进循环|
-|for (var in array) statement|遍历循环|
-|break|跳出循环|
-|continue|下一次循环|
-|delete array\[index]|删除数组元素|
-|delete array|删除数组|
-|exit \[ expression ]|退出|
-|{ statements }|普通语句|
-|switch (expression) {<br />&emsp;&emsp;case value\|regex : statement<br />&emsp;&emsp;...<br />&emsp;&emsp;\[ default: statement ]<br />}|开关语句|
+|**if (**<u>条件</u>**)** <u>语句</u> \[ **else** <u>语句</u> \]|条件语句|
+|**while (**<u>条件</u>**)** <u>语句</u>|当循环|
+|**do** <u>语句</u> **while (** <u>条件</u>**)**|直到循环|
+|**for (**<u>表达式1</u>**;** <u>表达式2</u>**;** <u>表达式3</u>**)** <u>语句</u>|进循环|
+|**for (**<u>变量</u> **in** 数<u>组</u>**)** <u>语句</u>|遍历循环|
+|**break**|跳出循环|
+|**continue**|下一次循环|
+|**delete** <u>数组</u>\[<u>下标</u>]|删除数组元素|
+|**delete** <u>数组</u>|删除数组|
+|**exit** \[ <u>表达式</u> ]|退出|
+|**{** <u>语句</u> **}**|普通语句|
+|**switch (**<u>表达式</u>**) {**<br />&emsp;&emsp;**case** <u>值</u>\|<u>正则</u>: <u>语句</u><br />&emsp;&emsp;...<br />&emsp;&emsp;\[ **default**: <u>语句</u> ]<br />**}**|开关语句|
 
 ## I/O语句
 输入/输出语句如下：
