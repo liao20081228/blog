@@ -58,18 +58,18 @@ mount——挂载一个文件系统。
 
 磁盘分区的设备名是不稳定的； 硬件重新配置以及添加或删除设备可能会导致名称更改。 这就是强烈建议使用文件系统或分区标识符（如 UUID 或 LABEL）的原因。 当前支持的标识符（标签）：
 
-&emsp;&emsp;LABEL=<u>label</u>
-&emsp;&emsp;&emsp;&emsp;人类可读的文件系统标识符。另见**-L**。
+LABEL=<u>label</u>
+: 人类可读的文件系统标识符。另见 **-L**。
 
-&emsp;&emsp;UUID=uuid
-&emsp;&emsp;&emsp;&emsp;文件系统通用唯一标识符。 UUID 的格式通常是一系列由连字符分隔的十六进制数字。另见**-U**。
-&emsp;&emsp;&emsp;&emsp;请注意 **mount**(8) 使用 UUID 作为字符串。来自命令行或 **fstab**(5) 的 UUID 不会转换为内部二进制表示。 UUID 的字符串表示应基于小写字符。
+UUID=<u>uuid</u>
+: 文件系统通用唯一标识符。 UUID 的格式通常是一系列由连字符分隔的十六进制数字。另见 **-U**。
+: 请注意 **mount**(8) 使用 UUID 作为字符串。来自命令行或 **fstab**(5) 的 UUID 不会转换为内部二进制表示。 UUID 的字符串表示应基于小写字符。
 
-&emsp;&emsp;PARTLABEL=<u>label</u>
-&emsp;&emsp;&emsp;&emsp;人类可读的分区标识符。此标识符独立于文件系统，不会因 mkfs 或 mkswap 操作而更改。例如，支持 GUID 分区表 (GPT)。
+PARTLABEL=<u>label</u>
+: 人类可读的分区标识符。此标识符独立于文件系统，不会因 mkfs 或 mkswap 操作而更改。例如，GUID 分区表 (GPT)支持。
 
-              PARTUUID=uuid
-                     分区通用唯一标识符。此标识符独立于文件系统，不会因 mkfs 或 mkswap 操作而更改。例如，支持 GUID 分区表 (GPT)。
+PARTUUID=<u>uuid</u>
+: 分区通用唯一标识符。此标识符独立于文件系统，不会因 mkfs 或 mkswap 操作而更改。例如，GUID 分区表 (GPT)支持。
 
               ID=id udevd 生成的硬件块设备 ID。此标识符通常基于 WWN（唯一存储标识符）并由硬件制造商分配。
                      有关详细信息，请参阅 ls /dev/disk/by-id，此目录和运行 udevd 是必需的。不建议将此标识符用于一般用途，因为该标识符没有严格定义，它取决于 udev、udev 规则和硬件。
