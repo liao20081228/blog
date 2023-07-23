@@ -361,11 +361,16 @@ expect_after {
 默认情况下，**exp_continue**重置超时计时器。 如果使用 **-continue_timer**标志调用**exp_continue**，则计时器不会重新启动。
 
 ## expect_after
-<span id="expect_after">与**expect_before**</span>的工作方式相同，只是如果**expect**和**expect_after** 的模式都可以匹配，则使用**expect** 模式。 有关详细信息，请参阅expect_before命令。
+<span id="expect_after">与**expect_before**</span>的工作方式相同，只是如果**expect**和**expect_after** 的模式都可以匹配，则使用**expect** 模式。 有关详细信息，请参阅[**expect_before**](#expect_before)命令。
 
 
 ## expect_background
-<span id="expect_background">editorSelectionText</span>
+<span id="expect_background">采用</span>与**expect**相同的参数，但它立即返回。 无论什么时候只要有新输入到达时都会测试模式。模式**timeout**和**default**对于**expect_background**来说毫无意义，会被默默丢弃。否则，**expect_background** 命令将像**expect** 一样使用**expect_before** 和**expect_after** 模式。
+
+当 **expect_background** 动作执行时，同一spawn ID 的后台处理将被阻塞。 动作完成后，后台处理将被解除阻塞。 当后台处理被阻塞时，可以对同一个spawn ID 执行（前台）**expect**。
+
+当**expect_background** 未被阻塞时，不可能执行**expect**。 通过声明具有相同spawn id 的新**expect_background** 来删除特定spawn id 的**expect_background**。 声明不带模式的**expect_background**会删除给定的spawn id在后台匹配模式的能力。
+
 
 ## expect_before
 <span id="expect_before">采用</span>与expect相同的参数，但它立即返回。
@@ -428,7 +433,7 @@ send "hello world\r"
 
 **-break** 标志生成一个中断条件。仅当spawn id引用了通过“spawn -open”打开的tty设备时，才有意义。如果生成了诸如tip之类的进程，则应使用tip的约定来生成中断。
 
-**-s** 标志强制输出“缓慢地”发送，因此避免了一种场景，即计算机键出（outtype）一个输入缓冲区，该缓冲区为人类设设计的，而人类永远不会键出（outtype）。该输出由变量“send_slow”的值控制，该变量是一个有两个元素的列表。第一个元素是整数，它描述要原子发送的字节数。第二个元素是一个实数，它描述原子发送必须间隔的秒数。例如，“`set send_slow {10 .001}`”将强制“`send -s`”以每发送10个字符之间间隔1毫秒的方式发送字符串。
+**-s** 标志强制输出“缓慢地”发送，因此避免了一种场景，即计算机输出超过了输入缓冲区，该输入缓冲区为人类设设计的，而人类输入时永远不会超过。该输出由变量“send_slow”的值控制，该变量是一个有两个元素的列表。第一个元素是整数，它描述要原子发送的字节数。第二个元素是一个实数，它描述原子发送必须间隔的秒数。例如，“`set send_slow {10 .001}`”将强制“`send -s`”以每发送10个字符之间间隔1毫秒的方式发送字符串。
 
  **-h** 标志强制输出（以某种方式）像人类实际键入一样地发送。类似人一样的延迟会出现字符之间。（该算法基于Weibull分布，并进行了修改以适合该特定应用。）此输出由变量“send_human”的值控制，该变量是一个五元素列表。前两个元素是字符的平均间隔到达时间，以秒为单位。默认情况下使用第一个。第二个用于单词结尾，以模拟这种过渡时偶尔发生的微妙的停顿。第三个参数是可变性的度量，其中.1十分可变，1是合理可变，而10十分不可变。极限是0到无穷大。最后两个参数分别是最小和最大到达间隔时间。最小值和最大值被用于维持(last)和剪断(clip)最终时间。如果最小值和最大值差距足够大，则最终平均值可能与给定平均值有很大不同。
 
@@ -463,11 +468,32 @@ send password\r
 **exp_send** 是**send**的别名。 如果在Tk环境中使用 **Expectk** 或 **Expect** 的某些其他变体，则**send**由Tk定义，目的完全不同。 提供 **exp_send** 是为了实现环境之间的兼容性。 为其他Expect的其他发送命令提供了类似的别名。
 
 ## send_error
+```tcl
+send_error[-flags] string
+```
+<span id="send_error">与 **send** 类似</span>，只不过输出被发送到 stderr 而不是当前进程。
 
 ## send_log
+```tcl
+send_log [--] string
+```
+<span id="send_log">与 **send** 类似</span>，只不过string被发送到日志文件（请参阅[**log_file**](#log_file)）而不是当前进程。如果没有日志文件打开，则参数被忽略。
+
 ## send_tty
+```tcl
+send_tty [-flags] string
+```
+<span id="send_tty">与 **send** 类似</span>，只不过输出被发送到/dev/tty 而不是当前进程。
+
 ## send_user
+```tcl
+send_user [-flags] string
+```
+<span id="send_user">与 **send** 类似</span>，只不过输出被发送到 stdout 而不是当前进程。
+
 ## sleep
+<span id="sleep">使脚本</span>休眠给定的秒数。 秒可以是小数。 中断（如果您使用 Expectk，则为 Tk 事件）在 Expect 休眠时进行处理。
+
 ## spawn 校对完毕
 ```tcl
 spawn [args] program [args]
