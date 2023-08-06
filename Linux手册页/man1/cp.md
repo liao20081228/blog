@@ -33,11 +33,11 @@ cp——复制文件和文件夹。
 |**-d**|| 与 **--no-dereference --preserve**=<u>links</u>相同|
 |**-f**|**--force**| 如果无法打开已存在的目标文件，请将其删除并重试（当同时使用 **-n** 选项时，此选项将被忽略）|
 |**-i**|**--interactive**|  覆盖前提示（覆盖之前的 **-n** 选项）|
-|**-H**||遵循 <u>SOURCE</u> 中的命令行符号链接|
+|**-H**||跟随 <u>SOURCE</u> 中的命令行符号链接|
 |**-l**| **--link**|  硬链接文件而不是复制|
-|**-L**| **--dereference**|始终遵循 <u>SOURCE</u> 中的符号链接|
+|**-L**| **--dereference**|始终跟随 <u>SOURCE</u> 中的符号链接|
 |**-n** |**--no-clobber**|不覆盖已存在的文件（覆盖之前的 **-i** 选项）|
-|**-P** |**--no-dereference**|切勿遵循 SOURCE 中的符号链接|
+|**-P** |**--no-dereference**|永不跟随 SOURCE 中的符号链接|
 |**-p**||等同于 **--preserve**=mode,ownership,timestamps|
 ||**--preserve**\[=<u>ATTR_LIST</u>]|保留指定的属性（默认：mode,ownership,timestamps），如果可能的话，保留指定的附加属性：context, links, xattr,all|
 ||**--no-preserve**=<u>ATTR_LIST</u>|不保留指定的属性|
