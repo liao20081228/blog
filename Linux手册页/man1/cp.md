@@ -60,13 +60,11 @@ cp——复制文件和文件夹。
 ||**--version**|显示版本信息并退出|
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
-
  默认情况下，通过粗略启发式检测到稀疏源文件，相应的目标文件也变得稀疏， 这是 **--sparse**=<u>auto</u> 选择的行为； 只要 SOURCE 文件包含足够长的零字节序列，指定 **--sparse**=<u>always</u> 即可创建稀疏 DEST 文件。 使用 **--sparse**=<u>never</u> 禁止创建稀疏文件。
 
 当指定 **--reflink**\[=<u>always</u>] 时执行轻量级复制，其仅在修改时复制数据块，如果这不可能，则复制失败；或者如果指定了 **--reflink**=<u>auto</u>，则回退到标准复制；使用 **--reflink**=<u>never</u> 确保执行标准复制。
 
 除非使用 **--suffix** 或 SIMPLE_BACKUP_SUFFIX 设置，备份后缀为“~”。 版本控制方法可以通过 **--backup** 选项或通过 VERSION_CONTROL 环境变量来选择。 以下是这些值：
-
 |备份|说明|
 |:--|:--|
 |none, off|从不进行备份（即使给出了 **--backup**）|
