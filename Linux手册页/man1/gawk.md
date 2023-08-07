@@ -1,6 +1,6 @@
 ---
 title: gawk
-tags: 文本处理,man1
+tags: 文本处理,实用命令,man1
 ---
 
 
