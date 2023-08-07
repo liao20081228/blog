@@ -11,7 +11,7 @@ tags: 文件管理,用户命令,man1
 # 名称
 cp——复制文件和文件夹。
 
-# 总览
+# 概览
 
 **cp** [<u>OPTION</u>]... [<u>-T</u>] <u>SOURCE</u> <u>DEST</u>
 **cp** [<u>OPTION</u>]... <u>SOURCE</u>... <u>DIRECTORY</u>
