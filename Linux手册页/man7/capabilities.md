@@ -1,53 +1,55 @@
 
 # 描述
 ## 能力列表
-CAP_CHOWN 
-: 对文件UID和GID进行任意更改（请参见Chown(2）)。
-
-CAP_DAC_OVERRIDE
-: 绕过文件读、写和执行权限检查。（DAC是“自由访问控制”的缩写。）
->在DAC权限方面CAP_DAC_OVERRIDE 是 CAP_DAC_READ_SEARCH的超集，但是CAP_DAC_READ_SEARCH还有DAC之外的能力。
-
-CAP_DAC_READ_SEARCH
-: * 绕过文件读取权限检查、目录读取和执行权限检查；
-: * 调用open_by_handle_at(2)；
-: * 使用linkat(2) AT_EMPTY_PATH标志创建指向文件描述符引用的文件的链接。
-
-CAP_FOWNER
-: * 绕过通常要求进程的文件系统UID与文件UID匹配的操作的权限检查（例如，chmod(2）、utime(2))，不包括CAP_DAC_OVERRIDE和CAP_DAC_READ_SEARCH所涵盖的操作；
-: * 在任意文件上设置inode标志（见ioctl_iflags(2）)；
-: * 在任意文件上设置访问控制列表（ACL）；
-: *  删除文件时忽略目录粘滞位；
-: * 修改任何用户拥有的粘滞目录的用户扩展属性；
-: * 在open(2)和fcntl(2)中为任意文件指定O_NOATIME。
+**CAP_CHOWN** 
+* 对文件UID和GID进行任意更改（请参见Chown(2）)。
+  
+**CAP_DAC_OVERRIDE**
+* 绕过文件读、写和执行权限检查。（DAC是“自由访问控制”的缩写。）在DAC权限方面CAP_DAC_OVERRIDE 是 CAP_DAC_READ_SEARCH的超集，但是CAP_DAC_READ_SEARCH还有DAC之外的能力。
+  
+**CAP_DAC_READ_SEARCH**
+* 绕过文件读取权限检查、目录读取和执行权限检查；
+* 调用open_by_handle_at(2)；
+* 使用linkat(2) AT_EMPTY_PATH标志创建指向文件描述符引用的文件的链接。
+  
+**CAP_FOWNER**
+* 绕过通常要求进程的文件系统UID与文件UID匹配的操作的权限检查（例如，chmod(2）、utime(2))，不包括CAP_DAC_OVERRIDE和CAP_DAC_READ_SEARCH所涵盖的操作；
+* 在任意文件上设置inode标志（见ioctl_iflags(2）)；
+* 在任意文件上设置访问控制列表（ACL）；
+*  删除文件时忽略目录粘滞位；
+* 修改任何用户拥有的粘滞目录的用户扩展属性；
+* 在open(2)和fcntl(2)中为任意文件指定O_NOATIME。
  
-CAP_FSETID
+**CAP_FSETID**
 * 修改文件时，不要清除set-user-ID和set-group-ID模式位；
 * 为GID与文件系统或调用进程的任何附加GID不匹配的文件设置set-group-ID位。
   
-CAP_KILL
+**CAP_KILL**
 * 绕过发送信号的权限检查（请参见kill(2）)。这包括使用ioctl(2)KDSIGACC操作。
 
-CAP_SETGID
+**CAP_SETGID**
 * 对进程GID和附加GID列表进行任意操作；
 * 通过UNIX域套接字传递套接字凭据时伪造GID；
 * 在用户命名空间中写入组ID映射（请参见user_namespaces(7）)。
 
-CAP_SETUID
+**CAP_SETUID**
 * 对进程UID进行任意操作(setuid(2)、setreuid(2)、setresuid(2)、setfsuid(2))；
 * 通过UNIX域套接字传递套接字凭据时伪造UID；
 * 在用户命名空间中写入用户ID映射（请参见user_namespaces(7）)。
   
-CAP_SETPCAP
+**CAP_SETPCAP**
+* 如果支持文件能力（即，自Linux 2.6.24起）：将调用线程的边界能力集中的任意能力添加到其可继承能力集；从边界能力集中删除能力（通过prctl(2）PR_CAPBSET_DROP)；更改安全位标志。
 
-如果支持文件能力（即，自Linux 2.6.24起）：将调用线程的边界能力集中的任意能力添加到其可继承能力集；从边界能力集中删除能力（通过prctl(2）PR_CAPBSET_DROP)；更改安全位标志。
+* 如果文件功能不受支持（即Linux 2.6.24之前的内核）：向任何其他进程授予或删除调用者允许能力集中的任何能力。（当内核配置为支持文件能力时，CAP_SETPCAP的此属性不可用，因为CAP_SETPCAP对此类内核具有完全不同的语义。）
 
-如果文件功能不受支持（即Linux 2.6.24之前的内核）：向任何其他进程授予或删除调用者允许能力集中的任何能力。（当内核配置为支持文件能力时，CAP_SETPCAP的此属性不可用，因为CAP_SETPCAP对此类内核具有完全不同的语义。）
-
-CAP_LINUX_IMMUTABLE	9	设置FS_APPEND_FL和FS_IMMUTABLE_FL inode标志（请参见ioctl_iflags(2）)。
-CAP_NET_BIND_SERVICE	10	将套接字绑定到Internet域特权端口（端口号小于1024）。
-CAP_NET_BROADCAST	11	（未使用）进行套接字广播，并侦听组播。
-CAP_NET_ADMIN	12	"执行各种网络相关操作：
+CAP_LINUX_IMMUTABLE	
+FS_APPEND_FL和FS_IMMUTABLE_FL inode标志（请参见ioctl_iflags(2）)。
+CAP_NET_BIND_SERVICE
+将套接字绑定到Internet域特权端口（端口号小于1024）。
+CAP_NET_BROADCAST
+未使用）进行套接字广播，并侦听组播。
+CAP_NET_ADMIN
+执行各种网络相关操作：
 ·接口配置；
 ·IP防火墙、伪装和计费管理；
 ·修改路由表；
@@ -57,12 +59,21 @@ CAP_NET_ADMIN	12	"执行各种网络相关操作：
 ·设置混杂模式；
 ·启用多播；
 ·使用setockopt(2)设置以下套接字选项：SO_DEBUG、SO_标记、SO_PRIORITY（对于范围0到6之外的优先级）、SO_RCVBuffORCE和SO_SNDBuffORCE。"
-CAP_NET_RAW	13	"*使用RAW和数据包套接字；
+
+CAP_NET_RAW
+*使用RAW和数据包套接字；
 *绑定到任何地址进行透明代理。"
-CAP_IPC_LOCK	14	锁定内存(mlock(2)、mlockall(2)、mmap(2)、shmctl(2))。
-CAP_IPC_OWNER	15	绕过对System V IPC对象的操作权限检查。
-CAP_SYS_MODULE	16	"*加载和卸载内核模块（请参见init_module(2）和delete_module(2))；
+
+CAP_IPC_LOCK
+锁定内存(mlock(2)、mlockall(2)、mmap(2)、shmctl(2))。
+
+CAP_IPC_OWNER
+绕过对System V IPC对象的操作权限检查。
+
+CAP_SYS_MODULE
+*加载和卸载内核模块（请参见init_module(2）和delete_module(2))；
 *在2.6.25之前的内核中：从系统范围的边界能力集中删除能力。"
+
 CAP_SYS_RAWIO	17	"*执行I/O端口操作(ipl(2)和ioperm(2))；
 *访问/proc/kcore；
 *使用FIBMAP ioctl(2)操作；
