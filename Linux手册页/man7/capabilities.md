@@ -1,5 +1,5 @@
 ---
-title: expect
+title: capabilities
 tags: man1
 ---
 
