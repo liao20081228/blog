@@ -2,10 +2,10 @@
 # 描述
 ## 能力列表
 CAP_CHOWN 
-<>对文件UID和GID进行任意更改（请参见Chown(2）)。
+&emsp;&emsp;对文件UID和GID进行任意更改（请参见Chown(2）)。
 
 CAP_DAC_OVERRIDE
- 绕过文件读、写和执行权限检查。（DAC是“自由访问控制”的缩写。在DAC权限方面CAP_DAC_OVERRIDE是CAP_DAC_READ_SEARCH的超集，但是CAP_DAC_READ_SEARCH还有DAC之外的能力）
+&emsp;&emsp; 绕过文件读、写和执行权限检查。（DAC是“自由访问控制”的缩写。在DAC权限方面CAP_DAC_OVERRIDE是CAP_DAC_READ_SEARCH的超集，但是CAP_DAC_READ_SEARCH还有DAC之外的能力）
 
 CAP_DAC_READ_SEARCH
 * 绕过文件读取权限检查、目录读取和执行权限检查；
