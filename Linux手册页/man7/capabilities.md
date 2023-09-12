@@ -1,6 +1,6 @@
 ---
 title: capabilities
-tags: man1
+tags: man7
 ---
 
 ------
