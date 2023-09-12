@@ -1,27 +1,48 @@
-能力宏	bit位	详细说明
-CAP_CHOWN	0	对文件UID和GID进行任意更改（请参见Chown(2）)。
-CAP_DAC_OVERRIDE	1	绕过文件读、写和执行权限检查。（DAC是“自由访问控制”的缩写。在DAC权限方面CAP_DAC_OVERRIDE是CAP_DAC_READ_SEARCH的超集，但是CAP_DAC_READ_SEARCH还有DAC之外的能力）
-CAP_DAC_READ_SEARCH	2	"*绕过文件读取权限检查、目录读取和执行权限检查；
-*调用open_by_handle_at(2)；
-*使用linkat(2) AT_EMPTY_PATH标志创建指向文件描述符引用的文件的链接。"
-CAP_FOWNER	3	"*绕过通常要求进程的文件系统UID与文件UID匹配的操作的权限检查（例如，chmod(2）、utime(2))，不包括CAP_DAC_OVERRIDE和CAP_DAC_READ_SEARCH所涵盖的操作；
-*在任意文件上设置inode标志（见ioctl_iflags(2）)；
-*在任意文件上设置访问控制列表（ACL）；
-*删除文件时忽略目录粘滞位；
-*修改任何用户拥有的粘滞目录的用户扩展属性；
-*在open(2)和fcntl(2)中为任意文件指定O_NOATIME。"
-CAP_FSETID	4	"*修改文件时，不要清除set-user-ID和set-group-ID模式位；
-*为GID与文件系统或调用进程的任何附加GID不匹配的文件设置set-group-ID位。"
-CAP_KILL	5	绕过发送信号的权限检查（请参见kill(2）)。这包括使用ioctl(2)KDSIGACC操作。
-CAP_SETGID	6	"*对进程GID和附加GID列表进行任意操作；
-*通过UNIX域套接字传递套接字凭据时伪造GID；
-*在用户命名空间中写入组ID映射（请参见user_namespaces(7）)。"
-CAP_SETUID	7	"*对进程UID进行任意操作(setuid(2)、setreuid(2)、setresuid(2)、setfsuid(2))；
-*通过UNIX域套接字传递套接字凭据时伪造UID；
-*在用户命名空间中写入用户ID映射（请参见user_namespaces(7）)。"
-SETPCAP	8	"如果支持文件能力（即，自Linux 2.6.24起）：将调用线程的边界能力集中的任意能力添加到其可继承能力集；从边界能力集中删除能力（通过prctl(2）PR_CAPBSET_DROP)；更改安全位标志。
 
-如果文件功能不受支持（即Linux 2.6.24之前的内核）：向任何其他进程授予或删除调用者允许能力集中的任何能力。（当内核配置为支持文件能力时，CAP_SETPCAP的此属性不可用，因为CAP_SETPCAP对此类内核具有完全不同的语义。）"
+# 描述
+## 能力列表
+CAP_CHOWN 
+<>对文件UID和GID进行任意更改（请参见Chown(2）)。
+
+CAP_DAC_OVERRIDE
+ 绕过文件读、写和执行权限检查。（DAC是“自由访问控制”的缩写。在DAC权限方面CAP_DAC_OVERRIDE是CAP_DAC_READ_SEARCH的超集，但是CAP_DAC_READ_SEARCH还有DAC之外的能力）
+
+CAP_DAC_READ_SEARCH
+* 绕过文件读取权限检查、目录读取和执行权限检查；
+* 调用open_by_handle_at(2)；
+* 使用linkat(2) AT_EMPTY_PATH标志创建指向文件描述符引用的文件的链接。
+
+CAP_FOWNER
+* 绕过通常要求进程的文件系统UID与文件UID匹配的操作的权限检查（例如，chmod(2）、utime(2))，不包括CAP_DAC_OVERRIDE和CAP_DAC_READ_SEARCH所涵盖的操作；
+* 在任意文件上设置inode标志（见ioctl_iflags(2）)；
+* 在任意文件上设置访问控制列表（ACL）；
+* 删除文件时忽略目录粘滞位；
+* 修改任何用户拥有的粘滞目录的用户扩展属性；
+* 在open(2)和fcntl(2)中为任意文件指定O_NOATIME。
+ 
+CAP_FSETID
+* 修改文件时，不要清除set-user-ID和set-group-ID模式位；
+* 为GID与文件系统或调用进程的任何附加GID不匹配的文件设置set-group-ID位。
+  
+CAP_KILL
+* 绕过发送信号的权限检查（请参见kill(2）)。这包括使用ioctl(2)KDSIGACC操作。
+
+CAP_SETGID
+* 对进程GID和附加GID列表进行任意操作；
+* 通过UNIX域套接字传递套接字凭据时伪造GID；
+* 在用户命名空间中写入组ID映射（请参见user_namespaces(7）)。
+
+CAP_SETUID
+* 对进程UID进行任意操作(setuid(2)、setreuid(2)、setresuid(2)、setfsuid(2))；
+* 通过UNIX域套接字传递套接字凭据时伪造UID；
+* 在用户命名空间中写入用户ID映射（请参见user_namespaces(7）)。
+  
+CAP_SETPCAP
+
+如果支持文件能力（即，自Linux 2.6.24起）：将调用线程的边界能力集中的任意能力添加到其可继承能力集；从边界能力集中删除能力（通过prctl(2）PR_CAPBSET_DROP)；更改安全位标志。
+
+如果文件功能不受支持（即Linux 2.6.24之前的内核）：向任何其他进程授予或删除调用者允许能力集中的任何能力。（当内核配置为支持文件能力时，CAP_SETPCAP的此属性不可用，因为CAP_SETPCAP对此类内核具有完全不同的语义。）
+
 CAP_LINUX_IMMUTABLE	9	设置FS_APPEND_FL和FS_IMMUTABLE_FL inode标志（请参见ioctl_iflags(2）)。
 CAP_NET_BIND_SERVICE	10	将套接字绑定到Internet域特权端口（端口号小于1024）。
 CAP_NET_BROADCAST	11	（未使用）进行套接字广播，并侦听组播。
