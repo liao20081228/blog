@@ -2,23 +2,24 @@
 # 描述
 ## 能力列表
 CAP_CHOWN 
-&emsp;&emsp;对文件UID和GID进行任意更改（请参见Chown(2）)。
+: 对文件UID和GID进行任意更改（请参见Chown(2）)。
 
 CAP_DAC_OVERRIDE
-&emsp;&emsp; 绕过文件读、写和执行权限检查。（DAC是“自由访问控制”的缩写。在DAC权限方面CAP_DAC_OVERRIDE是CAP_DAC_READ_SEARCH的超集，但是CAP_DAC_READ_SEARCH还有DAC之外的能力）
+: 绕过文件读、写和执行权限检查。（DAC是“自由访问控制”的缩写。）
+>在DAC权限方面CAP_DAC_OVERRIDE 是 CAP_DAC_READ_SEARCH的超集，但是CAP_DAC_READ_SEARCH还有DAC之外的能力。
 
 CAP_DAC_READ_SEARCH
-* 绕过文件读取权限检查、目录读取和执行权限检查；
-* 调用open_by_handle_at(2)；
-* 使用linkat(2) AT_EMPTY_PATH标志创建指向文件描述符引用的文件的链接。
+: * 绕过文件读取权限检查、目录读取和执行权限检查；
+: * 调用open_by_handle_at(2)；
+: * 使用linkat(2) AT_EMPTY_PATH标志创建指向文件描述符引用的文件的链接。
 
 CAP_FOWNER
-* 绕过通常要求进程的文件系统UID与文件UID匹配的操作的权限检查（例如，chmod(2）、utime(2))，不包括CAP_DAC_OVERRIDE和CAP_DAC_READ_SEARCH所涵盖的操作；
-* 在任意文件上设置inode标志（见ioctl_iflags(2）)；
-* 在任意文件上设置访问控制列表（ACL）；
-* 删除文件时忽略目录粘滞位；
-* 修改任何用户拥有的粘滞目录的用户扩展属性；
-* 在open(2)和fcntl(2)中为任意文件指定O_NOATIME。
+: * 绕过通常要求进程的文件系统UID与文件UID匹配的操作的权限检查（例如，chmod(2）、utime(2))，不包括CAP_DAC_OVERRIDE和CAP_DAC_READ_SEARCH所涵盖的操作；
+: * 在任意文件上设置inode标志（见ioctl_iflags(2）)；
+: * 在任意文件上设置访问控制列表（ACL）；
+: *  删除文件时忽略目录粘滞位；
+: * 修改任何用户拥有的粘滞目录的用户扩展属性；
+: * 在open(2)和fcntl(2)中为任意文件指定O_NOATIME。
  
 CAP_FSETID
 * 修改文件时，不要清除set-user-ID和set-group-ID模式位；
