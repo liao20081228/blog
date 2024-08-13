@@ -58,6 +58,51 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 ```
 
 ### 练习3——添加版本号和配置头文件
+有时，让在`CMakelists.txt`文件中定义的变量也可以在源代码中使用是很有用的。在这种情况下，我们希望打印项目版本。
+
+实现此目的的一种方法是使用配置头文件。我们创建一个输入文件，其中包含一个或多个变量来替换。这些变量有特殊的语法，看起来像`@VAR@`。然后，我们使用`configure_file()`命令将输入文件复制到给定的输出文件中，并将这些变量替换为`CMakelists.txt`文件中`VAR`的当前值。
+
+虽然我们可以直接在源代码中编辑版本，但使用此功能是首选，因为它创建了一个单一的真实来源并避免了重复。
+
+#### 目标
+定义并报告项目的版本号。
+
+#### 有用的资源
+- [\<PROJECT-NAME>_VERSION_MAJOR](https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION_MAJOR.html#variable:%3CPROJECT-NAME%3E_VERSION_MAJOR)
+- [\<PROJECT-NAME>_VERSION_MINOR](https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION_MINOR.html#variable:%3CPROJECT-NAME%3E_VERSION_MINOR)
+- [configure_file()](https://cmake.org/cmake/help/latest/command/configure_file.html#command:configure_file)
+- [target_include_directories()](https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories)
+
+#### 要编辑的文件
+
+- CMakeLists.txt
+- tutorial.cxx
+
+#### 快速入门
+继续编辑`步骤1`中的文件。从`TODO 7`开始，一直完成到`TODO 12`。在本练习中，我们首先在`CMakeLists.txt`中添加项目版本号。在同一个文件中，使用[configure_file()](https://cmake.org/cmake/help/latest/command/configure_file.html#command:configure_file)将给定的输入文件复制到输出文件，并替换输入文件内容中的一些变量值。
+
+接下来，创建一个定义版本号的输入头文件教程配置.h.in，它将接受从configure_file()传递的变量。
+
+最后，更新教程.cxx打印出它的版本号。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 我们将添加的第一个功能是为我们的可执行文件和项目提供版本号。 虽然我们可以专门在源代码中执行此操作，但是使用`CMakeLists.txt`可以提供更大的灵活性。
 
 首先，修改`CMakeLists.txt`文件以使用`project()`命令来设置项目名和版本号。
