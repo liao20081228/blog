@@ -8,6 +8,15 @@ tags: cmake
 ***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《[CMake tutorial v3.21.2](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。网络转载请注明出处！！！</font>***
 
 ------
+
+------
+
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《bash manpages》。</font>bash的版本为5.0.17，手册更新时间为2018-12-7。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+
+------
+
+
+
 # 0 简介
 CMake教程提供了一步步的指导，涵盖了CMake helps解决的常见构建系统问题。 了解示例项目中各个主题如何协同工作将非常有帮助。 
 
