@@ -21,18 +21,13 @@ CMake教程提供了一步步的指导，涵盖了CMake helps解决的常见构�
 
 我应该从哪里开始使用CMake？这一步将介绍CMake的一些基本语法、命令和变量。随着这些概念的引入，我们将完成三个练习，并创建一个简单的CMake项目。
 
-### 练习1——构建一个基础项目
-
-
-### 2 练习2——指定C++标准
-
 此步骤中的每个练习都将从一些背景信息开始。之后提供了一个目标和有用的资源列表。`Files to Edit`部分中的每个文件都位于Step1目录中，并包含一个或多个TODO注释。每个TODO代表一行或两行要更改或添加的代码。TODO按数字顺序完成，首先完成TODO 1，然后完成TODO 2，以此类推。“入门”部分将提供一些有用的提示，并指导您完成练习。然后，“构建和运行”部分将逐步介绍如何构建和测试练习。最后，在每个练习结束时，讨论预期的解决方案。
 
 还要注意，教程中的每一步都构建了下一步。例如，`Step2`的起始代码是`Step1`的完整解。
 
+### 练习1——构建一个基础项目
 
-
-最基本的项目是从源代码文件构建一个可执行文件。 对于简单的项目，只需三行`CMakeLists.txt`文件。 这是本教程的起点。 在Step1目录中创建一个`CMakeLists.txt`文件，如下所示：
+最基本的Cmake项目是从单个源代码文件构建一个可执行文件。 对于简单的项目，只需三行的`CMakeLists.txt`文件。 这是本教程的起点。 在Step1目录中创建一个`CMakeLists.txt`文件，如下所示：
 ```cmake
 cmake_minimum_required(VERSION 3.10)
 
@@ -44,8 +39,25 @@ add_executable(Tutorial tutorial.cxx)
 ```
 请注意，此示例在`CMakeLists.txt`文件中使用小写的命令。 CMake支持大写，小写和大小写混合的命令。 Step1目录中提供了`tutorial.cxx`的源代码，可用于计算数字的平方根。
 
-### 2 练习2——指定C++标准
-## 1.1 添加版本号和配置头文件
+### 练习2——指定C++标准
+接下来，通过在`tutorial.cxx`中用`std::stod`替换atof，将一些C++ 11功能添加到我们的项目中。 同时，删除`#include <cstdlib>`。
+```c++
+const double inputValue = std::stod(argv[1]);
+```
+我们需要在CMake代码中明确声明应使用正确的标志。 在CMake中启用对特定C ++标准的支持的最简单方法是使用`CMAKE_CXX_STANDARD`变量。 对于本教程，请将`CMakeLists.txt`文件中的`CMAKE_CXX_STANDARD`变量设置为`11`，并将`CMAKE_CXX_STANDARD_REQUIRED`设置为`True`。确保在调用 `add_executable` 的上方添加了 `CMAKE_CXX_STANDARD` 声明：
+
+```cmake
+cmake_minimum_required(VERSION 3.10)
+
+# set the project name and version
+project(Tutorial VERSION 1.0)
+
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+```
+
+### 练习3——添加版本号和配置头文件
 我们将添加的第一个功能是为我们的可执行文件和项目提供版本号。 虽然我们可以专门在源代码中执行此操作，但是使用`CMakeLists.txt`可以提供更大的灵活性。
 
 首先，修改`CMakeLists.txt`文件以使用`project()`命令来设置项目名和版本号。
@@ -102,24 +114,7 @@ add_executable(Tutorial tutorial.cxx)
 target_include_directories(Tutorial PUBLIC  "${PROJECT_BINARY_DIR}"  )
 ```
 
-## 1.2 指定c++标准
 
-接下来，通过在`tutorial.cxx`中用`std::stod`替换atof，将一些C++ 11功能添加到我们的项目中。 同时，删除`#include <cstdlib>`。
-```c++
-const double inputValue = std::stod(argv[1]);
-```
-我们需要在CMake代码中明确声明应使用正确的标志。 在CMake中启用对特定C ++标准的支持的最简单方法是使用`CMAKE_CXX_STANDARD`变量。 对于本教程，请将`CMakeLists.txt`文件中的`CMAKE_CXX_STANDARD`变量设置为`11`，并将`CMAKE_CXX_STANDARD_REQUIRED`设置为`True`。确保在调用 `add_executable` 的上方添加了 `CMAKE_CXX_STANDARD` 声明：
-
-```cmake
-cmake_minimum_required(VERSION 3.10)
-
-# set the project name and version
-project(Tutorial VERSION 1.0)
-
-# specify the C++ standard
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-```
 ## 1.3 构建和测试
 运行`cmake`或`cmake-gui`以配置项目，然后使用所选的构建工具进行构建。
 
