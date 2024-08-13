@@ -16,7 +16,8 @@ CMake教程提供了一步步的指导，涵盖了CMake helps解决的常见构�
 
 教程源代码示例可在[此存档](https://cmake.org/cmake/help/v3.30/_downloads/4faf523a74297ec7a15388124b7890c5/cmake-3.30.2-tutorial-source.zip)中找到。 每个步骤都有其自己的子目录，其中包含可以用作起点的代码。 教程示例是循序渐进的，因此每个步骤都为上一步提供了完整的解决方案。
 
-# 1 基本起点
+# 步骤
+## 步骤1 基本起点
 最基本的项目是从源代码文件构建一个可执行文件。 对于简单的项目，只需三行`CMakeLists.txt`文件。 这是本教程的起点。 在Step1目录中创建一个`CMakeLists.txt`文件，如下所示：
 ```cmake
 cmake_minimum_required(VERSION 3.10)
