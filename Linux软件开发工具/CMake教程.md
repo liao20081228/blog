@@ -5,13 +5,7 @@ tags: cmake
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《[CMake tutorial v3.21.2](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。网络转载请注明出处！！！</font>***
-
-------
-
-------
-
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《bash manpages》。</font>bash的版本为5.0.17，手册更新时间为2018-12-7。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[CMake tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)》。</font>版本为3.30.2。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
 
@@ -915,6 +909,6 @@ cpack --config MultiCPackConfig.cmake
 
 ------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>《[CMake tutorial v3.21.2](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)》。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。网络转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[CMake tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)》。</font>版本为3.30.2。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
