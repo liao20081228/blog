@@ -80,7 +80,16 @@ Ambient能力集可以直接使用**prctl**(2)进行修改。如果相应的perm
 启用文件Effective能力位意味着导致线程在**execve**(2)期间获取相应Permitted能力的任何文件Permitted或Inheritable能力（请参阅下面的[execve()过程中的能力转换](#Transformation_of_capabilities_during_execve)）也将获得其Effective集中能力。因此，在为文件分配能力时(**setcap**(8)、**cap_set_file**(3)、**cap_set_fd**(3))，如果我们将effective标志指定为对任何能力启用，则相应的permitted或inheritable标志为启用的所有权其他能力的effective标志也必须指定为启动。
 
 
- # execve()过程中的能力转换
+# 文件能力扩展属性版本
+为了允许可扩展性，内核支持在用于实现文件能力的<u>security.capability</u>扩展属性中编码版本号的方案。这些版本号是实现内部的，对用户空间应用程序不直接可见。目前支持的版本如下：
+
+**VFS_CAP_REVISION_1**
+
+**VFS_CAP_REVISION_3**
+
+**VFS_CAP_REVISION_3**
+
+# execve()过程中的能力转换
  
  在**execve**(2)期间，<span id='Transformation_of_capabilities_during_execve'>内核</span>使用以下算法计算进程的新能力：
 ```
@@ -127,7 +136,44 @@ P'(effective)   = P'(permitted)
 本小节中描述的对用户ID 0 (root)的特殊处理可以使用下面描述的securebits机制禁用。
 
 # 具有文件能力的Set-user-ID-root程序
-在<span id='Set-user-ID-root_programs_that_have_file_capabilities'>上面</span>的<u>[root程序的执行和能力](#Capabilities_and_execution_of_programs_by_root)</u>中描述的行为有一个例外。
+在<span id='Set-user-ID-root_programs_that_have_file_capabilities'>上面</span>的<u>[root程序的执行和能力](#Capabilities_and_execution_of_programs_by_root)</u>中描述的行为有一个例外。如果（a）正在执行的二进制具有附加的能力，并且（b）进程的实际用户ID不是0（root），并且（c）进程的有效用户ID是0（root），则文件能力位被接受（即，它们在概念上不被认为都是1）。出现这种情况的通常方式是在执行同样具有文件能力的set-UID-root程序时。当执行这样的程序时，进程仅获得程序授予的能力（即，并非所有能力，如执行没有任何关联文件能力的set-user-ID-root程序时所发生的）。
+
+注意，可以将空的能力集分配给程序文件，因此可以创建一个set-user-ID-root程序，该程序将执行该程序的进程的有效和保存set-user-ID更改为0，但不授予该进程任何能力。
+
+# Bounding能力集
+
+<span id='Capability_bounding_set'>Bounding能力集</span>是一种安全机制，可用于限制在**execve**(2)过程中可以获得的能力。Bounding能力集的使用方式如下：
+
+- 在**execve**(2)期间，Bounding能力集与文件permitted能力集进行AND运算，并将此运算的结果赋给线程的permitted能力集。因此，Bounding能力集对可由可执行文件授予的permitted能力设置了限制。
+
+-（从Linux 2.6.25开始）Bounding能力集用作线程可以通过**capset**(2)添加到其inheritable集中的能力的限制超集。这意味着，如果某个能力不在Bounding集中，那么线程不能将该能力添加到其inheritable集中，即使它在其permitted能力中，因此当它执行一个在其inheritable集中具有该能力的文件时，也不能将该能力保留在其permitted集中。
+
+请注意，Bounding集屏蔽了文件permitted能力，但不屏蔽inheritable能力。如果线程在其inheritable集中维护了不在Bounding集中的能力，那么它仍然可以通过执行在其inheritable中具有该能力的文件来获得其permitted集中的该能力。
+
+根据内核版本的不同，Bounding能力集可以是系统范围的属性，也可以是每进程的属性。
+
+**从Linux 2.6.25开始的Bounding能力集**
+
+从Linux 2.6.25开始，功能绑定集是每个线程的属性。（下面描述的系统范围功能绑定集不再存在。）
+
+边界集在fork(2)时从线程的父级继承，并在execve(2)中保留。
+
+线程可以使用prctl(2) PR_CAPBSET_DROP操作从其能力边界集中删除能力，前提是它具有CAP_SETPCAP能力。一旦某个能力从绑定集合中删除，它就无法恢复到该集合中。线程可以使用prctl(2) PR_CAPBSET_READ操作确定某个能力是否在其边界集中。
+
+仅当文件功能被编译到内核时，才支持从绑定集中删除功能。在Linux 2.6.33之前，文件功能是可通过CONFIG_SECURITY_FILE_CAPABILITY选项配置的可选功能。从Linux 2.6.33开始，配置选项已经被删除，文件功能始终是内核的一部分。当文件功能被编译到内核中时，init进程（所有进程的祖先）以一个完整的边界集开始。如果文件功能未编译到内核中，则init以一个完整的边界集减去CAP_SETPCAP开始，因为当没有文件功能时，此功能具有不同的含义。
+
+从绑定集中删除功能并不会将其从线程的可继承集中删除。但是，它确实防止了该功能在将来被添加回线程的可继承集合中。
+
+
+**Linux 2.6.25之前的Bounding能力集**
+
+在Linux 2.6.25之前，Bounding能力集是一个系统范围的属性，影响系统上的所有线程。可以通过文件<u>/proc/sys/kernel/cap-bound</u>访问Bounding集。（令人困惑的是，此位掩码参数在<u>/proc/sys/kernel/cap-bound</u>中表示为有符号十进制数。）
+
+只有**init**进程可以在Bounding能力集中设置能力；除此之外，超级用户（更准确地说：具有**CAP_SYS_MODULE**能力的进程）只能从这个集中清除能力。
+
+在标准系统上，Bounding能力始终屏蔽**CAP_SETPCAP**功能。要取消这个限制（危险!），请修改<u>include/linux/capability.h</u>中**CAP_INIT_EFF_SET**定义并重构建内核。
+
+Linux 2.2.11中增加了系统范围的Bounding能力集特性。
 
 # 以编程方式调整能力集
 <span id='Programmatically_adjusting_capability_sets'>editorSelectionText</span><u>editorSelectionText</u>
