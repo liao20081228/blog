@@ -154,11 +154,11 @@ P'(effective)   = P'(permitted)
 
 **从Linux 2.6.25开始的Bounding能力集**
 
-从Linux 2.6.25开始，功能绑定集是每个线程的属性。（下面描述的系统范围功能绑定集不再存在。）
+从Linux 2.6.25开始，Bounding能力集是每个线程的属性。（下面描述的系统范围Bounding能力集不再存在。）
 
-边界集在fork(2)时从线程的父级继承，并在execve(2)中保留。
+Bounding能力集在**fork**(2)时从线程的父级继承，并在**execve**(2)中保留。
 
-线程可以使用prctl(2) PR_CAPBSET_DROP操作从其能力边界集中删除能力，前提是它具有CAP_SETPCAP能力。一旦某个能力从绑定集合中删除，它就无法恢复到该集合中。线程可以使用prctl(2) PR_CAPBSET_READ操作确定某个能力是否在其边界集中。
+线程可以使用**prctl**(2) **PR_CAPBSET_DROP**操作从其Bounding能力集中删除能力，前提是它具有**CAP_SETPCAP**能力。一旦某个能力从Bounding能力集中删除，它就无法恢复到该集合中。线程可以使用**prctl**(2) **PR_CAPBSET_READ**操作确定某个能力是否在其Bounding能力集中。
 
 仅当文件功能被编译到内核时，才支持从绑定集中删除功能。在Linux 2.6.33之前，文件功能是可通过CONFIG_SECURITY_FILE_CAPABILITY选项配置的可选功能。从Linux 2.6.33开始，配置选项已经被删除，文件功能始终是内核的一部分。当文件功能被编译到内核中时，init进程（所有进程的祖先）以一个完整的边界集开始。如果文件功能未编译到内核中，则init以一个完整的边界集减去CAP_SETPCAP开始，因为当没有文件功能时，此功能具有不同的含义。
 
