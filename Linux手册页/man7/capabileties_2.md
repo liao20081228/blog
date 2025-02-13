@@ -28,17 +28,18 @@ grammar_cjkRuby: true
 使用**capset**(2)，线程可以操作自己的能力集；请参阅下面的<u>[以编程方式调整能力集](#Programmatically_adjusting_capability_sets)</u>。
 
 从Linux 3.2开始，文件<u>/proc/sys/kernel/cap_last_cap</u>公开了运行内核支持的最高能力的数值；这可以用来确定能力集中可能设置的最高位。
-## Heading
+
 每个线程具有以下包含零个或多个上述能力的能力集：
+
 ## Permitted
-这是线程可能承担的effective能力的限制超集。它也是可由在其effective集中不具有**CAP_SETPCAP**能力的线程添加到inheritable集中的能力的限制超集。
+这是线程可能具有的effective能力的限制超集。它也是 可由在其effective集中不具有**CAP_SETPCAP**能力的线程添加到inheritable集中的的限制超集。
 
 如果一个线程从其permitted集合中删除了一个能力，那么它永远不能重新获得该能力（除非它**execve**(2）一个set-user-ID-root程序，或者一个关联文件能力授予了该能力的程序)。
 
 ## Inheritable
-这是通过execve(2)保留的一组能力。在执行任何程序时Inheritable能力仍然是可继承的，且当执行一个在文件Inheritable集中设置了相应bit位的程序时，Inheritable集中的能力将被添加到Permitted集中。
+这是在**execve**(2)后可保留的能力集。在执行任何程序时Inheritable能力仍然是可继承的，且当执行一个在文件Inheritable集中设置了相应bit位的程序时，Inheritable集中的能力将被添加到Permitted集中。
 
-由于在以非root用户身份运行时，通常不会通过execve(2)保留Inheritable能力，因此希望运行具有提升能力的助手程序的应用程序应考虑使用ambient能力环，如下所述。
+由于在以非root用户身份运行时，通常不会在**execve**(2)后保留Inheritable能力，因此希望运行具有提升能力的助手程序的应用程序应考虑使用ambient能力，如下所述。
 
 ## Effective
 这是内核用来对线程执行权限检查的能力集。
@@ -60,7 +61,7 @@ grammar_cjkRuby: true
 
 Ambient能力集可以直接使用prctl(2)进行修改。如果相应的permitted或Inheritable能力中的任何一个被降低，则Ambient能力将自动降低。
 
-执行因set-user-ID或set-group-ID位而更改UID或GID的程序，或设置了任何文件能力的程序，将清除Ambient集。当调用execve(2)时，将Ambient能力添加到Permitted集和Effective集。如果在execve(2)期间，Ambient能力导致进程的Permitted和Effective能力增加，这不会触发ld.so(8)中描述的安全执行模式。
+执行因set-user-ID或set-group-ID位而更改UID或GID的程序，或设置了任何文件能力的程序，将清除Ambient集。当调用execve(2)时，将Ambient能力添加到Permitted集和Effective集。如果在execve(2)期间，Ambient能力导致进程的Permitted和Effective能力增加，这不会触发 ld.so(8)中描述的安全执行模式。
 
 # 文件能力
 从Linux 2.6.24开始，内核支持使用**setcap**(8)将能力集与可执行文件关联。文件能力集存储在一个名为<u>security.capability</u>的扩展属性（参见**setxattr**(2）和**xattr**(7))中，写入该扩展属性需要使用**CAP_SETFCAP**能力。文件能力集与线程的能力集一起决定了在执行execve(2)后的线程能力。
