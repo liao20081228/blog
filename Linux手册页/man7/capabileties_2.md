@@ -77,7 +77,7 @@ Ambient能力集可以直接使用**prctl**(2)进行修改。如果相应的perm
 ## Effective
 这不是一个集合，而只是单个bit位。如果设置了此位，则在**execve**(2)期间，线程的所有新的Permitted能力也会提升到Effective集。如果未设置此位，则在执行一次**execve**(2)之后，新的Permitted能力都不在新的Effective中。
 
-启用文件Effective能力位意味着导致线程在**execve**(2)期间获取相应Permitted能力的任何文件Permitted或Inheritable能力（请参阅下面的[execve()过程中的能力转换](#Transformation_of_capabilities_during_execve)）也将获得其Effective集中能力。因此，在为文件分配能力时(**setcap**(8)、**cap_set_file**(3)、**cap_set_fd**(3))，如果我们将effective标志指定为对任何能力启用，则相应的permitted或inheritable标志为启用的effective标志也必须指定为启动。
+启用文件Effective能力位意味着导致线程在**execve**(2)期间获取相应Permitted能力的任何文件Permitted或Inheritable能力（请参阅下面的[execve()过程中的能力转换](#Transformation_of_capabilities_during_execve)）也将获得其Effective集中能力。因此，在为文件分配能力时(**setcap**(8)、**cap_set_file**(3)、**cap_set_fd**(3))，如果我们将effective标志指定为对任何能力启用，则相应的permitted或inheritable标志为启用的所有权其他能力的effective标志也必须指定为启动。
 
 
  # execve()过程中的能力转换
