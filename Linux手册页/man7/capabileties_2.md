@@ -25,9 +25,11 @@ grammar_cjkRuby: true
 
 # 线程能力集
 
-使用**capset**(2)，线程可以操作自己的能力集；请参阅下面的<u>[以编程方式调整能力集](#Programmatically_adjusting_capability_sets)</u>。
+使用**capset**(2)，线程可以操作自己的能力集；请参阅下面的[以编程方式调整能力集](#Programmatically_adjusting_capability_sets)。
 
 从Linux 3.2开始，文件<u>/proc/sys/kernel/cap_last_cap</u>公开了运行内核支持的最高能力的数值；这可以用来确定能力集中可能设置的最高位。
+
+通过**fork**(2)创建的子进程继承其父的能力集的副本。有关**execve**(2)如何影响能力的详细信息，请参阅下面的[execve()期间的能力转换](#Transformation_of_capabilities_during_execve)。
 
 每个线程具有以下包含零个或多个上述能力的能力集：
 
@@ -46,22 +48,20 @@ grammar_cjkRuby: true
 
 ## Bounding
 
-能力Bounding集是一种机制，可用于限制在execve(2)期间获得的能力。
+能力Bounding集是一种机制，可用于限制在**execve**(2)期间获得的能力。
 
-从Linux 2.6.25开始每线程都有此能力集。在较旧的内核中，能力Bounding集是系统范围的属性，由系统上的所有线程共享。
+从Linux 2.6.25开始每线程都有此能力集。在较旧的内核中，Bounding能力集是系统范围的属性，由系统上的所有线程共享。
 
-有关更多详细信息，请参阅下面的能力Bounding集。
+有关更多详细信息，请参阅下面的[Bounding能力集](#Capability_bounding_set)。
 
 ## Ambient
 从Linux 4.3开始每线程都有此能力集。
 
-这是一组非特权程序通过execve(2)保留的能力。Ambient能力集遵循不变式，即如果不能同时被允许和继承，则任何能力都不能是Ambient能力。
+这是一组非特权程序通过**execve**(2)保留的能力。Ambient能力集遵循不变式，即如果不能同时被允许和继承，则任何能力都不能是Ambient能力。
 
-通过fork(2)创建的子进程继承其父的能力集的副本。有关execve(2)如何影响能力的详细信息，请参阅 下面的execve()期间的能力转换。
+Ambient能力集可以直接使用**prctl**(2)进行修改。如果相应的permitted或Inheritable能力中的任何一个被降低，则Ambient能力将自动降低。
 
-Ambient能力集可以直接使用prctl(2)进行修改。如果相应的permitted或Inheritable能力中的任何一个被降低，则Ambient能力将自动降低。
-
-执行因set-user-ID或set-group-ID位而更改UID或GID的程序，或设置了任何文件能力的程序，将清除Ambient集。当调用execve(2)时，将Ambient能力添加到Permitted集和Effective集。如果在execve(2)期间，Ambient能力导致进程的Permitted和Effective能力增加，这不会触发 ld.so(8)中描述的安全执行模式。
+执行因set-user-ID或set-group-ID位而更改UID或GID的程序，或设置了任何文件能力的程序，将清除Ambient集。当调用**execve**(2)时，将Ambient能力添加到Permitted集和Effective集。如果在**execve**(2)期间，Ambient能力导致进程的Permitted和Effective能力增加，这不会触发 ld.so(8)中描述的安全执行模式。
 
 # 文件能力
 从Linux 2.6.24开始，内核支持使用**setcap**(8)将能力集与可执行文件关联。文件能力集存储在一个名为<u>security.capability</u>的扩展属性（参见**setxattr**(2）和**xattr**(7))中，写入该扩展属性需要使用**CAP_SETFCAP**能力。文件能力集与线程的能力集一起决定了在执行execve(2)后的线程能力。
@@ -81,7 +81,7 @@ Ambient能力集可以直接使用prctl(2)进行修改。如果相应的permitte
 
  # execve()过程中的能力转换
  
- 在**execve**(2)期间，内核使用以下算法计算进程的新能力：
+ 在**execve**(2)期间，<span id='Transformation_of_capabilities_during_execve'>内核</span>使用以下算法计算进程的新能力：
 ```
 P'(ambient)    = (file is privileged) ? 0 : P(ambient)
 P'(permitted)  = (P(inheritable) & F(inheritable)) | (F(permitted) & P(bounding)) | P'(ambient)
