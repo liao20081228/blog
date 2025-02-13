@@ -25,15 +25,15 @@ grammar_cjkRuby: true
 
 # 线程能力集
 
-使用capset(2)，线程可以操作自己的能力集；请参阅下面的以编程方式调整能力集
+使用**capset**(2)，线程可以操作自己的能力集；请参阅下面的<u>[以编程方式调整能力集](#Programmatically_adjusting_capability_sets)</u>。
 
-从Linux 3.2开始，文件/proc/sys/kernel/cap_last_cap公开了运行内核支持的最高能力的数值；这可以用来确定能力集中可能设置的最高位。
-
+从Linux 3.2开始，文件<u>/proc/sys/kernel/cap_last_cap</u>公开了运行内核支持的最高能力的数值；这可以用来确定能力集中可能设置的最高位。
+## Heading
 每个线程具有以下包含零个或多个上述能力的能力集：
 ## Permitted
-这是线程可能承担的effective能力的限制超集。它也是可由在其effective集中不具有CAP_SETPCAP能力的线程添加到inheritable集中的能力的限制超集。
+这是线程可能承担的effective能力的限制超集。它也是可由在其effective集中不具有**CAP_SETPCAP**能力的线程添加到inheritable集中的能力的限制超集。
 
-如果一个线程从其permitted集合中删除了一个能力，那么它永远不能重新获得该能力（除非它execve(2）一个set-user-ID-root程序，或者一个关联文件能力授予了该能力的程序)。
+如果一个线程从其permitted集合中删除了一个能力，那么它永远不能重新获得该能力（除非它**execve**(2）一个set-user-ID-root程序，或者一个关联文件能力授予了该能力的程序)。
 
 ## Inheritable
 这是通过execve(2)保留的一组能力。在执行任何程序时Inheritable能力仍然是可继承的，且当执行一个在文件Inheritable集中设置了相应bit位的程序时，Inheritable集中的能力将被添加到Permitted集中。
@@ -95,9 +95,37 @@ F()表示文件能力集
 
 <u>注意</u>：与上述能力转换规则相关的下列详细信息：
 
-- ambient能力集从Linux 4.3开始才出现。在**execve**(2)期间确定ambient集的转换时，特权文件是指具有能力或set-user-ID或set-group-IDbit位的文件。
+- ambient能力集从Linux 4.3开始才出现。在**execve**(2)期间确定ambient集的转换时，特权文件是指具有能力或set-user-ID或set-group-ID bit位的文件。
 - 在Linux 2.6.25之前，Bounding集是所有线程共享的系统范围属性。在**execve**(2)期间使用该系统范围的值来计算新的Permitted集，其方式与上面显式的用于<u>P(bounding)</u>的方式相同。
 
 <u>注意</u>：在上述能力转换期间，文件能力可能被忽略（视为空），原因与忽略set-user-ID和set-group-ID位相同；参见**execve**(2)。如果内核是用<u>no_file_caps</u>选项引导的，文件能力也同样会被忽略。
 
-<u>注意</u>：根据上面的规则，如果具有非零用户ID的进程执行**execve**(2)，那么在其permitted和effective集中存在的任何能力都将被清除。有关用户ID为零的进程执行**execve**(2)时的能力的处理，请参阅下面的<u>root程序的执行和能力</u>。
+<u>注意</u>：根据上面的规则，如果具有非零用户ID的进程执行**execve**(2)，那么在其permitted和effective集中存在的任何能力都将被清除。有关用户ID为零的进程执行**execve**(2)时的能力的处理，请参阅下面的<u>[root程序的执行和能力](#Capabilities_and_execution_of_programs_by_root)</u>。
+
+
+# root程序的执行和能力
+<span id='Capabilities_and_execution_of_programs_by_root'>为了</span>镜像传统的UNIX语义，当具有UID 0 (root)的进程执行程序和执行set-user-ID-root程序时，内核会对文件功能进行特殊处理。
+
+在对由二进制文件的set-user-ID模式位触发的进程有效ID执行任何更改之后，例如，由于执行set-user-ID-root程序，将有效用户ID切换为0 (root)，内核按如下方式计算文件能力集：
+
+（1）如果进程的真实或有效用户ID为0（root），则忽略文件inheritable和permitted集；替代的是它们在概念上被认为是全1（即启用了所有能力）。（此行为有一个例外，在下面<u>[具有文件能力的Set-user-ID-root程序](#Set-user-ID-root-programs-that-have-file-capabilities)</u>中描述。）
+
+(2)如果进程的有效用户ID为0（root）或者文件effective位实际上是启用的，那么文件effective位在概念上被定义为1（启用）。
+
+然后，如上所述，使用文件能力集的这些名义值来计算**execve**(2)过程中进程能力的转换。
+
+因此，当具有非零UID的进程**execve**(2)没有附加能力集的set-user-ID-root程序，或者当实际和有效UID为零的进程**execve**(2)执行一个程序时，该进程的新permitted能力的计算简化为：
+```
+P'(permitted)   = P(inheritable) | P(bounding)
+
+P'(effective)   = P'(permitted)
+```
+因此，进程将获得其permitted和effective能力集中的所有能力，但被bounding集屏蔽的能力除外。（在P'(permitted）的计算中，P'（ambient）项可以简化，因为根据定义它是P'（inheritable）的适当子集。)
+
+本小节中描述的对用户ID 0 (root)的特殊处理可以使用下面描述的securebits机制禁用。
+
+# 具有文件能力的Set-user-ID-root程序
+在<span id='Set-user-ID-root-programs-that-have-file-capabilities'>上面</span>的<u>[root程序的执行和能力](#Capabilities_and_execution_of_programs_by_root)</u>中描述的行为有一个例外。
+
+# 以编程方式调整能力集
+<span id='Programmatically_adjusting_capability_sets'>editorSelectionText</span><u>editorSelectionText</u>
