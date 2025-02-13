@@ -60,6 +60,44 @@ grammar_cjkRuby: true
 
 Ambient能力集可以直接使用prctl(2)进行修改。如果相应的permitted或Inheritable能力中的任何一个被降低，则Ambient能力将自动降低。
 
-执行因set-user-ID或set-group-ID位而更改UID或GID的程序，或设置了任何文件能力的程序，将清除Ambient集。当调用execve(2)时，将环境能力添加到允许集，并将其分配到有效集。如果在execve(2)期间，环境能力导致进程的允许和有效能力增加，这不会触发ld.so(8)中描述的安全执行模式。
+执行因set-user-ID或set-group-ID位而更改UID或GID的程序，或设置了任何文件能力的程序，将清除Ambient集。当调用execve(2)时，将Ambient能力添加到Permitted集和Effective集。如果在execve(2)期间，Ambient能力导致进程的Permitted和Effective能力增加，这不会触发ld.so(8)中描述的安全执行模式。
 
 # 文件能力
+从Linux 2.6.24开始，内核支持使用**setcap**(8)将能力集与可执行文件关联。文件能力集存储在一个名为<u>security.capability</u>的扩展属性（参见**setxattr**(2）和**xattr**(7))中，写入该扩展属性需要使用**CAP_SETFCAP**能力。文件能力集与线程的能力集一起决定了在执行execve(2)后的线程能力。
+
+三个文件能力集分别为：
+
+## Permitted（以前称为强制）
+这些能力被自动添加到线程的Permitted集，而忽略线程的inheritable能力。
+
+## Inheritable（以前称为允许）
+该集合与线程的inheritable集合进行且运算，以确定在**execve**(2)之后线程的Permitted集中的哪些inheritable能力被允许。
+
+## Effective
+这不是一个集合，而只是单个bit位。如果设置了此位，则在**execve**(2)期间，线程的所有新的Permitted能力也会提升到Effective集。如果未设置此位，则在执行一次**execve**(2)之后，新的Permitted能力都不在新的Effective中。
+
+启用文件Effective能力位意味着任何导致线程在**execve**(2)期间获取相应Permitted能力的文件Permitted或Inheritable能力（请参阅下面的execve()期间能力转换）也将获得其Effective集中能力。因此，在为文件(setcap(8)、cap_set_file(3)、cap_set_fd(3))分配能力时，如果我们将有效标志指定为对任何能力启用，则还必须将有效标志指定为对其启用相应的允许或可继承标志的所有其他能力启用。
+
+ # execve()过程中的能力转换
+ 
+ 在**execve**(2)期间，内核使用以下算法计算进程的新能力：
+```
+P'(ambient)    = (file is privileged) ? 0 : P(ambient)
+P'(permitted)  = (P(inheritable) & F(inheritable)) | (F(permitted) & P(bounding)) | P'(ambient)
+P'(effective)  = F(effective) ? P'(permitted) : P'(ambient)
+P'(inheritable)= P(inheritable)    \[i.e., unchanged]
+P'(bounding)   = P(bounding)       \[i.e., unchanged]
+```
+其中：
+P()表示**execve**(2)之前的线程能力集的值
+P'()表示**execve**(2)之后线程能力集的值
+F()表示文件能力集
+
+<u>注意</u>：与上述能力转换规则相关的下列详细信息：
+
+- ambient能力集从Linux 4.3开始才出现。在**execve**(2)期间确定ambient集的转换时，特权文件是指具有能力或set-user-ID或set-group-IDbit位的文件。
+- 在Linux 2.6.25之前，Bounding集是所有线程共享的系统范围属性。在**execve**(2)期间使用该系统范围的值来计算新的Permitted集，其方式与上面显式的用于<u>P(bounding)</u>的方式相同。
+
+<u>注意</u>：在上述能力转换期间，文件能力可能被忽略（视为空），原因与忽略set-user-ID和set-group-ID位相同；参见**execve**(2)。如果内核是用<u>no_file_caps</u>选项引导的，文件能力也同样会被忽略。
+
+<u>注意</u>：根据上面的规则，如果具有非零用户ID的进程执行**execve**(2)，那么在其permitted和effective集中存在的任何能力都将被清除。有关用户ID为零的进程执行**execve**(2)时的能力的处理，请参阅下面的<u>root程序的执行和能力</u>。
