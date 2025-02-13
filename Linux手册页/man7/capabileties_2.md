@@ -77,7 +77,8 @@ Ambient能力集可以直接使用**prctl**(2)进行修改。如果相应的perm
 ## Effective
 这不是一个集合，而只是单个bit位。如果设置了此位，则在**execve**(2)期间，线程的所有新的Permitted能力也会提升到Effective集。如果未设置此位，则在执行一次**execve**(2)之后，新的Permitted能力都不在新的Effective中。
 
-启用文件Effective能力位意味着任何导致线程在**execve**(2)期间获取相应Permitted能力的文件Permitted或Inheritable能力（请参阅下面的execve()期间能力转换）也将获得其Effective集中能力。因此，在为文件(setcap(8)、cap_set_file(3)、cap_set_fd(3))分配能力时，如果我们将有效标志指定为对任何能力启用，则还必须将有效标志指定为对其启用相应的允许或可继承标志的所有其他能力启用。
+启用文件Effective能力位意味着导致线程在**execve**(2)期间获取相应Permitted能力的任何文件Permitted或Inheritable能力（请参阅下面的[execve()过程中的能力转换](#Transformation_of_capabilities_during_execve)）也将获得其Effective集中能力。因此，在为文件分配能力时(**setcap**(8)、**cap_set_file**(3)、**cap_set_fd**(3))，如果我们将effective标志指定为对任何能力启用，则相应的permitted或inheritable标志为启用的effective标志也必须指定为启动。
+
 
  # execve()过程中的能力转换
  
@@ -109,7 +110,7 @@ F()表示文件能力集
 
 在对由二进制文件的set-user-ID模式位触发的进程有效ID执行任何更改之后，例如，由于执行set-user-ID-root程序，将有效用户ID切换为0 (root)，内核按如下方式计算文件能力集：
 
-（1）如果进程的真实或有效用户ID为0（root），则忽略文件inheritable和permitted集；替代的是它们在概念上被认为是全1（即启用了所有能力）。（此行为有一个例外，在下面<u>[具有文件能力的Set-user-ID-root程序](#Set-user-ID-root-programs-that-have-file-capabilities)</u>中描述。）
+（1）如果进程的真实或有效用户ID为0（root），则忽略文件inheritable和permitted集；替代的是它们在概念上被认为是全1（即启用了所有能力）。（此行为有一个例外，在下面<u>[具有文件能力的Set-user-ID-root程序](#Set-user-ID-root_programs_that_have_file_capabilities)</u>中描述。）
 
 (2)如果进程的有效用户ID为0（root）或者文件effective位实际上是启用的，那么文件effective位在概念上被定义为1（启用）。
 
@@ -126,7 +127,7 @@ P'(effective)   = P'(permitted)
 本小节中描述的对用户ID 0 (root)的特殊处理可以使用下面描述的securebits机制禁用。
 
 # 具有文件能力的Set-user-ID-root程序
-在<span id='Set-user-ID-root-programs-that-have-file-capabilities'>上面</span>的<u>[root程序的执行和能力](#Capabilities_and_execution_of_programs_by_root)</u>中描述的行为有一个例外。
+在<span id='Set-user-ID-root_programs_that_have_file_capabilities'>上面</span>的<u>[root程序的执行和能力](#Capabilities_and_execution_of_programs_by_root)</u>中描述的行为有一个例外。
 
 # 以编程方式调整能力集
 <span id='Programmatically_adjusting_capability_sets'>editorSelectionText</span><u>editorSelectionText</u>
