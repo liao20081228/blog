@@ -189,6 +189,19 @@ curl https://curl.se/info
 
 
 # 选项
+选项以一个或两个破折号开头。许多选项都需要在其旁边添加一个附加值。如果提供的文本不以破折号开头，则假定它是 URL 并视为 URL。
+
+选项的短“单破折号”形式，例如 <u>-d</u>，可以在其与值之间使用空格或不使用空格，但建议使用空格作为分隔符。长双破折号形式，例如 <u>-d、--data</u>，需要在它与它的值之间添加空格。
+
+不需要任何附加值的短版本选项可以立即彼此相邻使用，例如，您可以一次将所有选项 <u>-O</u>、<u>-L</u> 和<u>-v</u> 指定为 <u>-OLv</u>。
+
+通常，所有布尔选项都使用 -**-option** 启用，再次使用 --**no**-option 禁用。也就是说，您使用相同的选项名称，但在其前面加上“no-”。但是，在此列表中，我们主要仅列出并显示它们的 <u>--option</u> 版本。
+
+当使用 <u>-:</u>, <u>--next</u> 时，它会重置解析器状态，并且您会以干净的选项状态重新开始，但全局选项除外。全局选项即使在 <u>-:</u>, <u>--next</u> 之后仍保留其值和含义。
+
+第一个参数正好是两个破折号（“--”）标记选项的结束；选项结束后的任何参数即使以破折号开头也会被解释为 URL 参数。
+
+以下选项是全局的：<u>--fail-early、--libcurl、--parallel-immediate、--parallel-max、-Z、--parallel、-#、--progress-bar、--rate、-S、--show-error、--stderr、--styled-output、--trace-ascii、--trace-config、--trace-ids、--trace-time、--trace 和 -v、--verbose</u>。
 
 
 **--abstract-unix-socket \<path>**
