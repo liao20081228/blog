@@ -191,6 +191,21 @@ curl https://curl.se/info
 # 选项
 
 
+**--abstract-unix-socket \<path>**
+
+（HTTP）通过抽象 Unix 域套接字进行连接，而不是使用网络。注意：netstat 显示以“@”为前缀的抽象套接字的路径，但 \<path> 参数不应包含此前导字符。
+
+如果多次提供 <u>--abstract-unix-socket</u>，则使用最后一次设置的值。
+
+示例：
+```
+curl --abstract-unix-socket socketpath https://example.com
+```
+另请参阅<u> --unix-socket</u>。已在 7.53.0 中添加。
+
+
+
+
 
 ------
 
