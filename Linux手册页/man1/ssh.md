@@ -1,6 +1,6 @@
 ---
 title: ssh
-tags: 文件管理,用户命令,man1
+tags: 一般命令,man1
 ---
 
 ------
