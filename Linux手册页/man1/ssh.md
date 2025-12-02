@@ -1,5 +1,5 @@
 ---
-title: cp
+title: ssh
 tags: 文件管理,用户命令,man1
 ---
 
