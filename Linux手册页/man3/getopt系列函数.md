@@ -62,7 +62,7 @@ glibc的特性测试宏要求（参见feature_test_macros(7)）：
 
 如果重复调用**getopt**()，它依次返回每个选项元素的选项字符。在前面的例子中第一次返回“a”，第二次返回“d”。
 
-默认情况下，**getopt**()在每次调用时会**重新排列**<u>argv</u>数组中除了argv[0]之外的元素，最终这些元素中所有既不是选项（无论合不合法）也不是选项参数的元素都会排到<u>argv</u>数组末尾。这样<u>argv</u>数组中除argv[0]之外的元素分为与选项有关和与选项无关两类。这两类元素的内部相对顺序并不会变。例如，<u>opstring</u>为“a:b:cd::e:”，命令行为`"app.exe test0 -a test1  test2 -b test3" `，那么<u>argv</u>的最后会变成`"-a test1 -b test3 test0 test2"`。
+默认情况下，**getopt**()在每次调用时会**重新排列**<u>argv</u>数组中除了argv[0]之外的元素，最终这些元素中所有既不是选项（无论合不合法）也不是选项参数的元素都会排到<u>argv</u>数组末尾。这样<u>argv</u>数组中除argv[0]之外的元素分为与选项有关和与选项无关两类。这两类元素的内部相对顺序并不会变。例如，<u>opstring</u>为`“a:b:cd::e:”`，命令行为`"app.exe test0 -a test1  test2 -b test3" `，那么<u>argv</u>的最后会变成`"-a test1 -b test3 test0 test2"`。
 
 每次调用**getopt**时，**getopt**会依次扫描<u>argv</u>及其以后的元素，期待找到一个选项元素：
 * 如果**getopt**()找到一个由<u>opstring</u>规定的合法选项元素，则返回它的选项字符，置<u>optopt</u>为0，并设置外部变量<u>argv</u>为下一个要扫描的元素下标，同时更新静态变量<u>nextchar</u>，以便下次调用时能够继续扫描后面的选项字符或元素。
