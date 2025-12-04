@@ -13,7 +13,7 @@ tags: Linux程序员手册
 
 getopt，getopt_long，getopt_long_only，optarg，optind，opterr，optopt——解析命令行参数
 
-# 概览
+# 概要
 **原型**：
 ```cpp
 #include <unistd.h>
