@@ -8,6 +8,7 @@ tags: Linux程序员手册
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>[《Linux man-pages》](https://www.kernel.org/doc/man-pages/)》。</font>版本为6.7，手册更新时间为2023-10。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
+[TOC]
 
 # 名字
 
@@ -49,7 +50,7 @@ glibc的特性测试宏要求（参见feature_test_macros(7)）：
 
 
 # 说明
-## 2.1 getopt
+## getopt
 **getopt**()解析命令行参数。它的参数<u>argc</u>和<u>argv</u>是在程序调用时传递给main()函数的参数计数和数组。
 
 >参数<u>argc</u>它是程序启动时传递给main()函数的参数。<u>argc</u>为传入程序的参数的个数，默认为1，代表程序自身。
@@ -102,7 +103,7 @@ glibc的特性测试宏要求（参见feature_test_macros(7)）：
 
 外部变量<u>optopt</u>表示不在选项字符串<u>optstring</u>中的 或者 缺少必需选项参数的选项字符，初始值为63，即'?'。
 
-## 2.2 getopt_long和getopt_long_only
+## getopt_long和getopt_long_only
 
 **getopt_long**()函数的作用类似于**getopt**()，但它可以接收接受长选项，以`--`开头。如果程序仅接受长选项，那么<u>optstring</u>应该被指定为一个空字符串（“”），而不是NULL。如果缩写是唯一的或者可以精确的匹配一些定义的选项，则可以缩写长选项名称。长选项可能会采用`--arg=param`或`--arg param`形式的参数。
 
@@ -126,8 +127,8 @@ glibc的特性测试宏要求（参见feature_test_macros(7)）：
 参数<u>longindex</u>，如果不为NULL，则它指向一个变量。如果长选项合法，则函数返回时将该变量设置为长选项在<u>longopts</u>所指数组的索引。如果长选项非法或者没有更多的长选项，则保持上一次的值不变。
   
 
-# 3 返回值
-## 3.1 getopt
+# 返回值
+## getopt
 如果**getopt**()在<u>argv</u>中找到一个合法的选项，则返回该选项字符。如果有参数，则<u>optarg</u>指向其参数，否则<u>optarg</u>为NULL。optopt保持不变。
 
 如果**getopt**()在<u>argv</u>中找到一个非法的选项，则会根据<u>opterr</u>设置决定是否输出错误消息。
@@ -137,7 +138,7 @@ glibc的特性测试宏要求（参见feature_test_macros(7)）：
 
 如果没有更多命令行选项，**getopt**()返回-1。
 
-## 3.2 getopt_long和getopt_long_only
+## getopt_long和getopt_long_only
 
 当处理短选项时，**getopt_long**()和**getopt_long_only**()和**getopt**()进行相同的处理。 
 
@@ -149,21 +150,21 @@ glibc的特性测试宏要求（参见feature_test_macros(7)）：
   * 如果缺少参数，根据<u>optstring</u>做出与**getopt**()一样的处理
 * 出错和返回-1的情况与**getopt**()相同，加上'？'用于模糊匹配或无关的参数。
 
-# 4 环境变量
+# 环境变量
 **POSIXLY_CORRECT**
 &emsp;&emsp;如果设置，一旦遇到既非选项元素又非选项参数的元素时停止处理。
 
 **\_\<PID>\_GNU_nonoption_argv_flags_**
 &emsp;&emsp;这个变量被**bash**(1)2.0使用，用于向glibc传达哪些参数是通配符展开的结果，所以不应该被视为选项。 这个行为在**bash**(1) 2.01版本中被删除了，但在glibc中仍然支持。
 
-# 5 属性
+# 属性
 对于本节中使用的术语的解释，请参阅**attribute**(7)。
 
 |接口|属性|值|
 |:--|:--|:--|
 |**getopt**(), **getopt_long**(), <br />**getopt_long_only**()|Thread safety | MT-Unsafe race:getopt env|
 
-# 6 遵守标准
+# 遵守标准
 **getopt**()：
 
 &emsp;&emsp;如果设置了环境变量POSIXLY_CORRECT，则POSIX.1-2001，POSIX.1-2008和POSIX.2。 否则，<u>argv</u>的元素并不是真正的<u>const</u>，因为我们对其进行了置换。 我们假装它们在原型中是<u>const</u>，以便与其他系统兼容。
@@ -174,9 +175,9 @@ glibc的特性测试宏要求（参见feature_test_macros(7)）：
   
 **getopt_long**()和**getopt_long_only**()：
 
-&emsp;&emsp;这些函数是GNU扩展。
+&emsp;&emsp; 这些函数是GNU扩展。
 
-# 7 注意事项
+# 注意事项
 
 一个程序扫描多个参数数组，或者不止一次重新扫描同一个参数数组，想要使用GNU扩展功能，例如<u>opstring</u>开始的“+”和“-”，或者在两个扫描之间更改**POSIXLY_CORRECT**的值，都必须将<u>optind</u>重新初始化为0，而不是1。因为置为0可以强制调用内部初始化函数，这个函数会重新检查**POSIXLY_CORRECT**和<u>optstring</u>中的GNU扩展功能。
 
@@ -230,7 +231,7 @@ int main(int argc, char *argv[])
 }
 ```
 
-## 8.2 getopt_long
+## getopt_long
 
 以下示例程序说明了**getopt_long**()及其大多数特性的用法。
 
