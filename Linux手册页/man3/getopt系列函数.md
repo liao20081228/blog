@@ -323,7 +323,7 @@ int main(int argc, char **argv)
 **getopt**(1)，**getsubopt**(3)
 
 # 版权
-该页面是Linux<u>手册页</u>项目4.15版的一部分。 该项目的描述，有关报告错误的信息以及此页面的最新版本,可以在<https://www.kernel.org/doc/man-pages/>上找到。
+该页面是Linux<u>手册页</u>项目6.7版的一部分。 该项目的描述，有关报告错误的信息以及此页面的最新版本,可以在<https://www.kernel.org/doc/man-pages/>上找到。
 
 
 
