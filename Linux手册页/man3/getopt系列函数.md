@@ -171,8 +171,9 @@ glibc的特性测试宏要求（参见feature_test_macros(7)）：
 
 在<u>optstring</u>中使用'+'和'-'是GNU扩展。
 
-在某些较旧的实现中，在<u><stdio.h\></u>中声明了**getopt**()。 SUSv1允许该声明出现在<u>\<unistd.h\></u>或<u>\<stdio.h\></u>中。 POSIX.1-1996将<u>\<stdio.h\></u>的使用标记为LEGACY。 POSIX.1-2001不需要声明出现在<u>\<stdio.h\></u>中。
-  
+
+在某些较旧的实现中，在 <u><stdio.h\></u> 中声明了**getopt**()。 SUSv1允许该声明出现在 <u>\<unistd.h\></u> 或 <u>\<stdio.h\></u> 中。 POSIX.1-1996将 <u>\<stdio.h\></u> 的使用标记为LEGACY。 POSIX.1-2001不需要声明出现在 <u>\<stdio.h\></u> 中。
+
 **getopt_long**()和**getopt_long_only**()：
 
 这些函数是GNU扩展。
