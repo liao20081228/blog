@@ -5,7 +5,7 @@ tags: Linux程序员手册
 
 ------
 
-***<font color=blue>版权声明</font>：本文参考<font color=blue>[《Linux man-pages 4.15》](https://www.kernel.org/doc/man-pages/)。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>[《Linux man-pages》](https://www.kernel.org/doc/man-pages/)》。</font>版本为6.7，手册更新时间为2023-10。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
 
@@ -335,11 +335,7 @@ int main(int argc, char **argv)
 
 
 
-------
 
-***<font color=blue>版权声明</font>：本文翻译自<font color=blue>[《Linux man-pages 6.7》](https://www.kernel.org/doc/man-pages/)。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
-
-------
 ------
 
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>[《Linux man-pages》](https://www.kernel.org/doc/man-pages/)》。</font>版本为6.7，手册更新时间为2023-10。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
