@@ -167,15 +167,15 @@ glibc的特性测试宏要求（参见feature_test_macros(7)）：
 # 遵守标准
 **getopt**()：
 
-&emsp;&emsp;如果设置了环境变量POSIXLY_CORRECT，则POSIX.1-2001，POSIX.1-2008和POSIX.2。 否则，<u>argv</u>的元素并不是真正的<u>const</u>，因为我们对其进行了置换。 我们假装它们在原型中是<u>const</u>，以便与其他系统兼容。
+如果设置了环境变量POSIXLY_CORRECT，则POSIX.1-2001，POSIX.1-2008和POSIX.2。 否则，<u>argv</u>的元素并不是真正的<u>const</u>，因为我们对其进行了置换。 我们假装它们在原型中是<u>const</u>，以便与其他系统兼容。
 
-&emsp;&emsp;在<u>optstring</u>中使用'+'和'-'是GNU扩展。
+在<u>optstring</u>中使用'+'和'-'是GNU扩展。
 
-&emsp;&emsp;在某些较旧的实现中，在<u><stdio.h\></u>中声明了**getopt**()。 SUSv1允许该声明出现在<u>\<unistd.h\></u>或<u>\<stdio.h\></u>中。 POSIX.1-1996将<u>\<stdio.h\></u>的使用标记为LEGACY。 POSIX.1-2001不需要声明出现在<u>\<stdio.h\></u>中。
+在某些较旧的实现中，在<u><stdio.h\></u>中声明了**getopt**()。 SUSv1允许该声明出现在<u>\<unistd.h\></u>或<u>\<stdio.h\></u>中。 POSIX.1-1996将<u>\<stdio.h\></u>的使用标记为LEGACY。 POSIX.1-2001不需要声明出现在<u>\<stdio.h\></u>中。
   
 **getopt_long**()和**getopt_long_only**()：
 
-&emsp;&emsp; 这些函数是GNU扩展。
+这些函数是GNU扩展。
 
 # 注意事项
 
