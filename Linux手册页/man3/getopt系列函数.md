@@ -340,3 +340,8 @@ int main(int argc, char **argv)
 ***<font color=blue>版权声明</font>：本文翻译自<font color=blue>[《Linux man-pages 6.7》](https://www.kernel.org/doc/man-pages/)。</font><font color=red>未经作者允许</font>，<font color=blue>严禁用于商业出版</font>，<font color=red>否则追究法律责任。转载请注明出处！！！</font>***
 
 ------
+------
+
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[3GPP TS 38.331](https://www.3gpp.org/ftp/Specs/2025-06/Rel-18/38_series/38331-i60.zip)》。</font>版本为V18.6.0，手册更新时间为2025-06。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+
+------
