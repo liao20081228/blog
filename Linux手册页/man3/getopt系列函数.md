@@ -180,8 +180,8 @@ glibc的特性测试宏要求（参见feature_test_macros(7)）：
 
 一个程序扫描多个参数数组，或者不止一次重新扫描同一个参数数组，想要使用GNU扩展功能，例如<u>opstring</u>开始的“+”和“-”，或者在两个扫描之间更改**POSIXLY_CORRECT**的值，都必须将<u>optind</u>重新初始化为0，而不是1。因为置为0可以强制调用内部初始化函数，这个函数会重新检查**POSIXLY_CORRECT**和<u>optstring</u>中的GNU扩展功能。
 
-# 8 示例
-## 8.1 getopt
+# 示例
+## getopt
 以下简单示例程序使用**getopt**()处理两个程序选项：<u>-n</u>，没有关联值； <u>-t</u> <u>val</u>，它需要一个关联的值。
 
 ```cpp
