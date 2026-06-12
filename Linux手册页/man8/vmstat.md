@@ -118,5 +118,3 @@ free(1), iostat(1), mpstat(1), ps(1), sar(1), top(1), slabinfo(5)
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《vmstat manpages》。</font>当前版本为4.0.4，手册更新时间为2024-07-19。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
-
-**strong text**
