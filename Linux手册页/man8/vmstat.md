@@ -5,7 +5,7 @@ tags: man8,系统管理
 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《vmstat manpages》。</font>当前版本为2.36.1，手册更新时间为2015-08。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《vmstat manpages》。</font>当前版本为4.0.4，手册更新时间为2024-07-19。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
 
