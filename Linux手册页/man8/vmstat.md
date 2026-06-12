@@ -12,14 +12,8 @@ tags: man8,系统管理
 # 名称
 mount——挂载一个文件系统。
 
-# 总览
-**mount** [**-h**|**-V**]
-**mount** [**-l**] [**-t** <u>fstype</u>]
-**mount** **-a** [**-fFnrsvw**] [**-t** <u>fstype</u>] [**-O** optlist]
-**mount** [**-fnrsvw**] [**-o** <u>device</u>] <u>device</u>|<u>mountpoint</u>
-**mount** [**-fnrsvw**] [**-t** <u>fstype</u>] [**-o** <u>device</u>] <u>device</u> <u>mountpoint</u>
-**mount** **--bind**|**--rbind**|**--move** <u>olddir</u> <u>newdir</u>
-**mount** **--make-**{**shared**|**slave**|**private**|**unbindable**|**rshared**|**rslave**|**rprivate**|**runbindable**} <u>mountpoint</u>
+# 概览
+vmstat \[options] \[<u>delay</u> \[<u>count</u>]]
 # 说明
 在 Unix 系统中可访问的所有文件都排列在一棵大树中，即文件层次结构，以 / 为根。 这些文件可以分布在多个设备上。 **mount** 命令用于将在某个设备上找到的文件系统附加到大文件树上。 相反，**umount**(8) 命令则会将它分离。 文件系统用于控制数据如何存储在设备上或通过网络或其他服务以虚拟方式提供。
 
@@ -76,7 +70,7 @@ PARTUUID=<u>uuid</u>
 					 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《mount manpages》。</font>当前版本为8.30，手册更新时间为2015-08。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《vmstat manpages》。</font>当前版本为4.0.4，手册更新时间为2024-07-19。<font color=red>本文与原文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
 
