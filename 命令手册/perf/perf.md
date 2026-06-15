@@ -53,6 +53,16 @@ perf - Linux性能分析工具
   - kmaps - 打印内核和模块映射（不带浏览的 perf script 和 perf report）
 - --debug-file
 写debug输出到特定文件。
+
+# 说明
+Linux性能计数器是一个基于内核的新型子系统，为所有性能分析相关功能提供了一个框架。它涵盖了硬件层面（CPU/PMU，性能监控单元）和软件层面（软件计数器、跟踪点）的特性。
+
+# 另请参阅
+perf-stat(1), perf-top(1), perf-record(1), perf-report(1), perf-list(1)
+
+perf-amd-ibs(1), perf-annotate(1), perf-archive(1), perf-arm-spe(1), perf-bench(1), perf-buildid-cache(1), perf-buildid-list(1), perf-c2c(1), perf-config(1), perf-data(1), perf-diff(1), perf-evlist(1), perf-ftrace(1), perf-help(1), perf-inject(1), perf-intel-pt(1), perf-iostat(1), perf-kallsyms(1), perf-kmem(1), perf-kvm(1), perf-lock(1), perf-mem(1), perf-probe(1), perf-sched(1),perf-script(1), perf-test(1), perf-trace(1), perf-version(1)
+
+
 ------
 
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《perf manpages》</font>。当前版本为7.0.0，手册更新时间为2026-05-25。<font color=red>本文与原文档采用相同的版权许可</font>。<font color=blue>转载请注明出处！！！</font>***
