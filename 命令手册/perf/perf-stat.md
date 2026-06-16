@@ -29,7 +29,7 @@ perf-data - 运行命令并收集性能计数器统计信息
 - report
  参见 STAT REPORT。
 - -e, --event=
- 选择 PMU 事件。选择可以是：
+选择 PMU 事件。选择可以是：
   - 一个符号事件名称（使用 <u>perf</u> <u>list</u>列出所有事件）
   - 一个原始的PMU事件，形式为rN，其中N是一个表示原始寄存器编码的十六进制值，其事件控制寄存器的布局描述在`/sys/bus/event_source/devices/cpu/format/*`的条目中。
   - 一个符号事件或原始 PMU 事件，后跟一个可选的冒号和事件修饰符列表，例如 `cpu-cycles:p`。有关事件修饰符的详细信息，请参阅 perf-list(1) 手册页。
@@ -39,16 +39,24 @@ perf-data - 运行命令并收集性能计数器统计信息
  由 `/sys/bus/event_source/devices/<pmu>/format/*` 中对应的条目定义
 
   注意，最后两种语法支持在 PMU 名称中使用前缀和通配符匹配，以简化在大型系统中跨多个相同类型 PMU 实例（例如内存控制器 PMU）创建事件的过程。非核心 PMU 通常会有多个实例，因此在此匹配过程中也会忽略前缀'uncore_'。
-
 - -i, --no-inherit
  子任务不继承计数器
 - -p, --pid=\<pid>
  对现有进程 ID（逗号分隔列表）进行统计事件
-   -t, --tid=\<tid>
+- -t, --tid=\<tid>
  对现有线程 ID（逗号分隔列表）进行统计事件
- 
- 
- 
+ - -b, --bpf-prog
+在现有的BPF程序ID上统计事件（以逗号分隔的列表），需要root权限。可以使用bpftool-prog来查找系统中所有BPF程序的ID。例如： 
+    ```
+    bpftool prog | head -n 1
+    17247: tracepoint  name sys_enter  tag 192d548b9d754067  gpl
+    
+    # perf stat -e cycles,instructions --bpf-prog 17247 --timeout 1000
+    Performance counter stats for 'BPF program(s) 17247':
+    85,967      cycles
+    28,982      instructions              #    0.34  insn per cycle
+    1.102235068 seconds time elapsed
+    ```
 # 说明
 Linux性能计数器是一个基于内核的新型子系统，为所有性能分析相关功能提供了一个框架。它涵盖了硬件层面（CPU/PMU，性能监控单元）和软件层面（软件计数器、跟踪点）的特性。
 
