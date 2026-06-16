@@ -10,10 +10,11 @@ tags: perf,性能
 ------
 
 # 名称
-perf-data - 数据文件相关处理
+perf-iostat- 显示 I/O 性能指标
 
 # 概览
-<u>perf</u> data \[\<common options>] \<command> \[\<options>]
+perf iostat list
+perf iostat <ports> -- <command> [<options>]
 
 # 说明
 数据文件相关处理
