@@ -1,5 +1,5 @@
 ---
-title: perf-state
+title: perf-stat
 tags: perf,性能
 ---
 
