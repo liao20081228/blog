@@ -13,7 +13,7 @@ tags: perf,性能
 perf-data - 数据文件相关处理
 
 # 概览
-<u>perf</u> data \[\<common options>] \<command> \[\<options>]
+<u>perf</u> <u>data</u>  \[\<common options>] \<command> \[\<options>]
 
 # 说明
 数据文件相关处理
