@@ -22,34 +22,35 @@ perf-data - 运行命令并收集性能计数器统计信息
 该命令用于运行一个命令并从中收集性能计数器统计数据。
 
 # 选项
-- convert
-将perf数据文件转换为另一种格式。可以设置 data-convert debug 变量以获取转换过程中的调试信息，例如：perf --debug data-convert data convert...
-# CONVERT选项
-- --to-ctf
- 触发 CTF 转换，指定 CTF 数据目录的路径。
-- --to-json
- 触发 JSON 转换。指定要输出的 JSON 文件名。
-- --tod
- 将时间转换为墙上时钟时间。
-- -i
- 指定输入性能数据文件的路径。
-- -f, --force
- 不要抱怨，直接执行。
-- --time
-仅转换给定时间窗口内的采样：`<开始>,<结束>`。时间格式为`秒.纳秒`。如果未给出开始时间（即时间字符串为`，x.y`），则分析从文件开头开始。如果未给出结束时间（即时间字符串为`x.y，`），则分析持续到文件末尾。多个时间范围可以用空格分隔，此时需要将参数用引号括起来，例如：
- `--time "1234.567,1234.789 1235,"`，也支持使用时间百分比来表示多个时间范围。时间字符串格式为`'a%/n,b%/m,...'` 或 `'a%-b%,c%-%d,...'`。例如：
-&emsp;&emsp;选择第二个 10% 的时间片：
-&emsp;&emsp;`perf data convert --to-json out.json --time 10%/2`
-&emsp;&emsp;选择从 0% 到 10% 的时间片：
-&emsp;&emsp;`perf data convert --to-json out.json --time 0%-10%`
-&emsp;&emsp;选择第一个和第二个 10% 的时间片：
-&emsp;&emsp;`perf data convert --to-json out.json --time 10%/1,10%/2`
-&emsp;&emsp;选择从 0% 到 10% 和从 30% 到 40% 的时间片：
-&emsp;&emsp;`perf data convert --to-json out.json --time 0%-10%,30%-40%`
-- -v, --verbose
- 显示更多信息（显示计数器打开错误等）。
-- --all
- 转换所有事件，包括非采样事件（comm、fork 等）到输出。默认关闭，仅转换采样事件。
+- \<command>...
+ 任何你可以在 shell 中指定的命令。
+- record
+ 参见 STAT RECORD。
+- report
+ 参见 STAT REPORT。
+- -e, --event=
+ 选择 PMU 事件。选择可以是：
+  - 一个符号事件名称（使用 <u>perf</u> <u>list</u>列出所有事件）
+  - 一个原始的PMU事件，形式为rN，其中N是一个十六进制值，表示原始寄存器编码，其布局与事件控制寄存器的描述一致，具体描述可参考`/sys/bus/event_source/devices/cpu/format/*`中的条目。
+  - 一个符号事件或原始 PMU 事件，后跟一个可选的冒号和事件修饰符列表，例如 `cpu-cycles:p`。有关事件修饰符的详细信息，请参阅 perf-list(1) 手册页。
+  - 一个符号化的事件，例如 `pmu/param1=0x3,param2/`，其中 param1 和 param2 在 `/sys/bus/event_source/devices/<pmu>/format/* `中被定义为 PMU 的格式。
+'percore' 是一个事件限定符，用于汇总一个核心中两个硬件线程的事件计数。例如：
+ perf stat -A -a -e cpu/event,percore=1/,otherevent...
+  - 一个符号化的事件，例如 pmu/config=M,config1=N,config2=K/，其中 M、N、K 是数字（十进制、十六进制、八进制格式）。每个 config、config1 和 config2 参数的合法取值
+ 由 /sys/bus/event_source/devices/<pmu>/format/* 中对应的条目定义。
+ 注意，最后两种语法支持在 PMU 名称中使用前缀和通配符匹配，以简化在大型系统中跨多个相同类型 PMU 实例（例如内存控制器 PMU）创建事件的过程。
+ 非核心 PMU 通常会有多个实例，因此在此匹配过程中也会忽略前缀
+ 'uncore_'。
+
+- -i, --no-inherit
+ 子任务不继承计数器
+- -p, --pid=\<pid>
+ 对现有进程 ID（逗号分隔列表）进行统计事件
+   -t, --tid=\<tid>
+ 对现有线程 ID（逗号分隔列表）进行统计事件
+ 
+ 
+ 
 # 说明
 Linux性能计数器是一个基于内核的新型子系统，为所有性能分析相关功能提供了一个框架。它涵盖了硬件层面（CPU/PMU，性能监控单元）和软件层面（软件计数器、跟踪点）的特性。
 
