@@ -10,15 +10,18 @@ tags: perf,性能
 ------
 
 # 名称
-perf-data - 数据文件相关处理
+perf-data - 运行命令并收集性能计数器统计信息
 
 # 概览
-<u>perf</u> <u>data</u>  \[\<common options>] \<command> \[\<options>]
+<u>perf</u> <u>stat</u> \[-e \<EVENT> | --event=EVENT] \[-a] \<command>
+<u>perf</u> <u>stat</u> \[-e \<EVENT> | --event=EVENT] \[-a] -- \<command> \[\<options>]
+<u>perf</u> <u>stat</u> \[-e \<EVENT> | --event=EVENT] \[-a] record \[-o file] -- \<command> \[\<options>]
+<u>perf</u> <u>stat</u> report \[-i file]
 
 # 说明
-数据文件相关处理
+该命令用于运行一个命令并从中收集性能计数器统计数据。
 
-# 命令
+# 选项
 - convert
 将perf数据文件转换为另一种格式。可以设置 data-convert debug 变量以获取转换过程中的调试信息，例如：perf --debug data-convert data convert...
 # CONVERT选项
