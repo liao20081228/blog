@@ -13,8 +13,8 @@ tags: perf,性能
 perf-iostat- 显示 I/O 性能指标
 
 # 概览
-perf iostat list
-perf iostat <ports> -- <command> [<options>]
+<u>perf</u>  iostat</u>  list
+<u>perf</u>  iostat</u>  <ports> -- <command> [<options>]
 
 # 说明
 数据文件相关处理
