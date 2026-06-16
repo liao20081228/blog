@@ -36,11 +36,9 @@ perf-data - 运行命令并收集性能计数器统计信息
   - 一个符号化事件，例如 `pmu/param1=0x3,param2/`，其中 `param1` 和 `param2` 被定义为`/sys/bus/event_source/devices/<pmu>/format/* `中的PMU的格式。`'percore'` 是一个事件限定符，用于汇总一个核心中两个硬件线程的事件计数。例如：
  `perf stat -A -a -e cpu/event,percore=1/,otherevent...`
   - 一个符号化的事件，例如 `pmu/config=M,config1=N,config2=K/`，其中 M、N、K 是数字（十进制、十六进制、八进制格式）。每个 <u>config</u>、<u>config1 </u>和 <u>config2 </u>参数的合法取值
- 由 `/sys/bus/event_source/devices/<pmu>/format/*` 中对应的条目定义。
+ 由 `/sys/bus/event_source/devices/<pmu>/format/*` 中对应的条目定义
 
-  注意，最后两种语法支持在 PMU 名称中使用前缀和通配符匹配，以简化在大型系统中跨多个相同类型 PMU 实例（例如内存控制器 PMU）创建事件的过程。
- 非核心 PMU 通常会有多个实例，因此在此匹配过程中也会忽略前缀
- 'uncore_'。
+  注意，最后两种语法支持在 PMU 名称中使用前缀和通配符匹配，以简化在大型系统中跨多个相同类型 PMU 实例（例如内存控制器 PMU）创建事件的过程。非核心 PMU 通常会有多个实例，因此在此匹配过程中也会忽略前缀'uncore_'。
 
 - -i, --no-inherit
  子任务不继承计数器
