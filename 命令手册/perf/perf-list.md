@@ -103,6 +103,12 @@ perf-data - 运行命令并收集性能计数器统计信息
                5.483 +- 0.198 seconds time elapsed  ( +-  3.62% )
 
     ```
+- -G name, --cgroup name
+仅在名为“name”的容器（cgroup）中进行监控。此选项仅在 per-cpu 模式下可用。必须挂载 cgroup 文件系统。当属于容器“name”的所有线程在被监控的 CPU 上运行时，它们将被监控。可以提供多个 cgroup。每个 cgroup 应用于相应的事件，即第一个 cgroup 应用于第一个事件，第二个 cgroup 应用于第二个事件，依此类推。可以使用例如 `-G foo,,bar` 来提供一个空的 cgroup（始终监控所有内容）。cgroup 必须具有对应的事件，即它们始终引用在命令行中先前定义的事件。如果用户希望跟踪特定 cgroup 的多个事件，可以使用 `-e e1 -e e2 -G foo,foo`，或仅使用 `-e e1 -e e2 -G foo`。
+
+    如果想要监控某个cgroup的周期计数以及系统全局的周期计数，可以使用以下命令行：`perf stat -e cycles -G cgroup_name -a -e cycles`。
+- --for-each-cgroup name
+扩展每个使用 "name"（允许以逗号分隔的多个 cgroup）的 cgroup 的事件列表。它还支持正则表达式模式以匹配多个组。此选项与为每个事件 x 名称重复使用 -e 选项和 -G 选项具有相同效果。此选项不能与 -G/--cgroup 选项一起使用。
 
 # 说明
 Linux性能计数器是一个基于内核的新型子系统，为所有性能分析相关功能提供了一个框架。它涵盖了硬件层面（CPU/PMU，性能监控单元）和软件层面（软件计数器、跟踪点）的特性。
