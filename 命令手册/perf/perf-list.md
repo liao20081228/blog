@@ -59,7 +59,50 @@ perf-data - 运行命令并收集性能计数器统计信息
     ```
 - --bpf-counters
 使用 BPF 程序来聚合来自 perf_events 的读数。这使得多个 perf-stat 会话（它们正在统计相同的指标，如周期、指令等）可以共享硬件计数器。 要默认在常见事件上使用 BPF 程序，请使用 `"perf config stat.bpf-counter-events=<事件列表>"`。
-- --bpf-attr-map、
+- --bpf-attr-map
+使用“--bpf-counters”选项时，不同的perf-stat会话通过一个固定的哈希表共享关于共享BPF程序和映射的信息。使用“--bpf-attr-map”来指定这个固定哈希表的路径。默认路径是/sys/fs/bpf/perf_attr_map。
+- -a, --all-cpus
+系统范围内从所有CPU收集（如果未指定目标则为默认设置）
+- --no-scale
+不要缩放/标准化计数器值。
+- -d, --detailed
+打印更详细的统计数据，最多可指定3次。
+-d:          详细事件，L1和LLC数据缓存。
+-d -d:     更详细的事件，dTLB 和 iTLB 事件
+ -d -d -d:     非常详细的事件，添加了预取事件。
+- -r, --repeat=\<n>
+重复执行命令并打印平均值和标准差（最多100次）。0表示无限循环。
+- -B, --big-num
+根据本地化设置，使用千位分隔符打印大数字。默认启用。使用“--no-big-num”可禁用。默认设置可通过“perf config stat.big-num=false”更改。
+- -C, --cpu=
+所提供的CPU列表计数。多个CPU可以以逗号分隔的形式提供，中间不加空格：`0,1`。CPU范围使用“-”指定：`0-2`。在单线程CPU模式下，此选项将被忽略。仍需使用-a选项来激活系统范围的监控。默认情况下，将对所有CPU进行计数。
+- -A, --no-aggr
+不要汇总所有被监控CPU的计数。
+- -n, --null
+空运行 - 不要启动任何计数器。
+这可以用于仅测量经过的墙上时钟时间，或者在不运行任何计数器的情况下评估perf stat本身的原始开销。
+- -v, --verbose
+更详细地显示（例如显示计数器打开错误等）
+- -x SEP, --field-separator SEP
+使用CSV风格的输出打印计数，以便直接导入电子表格。列之间由SEP中指定的字符串分隔。 
+- --table
+每次运行（-r 选项）显示时间，以表格格式呈现，例如：
+    ```
+    $ perf stat --null -r 5 --table perf bench sched pipe
+
+               Performance counter stats for 'perf bench sched pipe' (5 runs):
+
+               # Table of individual measurements:
+               5.189 (-0.293) #
+               5.189 (-0.294) #
+               5.186 (-0.296) #
+               5.663 (+0.181) ##
+               6.186 (+0.703) ####
+
+               # Final result:
+               5.483 +- 0.198 seconds time elapsed  ( +-  3.62% )
+
+    ```
 
 # 说明
 Linux性能计数器是一个基于内核的新型子系统，为所有性能分析相关功能提供了一个框架。它涵盖了硬件层面（CPU/PMU，性能监控单元）和软件层面（软件计数器、跟踪点）的特性。
