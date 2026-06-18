@@ -75,6 +75,37 @@ perf record -a -e r0C1:p... # 使用ibs op计数微操作
 ```
 
 # 原始硬件事件描述符
+即使当前在 perf 中某个事件没有以符号形式提供，也可以以特定于每个处理器的编码方式进行表示。
+
+例如，在x86 CPU上，N是一个十六进制值，表示原始寄存器编码，其布局与IA32_PERFEVTSELx MSRs（参见《Intel® 64和IA-32架构软件开发手册 卷3B：系统编程指南》图30-1 IA32_PERFEVTSELx MSR的布局）或AMD的PERF_CTL MSR（参见与所用处理器的家族、型号和步进相关的《AMD处理器编程参考（PPR）》中“核心复合体（CCX）→处理器x86核心→MSR寄存器”部分）的布局一致。
+
+注意：在x86计数器寄存器中，只能设置以下位域：事件（event）、掩码（umask）、边沿（edge）、取反（inv）、条件掩码（cmask）。特别地，客户机/主机专属标志和操作系统/用户模式标志必须通过事件修饰符（EVENT MODIFIERS）进行设置。
+
+示例：
+如果英特尔关于QM720 Core i7的文档将某个事件描述为：
+```
+Event  Umask  Event Mask
+Num.   Value  Mnemonic    Description    Comment
+
+A8H   01H  LSD.UOPS    Counts the number of micro-ops delivered by loop stream detector     Use cmask=1 and invert to count cycles
+
+```
+可以使用0x1A8的原始编码：
+```
+
+           perf stat -e r1a8 -a sleep 1
+           perf record -e r1a8 ...
+
+```
+也可以使用 pmu 语法：
+```
+
+           perf record -e r1a8 -a sleep 1
+           perf record -e cpu/r1a8/ ...
+           perf record -e cpu/r0x1a8/ ...
+
+```
+一些处理器（如AMD的产品）支持大于一个字节的事件代码和单元掩码。在这种情况下，可以通过以下方式查看与事件配置参数对应的位：
 
 # 说明
 Linux性能计数器是一个基于内核的新型子系统，为所有性能分析相关功能提供了一个框架。它涵盖了硬件层面（CPU/PMU，性能监控单元）和软件层面（软件计数器、跟踪点）的特性。
