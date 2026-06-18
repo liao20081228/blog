@@ -10,7 +10,7 @@ tags: perf,性能
 ------
 
 # 名称
-perf-data - 运行命令并收集性能计数器统计信息
+perf-list- 运行命令并收集性能计数器统计信息
 
 # 概览
 <u>perf</u> <u>stat</u> \[-e \<EVENT> | --event=EVENT] \[-a] \<command>
