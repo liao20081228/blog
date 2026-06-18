@@ -1,5 +1,5 @@
 ---
-title: perf-stat
+title: perf-list
 tags: perf,性能
 ---
 
@@ -109,6 +109,49 @@ perf-data - 运行命令并收集性能计数器统计信息
     如果想要监控某个cgroup的周期计数以及系统全局的周期计数，可以使用以下命令行：`perf stat -e cycles -G cgroup_name -a -e cycles`。
 - --for-each-cgroup name
 扩展每个使用 "name"（允许以逗号分隔的多个 cgroup）的 cgroup 的事件列表。它还支持正则表达式模式以匹配多个组。此选项与为每个事件 x 名称重复使用 -e 选项和 -G 选项具有相同效果。此选项不能与 -G/--cgroup 选项一起使用。
+- -o file, --output file
+将输出打印到指定文件。
+- --append
+将内容追加到使用 -o 选项指定的输出文件中。如果未指定 -o，则忽略此选项。
+- --log-fd
+将日志输出到文件描述符，而不是标准错误输出。与 --output 选项互补，且二者互斥。此处可使用 --append 选项。示例： 
+`3>results perf stat --log-fd 3 -- $cmd `
+`3>>results perf stat --log-fd 3 --append -- $cmd`
+- --control=fifo:ctl-fifo\[,ack-fifo], --control=fd:ctl-fd\[,ack-fd]
+ctl-fifo / ack-fifo 被打开并用作 ctl-fd / ack-fd，如下所示。在 ctl-fd 描述符上监听控制测量的命令（<u>enable</u>：启用事件，<u>disable</u>：禁用事件）。可以使用 `--delay=-1` 选项在禁用事件的情况下启动测量。可选地，向 ack-fd 描述符发送控制命令完成（ack\n）以与控制进程同步。以下是一个 bash shell 脚本示例，用于在测量期间启用和禁用事件：
+
+    ````
+               #!/bin/bash
+               ctl_dir=/tmp/
+               ctl_fifo=${ctl_dir}perf_ctl.fifo
+               test -p ${ctl_fifo} && unlink ${ctl_fifo}
+               mkfifo ${ctl_fifo}
+               exec {ctl_fd}<>${ctl_fifo}
+               ctl_ack_fifo=${ctl_dir}perf_ctl_ack.fifo
+               test -p ${ctl_ack_fifo} && unlink ${ctl_ack_fifo}
+               mkfifo ${ctl_ack_fifo}
+               exec {ctl_fd_ack}<>${ctl_ack_fifo}
+               perf stat -D -1 -e cpu-cycles -a -I 1000       \
+                         --control fd:${ctl_fd},${ctl_fd_ack} \
+                         \-- sleep 30 &
+               perf_pid=$!
+               sleep 5  && echo 'enable' >&${ctl_fd} && read -u ${ctl_fd_ack} e1 && echo "enabled(${e1})"
+               sleep 10 && echo 'disable' >&${ctl_fd} && read -u ${ctl_fd_ack} d1 && echo "disabled(${d1})"
+               exec {ctl_fd_ack}>&-
+               unlink ${ctl_ack_fifo}
+               exec {ctl_fd}>&-
+               unlink ${ctl_fifo}
+               wait -n ${perf_pid}
+    exit $?
+    ```
+
+- --pre, --post
+
+
+
+
+
+
 
 # 说明
 Linux性能计数器是一个基于内核的新型子系统，为所有性能分析相关功能提供了一个框架。它涵盖了硬件层面（CPU/PMU，性能监控单元）和软件层面（软件计数器、跟踪点）的特性。
