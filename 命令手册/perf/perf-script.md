@@ -10,10 +10,15 @@ tags: perf,性能
 ------
 
 # 名称
-perf - Linux性能分析工具
+perf-script —— 读取 perf.data（由 perf record 创建）并显示跟踪输出
 
 # 概览
-<u>perf</u> \[--version] \[--help] \[OPTIONS] COMMAND \[ARGS]
+perf script [<options>]
+       perf script [<options>] record <script> [<record-options>] <command>
+       perf script [<options>] report <script> [script-args]
+       perf script [<options>] <script> <required-script-args> [<record-options>] <command>
+       perf script [<options>] <top-script> [script-args]
+
 
 # 选项
 - -h, --help
