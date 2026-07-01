@@ -13,12 +13,14 @@ tags: perf,性能
 perf-script —— 读取 perf.data（由 perf record 创建）并显示跟踪输出
 
 # 概览
-perf script [<options>]
-       perf script [<options>] record <script> [<record-options>] <command>
-       perf script [<options>] report <script> [script-args]
-       perf script [<options>] <script> <required-script-args> [<record-options>] <command>
-       perf script [<options>] <top-script> [script-args]
+<u>perf</u><u>script </u>\[\<options>]
+<u>perf </u><u>script </u>\[\<options>] record \<script> \[\<record-options>] \<command>
+<u>perf </u><u>script </u>\[\<options>] report \<script> \[script-args]
+<u>perf </u><u>script </u>\[\<options>] \<script> \<required-script-args> \[\<record-options>] \<command>
+<u>perf </u><u>script </u>\[\<options>] \<top-script> \[script-args]
 
+
+# 描述
 
 # 选项
 - -h, --help
