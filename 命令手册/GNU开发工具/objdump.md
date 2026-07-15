@@ -268,11 +268,9 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 反汇编时不打印指令字节，当使用`--prefix-addresses`选项时，这是默认行为。
 
 - --insn-width=<u>width</u>
+反汇编指令时单行显示<u>width</u>字节数的指令。
 
-反汇编时单行显示指定字节数的指令。
-
-### --visualize-jumps[=color|=extended-color|=off]
-
+- --visualize-jumps[=color|=extended-color|=off]
 以 ASCII 图形可视化函数内跳转，可选普通彩色 / 8 位彩色，`=off` 关闭。
 
 ### --disassembler-color=off|terminal|on|extended
