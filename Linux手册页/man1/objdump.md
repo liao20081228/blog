@@ -135,12 +135,10 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - --prefix-addresses
 反汇编时每行打印完整地址，为旧版反汇编格式。
 
-### -EB, -EL, --endian={big|little}
-
+- -EB, -EL, --endian={big|little}
 指定目标文件的字节序，仅影响反汇编。适用于 S-records 等不含字节序信息的文件格式。
 
-### -f, --file-headers
-
+- -f, --file-headers
 显示每个目标文件整体文件头的摘要信息。
 
 ### -F, --file-offsets
