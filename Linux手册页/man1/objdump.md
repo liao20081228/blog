@@ -91,16 +91,15 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 选项的长格式与短格式等效，必须至少指定以下选项之一： `-a,-d,-D,-e,-f,-g,-G,-h,-H,-p,-P,-r,-R,-s,-S,-t,-T,-V,-x`
 
 - -a, --archive-header
-若目标文件为归档文件，显示归档头部信息（格式类似 `ls -l`）。除 `ar tv` 可显示的内容外，还会展示每个归档成员的目标文件格式。
+若目标文件<u>objfile</u>为归档文件，显示归档头部信息（格式类似 `ls -l`）。除 `ar tv` 可显示的内容外，还会展示每个归档成员的目标文件格式。
 
 - --adjust-vma = <u>offset</u>
+转储信息时，先将偏移量 <u>offset</u> 加到所有节的地址上。这对于节地址与符号表不对应的场景很有用，这种情况常见于使用**a.out**等无法表示节地址的文件格式，并将节放置在特定地址时发生。
 
-转储信息时，先将偏移量加到所有节地址上。适用于节地址与符号表不匹配的场景，例如使用 a.out 等无法表示节地址的格式时。
-
-### -b bfdname, --target=bfdname
-
-指定目标文件的目标代码格式为 bfdname。多数格式可自动识别，该选项非必需。 示例：plaintext
-
+- -b <u>bfdname</u>, --target=<u>bfdname</u>
+指定目标文件的目标代码格式为 <u>bfdname</u>。<u>objdump</u>可以自动识别许多格式，该选项非必需。
+示例：
+&emsp;&emsp;objdump -b oasys -m vax -h fu.o
 ```
 objdump -b oasys -m vax -h fu.o
 
