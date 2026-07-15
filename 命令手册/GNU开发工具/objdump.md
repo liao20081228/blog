@@ -250,8 +250,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - -S, --source
 尽可能穿插显示源码与反汇编，自动隐含 `-d`。
 
-### --show-all-symbols
-
+- --show-all-symbols
 反汇编时显示匹配某地址的所有符号，而非仅第一个。
 
 ### --source-comment [= 文本]
