@@ -258,13 +258,11 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - --prefix=<u>prefix</u>
 指定与 -S 配合使用时，添加到绝对路径前的前缀<u>prefix</u>。
 
-### --prefix-strip = 层级
+- --prefix-strip=<u>level</u>
+指定需要从固化的绝对路径中剥离开头的多少级目录名。 若未同时指定 `--prefix=prefix`，则该选项无效。
 
-配合 `--prefix` 剥离指定层级的初始目录名，无 `--prefix` 则无效。
-
-### --show-raw-insn
-
-反汇编时同时打印十六进制指令码与符号形式，`--prefix-addresses` 除外均为默认行为。
+- --show-raw-insn
+反汇编时同时打印十六进制指令码与符号形式，除非使用了 `--prefix-addresses` 选项，否则这是默认行为。
 
 ### --no-show-raw-insn
 
