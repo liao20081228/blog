@@ -227,21 +227,25 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - -p, --private-headers
 打印与目标文件格式相关的特定信息。 具体输出的信息取决于目标文件格式本身。 对于部分目标文件格式，不会输出任何额外信息。
 
-- -P 选项，--private = 选项
+- -P <u>options</u>，--private=<u>options</u>
+打印目标文件格式专属的信息。参数 <u>options</u>是一个以逗号分隔的选项列表，具体内容取决于文件格式（可用选项列表可通过帮助信息查看）。
 
-打印格式专属信息，选项为逗号分隔列表，支持情况依格式而定（帮助信息中列出）。
+	对于 XCOFF 格式，可用选项为："header"、"aout"、"sections"、"syms"、"relocs"、"lineno"、"loader"、"except"、"typchk"、 "traceback"、"toc"、"ldinfo"。
+	
+	对于 PE 格式，可用选项为："header"、"sections"。
 
-*   XCOFF：支持 header、aout、sections 等。
-*   PE：支持 header、sections。 ELF 不支持该选项。
+	并非所有目标文件格式都支持该选项，ELF 格式尤其不使用该选项。
 
 - -r, --reloc
 打印文件的重定位条目，配合 `-d/-D` 可与反汇编穿插显示。
 
 - -R, --dynamic-reloc
+打印文件中的动态重定位条目。 该选项仅对动态目标文件有意义，例如某些类型的共享库。 与 `-r` 类似，如果同时使用 `-d` 或 `-D`，重定位信息会穿插在反汇编内容中一起显示。
 
-打印动态重定位条目，仅对动态目标（如共享库）有效，可与反汇编穿插显示。 注：不支持 RELR 类型重定位，可使用 readelf 查看。
+	注意：objdump 不支持显示 RELR 类型的重定位项。这类重定位信息可以通过 `readelf` 程序查看。
 
-### -s, --full-contents
+
+- -s, --full-contents
 
 显示节的完整内容，常配合 `-j` 使用，默认展示所有非空非 BSS 节。压缩节默认显示压缩形式，添加 `-Z` 可解压显示。
 
