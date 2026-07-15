@@ -1,13 +1,10 @@
 ---
 title: objdump
-tags: 新建,模板,小书匠
-category: /小书匠/日记/2026-07
-grammar_cjkRuby: true
+tags: 文件管理,用户命令,man1
 ---
 
+------
 
-欢迎使用 **{小书匠}(xiaoshujiang)笔记软件**，您可以通过 `小书匠主按钮>模板` 里的模板管理来改变新建文章的内容。
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《cp manpages》。</font>cp的版本为9.1，手册更新时间为2023-01。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
-----------
-
-小书匠是一款本地优先，去中心化，分布式，支持选择性同步的全平台覆盖笔记软件。
+------
