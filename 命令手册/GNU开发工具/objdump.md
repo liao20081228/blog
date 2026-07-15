@@ -276,7 +276,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 	若此前已启用跳转可视化，需要关闭该功能时，可使用 `visualize-jumps=off`。
 
 - --disassembler-color=off，--disassembler-color=terminal，--disassembler-color=on|color|colour，--disassembler-color=extended|extended-color|extended-colour
-启用或禁用反汇编输出中的语法高亮彩色显示。默认行为由编译配置选项决定。 注意：并非所有架构都支持彩色语法高亮，且根据所用终端不同，彩色输出可能无法正常显示。
+启用或禁用反汇编输出中的语法高亮彩色显示。默认行为由配置时选项决定。 注意：并非所有架构都支持彩色语法高亮，且根据所用终端不同，彩色输出可能无法正常显示。
 	`on`：使用基础终端颜色开启彩色显示。
 	`terminal`：效果与 `on` 相同，但仅在输出设备为终端时才启用彩色。
 	 `extended-color`：与 `on` 类似，但使用 8 位色，并非所有终端都支持。
