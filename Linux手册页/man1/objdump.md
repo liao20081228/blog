@@ -1,6 +1,6 @@
 ---
 title: objdump
-tags: 文件管理,用户命令,man1
+tags: GNU开发工具,man1
 ---
 
 ------
