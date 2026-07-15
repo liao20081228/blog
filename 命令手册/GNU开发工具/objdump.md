@@ -283,7 +283,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
  	`off`：关闭反汇编彩色输出。
 
 
-### -W [参数], --dwarf [= 参数]
+- -W [lLiaprmfFsoORtUuTgAckK], --dwarf [=rawline,=decodedline,=info,=abbrev,=pubnames,=aranges,=macro,=frames,=frames-interp,=str,=str-offsets,=loc,=Ranges,=pubtypes,=trace_info,=trace_abbrev,=trace_aranges,=gdb_index,=addr,=cu_index,=links,=follow-links]
 
 显示文件中的 DWARF 调试节内容，压缩节自动临时解压，可指定仅显示特定类型信息：
 
