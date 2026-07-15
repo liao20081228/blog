@@ -14,12 +14,10 @@ tags: GNU开发工具,man1
 objdump – 显示目标文件中的信息
 
 # 概要
-
-```
 objdump [-a|--archive-headers]
         [-b bfdname|--target=bfdname]
-        [-C|--demangle[=样式]]
-        [-d|--disassemble[=符号]]
+        [-C|--demangle[=style]]
+        [-d|--disassemble[=symbol]]
         [-D|--disassemble-all]
         [-z|--disassemble-zeroes]
         [-EB|-EL|--endian={big|little}]
@@ -30,7 +28,7 @@ objdump [-a|--archive-headers]
         [-e|--debugging-tags]
         [-h|--section-headers|--headers]
         [-i|--info]
-        [-j 节名|--section=节名]
+        [-j section|--section=节名]
         [-l|--line-numbers]
         [-S|--source]
         [--source-comment[=文本]]
@@ -78,7 +76,7 @@ objdump [-a|--archive-headers]
         [-H|--help]
         目标文件...
 
-```
+
 
 ## 描述
 
