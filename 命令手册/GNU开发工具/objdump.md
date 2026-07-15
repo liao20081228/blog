@@ -267,7 +267,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - --no-show-raw-insn
 反汇编时不打印指令字节，当使用`--prefix-addresses`选项时，这是默认行为。
 
-### --insn-width = 宽度
+- --insn-width=<u>width</u>
 
 反汇编时单行显示指定字节数的指令。
 
