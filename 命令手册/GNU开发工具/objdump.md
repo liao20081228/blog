@@ -274,7 +274,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 在起始地址与目标地址之间以 ASCII 字符绘制线条，直观展示函数内部跳转。 可选参数 `=color` 可使用基础终端颜色为输出内容上色。 此外，`=extended-color` 可使用 8 位色增强色彩效果，但并非所有终端都支持。
 
 	若此前已启用跳转可视化，需要关闭该功能时，可使用 `visualize-jumps=off`。
-	
+
 ### --disassembler-color=off|terminal|on|extended
 
 控制反汇编语法高亮着色，`terminal` 仅在终端输出时生效，`extended` 使用 8 位色。
