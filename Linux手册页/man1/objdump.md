@@ -99,15 +99,10 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - -b <u>bfdname</u>, --target=<u>bfdname</u>
 指定目标文件的目标代码格式为 <u>bfdname</u>。<u>objdump</u>可以自动识别许多格式，该选项非必需。
 示例：
-&emsp;&emsp;objdump -b oasys -m vax -h fu.o
-```
-objdump -b oasys -m vax -h fu.o
+&emsp;&emsp;`objdump -b oasys -m vax -h fu.o`
+显示fu.o节头部的概要信息（`-h`），该文件通过 `-m` 明确指定为VAX架构、由 Oasys 编译器生成格式的目标文件。 你可以使用 `-i` 选项列出所有可用的文件格式。
 
-```
-
-可用 `-i` 查看支持的格式列表。
-
-### -C, --demangle [= 样式]
+- -C, --demangle\[=<u>style</u>]
 
 将底层符号名解码（还原）为用户可读名称，去除系统添加的前置下划线，并使 C++ 函数名可读。不同编译器有不同的名称修饰规则，可选参数可指定适配的还原样式。
 
