@@ -112,12 +112,9 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 
 - -g, --debugging
 显示调试信息。尝试解析文件中的 STABS 调试信息并以类 C 语法输出；若无 STABS，则回退到 `-W` 选项输出 DWARF 信息。
-
-### -e, --debugging-tags
-
-功能同 `-g`，但输出格式兼容 ctags 工具。
-
-### -d, --disassemble, --disassemble = 符号
+- -e, --debugging-tags
+功能与 `-g` 类似，但生成的信息采用与 **ctags** 工具兼容的格式
+- -d, --disassemble, --disassemble = 符号
 
 反汇编输入文件中机器指令的汇编助记符，仅处理预期存放指令的节。若指定符号（可多次指定），则从该符号位置开始反汇编；若为函数名，反汇编至函数末尾，否则至下一个符号。无匹配符号则无输出。 若启用 `--dwarf=follow-links`，会读取链接的调试信息文件中的符号表用于反汇编。
 
