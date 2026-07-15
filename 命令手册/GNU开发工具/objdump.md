@@ -264,9 +264,8 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - --show-raw-insn
 反汇编时同时打印十六进制指令码与符号形式，除非使用了 `--prefix-addresses` 选项，否则这是默认行为。
 
-### --no-show-raw-insn
-
-反汇编时不打印指令字节，`--prefix-addresses` 下为默认行为。
+- --no-show-raw-insn
+反汇编时不打印指令字节，这是使用`--prefix-addresses`选项的默认行为。
 
 ### --insn-width = 宽度
 
