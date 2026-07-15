@@ -9,13 +9,11 @@ tags: GNU开发工具,man1
 
 ------
 
-## 名称
+# 名称
 
 objdump – 显示目标文件中的信息
 
-## 用法格式
-
-plaintext
+# 概要
 
 ```
 objdump [-a|--archive-headers]
