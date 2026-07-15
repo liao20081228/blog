@@ -133,7 +133,6 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 反汇编时不打印每行地址、符号及重定位偏移，配合 `--no-show-raw-insn` 可用于对比编译器输出。
 
 - --prefix-addresses
-
 反汇编时每行打印完整地址，为旧版反汇编格式。
 
 ### -EB, -EL, --endian={big|little}
