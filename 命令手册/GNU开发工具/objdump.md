@@ -356,23 +356,20 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 适配宽屏输出，不截断符号名。
 
 ### -z, --disassemble-zeroes
-
 正常反汇编会跳过零块，该选项强制反汇编零块。
 
-### -Z, --decompress
-
+- -Z, --decompress
 配合 `-s` 使用，解压压缩节后再显示内容。
 
 ### @文件
 
 从文件读取命令行选项，文件中选项以空白分隔，支持引号与转义，可嵌套 `@文件`。
 
-## 参见
+# 参见
 
 nm (1)、readelf (1) 以及 binutils 的 Info 文档。
 
-## 版权
-
+# 版权
 Copyright (c) 1991-2026 Free Software Foundation, Inc.允许在 GNU 自由文档许可证 1.3 或更高版本条款下复制、分发与修改本文档，无不变章节、无前封面文本、无后封面文本。许可证副本见 “GNU Free Documentation License” 章节。
 
 
