@@ -93,7 +93,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - -a, --archive-header
 若目标文件<u>objfile</u>为归档文件，显示归档头部信息（格式类似 `ls -l`）。除 `ar tv` 可显示的内容外，还会展示每个归档成员的目标文件格式。
 
-- --adjust-vma = <u>offset</u>
+- --adjust-vma=<u>offset</u>
 转储信息时，先将偏移量 <u>offset</u> 加到所有节的地址上。这对于节地址与符号表不对应的场景很有用，这种情况常见于使用`a.out`等无法表示节地址的文件格式，并将节放置在特定地址时发生。
 
 - -b <u>bfdname</u>, --target=<u>bfdname</u>
@@ -160,7 +160,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - -i, --info
 显示可通过 `-b` 或 `-m` 指定的所有架构与目标文件格式列表。
 
-- -j <u>name</u>，--section = <u>name</u>
+- -j <u>name</u>，--section=<u>name</u>
 仅显示指定节<u>name</u>的信息，可多次指定。
 
 - -L, --process-links
@@ -169,24 +169,15 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - -l, --line-numbers
 借助调试信息，为显示内容标注出目标代码或重定位项所对应的文件名与源代码行号。 该选项仅在配合 `-d`、`-D` 或 `-r` 使用时有效。
 
-- -m <u>machine</u>，--architecture = <u>machine</u>
+- -m <u>machine</u>，--architecture=<u>machine</u>
 指定反汇编目标文件所使用的架构，适用于 S-records 等没有描述架构信息的文件，可用 `-i` 查看支持的所有架构。 
 
 	多数架构支持以`架构名:机器名`的格式指定，如 `foo:bar`，指定foo架构下的bar机器类型。若 objdump 配置为支持多种架构，此用法会很有帮助。
 
 	若目标为 ARM 架构，该选项还会产生额外效果： 它会将反汇编范围限制为指定机器<u>machine</u>的架构所支持的指令集。 如果因输入文件不含架构信息而必须使用该选项，但又希望反汇编所有指令，可使用 `-marm`。
 
-- -M <u>options</u>，--disassembler-options = <u>options</u>
+- -M <u>options</u>，--disassembler-options=<u>options</u>
 
-向反汇编器传递目标平台特定参数，部分平台支持，多选项可用逗号分隔或多次指定 `-M`。
-
-*   **ARC**：控制 DSP/FPX 指令打印、立即数进制、指定 ISA 等。
-*   **ARM/AArch64**：选择寄存器命名集、强制 Thumb 指令解码、禁用指令别名等。
-*   **x86**：选择架构、语法（Intel/AT&T）、地址 / 操作数大小等。
-*   **PowerPC**：选择原生指令而非别名、指定 CPU 型号、启用扩展指令集等。
-*   **RISC-V**：无限制反汇编、数字寄存器名、禁用指令别名、指定特权架构版本等。
-*   **MIPS**：禁用伪指令、启用 MSA / 虚拟化指令、选择寄存器命名 ABI / 架构等。
-*   **VAX**：指定函数入口地址，适配无符号表的二进制文件。
 
 ### -p, --private-headers
 
