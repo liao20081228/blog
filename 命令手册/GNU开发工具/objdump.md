@@ -203,7 +203,9 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 
 	针对 RISC-V 架构 支持以下选项： - `max`：不检查架构字符串，尽力反汇编。对存在重叠的指令集扩展，按首次匹配规则解码。适用于 ELF 文件未暴露 ISA 字符串、无法自动推导指令集，或默认回退架构 `rv64gc` 无法覆盖二进制中全部指令的场景 - `numeric`：以数字形式打印寄存器名，而非 ABI 名称（例如打印 `x2` 而非 `sp`） - `no-aliases`：仅以标准原生指令形式反汇编。例如压缩指令会原样显示（`addi sp,sp,-128` 会显示为 `c.addi16sp sp,-128`） - `priv-spec=SPEC`：按指定的特权架构规范版本打印 CSR 寄存器，如 1.10、1.11、1.12、1.13 
 
-	针对 MIPS 架构 该选项控制反汇编结果中指令助记符与寄存器名的显示方式。可通过逗号分隔指定多个选项，无效选项会被忽略： - `no-aliases`：打印原生指令助记符而非伪指令。例如打印 `daddu`/`or` 而非 `move`，打印 `sll` 而非 `nop` - `msa`：反汇编 MSA 指令 - `virt`：反汇编虚拟化 ASE 指令 - `xpa`：反汇编扩展物理地址（XPA）ASE 指令 - `gpr-names=ABI`：按指定 ABI 显示通用寄存器（GPR）名称，默认按待反汇编二进制文件的 ABI 选择 - `fpr-names=ABI`：按指定 ABI 显示浮点寄存器（FPR）名称，默认直接打印寄存器编号 - `cp0-names=ARCH`：按指定 CPU/架构显示系统协处理器 CP0 寄存器名，默认按待反汇编文件的架构与 CPU 选择 - `hwr-names=ARCH`：按指定 CPU/架构显示硬件寄存器（HWR，`rdhwr` 指令使用）名称 - `reg-names=ABI`：按所选 ABI 显示 GPR 与 FPR 名称 - `reg-names=ARCH`：按所选 CPU/架构显示 CPU 专用寄存器名（CP0 与 HWR） 以上所有选项中，ABI 或 ARCH 均可设为 `numeric`，使对应寄存器以数字而非名称显示。可通过 `--help` 查看支持的 ABI 与架构取值.
+	针对 MIPS 架构， 该选项控制反汇编结果中指令助记符与寄存器名的显示方式。可通过逗号分隔指定多个选项，无效选项会被忽略：
+
+	`no-aliases`：打印原生指令助记符而非伪指令。例如打印 `daddu`/`or` 而非 `move`，打印 `sll` 而非 `nop` - `msa`：反汇编 MSA 指令 - `virt`：反汇编虚拟化 ASE 指令 - `xpa`：反汇编扩展物理地址（XPA）ASE 指令 - `gpr-names=ABI`：按指定 ABI 显示通用寄存器（GPR）名称，默认按待反汇编二进制文件的 ABI 选择 - `fpr-names=ABI`：按指定 ABI 显示浮点寄存器（FPR）名称，默认直接打印寄存器编号 - `cp0-names=ARCH`：按指定 CPU/架构显示系统协处理器 CP0 寄存器名，默认按待反汇编文件的架构与 CPU 选择 - `hwr-names=ARCH`：按指定 CPU/架构显示硬件寄存器（HWR，`rdhwr` 指令使用）名称 - `reg-names=ABI`：按所选 ABI 显示 GPR 与 FPR 名称 - `reg-names=ARCH`：按所选 CPU/架构显示 CPU 专用寄存器名（CP0 与 HWR） 以上所有选项中，ABI 或 ARCH 均可设为 `numeric`，使对应寄存器以数字而非名称显示。可通过 `--help` 查看支持的 ABI 与架构取值.
 	
 	针对 VAX 架构，可通过 `-M entry:0xf00ba` 指定函数入口地址。你可以多次使用此选项来正确反汇编不包含符号表的VAX二进制文件（例如ROM转储文件）。在这些情况下，如果不做此设置，函数入口掩码会被解码为VAX指令，这可能导致函数的其余部分被错误地反汇编。
 
