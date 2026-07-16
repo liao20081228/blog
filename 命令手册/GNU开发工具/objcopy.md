@@ -152,7 +152,7 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - -R <u>sectionpattern </u>，--remove-section=<u>sectionpattern</u>
 从输出文件中移除所有匹配 <u>sectionpattern </u>的节。该选项可多次使用。注意，不当使用此选项可能会导致输出文件无法使用。 <u>sectionpattern </u>中支持通配符。同时使用 `-j` 和 `-R` 选项会导致未定义行为。 
 
-	如果 <u>sectionpattern </u>的第一个字符是感叹号（!），那么即使在同一命令行中之前使用的 --remove-section 原本会移除匹配的段，这些段也不会被移除。 例如： 
+	如果 <u>sectionpattern </u>的第一个字符是感叹号（!），那么即使在同一命令行中之前使用的 --remove-section 原本会移除匹配的节，这些节也不会被移除。 例如： 
 &emsp;&emsp;`--remove-section=.text.* --remove-section=!.text.foo`
 将会移除所有匹配 `.text.*` 模式的节，但不会移除 `.text.foo` 节。
 	
