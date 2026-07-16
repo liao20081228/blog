@@ -226,7 +226,11 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - -i \[<u>breadth</u>]，--interleave\[=<u>breadth</u>]
 仅从每<u>breadth</u>个字节中复制一段连续的字节（头部数据不受影响）。 使用 `--byte` 选项指定从该段中的第几个字节开始复制， 使用 `--interleave-width` 选项指定要在该段复制的长度。
 
-	该选项常用于生成用于 ROM 烧录的文件，通常配合 `srec` 格式作为输出目标使用。 注意：如果不同时指定 `--byte` 选项，objcopy 会报错。 默认的交错间隔 `breadth` 为 4，因此当 `--byte` 设为 0 时， objcopy 会从输入数据中每 4 个字节取出第一个字节写入输出文件。
+	该选项常用于生成用于 ROM 烧录的文件。典型地与 `srec`一起使用来输出目标。 注意：如果不同时指定 `--byte` 选项，objcopy 会报错。
+	
+	默认的交错间隔<u>breadth</u>为 4，因此当 `--byte` 设为 0 时， objcopy 会从输入数据中每 4 个字节取出第一个字节写入输出文件。
+	
+- --interleave-width=<u>width</u>
 # 
 # 参见
 
