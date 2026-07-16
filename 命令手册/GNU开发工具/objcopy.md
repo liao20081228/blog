@@ -249,7 +249,7 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - -U, --disable-deterministic-archives 
 不使用<u>deterministic</u>模式运行。该选项与上述 `-D` 作用相反：在复制归档成员并写入归档索引时，使用其实际的 UID、GID、时间戳和文件权限值。 
 
-	除非 binutils 在配置时启用了 `--enable-deterministic-archives`，否则该选项为默认设置。
+	除非 binutils 在配置时使用用了 `--enable-deterministic-archives`，否则该选项为默认设置。
 	
   --debugging 尽可能对调试信息进行格式转换。该操作并非默认行为，因为只有部分调试格式受支持，且转换过程可能耗时较长。 
   --gap-fill val 使用值 val 填充段与段之间的空隙。该操作作用于段的加载地址（LMA），通过增大低地址段的大小，并将新增空间用 val 填充来实现。 
