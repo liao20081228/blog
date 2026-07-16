@@ -316,7 +316,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 `"u"`，`"=trace_abbrev"`： 显示 `.trace_abbrev` 节的内容。 
 `"U"`，`"=trace_info"`： 显示 `.trace_info` 节的内容。 
 
-	注意：目前不支持显示 `.debug_static_funcs`、`.debug_static_vars` 和 `debug_weaknames` 段的内容。
+	注意：目前不支持显示 `.debug_static_funcs`、`.debug_static_vars` 和 `debug_weaknames` 节的内容。
 
 ### --dwarf-depth=n
 
