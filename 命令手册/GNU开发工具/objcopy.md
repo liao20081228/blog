@@ -280,9 +280,13 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 
 	注意：修改已完全链接的二进制文件中段的 VMA 可能存在风险，因为部分代码可能会期望这些节位于原地址。 
 
+- --change-warnings，--adjust-warnings 
+如果使用了 `--change-section-address`、`--change-section-lma` 或 `--change-section-vma`，且节匹配模式未匹配到任何节，则发出警告。该选项为默认行为。 
+ 
+- --no-change-warnings， --no-adjust-warnings 
+即使使用了 `--change-section-address`、`--adjust-section-lma` 或 `--adjust-section-vma` 且节匹配模式未匹配到任何节，也不发出警告。 
 
-
---change-warnings --adjust-warnings 如果使用了 --change-section-address、--change-section-lma 或 --change-section-vma，且段匹配模式未匹配到任何段，则发出警告。该选项为默认行为。 --no-change-warnings --no-adjust-warnings 即使使用了 --change-section-address、--adjust-section-lma 或 --adjust-section-vma 且段匹配模式未匹配到任何段，也不发出警告。 --set-section-flags sectionpattern=flags 为所有匹配 sectionpattern 的段设置标志位。flags 参数是以逗号分隔的标志名称字符串。可识别的名称包括 alloc、contents、load、noload、readonly、code、data、rom、exclude、share、debug 和 large。 可以为原本没有内容的段设置 contents 标志，但清除有内容段的 contents 标志是没有意义的，此时应直接移除该段。并非所有标志对所有目标文件格式都有效。特别地，share 标志仅对 COFF 格式文件有效，对 ELF 格式文件无效。ELF x86-64 专用的 large 标志对应 SHF_X86_64_LARGE。 --set-section-alignment sectionpattern=align 为所有匹配 sectionpattern 的段设置对齐方式。align 以字节为单位指定对齐值，且必须是 2 的幂，如 1、2、4、8 等。 注意：设置段的对齐方式不会自动对齐其 LMA 或 VMA 地址。如果需要同时修改这些地址，应使用 --change-section-lma 和/或 --change-section-vma 选项。另外，修改已完全链接二进制文件的 VMA 可能引发问题，因为代码可能会预期段内容位于原地址。 --add-section sectionname=filename 在复制文件时添加一个名为 sectionname 的新段。新段的内容取自文件 filename，段的大小与该文件大小一致。 该选项仅适用于支持自定义段名的文件格式。注意：可能需要使用 --set-section-flags 选项为新建段设置属性。 --dump-section sectionname=filename 将名为 sectionname 的段的内容写入文件 filename，覆盖该文件原有内容。该选项与 --add-section 作用相反。 此选项与 --only-section 类似，但不会生成格式化文件，仅以原始二进制数据形式转储内容，不进行任何重定位处理。该选项可多次指定。
+- --set-section-flags sectionpattern=flags 为所有匹配 sectionpattern 的段设置标志位。flags 参数是以逗号分隔的标志名称字符串。可识别的名称包括 alloc、contents、load、noload、readonly、code、data、rom、exclude、share、debug 和 large。 可以为原本没有内容的段设置 contents 标志，但清除有内容段的 contents 标志是没有意义的，此时应直接移除该段。并非所有标志对所有目标文件格式都有效。特别地，share 标志仅对 COFF 格式文件有效，对 ELF 格式文件无效。ELF x86-64 专用的 large 标志对应 SHF_X86_64_LARGE。 --set-section-alignment sectionpattern=align 为所有匹配 sectionpattern 的段设置对齐方式。align 以字节为单位指定对齐值，且必须是 2 的幂，如 1、2、4、8 等。 注意：设置段的对齐方式不会自动对齐其 LMA 或 VMA 地址。如果需要同时修改这些地址，应使用 --change-section-lma 和/或 --change-section-vma 选项。另外，修改已完全链接二进制文件的 VMA 可能引发问题，因为代码可能会预期段内容位于原地址。 --add-section sectionname=filename 在复制文件时添加一个名为 sectionname 的新段。新段的内容取自文件 filename，段的大小与该文件大小一致。 该选项仅适用于支持自定义段名的文件格式。注意：可能需要使用 --set-section-flags 选项为新建段设置属性。 --dump-section sectionname=filename 将名为 sectionname 的段的内容写入文件 filename，覆盖该文件原有内容。该选项与 --add-section 作用相反。 此选项与 --only-section 类似，但不会生成格式化文件，仅以原始二进制数据形式转储内容，不进行任何重定位处理。该选项可多次指定。
 
 
 # 参见
