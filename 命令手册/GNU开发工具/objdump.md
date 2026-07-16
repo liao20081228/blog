@@ -318,7 +318,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 
 	注意：目前不支持显示 `.debug_static_funcs`、`.debug_static_vars` 和 `debug_weaknames` 节的内容。
 
-### --dwarf-depth=n
+- --dwarf-depth=n
 
 限制 `.debug_info` 转储的子节点深度为 n，0 表示无限制。
 
