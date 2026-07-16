@@ -231,7 +231,10 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 	默认的交错间隔<u>breadth</u>为 4，因此当 `--byte` 设为 0 时， objcopy 会从输入数据中每 4 个字节取出第一个字节写入输出文件。
 	
 - --interleave-width=<u>width</u>
-# 
+当与 `--interleave` 选项配合使用时，每次复制 <u>width</u>个字节。 待复制字节范围的起始位置由 `--byte` 选项设定，区间跨度由 `--interleave` 选项设定。 
+
+	该选项的默认值为 1。 `width` 的值加上 `--byte` 选项设定的字节偏移值，不能超过 `--interleave` 选项设定的交错总字节数。 该选项可用于为 32 位总线上交错排布的两片 16 位闪存生成镜像，方法是对两个 objcopy 命令分别传入 `-b 0 -i 4 --interleave-width=2` 和 `-b 2 -i 4 --interleave-width=2`。 如果输入数据为 `12345678`，则输出结果将分别为 `1256` 和 `3478`。
+
 # 参见
 
 nm (1)、readelf (1) 以及 binutils 的 Info 文档。
