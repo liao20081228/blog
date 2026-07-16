@@ -1,5 +1,5 @@
 ---
-title: objdump
+title: objcopy
 tags: GNU开发工具,man1
 ---
 
