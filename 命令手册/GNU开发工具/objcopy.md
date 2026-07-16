@@ -257,10 +257,10 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - --gap-fill <u>val</u>
 使用值 <u>val</u>填充节与节之间的空隙。该操作作用于节的加载地址（LMA， <u>load address</u>），通过增大低地址段的大小，并将新增空间用 <u>val</u> 填充来实现。 
  
---pad-to <u>address</u> 
+- --pad-to <u>address</u> 
 将输出文件填充至指定的加载地址 <u>address</u>。通过增大最后一个节的大小实现，新增空间使用 `--gap-fill` 指定的值填充（默认为 0）。
 
---set-start <u>val</u>
+- --set-start <u>val</u>
 将新文件的起始地址（也称入口地址）设置为 val。并非所有目标文件格式都支持设置起始地址。
 
 --change-start incr --adjust-start incr 通过增加增量 incr 来修改起始地址（也称入口地址）。并非所有目标文件格式都支持设置起始地址。
