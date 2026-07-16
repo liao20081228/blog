@@ -158,7 +158,15 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 	
 - --keep-section=<u>sectionpattern</u> 
 在从输出文件中移除节时，保留与<u>sectionpattern</u>相匹配的节。
-# --remove-relocations=sectionpattern 移除输出文件中所有匹配该段模式的段所对应的非动态重定位信息。该选项可多次使用。注意，不当使用该选项可能导致输出文件不可用；并且试图通过 `--remove-relocations=.plt` 移除可执行文件或共享库中的动态重定位段（如 `.rela.plt`）是无法生效的。 段匹配模式支持通配符。例如： ``` --remove-relocations=.text.* ``` 将会移除所有匹配 `.text.*` 模式的段的重定位信息。 若段匹配模式以感叹号 `!` 开头，则即使在同一命令行中此前的 `--remove-relocations` 配置会移除对应段的重定位信息，匹配该模式的段也不会被移除重定位信息。例如： ``` --remove-relocations=.text.* --remove-relocations=!.text.foo ``` 将会移除所有匹配 `.text.*` 模式的段的重定位信息，但保留 `.text.foo` 段的重定位信息。 # --strip-section-headers 剥离段头信息。该选项专用于 ELF 文件，且隐含启用 `--strip-all` 和 `--merge-notes`。 # -S, --strip-all 不从源文件中复制重定位信息与符号信息，同时删除调试段。 # -g, --strip-debug 不从源文件中复制调试符号及调试段。 # --strip-unneeded 除移除 `--strip-debug` 所剥离的调试符号与调试段外，还会移除所有重定位处理过程中不需要的符号。 # -K symbolname, --keep-symbol=symbolname 在剥离符号时，保留指定名称的符号，即便该符号在常规情况下会被剥离。该选项可多次使用。 # -N symbolname, --strip-symbol=symbolname 不从源文件中复制指定名称的符号。该选项可多次使用。 # --strip-unneeded-symbol=symbolname 不从源文件中复制指定名称的符号，除非该符号被重定位操作所依赖。该选项可多次使用。 # -G symbolname, --keep-global-symbol=symbolname 仅将指定名称的符号保留为全局符号，将其余所有符号设为文件局部符号，使其对外不可见。该选项可多次使用。注意：该选项不可与 `--globalize-symbol` 或 `--globalize-symbols` 选项同时使用。 # --localize-hidden 在 ELF 目标文件中，将所有具备隐藏可见性或内部可见性的符号标记为局部符号。该选项会叠加在 `-L` 这类针对特定符号的本地化选项之上生效。
+
+- --remove-relocations=<u>sectionpattern</u> 
+移除输出文件中所有匹配<u>sectionpattern</u>的节的非动态重定位信息。该选项可多次使用。注意，不当使用该选项可能会导致输出文件无法使用；并且尝试通过 `--remove-relocations=.plt` 从可执行文件或共享库中移除 `.rela.plt` 这类动态重定位节是无效的。 <u>sectionpattern</u>支持通配符。例如：
+&emsp;&emsp;`--remove-relocations=.text.* `
+将会移除所有匹配 `.text.*` 模式的节的重定位信息。 
+
+	如果段匹配模式以感叹号 `!` 开头，那么即使在同一命令行中之前的 `--remove-relocations` 配置本会移除对应重定位信息，匹配该模式的段也不会被移除重定位信息。例如： ``` --remove-relocations=.text.* --remove-relocations=!.text.foo ``` 将会移除所有匹配 `.text.*` 模式的段的重定位信息，但不会移除 `.text.foo` 段的重定位信息。
+ 
+- # --strip-section-headers 剥离段头信息。该选项专用于 ELF 文件，且隐含启用 `--strip-all` 和 `--merge-notes`。 # -S, --strip-all 不从源文件中复制重定位信息与符号信息，同时删除调试段。 # -g, --strip-debug 不从源文件中复制调试符号及调试段。 # --strip-unneeded 除移除 `--strip-debug` 所剥离的调试符号与调试段外，还会移除所有重定位处理过程中不需要的符号。 # -K symbolname, --keep-symbol=symbolname 在剥离符号时，保留指定名称的符号，即便该符号在常规情况下会被剥离。该选项可多次使用。 # -N symbolname, --strip-symbol=symbolname 不从源文件中复制指定名称的符号。该选项可多次使用。 # --strip-unneeded-symbol=symbolname 不从源文件中复制指定名称的符号，除非该符号被重定位操作所依赖。该选项可多次使用。 # -G symbolname, --keep-global-symbol=symbolname 仅将指定名称的符号保留为全局符号，将其余所有符号设为文件局部符号，使其对外不可见。该选项可多次使用。注意：该选项不可与 `--globalize-symbol` 或 `--globalize-symbols` 选项同时使用。 # --localize-hidden 在 ELF 目标文件中，将所有具备隐藏可见性或内部可见性的符号标记为局部符号。该选项会叠加在 `-L` 这类针对特定符号的本地化选项之上生效。
 
 # 参见
 
