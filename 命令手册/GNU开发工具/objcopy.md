@@ -269,7 +269,8 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - --change-addresses <u>incr </u>--adjust-vma <u>incr </u>
 对所有节的虚拟地址（VMA）和加载地址（LMA），以及起始地址，统一加上增量<u>incr </u>进行修改。 某些目标文件格式不允许随意修改节地址。 注意，该操作不会对节进行重定位；如果程序原本期望节加载到某个地址，而使用此选项将节改到其他地址加载，程序可能会运行失败。
  
-- --change-section-address sectionpattern{=,+,-}val --adjust-section-vma sectionpattern{=,+,-}val 设置或修改所有匹配 sectionpattern 的段的虚拟地址（VMA）和加载地址（LMA）。若使用 =，则将段地址直接设为 val；否则在段地址的基础上增加或减去 val。相关说明可参考上文 --change-addresses。如果 sectionpattern 没有匹配到输入文件中的任何段，将会发出警告，除非使用了 --no-change-warnings。
+- --change-section-address <u>sectionpattern</u>{=,+,-}<u>val</u>，--adjust-section-vma <u>sectionpattern</u>{=,+,-}<u>val</u>
+设置或修改所有匹配 sectionpattern 的段的虚拟地址（VMA）和加载地址（LMA）。若使用 =，则将段地址直接设为 val；否则在段地址的基础上增加或减去 val。相关说明可参考上文 --change-addresses。如果 sectionpattern 没有匹配到输入文件中的任何段，将会发出警告，除非使用了 --no-change-warnings。
 
 
 # 参见
