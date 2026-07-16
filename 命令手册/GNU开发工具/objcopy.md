@@ -267,9 +267,9 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 通过增加增量<u>incr </u>来修改起始地址（也称入口地址）。并非所有目标文件格式都支持设置起始地址。
 
 - --change-addresses <u>incr </u>--adjust-vma <u>incr </u>
-对所有段的虚拟地址（VMA）、加载地址（LMA）以及起始地址统一增加增量 incr。部分目标文件格式不允许随意修改段地址。注意该操作不会对段进行重定位；如果程序预期段在某个地址加载，而使用该选项将其改到其他地址加载，程序可能无法正常运行。 
+对所有节的虚拟地址（VMA）和加载地址（LMA），以及起始地址，统一加上增量<u>incr </u>进行修改。 某些目标文件格式不允许随意修改节地址。 注意，该操作不会对节进行重定位；如果程序原本期望节加载到某个地址，而使用此选项将节改到其他地址加载，程序可能会运行失败。
  
- --change-section-address sectionpattern{=,+,-}val --adjust-section-vma sectionpattern{=,+,-}val 设置或修改所有匹配 sectionpattern 的段的虚拟地址（VMA）和加载地址（LMA）。若使用 =，则将段地址直接设为 val；否则在段地址的基础上增加或减去 val。相关说明可参考上文 --change-addresses。如果 sectionpattern 没有匹配到输入文件中的任何段，将会发出警告，除非使用了 --no-change-warnings。
+- --change-section-address sectionpattern{=,+,-}val --adjust-section-vma sectionpattern{=,+,-}val 设置或修改所有匹配 sectionpattern 的段的虚拟地址（VMA）和加载地址（LMA）。若使用 =，则将段地址直接设为 val；否则在段地址的基础上增加或减去 val。相关说明可参考上文 --change-addresses。如果 sectionpattern 没有匹配到输入文件中的任何段，将会发出警告，除非使用了 --no-change-warnings。
 
 
 # 参见
