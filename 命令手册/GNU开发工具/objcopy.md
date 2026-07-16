@@ -193,11 +193,25 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 仅将指定符号 <u>symbolname</u> 保留为全局符号，将其他所有符号局部化到文件内，使其对外不可见。该选项可多次使用。 注意：此选项不能与 `--globalize-symbol` 或 `--globalize-symbols` 选项同时使用。
 
 - --localize-hidden 
-在 ELF 目标文件中，将所有具有隐藏可见性或内部可见性的符号标记为局部符号。 该选项会在 `-L` 这类针对特定符号的本地化选项基础上叠加生效。
+在 ELF 目标文件中，将所有具有隐藏可见性或内部可见性的符号标记为本地符号。 该选项会在 `-L` 这类针对特定符号的本地化选项基础上叠加生效。
 
-- -L symbolname --localize-symbol=symbolname 将名为 symbolname 的全局符号或弱符号转换为局部符号，使其对外不可见。该选项可多次使用。注意：唯一全局符号不会被转换。
-- -W symbolname --weaken-symbol=symbolname 将 symbolname 符号设为弱符号。该选项可多次使用。 --binary-symbol-prefix=string 与 --input-target=binary 一同使用时，将 string 设为为输入文件生成的符号的基础名称。这些符号为： <string>_start <string>_end <string>_size 默认情况下，二进制输入处理器会根据经过编码处理的输入文件名和 _binary 前缀生成符号前缀。该选项允许显式指定前缀。 --globalize-symbol=symbolname 将 symbolname 符号设为全局作用域，使其在定义该符号的文件外部可见。该选项可多次使用。注意：此选项不能与 -G 或 --keep-global-symbol 选项同时使用。
-- -w --wildcard 允许在其他命令行选项使用的符号名中使用正则表达式。问号 (?)、星号 (*)、反斜杠 (\) 及方括号 ([]) 可用于符号名的任意位置。 如果符号名的第一个字符是感叹号 (!)，则对该符号反转选项的作用效果。 例如： -w -W !foo -W fo* 会使 objcopy 将所有以 "fo" 开头的符号设为弱符号，但符号 "foo" 除外。 
+- -L <u>symbolname</u>， --localize-symbol=<u>symbolname</u> 
+将名为 <u>symbolname </u>的全局符号或弱符号转换为局部符号，使其对外不可见。该选项可多次使用。注意：唯一符号不会被转换。
+
+- -W <u>symbolname </u>，--weaken-symbol=<u>symbolname </u>
+ 将符号<u>symbolname </u>设为弱符号。该选项可多次使用。 
+ 
+- --binary-symbol-prefix=<u>string </u>
+当与 `--input-target=binary` 配合使用时，将<u>string</u>设为为输入文件符号生成的基础名。这些符号分别是：
+&emsp;&emsp;`<string>_start` 、`<string>_end`、 `<string>_size` 
+默认情况下，二进制输入处理器会根据经过编码处理的输入文件名，结合 `_binary` 前缀来生成符号前缀。本选项允许显式指定此前缀。
+
+- --globalize-symbol=<u>symbolname</u>
+为符号<u>symbolname</u> 设置全局作用域，使其在定义该符号的文件外部可见。该选项可多次使用。 注意：此选项不可与 `-G` 或 `--keep-global-symbol` 选项同时使用。
+
+- -w --wildcard 
+允许在其他命令行选项使用的符号名中使用正则表达式。问号 (?)、星号 (*)、反斜杠 (\) 及方括号 ([]) 可用于符号名的任意位置。 如果符号名的第一个字符是感叹号 (!)，则对该符号反转选项的作用效果。 例如： -w -W !foo -W fo* 会使 objcopy 将所有以 "fo" 开头的符号设为弱符号，但符号 "foo" 除外。 
+
 - -x --discard-all 不从源文件中复制非全局符号。
 - -X --discard-locals 不复制编译器生成的局部符号。（这类符号通常以 L 或 .. 开头） 
 - -b byte --byte=byte 如果已通过 --interleave 选项启用字节交错提取，则从第 byte 个字节开始保留目标字节范围。byte 的取值范围为 0 到 breadth-1，其中 breadth 是 --interleave 选项指定的值。 
