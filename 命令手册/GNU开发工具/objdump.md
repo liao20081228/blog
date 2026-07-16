@@ -322,7 +322,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 
 限制 `.debug_info` 转储的子节点深度为 n，0 表示无限制。
 
-### --dwarf-start=n
+-  --dwarf-start=n
 
 仅从编号为 n 的 DIE 开始打印，可配合深度限制使用。
 
