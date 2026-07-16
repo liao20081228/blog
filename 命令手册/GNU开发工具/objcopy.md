@@ -275,7 +275,7 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - --change-section-lma <u>sectionpattern</u>{=,+,-}<u>val </u>
 设置或修改所有匹配 <u>sectionpattern </u>的加载地址（LMA）。LMA 地址是程序加载时节被载入内存的地址。通常该地址与程序运行时的虚拟地址（VMA）相同，但在某些系统中，尤其是程序存放在 ROM 中的场景下，两者可能不同。 如果使用 `=`，则将节地址直接设为<u> val</u>；否则在节地址的基础上增加或减去 <u>val</u>。相关说明可参考上文 `--change-addresses`。如果 <u>sectionpattern </u>没有匹配到输入文件中的任何节，将会发出警告，除非使用了 `--no-change-warnings`。
 
---change-section-vma <u>sectionpattern</u>{=,+,-}<u>val</u> 
+- --change-section-vma <u>sectionpattern</u>{=,+,-}<u>val</u> 
 设置或修改所有匹配 <u>sectionpattern </u>的节的虚拟地址（VMA）。VMA 地址是程序开始执行后节所在的地址。通常该地址与节被载入内存时的加载地址（LMA）相同，但在某些系统中，尤其是程序存放在 ROM 中的场景下，两者可能不同。 如果使用 `=`，则将节地址直接设为 <u>val</u>；否则在节地址的基础上增加或减去 <u>val</u>。相关说明可参考上文 `--change-addresses`。如果 <u>sectionpattern </u>没有匹配到输入文件中的任何节，将会发出警告，除非使用了 `--no-change-warnings`。 
 
 	注意：修改已完全链接的二进制文件中段的 VMA 可能存在风险，因为部分代码可能会期望这些节位于原地址。 
@@ -286,8 +286,21 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - --no-change-warnings， --no-adjust-warnings 
 即使使用了 `--change-section-address`、`--adjust-section-lma` 或 `--adjust-section-vma` 且节匹配模式未匹配到任何节，也不发出警告。 
 
-- --set-section-flags sectionpattern=flags 为所有匹配 sectionpattern 的段设置标志位。flags 参数是以逗号分隔的标志名称字符串。可识别的名称包括 alloc、contents、load、noload、readonly、code、data、rom、exclude、share、debug 和 large。 可以为原本没有内容的段设置 contents 标志，但清除有内容段的 contents 标志是没有意义的，此时应直接移除该段。并非所有标志对所有目标文件格式都有效。特别地，share 标志仅对 COFF 格式文件有效，对 ELF 格式文件无效。ELF x86-64 专用的 large 标志对应 SHF_X86_64_LARGE。 --set-section-alignment sectionpattern=align 为所有匹配 sectionpattern 的段设置对齐方式。align 以字节为单位指定对齐值，且必须是 2 的幂，如 1、2、4、8 等。 注意：设置段的对齐方式不会自动对齐其 LMA 或 VMA 地址。如果需要同时修改这些地址，应使用 --change-section-lma 和/或 --change-section-vma 选项。另外，修改已完全链接二进制文件的 VMA 可能引发问题，因为代码可能会预期段内容位于原地址。 --add-section sectionname=filename 在复制文件时添加一个名为 sectionname 的新段。新段的内容取自文件 filename，段的大小与该文件大小一致。 该选项仅适用于支持自定义段名的文件格式。注意：可能需要使用 --set-section-flags 选项为新建段设置属性。 --dump-section sectionname=filename 将名为 sectionname 的段的内容写入文件 filename，覆盖该文件原有内容。该选项与 --add-section 作用相反。 此选项与 --only-section 类似，但不会生成格式化文件，仅以原始二进制数据形式转储内容，不进行任何重定位处理。该选项可多次指定。
+- --set-section-flags <u>sectionpattern</u>=<u>flags</u>
+为所有匹配 <u>sectionpattern </u>的节设置标志位。<u>flags</u> 参数是以逗号分隔的标志名称字符串。可识别的名称包括 `alloc`、`contents`、`load`、`noload`、`readonly`、`code`、`data`、`rom`、`exclude`、`share`、`debug` 和 `large`。 可以为原本没有内容的节设置 `contents` 标志，但清除有内容段的 `contents` 标志是没有意义的，此时应直接移除该节。并非所有标志对所有目标文件格式都有效。特别地，`share` 标志仅对 COFF 格式文件有效，对 ELF 格式文件无效。ELF x86-64 专用的 `large` 标志对应 `SHF_X86_64_LARGE`。 
 
+ - --set-section-alignment <u>sectionpattern</u>=<u>align</u>
+为所有匹配 <u>sectionpattern </u>的节设置对齐方式。<u>align</u> 以字节为单位指定对齐值，且必须是 2 的幂，如 1、2、4、8 等。
+
+	注意：设置段的对齐方式不会自动对齐其 LMA 或 VMA 地址。如果需要同时修改这些地址，应使用 --change-section-lma 和/或 --change-section-vma 选项。另外，修改已完全链接二进制文件的 VMA 可能引发问题，因为代码可能会预期段内容位于原地址。 
+   
+- --add-section sectionname=filename 在复制文件时添加一个名为 sectionname 的新段。新段的内容取自文件 filename，段的大小与该文件大小一致。 该选项仅适用于支持自定义段名的文件格式。注意：可能需要使用 --set-section-flags 选项为新建段设置属性。
+
+
+- --dump-section sectionname=filename 将名为 sectionname 的段的内容写入文件 filename，覆盖该文件原有内容。该选项与 --add-section 作用相反。 此选项与 --only-section 类似，但不会生成格式化文件，仅以原始二进制数据形式转储内容，不进行任何重定位处理。该选项可多次指定。
+
+- --update-section sectionname=filename
+- 
 
 # 参见
 
