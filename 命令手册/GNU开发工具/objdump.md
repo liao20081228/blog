@@ -302,19 +302,21 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 `"N"`，`"=no-follow-links"`：禁用对独立调试信息文件的链接追踪。 
 `"D"`，`"=use-debuginfod"`： 在需要追踪调试链接时，允许连接 debuginfod 服务器。该行为为默认设置。
 `"E"`，`"=do-not-use-debuginfod"`： 在需要追踪调试链接时，禁止连接 debuginfod 服务器。 
-`"l"`，`"=rawline"`： 以原始格式显示 `.debug_line` 段的内容。 
-`"L"`，`"=decodedline"` 显示 `.debug_line` 段经解析后的内容。 
-`"m"`，`"=macro"`： 显示 `.debug_macro` 和/或 `.debug_macinfo` 段的内容。
-`"o"`，`"=loc"`： 显示 `.debug_loc` 和/或 `.debug_loclists` 段的内容。 
-`"O"`，`"=str-offsets"`： 显示 `.debug_str_offsets` 段的内容。 
-`"p"`，`"=pubnames"`： 显示 `.debug_pubnames` 和/或 `.debug_gnu_pubnames` 段的内容。 
-`"r"`，`"=aranges"`： 显示 `.debug_aranges` 段的内容。
-`"R"`，`"=Ranges"`： 显示 `.debug_ranges` 和/或 `.debug_rnglists` 段的内容。 
-`"s"`，`"=str"`： 显示 `.debug_str`、`.debug_line_str` 和/或 `.debug_str_offsets` 段的内容。 
-`"t"`，`"=pubtype"`： 显示 `.debug_pubtypes` 和/或 `.debug_gnu_pubtypes` 段的内容。
-`"T"`，`"=trace_aranges"`： 显示 `.trace_aranges` 段的内容。
-`"u"`，`"=trace_abbrev"`： 显示 `.trace_abbrev` 段的内容。 
-`"U"`，`"=trace_info"`： 显示 `.trace_info` 段的内容。 注意：目前不支持显示 `.debug_static_funcs`、`.debug_static_vars` 和 `debug_weaknames` 段的内容。
+`"l"`，`"=rawline"`： 以原始格式显示 `.debug_line` 节的内容。 
+`"L"`，`"=decodedline"` 显示 `.debug_line` 节经解析后的内容。 
+`"m"`，`"=macro"`： 显示 `.debug_macro` 和/或 `.debug_macinfo` 节的内容。
+`"o"`，`"=loc"`： 显示 `.debug_loc` 和/或 `.debug_loclists` 节的内容。 
+`"O"`，`"=str-offsets"`： 显示 `.debug_str_offsets` 节的内容。 
+`"p"`，`"=pubnames"`： 显示 `.debug_pubnames` 和/或 `.debug_gnu_pubnames` 节的内容。 
+`"r"`，`"=aranges"`： 显示 `.debug_aranges` 节的内容。
+`"R"`，`"=Ranges"`： 显示 `.debug_ranges` 和/或 `.debug_rnglists` 节的内容。 
+`"s"`，`"=str"`： 显示 `.debug_str`、`.debug_line_str` 和/或 `.debug_str_offsets` 节的内容。 
+`"t"`，`"=pubtype"`： 显示 `.debug_pubtypes` 和/或 `.debug_gnu_pubtypes` 节的内容。
+`"T"`，`"=trace_aranges"`： 显示 `.trace_aranges` 节的内容。
+`"u"`，`"=trace_abbrev"`： 显示 `.trace_abbrev` 节的内容。 
+`"U"`，`"=trace_info"`： 显示 `.trace_info` 节的内容。 
+
+	注意：目前不支持显示 `.debug_static_funcs`、`.debug_static_vars` 和 `debug_weaknames` 段的内容。
 
 ### --dwarf-depth=n
 
