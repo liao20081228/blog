@@ -130,7 +130,6 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - <u>infile</u> <u>outfile</u> 
 分别为输入文件和输出文件。如果未指定输出文件<u>outfile</u> ，如果不指定输出文件，objcopy 会创建一个临时文件，处理完成后用该临时文件覆盖并重命名为输入文件<u>infile</u>的名称。
 
-
 - -I <u>bfdname</u>, --input-target=<u>bfdname</u> 
 认为源文件的目标格式为 <u>bfdname</u>，而不自动检测推断。 
 
@@ -139,9 +138,15 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
  
 - -F <u>bfdname</u>， --target=<u>bfdname</u>
  将 bfdname 同时作为输入和输出文件的目标格式，即仅直接复制数据，不进行格式转换。
-- -B bfdarch --binary-architecture=bfdarch 在将无架构信息的输入文件转换为目标文件时非常有用。这种情况下可以将输出架构设置为 bfdarch。如果输入文件已有明确架构，该选项会被忽略。 你可以在程序中通过转换过程生成的特殊符号访问这些二进制数据，这些符号名为 _binary_objfile_start、_binary_objfile_end 和 _binary_objfile_size。 例如，你可以将图片文件转换成目标文件，然后在代码中通过这些符号访问数据。 
-- -j sectionpattern --only-section=sectionpattern 只将输入文件中指定的段复制到输出文件。该选项可多次使用。注意，不当使用此选项可能导致输出文件不可用。 sectionpattern 中支持通配符。 如果 sectionpattern 的第一个字符是感叹号!，则匹配的段将不会被复制，即使同一命令行中之前的 --only-section 原本会复制它。 例如： --only-section=.text.* --only-section=!.text.foo 会复制所有匹配 .text.* 的段，但不复制 .text.foo。 
-- -R sectionpattern --remove-section=sectionpattern 从输出文件中移除所有匹配 sectionpattern 的段。该选项可多次使用。不当使用可能导致输出文件不可用。 sectionpattern 支持通配符。同时使用 -j 和 -R 会导致行为未定义。 如果 sectionpattern 的第一个字符是感叹号!，则匹配的段不会被移除，即使同一命令行中之前的 --remove-section 原本会移除它。 例如： --remove-section=.text.* --remove-section=!.text.foo 会移除所有匹配 .text.* 的段，但不会移除 .text.foo。
+ 
+- -B bfdarch --binary-architecture=bfdarch
+在将无架构信息的输入文件转换为目标文件时非常有用。这种情况下可以将输出架构设置为 bfdarch。如果输入文件已有明确架构，该选项会被忽略。 你可以在程序中通过转换过程生成的特殊符号访问这些二进制数据，这些符号名为 _binary_objfile_start、_binary_objfile_end 和 _binary_objfile_size。 例如，你可以将图片文件转换成目标文件，然后在代码中通过这些符号访问数据。 
+
+- -j sectionpattern --only-section=sectionpattern
+只将输入文件中指定的段复制到输出文件。该选项可多次使用。注意，不当使用此选项可能导致输出文件不可用。 sectionpattern 中支持通配符。 如果 sectionpattern 的第一个字符是感叹号!，则匹配的段将不会被复制，即使同一命令行中之前的 --only-section 原本会复制它。 例如： --only-section=.text.* --only-section=!.text.foo 会复制所有匹配 .text.* 的段，但不复制 .text.foo。 
+  
+- -R sectionpattern --remove-section=sectionpattern
+从输出文件中移除所有匹配 sectionpattern 的段。该选项可多次使用。不当使用可能导致输出文件不可用。 sectionpattern 支持通配符。同时使用 -j 和 -R 会导致行为未定义。 如果 sectionpattern 的第一个字符是感叹号!，则匹配的段不会被移除，即使同一命令行中之前的 --remove-section 原本会移除它。 例如： --remove-section=.text.* --remove-section=!.text.foo 会移除所有匹配 .text.* 的段，但不会移除 .text.foo。
 # 参见
 
 nm (1)、readelf (1) 以及 binutils 的 Info 文档。
