@@ -190,7 +190,8 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 除非该符号被重定位操作所依赖，否则不从源文件中复制符号<u>symbolname </u>。该选项可多次使用。
 
 - -G <u>symbolname</u>, --keep-global-symbol=<u>symbolname</u> 
-仅将指定名称的符号保留为全局符号，将其余所有符号设为文件局部符号，使其对外不可见。该选项可多次使用。注意：该选项不可与 `--globalize-symbol` 或 `--globalize-symbols` 选项同时使用。 
+仅将指定符号 <u>symbolname</u> 保留为全局符号，将其他所有符号设为文件内局部符号，使其对外不可见。该选项可多次使用。 注意：此选项不能与 `--globalize-symbol` 或 `--globalize-symbols` 选项同时使用。
+
 - --localize-hidden 在 ELF 目标文件中，将所有具备隐藏可见性或内部可见性的符号标记为局部符号。该选项会叠加在 `-L` 这类针对特定符号的本地化选项之上生效。
 
 # 参见
