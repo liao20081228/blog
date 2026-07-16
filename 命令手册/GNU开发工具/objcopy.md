@@ -181,7 +181,7 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 除了移除由 `--strip-debug` 剥离的调试符号和调试节之外，还会移除所有重定位处理不需要的符号。 
   
 - -K <u>symbolname</u>, --keep-symbol=<u>symbolname </u>
-在剥离符号时，保留指定名称的符号，即使该符号在正常情况下会被剥离。该选项可以多次使用。 
+在剥离符号时，保留符号<u>symbolname</u>，即使该符号在正常情况下会被剥离。该选项可以多次使用。 
 
 - -N symbolname, --strip-symbol=symbolname 不从源文件中复制指定名称的符号。该选项可多次使用。 
 - --strip-unneeded-symbol=symbolname 不从源文件中复制指定名称的符号，除非该符号被重定位操作所依赖。该选项可多次使用。 
