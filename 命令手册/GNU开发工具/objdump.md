@@ -319,7 +319,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 	注意：目前不支持显示 `.debug_static_funcs`、`.debug_static_vars` 和 `debug_weaknames` 节的内容。
 
 - --dwarf-depth=<u>n</u>
-将 `.debug_info` 段的转储内容限制为 <u>n</u> 级子节点。 该选项仅与 `--debug-dump=info` 配合使用时有效。 默认行为是打印所有**调试信息条目（DIE）**；若将 n 设为特殊值 0，效果与此相同。 当 n 为非零值时，**深度等于或大于 n 级**的 DIE 将不会被打印。 n 的取值从 0 开始计数。
+将 `.debug_info` 段的转储内容限制为 <u>n</u> 级子节点。 该选项仅与 `--debug-dump=info` 配合使用时有效。 默认行为是打印所有调试信息条目（DIE）；若将 <u>n</u> 设为特殊值 0，效果与此相同。 当 n 为非零值时，深度等于或大于 n 级的 DIE 将不会被打印。 <u>n</u> 的取值从 0 开始计数。
 
 - --dwarf-start=n
 仅从编号为 n 的 DIE 开始打印，可配合深度限制使用。
