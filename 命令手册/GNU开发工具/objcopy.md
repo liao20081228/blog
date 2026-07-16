@@ -145,14 +145,14 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - -j <u>sectionpattern </u>，--only-section=<u>sectionpattern</u>
 只将输入文件中指定的节复制到输出文件。该选项可以多次使用。注意，不当使用此选项可能会导致输出文件无法使用。<u>sectionpattern </u>中支持通配符。
 
-	如果 <u>sectionpattern </u>的第一个字符是感叹号（!），那么符合匹配的节将不会被复制，即使在同一命令行中此前使用的 `--only-section` 原本会复制这些节。 例如：
+	如果 <u>sectionpattern </u>的第一个字符是感叹号（!），那么匹配的节将不会被复制，即使在同一命令行中此前使用的 `--only-section` 原本会复制这些节。 例如：
 &emsp;&emsp;`--only-section=.text.* --only-section=!.text.foo`
 将会复制所有匹配 `.text.*` 的节，但不会复制 `.text.foo` 这个节。
   
 - -R <u>sectionpattern </u>，--remove-section=<u>sectionpattern</u>
 从输出文件中移除所有匹配 <u>sectionpattern </u>的节。该选项可多次使用。注意，不当使用此选项可能会导致输出文件无法使用。 <u>sectionpattern </u>中支持通配符。同时使用 `-j` 和 `-R` 选项会导致未定义行为。 
 
-	如果 <u>sectionpattern </u>的第一个字符是感叹号（!），那么即使在同一命令行中之前使用的 --remove-section 原本会移除匹配的节，这些节也不会被移除。 例如： 
+	如果 <u>sectionpattern </u>的第一个字符是感叹号（!），那么匹配的节不会被移，即使在同一命令行中之前使用的`--remove-section` 原本会移除这些节。 例如： 
 &emsp;&emsp;`--remove-section=.text.* --remove-section=!.text.foo`
 将会移除所有匹配 `.text.*` 模式的节，但不会移除 `.text.foo` 节。
 	
@@ -164,11 +164,14 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 &emsp;&emsp;`--remove-relocations=.text.* `
 将会移除所有匹配 `.text.*` 模式的节的重定位信息。 
 
-	如果<u>sectionpattern</u>以感叹号 `!` 开头，那么即使在同一命令行中之前的 `--remove-relocations` 配置本会移除对应重定位信息，匹配该模式的段也不会被移除重定位信息。例如： 
+	如果<u>sectionpattern</u>以感叹号 `!` 开头，那么匹配的节也不会被移除重定位信息，即使在同一命令行中之前使用的`--remove-relocations` 原本本会移除这些节的重定位信息，例如： 
 &emsp;&emsp;` --remove-relocations=.text.* --remove-relocations=!.text.foo `
 将会移除所有匹配 `.text.*` 模式的节的重定位信息，但不会移除 `.text.foo` 节的重定位信息。
  
-- # --strip-section-headers 剥离段头信息。该选项专用于 ELF 文件，且隐含启用 `--strip-all` 和 `--merge-notes`。 # -S, --strip-all 不从源文件中复制重定位信息与符号信息，同时删除调试段。 # -g, --strip-debug 不从源文件中复制调试符号及调试段。 # --strip-unneeded 除移除 `--strip-debug` 所剥离的调试符号与调试段外，还会移除所有重定位处理过程中不需要的符号。 # -K symbolname, --keep-symbol=symbolname 在剥离符号时，保留指定名称的符号，即便该符号在常规情况下会被剥离。该选项可多次使用。 # -N symbolname, --strip-symbol=symbolname 不从源文件中复制指定名称的符号。该选项可多次使用。 # --strip-unneeded-symbol=symbolname 不从源文件中复制指定名称的符号，除非该符号被重定位操作所依赖。该选项可多次使用。 # -G symbolname, --keep-global-symbol=symbolname 仅将指定名称的符号保留为全局符号，将其余所有符号设为文件局部符号，使其对外不可见。该选项可多次使用。注意：该选项不可与 `--globalize-symbol` 或 `--globalize-symbols` 选项同时使用。 # --localize-hidden 在 ELF 目标文件中，将所有具备隐藏可见性或内部可见性的符号标记为局部符号。该选项会叠加在 `-L` 这类针对特定符号的本地化选项之上生效。
+- --strip-section-headers 
+剥离节头部。该选项专用于 ELF 文件，且隐含启用 `--strip-all` 和 `--merge-notes`。
+
+-  # -S, --strip-all 不从源文件中复制重定位信息与符号信息，同时删除调试段。 # -g, --strip-debug 不从源文件中复制调试符号及调试段。 # --strip-unneeded 除移除 `--strip-debug` 所剥离的调试符号与调试段外，还会移除所有重定位处理过程中不需要的符号。 # -K symbolname, --keep-symbol=symbolname 在剥离符号时，保留指定名称的符号，即便该符号在常规情况下会被剥离。该选项可多次使用。 # -N symbolname, --strip-symbol=symbolname 不从源文件中复制指定名称的符号。该选项可多次使用。 # --strip-unneeded-symbol=symbolname 不从源文件中复制指定名称的符号，除非该符号被重定位操作所依赖。该选项可多次使用。 # -G symbolname, --keep-global-symbol=symbolname 仅将指定名称的符号保留为全局符号，将其余所有符号设为文件局部符号，使其对外不可见。该选项可多次使用。注意：该选项不可与 `--globalize-symbol` 或 `--globalize-symbols` 选项同时使用。 # --localize-hidden 在 ELF 目标文件中，将所有具备隐藏可见性或内部可见性的符号标记为局部符号。该选项会叠加在 `-L` 这类针对特定符号的本地化选项之上生效。
 
 # 参见
 
