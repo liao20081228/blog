@@ -187,7 +187,7 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 不从源文件中复制符号<u>symbolname</u> 。该选项可以多次使用。
 
 - --strip-unneeded-symbol=<u>symbolname </u>
-除非该符号被重定位操作所依赖，否则不从源文件中复制符号 <u>symbolname </u>的。该选项可多次使用。
+除非该符号被重定位操作所依赖，否则不从源文件中复制符号<u>symbolname </u>。该选项可多次使用。
 
 - -G symbolname, --keep-global-symbol=symbolname 
 仅将指定名称的符号保留为全局符号，将其余所有符号设为文件局部符号，使其对外不可见。该选项可多次使用。注意：该选项不可与 `--globalize-symbol` 或 `--globalize-symbols` 选项同时使用。 
