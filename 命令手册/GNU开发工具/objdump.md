@@ -395,7 +395,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 
 	--unicode=escape` 选项会以转义序列（`\uxxxx`）形式显示。 `--unicode=highlight` 选项同样以转义序列显示，并会用红色高亮（如果输出设备支持）。 这种着色是为了在可能意外出现 Unicode 序列的地方，提醒用户注意。
 
-### -V, --version
+- -V, --version
 
 打印 objdump 版本号并退出。
 
