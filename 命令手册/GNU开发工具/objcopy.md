@@ -139,10 +139,10 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - -F <u>bfdname</u>， --target=<u>bfdname</u>
  将 bfdname 同时作为输入和输出文件的目标格式，即仅直接复制数据，不进行格式转换。
  
-- -B bfdarch --binary-architecture=bfdarch
-在将无架构信息的输入文件转换为目标文件时非常有用。这种情况下可以将输出架构设置为 bfdarch。如果输入文件已有明确架构，该选项会被忽略。 你可以在程序中通过转换过程生成的特殊符号访问这些二进制数据，这些符号名为 _binary_objfile_start、_binary_objfile_end 和 _binary_objfile_size。 例如，你可以将图片文件转换成目标文件，然后在代码中通过这些符号访问数据。 
+- -B <u>bfdarch </u>--binary-architecture=<u>bfdarch</u>
+在将无架构信息的输入文件转换为目标文件时非常有用。 这种情况下，可以将输出文件的架构设置为 <u>bfdarch</u>。 如果输入文件本身已包含明确的架构信息<u>bfdarch</u>，此选项将被忽略。 你可以在程序中通过转换过程生成的特殊符号来访问这些二进制数据。 这些符号分别是： `_binary_objfile_start`、`_binary_objfile_end` 和 `_binary_objfile_size`。 例如，你可以将一张图片文件转换成目标文件，然后在代码中通过这些符号直接访问图片数据。
 
-- -j sectionpattern --only-section=sectionpattern
+- -j <u>sectionpattern </u>--only-section=<u>sectionpattern</u>
 只将输入文件中指定的段复制到输出文件。该选项可多次使用。注意，不当使用此选项可能导致输出文件不可用。 sectionpattern 中支持通配符。 如果 sectionpattern 的第一个字符是感叹号!，则匹配的段将不会被复制，即使同一命令行中之前的 --only-section 原本会复制它。 例如： --only-section=.text.* --only-section=!.text.foo 会复制所有匹配 .text.* 的段，但不复制 .text.foo。 
   
 - -R sectionpattern --remove-section=sectionpattern
