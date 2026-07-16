@@ -145,9 +145,9 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 - -j <u>sectionpattern </u>，--only-section=<u>sectionpattern</u>
 只将输入文件中指定的节复制到输出文件。该选项可以多次使用。注意，不当使用此选项可能会导致输出文件无法使用。<u>sectionpattern </u>中支持通配符。
 
-	如果 <u>sectionpattern </u>的第一个字符是感叹号（!），那么符合匹配的节将不会被复制，即使在同一命令行中此前使用的 `--only-section` 原本会复制这些段。 例如：`--only-section=.text.* --only-section=!.text.foo`将会复制所有匹配 `.text.*` 的节，但不会复制 `.text.foo` 这个段。
+	如果 <u>sectionpattern </u>的第一个字符是感叹号（!），那么符合匹配的节将不会被复制，即使在同一命令行中此前使用的 `--only-section` 原本会复制这些节。 例如：`--only-section=.text.* --only-section=!.text.foo`将会复制所有匹配 `.text.*` 的节，但不会复制 `.text.foo` 这个节。
   
-- -R sectionpattern --remove-section=sectionpattern
+- -R <u>sectionpattern </u>，--remove-section=<u>sectionpattern</u>
 从输出文件中移除所有匹配 sectionpattern 的段。该选项可多次使用。不当使用可能导致输出文件不可用。 sectionpattern 支持通配符。同时使用 -j 和 -R 会导致行为未定义。 如果 sectionpattern 的第一个字符是感叹号!，则匹配的段不会被移除，即使同一命令行中之前的 --remove-section 原本会移除它。 例如： --remove-section=.text.* --remove-section=!.text.foo 会移除所有匹配 .text.* 的段，但不会移除 .text.foo。
 # 参见
 
