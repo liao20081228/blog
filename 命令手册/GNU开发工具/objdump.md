@@ -116,7 +116,7 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 - -e, --debugging-tags
 功能与 `-g` 类似，但生成的信息采用与 ctags工具兼容的格式
 
-- -d, --disassemble, --disassemble = <u>symbol</u>
+- -d, --disassemble, --disassemble=<u>symbol</u>
 显示输入文件中的机器指令对应的汇编助记符。该选项仅对预期包含指令的节进行反汇编。如果指定了可选的<u>symbol</u>参数（可多次指定），则从这些符号所在位置开始显示汇编助记符。若该<u>symbol</u>是函数名，反汇编会在函数末尾停止；否则会在遇到下一个符号时停止。如果没有匹配到任何<u>symbol</u>，则不会显示任何内容。
 
   注意：如果启用了 `--dwarf=follow-links` 选项，反汇编时会读取并使用链接的调试信息文件中的符号表。
@@ -286,14 +286,20 @@ objdump 显示一个或多个目标文件的信息，具体显示哪些内容由
 =aranges,=macro,=frames,=frames-interp,=str,=str-offsets,=loc,=Ranges,=pubtypes,=trace_info,
 =trace_abbrev,=trace_aranges,=gdb_index,=addr,=cu_index,=links,=follow-links]
 	显示文件中DWARF 调试段的内容（如果存在）。 压缩的调试段在显示前会被自动解压缩（临时解压）。 如果该选项后跟随一个或多个可选字母或单词，则仅转储对应类型的数据。 这些字母和单词对应的信息如下：
- `"a"`，`"=abbrev"` ：显示 `.debug_abbrev` 节的内容。 
- `"A"`，`"=addr"`： 显示 `.debug_addr` 节的内容。 
- `"c"`，`"=cu_index"`： 显示 `.debug_cu_index` 和/或 `.debug_tu_index` 节的内容。 
+
+	`"a"`，`"=abbrev"` ：显示 `.debug_abbrev` 节的内容。 
+ 
+	`"A"`，`"=addr"`： 显示 `.debug_addr` 节的内容。 
+
+	`"c"`，`"=cu_index"`： 显示 `.debug_cu_index` 和/或 `.debug_tu_index` 节的内容。
+	
  `"f"`，`"=frames"`： 显示 `.debug_frame` 节的原始内容。
+
  `"F"`，`"=frames-interp"`： 显示 `.debug_frame` 节经解析后的内容。 
  `"g"`，`"=gdb_index"`： 显示 `.gdb_index` 和/或 `.debug_names`节的内容。 
  `"i"`，`"=info"`： 显示 `.debug_info` 节的内容。 注意：该选项的输出内容还可通过 `--dwarf-depth` 和 `--dwarf-start` 选项进行限制。
- `"k"`，`"=links"`：若存在 `.gnu_debuglink`、`.gnu_debugaltlink` 和 `.debug_sup` 段，则显示这些段的内容。同时，如果 `.debug_info` 段中的 `DW_AT_GNU_dwo_name` 或 `DW_AT_dwo_name` 属性指定了关联的独立 DWARF 目标文件（dwo），也会显示对应的链接信息。 `"K"` `"=follow-links"` 显示在关联的独立调试信息文件中找到的所有选定调试段的内容。若同一调试段在多个文件中存在，可能会重复显示。 此外，在显示 DWARF 属性时，若遇到引用独立调试信息文件的格式，也会一并显示被引用的内容。 注意：在部分发行版中，该选项默认启用，可通过 `N` 调试选项禁用。在配置 binutils 时，可通过 `--enable-follow-debug-links=yes` 或 `--enable-follow-debug-links=no` 选择默认行为；若未指定该配置项，则默认启用调试链接追踪。 注意：若编译 binutils 时启用了对 debuginfod 协议的支持，该选项还会尝试连接 `DEBUGINFOD_URLS` 环境变量中指定的 debuginfod 服务器，此过程可能耗时较长。可通过 `=do-not-use-debuginfod` 调试选项禁用该行为。 `"N"` `"=no-follow-links"` 禁用对独立调试信息文件的链接追踪。 `"D"` `"=use-debuginfod"` 在需要追踪调试链接时，允许连接 debuginfod 服务器。该行为为默认设置。 `"E"` `"=do-not-use-debuginfod"` 在需要追踪调试链接时，禁止连接 debuginfod 服务器。 `"l"` `"=rawline"` 以原始格式显示 `.debug_line` 段的内容。 `"L"` `"=decodedline"` 显示 `.debug_line` 段经解析后的内容。 `"m"` `"=macro"` 显示 `.debug_macro` 和/或 `.debug_macinfo` 段的内容。 `"o"` `"=loc"` 显示 `.debug_loc` 和/或 `.debug_loclists` 段的内容。 `"O"` `"=str-offsets"` 显示 `.debug_str_offsets` 段的内容。 `"p"` `"=pubnames"` 显示 `.debug_pubnames` 和/或 `.debug_gnu_pubnames` 段的内容。 `"r"` `"=aranges"` 显示 `.debug_aranges` 段的内容。 `"R"` `"=Ranges"` 显示 `.debug_ranges` 和/或 `.debug_rnglists` 段的内容。 `"s"` `"=str"` 显示 `.debug_str`、`.debug_line_str` 和/或 `.debug_str_offsets` 段的内容。 `"t"` `"=pubtype"` 显示 `.debug_pubtypes` 和/或 `.debug_gnu_pubtypes` 段的内容。 `"T"` `"=trace_aranges"` 显示 `.trace_aranges` 段的内容。 `"u"` `"=trace_abbrev"` 显示 `.trace_abbrev` 段的内容。 `"U"` `"=trace_info"` 显示 `.trace_info` 段的内容。 注意：目前不支持显示 `.debug_static_funcs`、`.debug_static_vars` 和 `debug_weaknames` 段的内容。
+ `"k"`，`"=links"`：若存在 `.gnu_debuglink`、`.gnu_debugaltlink` 和 `.debug_sup` 节，则显示这些节的内容。同时，如果 `.debug_info` 节中的 `DW_AT_GNU_dwo_name` 或 `DW_AT_dwo_name` 属性指定了链接的独立 DWARF 目标文件（dwo），也会显示对应的链接信息。 
+`"K"` `"=follow-links"` 显示在关联的独立调试信息文件中找到的所有选定调试段的内容。若同一调试段在多个文件中存在，可能会重复显示。 此外，在显示 DWARF 属性时，若遇到引用独立调试信息文件的格式，也会一并显示被引用的内容。 注意：在部分发行版中，该选项默认启用，可通过 `N` 调试选项禁用。在配置 binutils 时，可通过 `--enable-follow-debug-links=yes` 或 `--enable-follow-debug-links=no` 选择默认行为；若未指定该配置项，则默认启用调试链接追踪。 注意：若编译 binutils 时启用了对 debuginfod 协议的支持，该选项还会尝试连接 `DEBUGINFOD_URLS` 环境变量中指定的 debuginfod 服务器，此过程可能耗时较长。可通过 `=do-not-use-debuginfod` 调试选项禁用该行为。 `"N"` `"=no-follow-links"` 禁用对独立调试信息文件的链接追踪。 `"D"` `"=use-debuginfod"` 在需要追踪调试链接时，允许连接 debuginfod 服务器。该行为为默认设置。 `"E"` `"=do-not-use-debuginfod"` 在需要追踪调试链接时，禁止连接 debuginfod 服务器。 `"l"` `"=rawline"` 以原始格式显示 `.debug_line` 段的内容。 `"L"` `"=decodedline"` 显示 `.debug_line` 段经解析后的内容。 `"m"` `"=macro"` 显示 `.debug_macro` 和/或 `.debug_macinfo` 段的内容。 `"o"` `"=loc"` 显示 `.debug_loc` 和/或 `.debug_loclists` 段的内容。 `"O"` `"=str-offsets"` 显示 `.debug_str_offsets` 段的内容。 `"p"` `"=pubnames"` 显示 `.debug_pubnames` 和/或 `.debug_gnu_pubnames` 段的内容。 `"r"` `"=aranges"` 显示 `.debug_aranges` 段的内容。 `"R"` `"=Ranges"` 显示 `.debug_ranges` 和/或 `.debug_rnglists` 段的内容。 `"s"` `"=str"` 显示 `.debug_str`、`.debug_line_str` 和/或 `.debug_str_offsets` 段的内容。 `"t"` `"=pubtype"` 显示 `.debug_pubtypes` 和/或 `.debug_gnu_pubtypes` 段的内容。 `"T"` `"=trace_aranges"` 显示 `.trace_aranges` 段的内容。 `"u"` `"=trace_abbrev"` 显示 `.trace_abbrev` 段的内容。 `"U"` `"=trace_info"` 显示 `.trace_info` 段的内容。 注意：目前不支持显示 `.debug_static_funcs`、`.debug_static_vars` 和 `debug_weaknames` 段的内容。
 
 ### --dwarf-depth=n
 
