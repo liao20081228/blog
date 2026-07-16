@@ -210,11 +210,19 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 为符号<u>symbolname</u> 设置全局作用域，使其在定义该符号的文件外部可见。该选项可多次使用。 注意：此选项不可与 `-G` 或 `--keep-global-symbol` 选项同时使用。
 
 - -w --wildcard 
-允许在其他命令行选项使用的符号名中使用正则表达式。问号 (?)、星号 (*)、反斜杠 (\) 及方括号 ([]) 可用于符号名的任意位置。 如果符号名的第一个字符是感叹号 (!)，则对该符号反转选项的作用效果。 例如： -w -W !foo -W fo* 会使 objcopy 将所有以 "fo" 开头的符号设为弱符号，但符号 "foo" 除外。 
+允许在其他命令行选项所使用的符号名称<u>symbolname</u>中使用正则表达式。问号(`?`)、星号(`*`)、反斜杠(`\`)和方括号(`[]`)这类运算符可以用在符号名的任意位置。 如果符号名的第一个字符是感叹号（`!`），则对该符号反转当前选项的作用逻辑。 例如： 
+&emsp;&emsp;`-w -W !foo -W fo* `
+会使 objcopy 将所有以 `fo` 开头的符号设为弱符号，但 `foo` 符号除外。
 
-- -x --discard-all 不从源文件中复制非全局符号。
-- -X --discard-locals 不复制编译器生成的局部符号。（这类符号通常以 L 或 .. 开头） 
-- -b byte --byte=byte 如果已通过 --interleave 选项启用字节交错提取，则从第 byte 个字节开始保留目标字节范围。byte 的取值范围为 0 到 breadth-1，其中 breadth 是 --interleave 选项指定的值。 
+- -x --discard-all 
+ 不从源文件中复制非全局符号。
+ 
+- -X --discard-locals 
+ 不复制编译器生成的本地符号。（这类符号通常以 L 或 .. 开头） 
+ 
+- -b <u>byte </u>，--byte=<u>byte</u> 
+如果已通过 --interleave 选项启用字节交错提取，则从第 byte 个字节开始保留目标字节范围。byte 的取值范围为 0 到 breadth-1，其中 breadth 是 --interleave 选项指定的值。 
+ 
 - -i [breadth] --interleave[=breadth] 仅从每 breadth 个字节中复制一段连续字节。（头部数据不受影响） 使用 --byte 选项选择范围内起始复制的字节，使用 --interleave-width 选项选择范围宽度。 该选项常用于生成用于烧录 ROM 的文件，通常配合 "srec" 输出目标使用。注意：如果不同时指定 --byte 选项，objcopy 会报错。 默认的交错间隔 breadth 为 4，因此将 --byte 设为 0 时，objcopy 会从输入中每 4 个字节提取第一个字节写入输出。
 # 
 # 参见
