@@ -196,7 +196,7 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
 在 ELF 目标文件中，将所有具有隐藏可见性或内部可见性的符号标记为本地符号。 该选项会在 `-L` 这类针对特定符号的本地化选项基础上叠加生效。
 
 - -L <u>symbolname</u>， --localize-symbol=<u>symbolname</u> 
-将名为 <u>symbolname </u>的全局符号或弱符号转换为局部符号，使其对外不可见。该选项可多次使用。注意：唯一符号不会被转换。
+将名为 <u>symbolname </u>的全局符号或弱符号转换为本地符号，使其对外不可见。该选项可多次使用。注意：唯一符号不会被转换。
 
 - -W <u>symbolname </u>，--weaken-symbol=<u>symbolname </u>
  将符号<u>symbolname </u>设为弱符号。该选项可多次使用。 
