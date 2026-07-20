@@ -7,6 +7,9 @@ tags: ITU,691,ASN1
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>[《Recommendation ITU-T X.691 (2021)》](https://www.itu.int/rec/T-REC-X.691/en)。</font>发布时间为2021-02。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
+
+[TOC]
+
 # 引言
 
 # 1 范围
