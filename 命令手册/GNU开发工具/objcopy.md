@@ -292,15 +292,16 @@ objcopy 会创建临时文件来完成格式转换，之后删除这些临时文
  - --set-section-alignment <u>sectionpattern</u>=<u>align</u>
 为所有匹配 <u>sectionpattern </u>的节设置对齐方式。<u>align</u> 以字节为单位指定对齐值，且必须是 2 的幂，如 1、2、4、8 等。
 
-	注意：设置段的对齐方式不会自动对齐其 LMA 或 VMA 地址。如果需要同时修改这些地址，应使用 --change-section-lma 和/或 --change-section-vma 选项。另外，修改已完全链接二进制文件的 VMA 可能引发问题，因为代码可能会预期段内容位于原地址。 
+	注意：设置节的对齐方式不会自动对齐其 LMA 或 VMA 地址。如果需要同时修改这些地址，应使用 `--change-section-lma` 和/或 `--change-section-vma` 选项。另外，修改已完全链接二进制文件的 VMA 可能引发问题，因为代码可能会期望节内容位于原地址。 
    
-- --add-section sectionname=filename 在复制文件时添加一个名为 sectionname 的新段。新段的内容取自文件 filename，段的大小与该文件大小一致。 该选项仅适用于支持自定义段名的文件格式。注意：可能需要使用 --set-section-flags 选项为新建段设置属性。
+- --add-section <u>sectionname</u>=<u>filename </u>
+在复制文件时添加一个名为 <u>sectionname </u>的新段。新节的内容取自文件 <u>filename</u>，节的大小与该文件大小一致。 该选项仅适用于支持自定义节名的文件格式。注意：可能需要使用 `--set-section-flags` 选项为新建节设置属性。
 
+- --dump-section <u>sectionname</u>=<u>filename </u>
+ 将名为 <u>sectionname </u>的节的内容写入文件 <u>filename</u>，覆盖该文件原有内容。该选项与 `--add-section` 作用相反。 此选项与 `--only-section` 类似，但不会生成格式化文件，仅以原始二进制数据形式转储内容，不进行任何重定位处理。该选项可多次指定。
 
-- --dump-section sectionname=filename 将名为 sectionname 的段的内容写入文件 filename，覆盖该文件原有内容。该选项与 --add-section 作用相反。 此选项与 --only-section 类似，但不会生成格式化文件，仅以原始二进制数据形式转储内容，不进行任何重定位处理。该选项可多次指定。
-
-- --update-section sectionname=filename
-- 
+- --update-section <u>sectionname</u>=<u>filename</u>
+用文件 <u>filename </u>中的内容替换名为 <u>sectionname </u>的节的原有内容。节的大小会调整为该文件的大小。<u>sectionname </u>的节标志将保持不变。 对于 ELF 格式文件，节到内存分段的映射关系也会保持不变，这一点是先使用 --remove-section 再使用 --add-section 无法做到的。该选项可以多次指定。 注意：可以在同一命令行中同时使用 --rename-section 和 --update-section 来更新并重命名一个段。这种情况下，将原段名传给 --update-section，并将原段名和新段名传给 --rename-section。
 
 # 参见
 
