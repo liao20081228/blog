@@ -322,12 +322,12 @@ BSD 作业控制格式。
 | ---- | ---- | ---- | 
 | c | cmd | 可执行文件短名称 |
 | C | pcpu | CPU 使用率 | 
-| f | flags | 进程标志，对应长格式中的 F 字段 |
+| f | flags | 进程标志，对应长格式中的 `F` 字段 |
 | g | pgrp | 进程组ID | 
 | G | tpgid | 控制终端的进程组ID |
-| j | cutime | 累计用户态CPU耗时 | 
-| J | cstime | 累计内核态CPU耗时 | 
-| k | utime | 用户态CPU耗时 |
+| j | cutime | 累计用户耗时 | 
+| J | cstime | 累计系统耗时 | 
+| k | utime | 用户耗时 |
 | m | min_flt | 次要缺页异常次数 |
 | M | maj_flt | 主要缺页异常次数 | 
 | n | cmin_flt | 累计次要缺页异常次数 |
@@ -341,7 +341,7 @@ BSD 作业控制格式。
 | S | share | 共享内存页数 | 
 | t | tty | 控制终端设备号 |
 | T | start_time | 进程启动时间 | 
-| U | uid | 用户ID数值 | 
+| U | uid | 用户ID | 
 | u | user | 用户名 | 
 | v | vsize | 虚拟内存总大小，单位KiB |
 | y | priority | 内核调度优先级 |
