@@ -346,6 +346,32 @@ BSD 作业控制格式。
 | v | vsize | 虚拟内存总大小，单位KiB |
 | y | priority | 内核调度优先级 |
 
+
+# AIX 格式描述符 
+本版 ps 支持 AIX 格式描述符，其用法与 <u>printf</u>(1) 和 <u>printf</u>(3) 的格式化控制符类似。例如，使用如下命令可生成标准默认输出： `ps -eo "%p %y %x %c"`。 标准格式码将在下一节说明。 
+
+| 代码 | 对应标准字段 | 表头 | 
+| ---- | ------------ | ---- | 
+| %C | pcpu | %CPU | 
+| %G | group | GROUP | 
+| %P | ppid | PPID | 
+| %U | user | USER | 
+| %a | args | COMMAND |
+| %c | comm | COMMAND | 
+| %g | rgroup | RGROUP | 
+| %n | nice | NI | 
+| %p | pid | PID | 
+| %r | pgid | PGID |
+| %t | etime | ELAPSED | 
+| %u | ruser | RUSER | 
+| %x | time | TIME | 
+| %y | tty | TTY |
+| %z | vsz | VSZ |
+
+# 标准格式说明符
+
+
+
 ------
 
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《ps manpages》。</font>objdump的版本为4.0.4，手册更新时间为2023-08。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
