@@ -1,6 +1,6 @@
 ---
 title: gitignore
-tags: 一般命令,man1
+tags: 一般命令,git,man1
 ---
 
 ------
