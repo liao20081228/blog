@@ -62,28 +62,26 @@ Git 底层工具（如 `git ls‑files`、`git read‑tree`）读取命令行选
 - `/**/`：匹配零层或多层中间目录。例如 `a/**/b` 匹配 `a/b`、`a/x/b`、`a/x/y/b` 等。
 - 其他连续星号，按普通星号规则处理。
 
-## 配置
+# 配置
 
 配置项 `core.excludesFile` 指定一个外部文件路径，存放忽略规则，作用类似 `$GIT_COMMON_DIR/info/exclude`。该文件内规则会叠加在 `$GIT_COMMON_DIR/info/exclude` 规则之上共同生效。
 
-## 备注
+# 备注
 
 gitignore 的目的：保证**未被追踪的文件持续处于未追踪状态**。
 
-> 
-> 
-> 如果某文件已经被追踪，想要停止追踪：使用 `git rm --cached` 将该文件从索引中移除，之后再把文件名写入 `.gitignore`，避免后续提交又把该文件加回来。
-> 
-> 
+
+如果某文件已经被追踪，想要停止追踪：使用 `git rm --cached` 将该文件从索引中移除，之后再把文件名写入 `.gitignore`，避免后续提交又把该文件加回来。
+
 
 Git 读取工作树中的 `.gitignore` 文件时，不会跟随符号链接。保证从文件系统读取、从索引/树对象读取时行为保持一致。
 
 ## 示例
 
-1.  `hello.*`：匹配名称以 `hello.` 开头的任意文件/目录。 若只想限定当前目录，不匹配子目录，前面加斜杠：`/hello.*`。会匹配 `hello.txt`、`hello.c`；**不会匹配**`a/hello.java`。
-2.  `foo/`：匹配 `foo` 目录以及该目录下全部内容；**不会匹配**普通文件或符号链接 `foo`。该行为与 Git 的路径规范（pathspec）保持一致。
-3.  `doc/frotz` 和 `/doc/frotz` 在同一个 `.gitignore` 效果完全相同。模式中间已经存在斜杠时，开头的斜杠无意义。
-4.  `foo/*`：匹配 `foo/test.json`（普通文件）、`foo/bar`（目录）；**不匹配**`foo/bar/hello.c`，因为 `*` 不能匹配斜杠。
+- `hello.*`：匹配名称以 `hello.` 开头的任意文件/目录。 若只想限定当前目录，不匹配子目录，前面加斜杠：`/hello.*`。会匹配 `hello.txt`、`hello.c`；**不会匹配**`a/hello.java`。
+- `foo/`：匹配 `foo` 目录以及该目录下全部内容；**不会匹配**普通文件或符号链接 `foo`。该行为与 Git 的路径规范（pathspec）保持一致。
+- `doc/frotz` 和 `/doc/frotz` 在同一个 `.gitignore` 效果完全相同。模式中间已经存在斜杠时，开头的斜杠无意义。
+- `foo/*`：匹配 `foo/test.json`（普通文件）、`foo/bar`（目录）；**不匹配**`foo/bar/hello.c`，因为 `*` 不能匹配斜杠。
 
 ```
 $ git status
