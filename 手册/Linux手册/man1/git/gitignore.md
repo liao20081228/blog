@@ -10,7 +10,6 @@ tags: 一般命令,git,man1
 ------
 
 
-# gitignore 中文翻译（源自 git‑scm 官方文档）
 
 ## 名称
 
