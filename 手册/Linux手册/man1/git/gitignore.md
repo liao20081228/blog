@@ -1,5 +1,5 @@
 ---
-title: ssh
+title: gitignore
 tags: 一般命令,man1
 ---
 
