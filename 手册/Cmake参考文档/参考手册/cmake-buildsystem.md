@@ -1,5 +1,5 @@
 ---
-title: cmake-buildsystem
+title: cmake-buildsystem(7)
 tags: cmake参考手册
 ---
 
