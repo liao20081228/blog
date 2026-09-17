@@ -223,8 +223,38 @@ target_link_libraries(use_static3 PRIVATE static3)
 >- 不会增加针对对象库的编译顺序依赖；
 >- 在 Xcode 的多架构编译场景无法正常工作。
 
+
 # 静态库循环依赖
 
+库的依赖图通常为无环图（DAG，有向无环图），但对于互相存在依赖的`STATIC`库，CMake 允许依赖图中存在环（强连通组件）。当另一个目标链接到其中某一个库时，CMake 会重复载入整个连通组件。例如如下代码：
+
+```cmake
+add_library(A STATIC a.c)
+add_library(B STATIC b.c)
+target_link_libraries(A B)
+target_link_libraries(B A)
+add_executable(main main.c)
+target_link_libraries(main A)
+```
+
+会将 `main` 与 `A B A B` 进行链接。一般情况下重复一次就足够，但在部分极端的目标文件与符号排布场景下，可能需要更多次重复。可以通过目标属性 [LINK_INTERFACE_MULTIPLICITY](https://cmake.org/cmake/help/latest/prop_tgt/LINK_INTERFACE_MULTIPLICITY.html#prop_tgt:LINK_INTERFACE_MULTIPLICITY) 处理这类场景，也可以在最后的 `target_link_libraries` 调用中手动重复该连通组件。不过，如果两个归档库确实存在如此强的相互依赖关系，更合理的做法是将二者合并为单个归档库，可以借助[对象库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#object-libraries)（object‑libraries）来实现。
+
+# 创建可重定位包
+
+ 注意：不建议在目标的 [INTERFACE_LINK_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES)属性中填入依赖项的绝对路径。 这会把**打包机器上探测得到**的依赖库文件路径硬编码到安装后的软件包内。
+ 
+关于在制作可重定位包软件包、设置使用要求时需要额外注意的事项，请参阅手册 [cmake‑packages(7)](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#manual:cmake-packages(7)) 的[创建可重定位软件包](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#creating-relocatable-packages)章节。
+
+# 另请参阅
+
+- [`target_compile_definitions()`](https://cmake.org/cmake/help/latest/command/target_compile_definitions.html#command:target_compile_definitions "target_compile_definitions")
+- [`target_compile_features()`](https://cmake.org/cmake/help/latest/command/target_compile_features.html#command:target_compile_features "target_compile_features")
+- [`target_compile_options()`](https://cmake.org/cmake/help/latest/command/target_compile_options.html#command:target_compile_options "target_compile_options")
+- [`target_include_directories()`](https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories "target_include_directories")
+- [`target_link_directories()`](https://cmake.org/cmake/help/latest/command/target_link_directories.html#command:target_link_directories "target_link_directories")
+- [`target_link_options()`](https://cmake.org/cmake/help/latest/command/target_link_options.html#command:target_link_options "target_link_options")
+- [`target_precompile_headers()`](https://cmake.org/cmake/help/latest/command/target_precompile_headers.html#command:target_precompile_headers "target_precompile_headers")
+-[`target_sources()`](https://cmake.org/cmake/help/latest/command/target_sources.html#command:target_sources "target_sources")
 
 
 ------
