@@ -9,8 +9,7 @@ tags: cmake
 
 ------
 
-# 项目命令
-这些命令仅在CMake项目中可用。
+
 ## add_compile_definitions
 *自版本 3.12 起添加*。
 
