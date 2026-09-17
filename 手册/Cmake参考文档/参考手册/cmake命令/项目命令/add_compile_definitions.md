@@ -1,5 +1,5 @@
 ---
-title: cmake-commands(7)_4
+title: add_compile_definitions
 tags: cmake
 ---
 
