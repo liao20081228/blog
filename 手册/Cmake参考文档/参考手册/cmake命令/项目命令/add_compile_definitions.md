@@ -10,7 +10,7 @@ tags: cmake
 ------
 
 
-## add_compile_definitions
+# add_compile_definitions
 *自版本 3.12 起添加*。
 
 将预处理器定义添加到源文件的编译过程中。
@@ -27,7 +27,7 @@ add_compile_definitions（<definition>...）
 
 `add_compile_definitions` 的参数可以使用生成器表达式，其语法为 `$<...>`。有关可用表达式的详细信息，请参阅 [cmake-generator-expressions(7)](https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7) "cmake-generator-expressions(7)") 手册。有关定义构建系统属性的更多信息，请参阅 [cmake-buildsystem(7)](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#manual:cmake-buildsystem(7) "cmake-buildsystem(7)") 手册。
 
-### 另请参阅
+# 另请参阅
 命令 [target_compile_definitions()](https://cmake.org/cmake/help/latest/command/target_compile_definitions.html#command:target_compile_definitions "target_compile_definitions") 用于添加针对特定目标的宏定义。
 
 
