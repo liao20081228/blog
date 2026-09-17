@@ -10,7 +10,7 @@ tags: cmake
 ------
 使用指定的源文件将可执行文件添加到项目中。
 
-### 普通可执行文件
+# 普通可执行文件
 ```cmake
 add_executable(<name> <options>... <sources>...)
 ```
@@ -39,7 +39,7 @@ add_executable(<name> <options>... <sources>...)
 
 另请参阅[HEADER_FILE_ONLY](https://cmake.org/cmake/help/latest/prop_sf/HEADER_FILE_ONLY.html#prop_sf:HEADER_FILE_ONLY "HEADER_FILE_ONLY")，了解如果某些源文件经过预处理，并且你希望在IDE中能够访问原始源文件时，应如何处理。
 
-### 导入的可执行文件
+# 导入的可执行文件
 
 ```cmake
 add_executable(<name> IMPORTED [GLOBAL])¶
@@ -55,7 +55,7 @@ add_executable(<name> IMPORTED [GLOBAL])¶
 
 导入可执行文件的详细信息通过设置以 `IMPORTED_` 开头的属性来指定。其中最重要的属性是 [IMPORTED_LOCATION](https://cmake.org/cmake/help/latest/prop_tgt/IMPORTED_LOCATION.html#prop_tgt:IMPORTED_LOCATION "IMPORTED_LOCATION")（以及其针对不同配置的版本 [IMPORTED_LOCATION_\<CONFIG>](https://cmake.org/cmake/help/latest/prop_tgt/IMPORTED_LOCATION_CONFIG.html#prop_tgt:IMPORTED_LOCATION_%3CCONFIG%3E "IMPORTED_LOCATION_<CCONFIG></CCONFIG>")），它指定了磁盘上主要可执行文件的位置。有关更多信息，请参阅 `IMPORTED_*` 属性的文档。
 
-### 别名的可执行文件
+# 别名的可执行文件
 ```cmake
 add_executable(<name> ALIAS <target>)
 ```
@@ -67,7 +67,7 @@ add_executable(<name> ALIAS <target>)
 
 `ALIAS`目标可以用作读取属性的目标、自定义命令和自定义目标的可执行文件。它们还可以通过常规的 [if(TARGET)](https://cmake.org/cmake/help/latest/command/if.html#target "if(TARGET)") 子命令来测试是否存在。需要注意的是，`<name>` 不能用于修改 `<target>` 的属性，也就是说，它不能作为 [set_property()](https://cmake.org/cmake/help/latest/command/set_property.html#command:set_property "set_property")、[set_target_properties()](https://cmake.org/cmake/help/latest/command/set_target_properties.html#command:set_target_properties "set_target_properties")、[target_link_libraries()](https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries "target_link_libraries") 等命令的操作数。`ALIAS` 目标不能被安装或导出。
 
-### 另请参阅
+# 另请参阅
  
  - [add_library()](https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library "add_library")
   
