@@ -108,10 +108,9 @@ add_custom_target(Name [ALL] [command1 [args1...]]
 
 	*从 3.13 版本开始添加*：`WORKING_DIRECTORY` 的参数可以使用[生成器表达式](https://cmake.org/cmake/help/v4.2/manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7) "cmake-generator-expressions(7)")。
 	
-### Ninja Multi-Config
+# Ninja Multi-Config
 *3.20 版本新增*：`add_custom_target` 现在支持 [Ninja Multi-Config](https://cmake.org/cmake/help/v4.2/generator/Ninja%20Multi-Config.html#generator:Ninja%20Multi-Config "Ninja Multi-Config")生成器的跨配置功能。更多信息请参阅生成器文档。
-### 另请参阅
-
+# 另请参阅
 - [add_custom_command()](https://cmake.org/cmake/help/v4.2/command/add_custom_command.html#command:add_custom_command "add_custom_command")
 
 ------
