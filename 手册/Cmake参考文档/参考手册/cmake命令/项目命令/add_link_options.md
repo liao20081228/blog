@@ -43,19 +43,19 @@ add_link_options(<option> ...)
 * 对于 Clang，展开为：`-Xlinker -z -Xlinker defs`
 * 对于 GNU GCC，展开为：`-Wl,-z,defs`
 
-`LINKER:` 前缀内部可以嵌套使用 `SHELL:` 前缀表达式。 `LINKER:` 支持另一种语法：搭配 `SHELL:` 前缀、以空格作为参数分隔。上面示例等价写法：`"LINKER:SHELL:-z defs"`。
+`LINKER:` 前缀可以被指定为 `SHELL:` 前缀表达式的一部分。 
+`LINKER:` 支持另一种语法：搭配 `SHELL:` 前缀、以空格作为参数分隔。上面示例等价写法：`"LINKER:SHELL:-z defs"`。
 
 
 > 注意：不支持在 `LINKER:` 前缀以外的任意位置写 `SHELL:` 前缀。
 
 # 另请参阅
 
-*   `link_libraries`
-*   `target_link_libraries`
-*   `target_link_options`
-*   变量 `<LANG>_FLAGS`、`<LANG>_FLAGS_<CONFIG>`：添加语言全局标志，作用于编译器的全部调用，包含编译阶段与链接阶段。
-
-4.3 版本新增： 变量 `<LANG>_LINK_FLAGS`、`<LANG>_LINK_FLAGS_<CONFIG>`：添加语言全局标志，仅作用于编译器执行链接的调用。
+- [link_libraries()](https://cmake.org/cmake/help/latest/command/link_libraries.html#command:link_libraries)
+- [target_link_libraries()](https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries)
+- [target_link_options()](https://cmake.org/cmake/help/latest/command/target_link_options.html#command:target_link_options)
+- 变量 [CMAKE_\<LANG>\_FLAGS](https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_FLAGS.html#variable:CMAKE_%3CLANG%3E_FLAGS)、[CMAKE_\<LANG>\_FLAGS\_\<CONFIG>](https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_FLAGS_CONFIG.html#variable:CMAKE_%3CLANG%3E_FLAGS_%3CCONFIG%3E)：添加语言全局标志，作用于编译器的全部调用，包含驱动编译阶段与驱动链接阶段。
+- *4.3 版本新增*： 变量 [CMAKE_\<LANG>\_LINK\_FLAGS](https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_LINK_FLAGS.html#variable:CMAKE_%3CLANG%3E_LINK_FLAGS)、[CMAKE\_\<LANG>\_LINK\_FLAGS\_\<CONFIG>](https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_LINK_FLAGS_CONFIG.html#variable:CMAKE_%3CLANG%3E_LINK_FLAGS_%3CCONFIG%3E)：添加语言全局标志作用于编译器的全部调用，仅在驱动链接阶段。
 
 
 ------
