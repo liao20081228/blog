@@ -1,6 +1,6 @@
 ---
 title: add_custom_target
-tags: cmake
+tags: cmake,cmake命令
 ---
 
 ------
