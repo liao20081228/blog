@@ -1,6 +1,6 @@
 ---
 title: add_dependencies
-tags: cmake
+tags: cmake,cmake命令
 ---
 
 ------
