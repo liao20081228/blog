@@ -223,6 +223,8 @@ target_link_libraries(use_static3 PRIVATE static3)
 >- 不会增加针对对象库的编译顺序依赖；
 >- 在 Xcode 的多架构编译场景无法正常工作。
 
+# 静态库循环依赖
+
 
 
 ------
