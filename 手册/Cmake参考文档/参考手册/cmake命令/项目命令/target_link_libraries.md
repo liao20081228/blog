@@ -60,15 +60,9 @@ target_link_libraries(<target> ... <item>... ...)
 	
 	生成器表达式也可以作为上述条目的片段，例如 `foo$<1:_d>`。
 
-- `debug` / `optimized` / `general` 关键字，后跟另一个 `<item>` 关键字后面的条目，仅对对应构建配置生效。
-
-*   `debug`：用于 Debug 配置；若设置全局属性 `DEBUG_CONFIGURATIONS`，则对应该属性定义的配置集合。
-*   `optimized`：用于除 Debug 之外其余全部配置。
-*   `general`：适用于全部配置，可以省略。
-
-该关键字由本命令直接解析；**如果关键字是生成器表达式求值得到，则失去特殊含义**。
-
-更细粒度的按配置链接，推荐使用 `$<CONFIG:...>` 生成器表达式。更结构化的方式是使用设置了 `IMPORTED_CONFIGURATIONS` 的导入目标做链接，在 Find‑Module 模块中尤为常用。
+- `debug` / `optimized` / `general` 关键字，后跟一个 `<item>`。这种`<item>`仅对对应构建配置有用。`debug`：用于 Debug 配置（或则若设置全局属性 [DEBUG_CONFIGURATIONS](https://cmake.org/cmake/help/latest/prop_gbl/DEBUG_CONFIGURATIONS.html#prop_gbl:DEBUG_CONFIGURATIONS)，则对应该属性定义的配置集）。`optimized`：用于除 `Debug` 之外其余全部配置。`general`：适用于全部配置，可以省略。该关键字由本命令直接解析；如果关键字是生成器表达式求值得到，则失去特殊含义。
+	
+	更细粒度的按配置链接，推荐使用 [\$\<CONFIG:...\>](https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:CONFIG) 生成器表达式。更结构化的方式是使用设置了 [IMPORTED\_CONFIGURATIONS](https://cmake.org/cmake/help/latest/prop_tgt/IMPORTED_CONFIGURATIONS.html#prop_tgt:IMPORTED_CONFIGURATIONS) 的[导入库目标](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#imported-targets)做链接，在 Find‑Module 模块中尤为常用。
 
 包含 `::` 的条目（如 `Foo::Bar`） 会被识别为[导入目标](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#imported-targets)或者[别名库目标](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#alias-targets)；不存在该目标时直接报错。参见策略 [CMP0028](https://cmake.org/cmake/help/latest/policy/CMP0028.html#policy:CMP0028)。
 
