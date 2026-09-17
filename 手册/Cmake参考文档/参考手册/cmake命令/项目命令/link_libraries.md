@@ -10,19 +10,15 @@ tags: cmake,cmake命令
 ------
 
 
-
 为后续新增的所有目标链接库。
 
-```
+```cmake
 link_libraries([item1 [item2 [...]]] [[debug|optimized|general] <item>] ...)
-
 ```
 
-指定库或链接标志，用于当前目录及其子目录中，后续由 `add_executable`、`add_library` 等命令创建的全部目标的链接过程。 参数含义请参考 `target_link_libraries` 命令文档。
+指定库或链接标志，用于当前目录及其子目录中后续由 [add_executable](https://cmake.org/cmake/help/latest/command/add_executable.html#command:add_executable)、[add_library](https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library)等命令创建的全部目标的链接过程。 参数含义请参考 [target_link_libraries](https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries) 命令文档。
 
-### 注意
-
-**只要条件允许，建议优先使用 `target_link_libraries`。** 库依赖会自动链式传递，因此几乎不需要在目录级别全局指定链接库。
+>**注意**：只要条件允许，建议优先使用 [target_link_libraries](https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries) 。库依赖会自动链式传递，因此几乎不需要在目录级别全局指定链接库。
 
 
 
