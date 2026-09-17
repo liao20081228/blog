@@ -9,37 +9,40 @@ tags: cmake,cmake命令
 
 ------
 
+指定用于链接给定目标及其依赖的库或标志。被链接的库目标的目标[使用要求](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#target-usage-requirements)将会传递传播。一个目标的依赖项的使用要求会影响该目标自身源码的编译。
 
-# target_link_libraries
-
-指定用于链接给定目标及其依赖方的库或标志。被链接的库目标的**目标使用要求**将会传递传播。一个目标的依赖项的使用要求会影响该目标自身源码的编译。
-
+# 概述
 本命令存在多种调用形式，详见后续小节。通用形式如下：
 
-```
+```cmake
 target_link_libraries(<target> ... <item>... ...)
-
 ```
 
-`<target>` 必须已经通过 `add_executable`、`add_library` 这类命令创建，**禁止为别名目标**。若策略 `CMP0079` 未设置为 `NEW`，则该目标必须在当前目录内创建。对同一个 `<target>` 多次调用本命令，会按调用顺序追加条目。
+`<target>` 必须已经通过 [add_executable()](https://cmake.org/cmake/help/latest/command/add_executable.html#command:add_executable)、[add_library()](https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library) 这类命令创建，禁止为[别名目标](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#alias-targets)。若策略 [CMP0079](https://cmake.org/cmake/help/latest/policy/CMP0079.html#policy:CMP0079) 未设置为 `NEW`，则该目标必须在当前目录内创建。对同一个 `<target>` 多次调用本命令，会按调用顺序追加条目。
 
-3.13 版本新增：`<target>` 不再强制要求和 `target_link_libraries` 调用处在同一个目录。
+*3.13 版本新增*：`<target>` 不再强制要求和 `target_link_libraries` 调用处在同一个目录。
 
 每一个 `<item>` 可以是下面其中一类：
 
-1.  **库目标名** 生成的链接命令行会带上该目标对应可链接库文件的完整路径。构建系统会生成依赖关系：当库文件发生变更时，会重新链接 `<target>`。 该目标必须是项目内通过 `add_library` 创建，或是导入目标。如果是项目内创建的库，构建系统会自动增加顺序依赖，保证在链接 `<target>` 之前，该库目标已经编译为最新版本。
+- **库目标名**：生成的链接行会带上该目标对应可链接库文件的完整路径。构建系统会生成依赖关系：当库文件发生变更时，会重新链接 `<target>`。
 
-若导入库设置了 `IMPORTED_NO_SONAME` 目标属性，CMake 会让链接器去搜索库，而不是直接使用完整路径（例如 `/usr/lib/libfoo.so` 会变成 `-lfoo`）。 目标产物的完整路径会自动做 Shell 引号转义处理。
+	该目标必须是项目内通过 [add_library()](https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library) 创建，或是[导入库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#imported-targets)。如果是项目内创建的库，构建系统会自动增加顺序依赖，保证在链接 `<target>` 之前，该库目标已经为最新版本。
 
-1.  **库文件的完整路径** 生成的链接行一般直接保留文件完整路径。库文件变更时，构建系统会触发 `<target>` 的重新链接。
+	若导入库设置了 [IMPORTED_NO_SONAME](https://cmake.org/cmake/help/latest/prop_tgt/IMPORTED_NO_SONAME.html#prop_tgt:IMPORTED_NO_SONAME) 目标属性，CMake 会让链接器去搜索库，而不是直接使用完整路径（例如 `/usr/lib/libfoo.so` 会变成 `-lfoo`）。 
 
-部分场景下 CMake 仍会改为让链接器搜索库（例如检测到共享库没有 SONAME 字段）。CMake 4.0 之前版本，另一种场景参见策略 `CMP0060`。
+	目标产物的完整路径会自动做 Shell 引号转义处理。
 
-如果库文件是 macOS Framework，Framework 的 Headers 目录会被当作目标使用要求处理，效果等同于把 Framework 目录作为头文件包含目录。
+- **库文件的完整路径**：生成的链接行一般直接保留文件完整路径。库文件变更时，构建系统会触发 `<target>` 的重新链接。
 
-3.28 版本新增：Apple 平台下，可以指向 `.xcframework` 文件夹；此时目标会将选中库的 Headers 目录作为使用要求。
+	部分场景下 CMake 仍会改为让链接器搜索库（e.g. `/usr/lib/libfoo.so` becomes `-lfoo`），例如检测到共享库没有 SONAME 字段。CMake 4.0 之前版本，另一种场景参见策略 [CMP0060](https://cmake.org/cmake/help/latest/policy/CMP0060.html#policy:CMP0060)。
 
-3.8 版本新增：VS2010 及以上的 Visual Studio 生成器，后缀为 `.targets` 的库文件会被识别为 MSBuild 目标文件，并导入生成的工程；其他生成器不支持该行为。 库文件完整路径会自动完成 Shell 引号转义。
+	如果库文件是 macOS Framework ，框架的 `Headers` 目录会被当作目标[使用要求](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#target-usage-requirements)处理，效果等同于把框架目录作为头文件包含目录。
+
+	*3.28 版本新增*：Apple 平台下，库文件允许指向 `.xcframework` 文件夹；此时目标会将选中库的 Headers 目录作为使用要求。
+
+	*3.8 版本新增*：VS2010 及以上的 [Visual Studio 生成器](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html#visual-studio-generators)，后缀为 `.targets` 的库文件会被识别为 MSBuild 目标文件，并导入生成的工程文件；其他生成器不支持该行为。 
+
+	库文件完整路径会自动完成 Shell 引号转义。
 
 1.  **普通库名称** 生成的链接行会交由链接器搜索该库（例如 `foo` 变为 `-lfoo` 或者 `foo.lib`）。 库名/标志直接作为命令行片段使用，不会额外增加引号与转义。
 2.  **链接标志** 以 `-` 开头，但**不是 `-l`、`-framework`** 的条目，会被当作链接器标志。
