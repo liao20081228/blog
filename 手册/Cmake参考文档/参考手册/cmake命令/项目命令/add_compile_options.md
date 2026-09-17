@@ -1,5 +1,5 @@
 ---
-title: add_compile_definitions
+title: add_compile_options
 tags: cmake
 ---
 
