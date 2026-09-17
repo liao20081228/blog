@@ -102,32 +102,32 @@ target_link_libraries(<target> <item>...)
 
 该调用形式默认库依赖具备传递性。当别的目标链接本目标时，本目标链接的库也会出现在对方链接行。 传递的“链接接口”保存在目标属性 [INTERFACE_LINK_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES)，也可以直接修改该属性覆盖。
 
-CMake4.0 之前，若策略 `CMP0022` 不为 `NEW`，传递链接行为依然生效，但会受旧属性 `LINK_INTERFACE_LIBRARIES` 覆盖。调用其他形式会改写该属性，使得仅由此形式添加的库变为私有。
+CMake4.0 之前，若策略 [CMP0022](https://cmake.org/cmake/help/latest/policy/CMP0022.html#policy:CMP0022) 不为 `NEW`，传递链接行为依然生效，但会受旧属性 [LINK_INTERFACE_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES) 覆盖。调用该命令的其他形式会改写该属性，使得仅由此形式添加的库变为私有。
 
-### 形式3：遗留语法 LINK_PUBLIC / LINK_PRIVATE（仅兼容，优先 PUBLIC/PRIVATE）
-
-```
+# 目标 和/或 其依赖项的库（遗留）
+此用法仅用于兼容性。请优先使用 `PUBLIC` 或 `PRIVATE` 关键字。
+```cmake
 target_link_libraries(<target> <LINK_PRIVATE|LINK_PUBLIC> <lib>... [<LINK_PRIVATE|LINK_PUBLIC> <lib>...]...)
-
 ```
 
-`LINK_PUBLIC`、`LINK_PRIVATE` 同时设置链接依赖与链接接口。
+`LINK_PUBLIC`、`LINK_PRIVATE` 可在一个命令中同时设置链接依赖与链接接口。
 
-*   `LINK_PUBLIC`：参与链接，写入 `INTERFACE_LINK_LIBRARIES`；CMake4.0前，CMP0022未NEW时同时写入旧属性 `LINK_INTERFACE_LIBRARIES`。
-*   `LINK_PRIVATE`：参与链接，**不写入链接接口属性**。
+跟在 `LINK_PUBLIC` 后面的库与目标会被链接，同时会被加入到 [INTERFACE_LINK_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES) 中。 
 
-### 形式4：遗留语法 LINK_INTERFACE_LIBRARIES（仅兼容，优先 INTERFACE）
+在 CMake 4.0 之前的版本，如果策略 [CMP0022](https://cmake.org/cmake/help/latest/policy/CMP0022.html#policy:CMP0022) 未设置为 `NEW`，它们也会被加入到 [LINK_INTERFACE_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/LINK_INTERFACE_LIBRARIES.html#prop_tgt:LINK_INTERFACE_LIBRARIES)属性。 跟在 `LINK_PRIVATE` 后面的库与目标会参与本目标的链接，但不会被加入到  [INTERFACE_LINK_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES) （以及旧属性 [LINK_INTERFACE_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/LINK_INTERFACE_LIBRARIES.html#prop_tgt:LINK_INTERFACE_LIBRARIES)）之中。
 
-```
+# 仅依赖项的库（遗留）
+此用法仅用于兼容性。请优先使用 `INTERFACE` 关键字。
+
+```cmake
 target_link_libraries(<target> LINK_INTERFACE_LIBRARIES <item>...)
-
 ```
 
 不会参与本目标链接，仅把库追加写入 `INTERFACE_LINK_LIBRARIES` 属性。 CMake4.0之前，CMP0022不为NEW时，同时写入旧属性 `LINK_INTERFACE_LIBRARIES` 及其分配置版本。
 
-* * *
 
-## 链接 Object Library（对象库）
+
+# 链接 Object Library
 
 3.12 版本新增。
 
