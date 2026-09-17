@@ -25,40 +25,42 @@ target_link_libraries(<target> ... <item>... ...)
 每一个 `<item>` 可以是下面其中一类：
 
 - **库目标名**：生成的链接行会带上该目标对应可链接库文件的完整路径。构建系统会生成依赖关系：当库文件发生变更时，会重新链接 `<target>`。
-
+	
 	该目标必须是项目内通过 [add_library()](https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library) 创建，或是[导入库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#imported-targets)。如果是项目内创建的库，构建系统会自动增加顺序依赖，保证在链接 `<target>` 之前，该库目标已经为最新版本。
-
+	
 	若导入库设置了 [IMPORTED_NO_SONAME](https://cmake.org/cmake/help/latest/prop_tgt/IMPORTED_NO_SONAME.html#prop_tgt:IMPORTED_NO_SONAME) 目标属性，CMake 会让链接器去搜索库，而不是直接使用完整路径（例如 `/usr/lib/libfoo.so` 会变成 `-lfoo`）。 
-
+	
 	目标产物的完整路径会自动做 Shell 引号转义处理。
 
 - **库文件的完整路径**：生成的链接行一般直接保留文件完整路径。库文件变更时，构建系统会触发 `<target>` 的重新链接。
-
+	
 	部分场景下 CMake 仍会改为让链接器搜索库（e.g. `/usr/lib/libfoo.so` becomes `-lfoo`），例如检测到共享库没有 SONAME 字段。CMake 4.0 之前版本，另一种场景参见策略 [CMP0060](https://cmake.org/cmake/help/latest/policy/CMP0060.html#policy:CMP0060)。
-
+	
 	如果库文件是 macOS Framework ，框架的 `Headers` 目录会被当作目标[使用要求](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#target-usage-requirements)处理，效果等同于把框架目录作为头文件包含目录。
-
+	
 	*3.28 版本新增*：Apple 平台下，库文件允许指向 `.xcframework` 文件夹；此时目标会将选中库的 Headers 目录作为使用要求。
-
+	
 	*3.8 版本新增*：VS2010 及以上的 [Visual Studio 生成器](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html#visual-studio-generators)，后缀为 `.targets` 的库文件会被识别为 MSBuild 目标文件，并导入生成的工程文件；其他生成器不支持该行为。 
-
+	
 	库文件完整路径会自动完成 Shell 引号转义。
 
-1.  **普通库名称** 生成的链接行会交由链接器搜索该库（例如 `foo` 变为 `-lfoo` 或者 `foo.lib`）。 库名/标志直接作为命令行片段使用，不会额外增加引号与转义。
-2.  **链接标志** 以 `-` 开头，但**不是 `-l`、`-framework`** 的条目，会被当作链接器标志。
+- **普通库名称**：生成的链接行会要求链接器搜索该库（例如 `foo` 变为 `-lfoo` 或者 `foo.lib`）。
+ 	
+ 	库名/标志直接作为命令行片段使用，不会额外增加引号与转义。
 
-    > 
-    > 
-    > 注意：在传递依赖逻辑中，这类标志会被当作普通库链接条目处理。因此建议仅作为 `PRIVATE` 私有链接项，禁止传递给依赖方。
-    > 
-    > 
+- **链接标志**：以 `-` 开头，但不是 `-l`、`-framework`的条目，会被当作链接器标志。注意：在传递依赖逻辑中，这类标志会被当作普通库链接条目处理。因此建议仅作为 `PRIVATE` 私有链接项，禁止传递给依赖方。
+	
+	此处填入的链接标志，会插入在链接命令链接库文件所在位置。受链接器行为影响，该位置不一定正确。建议使用目标属性 [LINK_OPTIONS](https://cmake.org/cmake/help/latest/prop_tgt/LINK_OPTIONS.html#prop_tgt:LINK_OPTIONS) 或者命令 [target_link_options](https://cmake.org/cmake/help/latest/command/target_link_options.html#command:target_link_options) 显式添加链接标志，标志会被放置在工具链规定的正确位置。
+	
+	*3.13 版本新增*：目标属性 [LINK_OPTIONS](https://cmake.org/cmake/help/latest/prop_tgt/LINK_OPTIONS.html#prop_tgt:LINK_OPTIONS) 或者命令 [target_link_options](https://cmake.org/cmake/help/latest/command/target_link_options.html#command:target_link_options) ；更早 CMake 版本请使用旧属性 [LINK_FLAGS](https://cmake.org/cmake/help/latest/prop_tgt/LINK_FLAGS.html#prop_tgt:LINK_FLAGS)。 
+	
+	链接标志直接作为命令行片段，不会额外引号转义。
 
-此处填入的链接标志，会插入在链接命令中库文件所在位置。受链接器行为影响，该位置不一定正确。**建议使用目标属性 `LINK_OPTIONS` 或者命令 `target_link_options` 显式添加链接标志**，标志会被放置在工具链规定的正确位置。
+- **生成器表达式**：`$<...>` [生成器表达式](https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7))求值结果可以是上面任意一种条目或它们的[分号分隔的条目列表](https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#cmake-language-lists)。 如果`...`求值后含有分号 `;`（例如变量 `${list}`），必须用引号 `"$<...>"` 包裹，保证本命令将其识别为单个 `<item>`。 
+	
+	生成器表达式也可以作为上述条目的片段，例如 `foo$<1:_d>`。
 
-3.13 版本新增 `LINK_OPTIONS` 属性与 `target_link_options`；更早 CMake 版本请使用旧属性 `LINK_FLAGS`。 链接标志直接作为命令行片段，不会额外引号转义。
-
-1.  **生成器表达式**`$<...>` 生成器表达式求值结果可以是上面任意一种条目，或是条目列表。 若表达式求值后包含分号 `;`（例如变量 `${list}`），必须用引号 `"$<...>"` 包裹，保证本命令将其识别为单个 `<item>`。 生成器表达式也可以作为上述条目的片段，例如 `foo$<1:_d>`。
-2.  **`debug` / `optimized` / `general` 关键字，后跟另一个 `<item>`** 关键字后面的条目，仅对对应构建配置生效。
+- `debug` / `optimized` / `general` 关键字，后跟另一个 `<item>` 关键字后面的条目，仅对对应构建配置生效。
 
 *   `debug`：用于 Debug 配置；若设置全局属性 `DEBUG_CONFIGURATIONS`，则对应该属性定义的配置集合。
 *   `optimized`：用于除 Debug 之外其余全部配置。
@@ -70,9 +72,11 @@ target_link_libraries(<target> ... <item>... ...)
 
 1.  **包含 `::` 的条目（如 `Foo::Bar`）** 会被识别为导入目标或者别名库目标；不存在该目标时直接报错。参见策略 `CMP0028`。
 
-CMake 在链接命令行上排布直接依赖的顺序规则，参见变量 `CMAKE_LINK_LIBRARIES_STRATEGY` 以及目标属性 `LINK_LIBRARIES_STRATEGY`。 更多构建系统属性定义，参见手册 `cmake‑buildsystem(7)`。
+CMake 在链接命令行上排布直接依赖的顺序规则，参见变量 `CMAKE_LINK_LIBRARIES_STRATEGY` 以及目标属性 `LINK_LIBRARIES_STRATEGY`。
 
-## 编译器驱动差异处理
+更多构建系统属性定义，参见手册 [cmake‑buildsystem(7)](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#manual:cmake-buildsystem(7))。
+
+# 编译器驱动差异处理
 
 4.0 版本新增。
 
