@@ -1,6 +1,6 @@
 ---
 title: add_compile_options
-tags: cmake
+tags: cmake,cmake命令
 ---
 
 ------
