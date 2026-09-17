@@ -1,6 +1,6 @@
 ---
 title: add_executable
-tags: cmake
+tags: cmake,cmake命令
 ---
 
 ------
