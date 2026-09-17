@@ -1,6 +1,6 @@
 ---
 title: add_definitions
-tags: cmake
+tags: cmake,cmake命令
 ---
 
 ------
