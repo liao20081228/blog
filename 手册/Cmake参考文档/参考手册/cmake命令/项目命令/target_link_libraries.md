@@ -94,7 +94,7 @@ target_link_libraries(<target> {INTERFACE|PUBLIC|PRIVATE} <item>... [{INTERFACE|
 
 `PUBLIC`：库会链接到当前目标，同时纳入链接接口，传递给依赖当前目标的上层。`PRIVATE`：库会链接到当前目标，但不纳入链接接口，不会向外传递。`INTERFACE`：追加到链接接口向外传递，不会用于链接当前目标。
 
-### 目标和其依赖项的库
+# 目标和其依赖项的库
 
 ```cmake
 target_link_libraries(<target> <item>...)
@@ -128,7 +128,7 @@ target_link_libraries(<target> LINK_INTERFACE_LIBRARIES <item>...)
 
 在 CMake 4.0 之前的版本中，如果策略 [CMP0022](https://cmake.org/cmake/help/latest/policy/CMP0022.html#policy:CMP0022) 未设置为 `NEW`，该模式还会把库追加到 [LINK_INTERFACE_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/LINK_INTERFACE_LIBRARIES.html#prop_tgt:LINK_INTERFACE_LIBRARIES) 属性，以及其对应各构建配置。
 
-# 链接 Object Library
+# 链接对象库
 
 *3.12 版本新增*。
 
@@ -174,7 +174,56 @@ target_link_libraries(main2 obj2)
 换言之： 当[对象库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#object-libraries)出现在某个目标的 [INTERFACE_LINK_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES) 属性中时，它会被当作[接口库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#interface-libraries)（Interface Libraries）处理； 而当对象库出现在某个目标的 [LINK_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES) 属性中时，它的目标文件也会一并参与链接。
 
 
-# 通过 \$\<TARGET_OBJECTS> 链接对象库
+# 通过 `$<TARGET_OBJECTS>` 链接对象库
+
+*3.21 版本新*增。
+
+对象库对应的目标文件可以通过生成器表达式 [\$\<TARGET_OBJECTS>](https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:TARGET_OBJECTS) 进行引用。这类目标文件会被放置在链接行上所有库的前面，不其相对顺序影响。此外，构建系统会增加顺序依赖，保证依赖目标执行链接前，该对象库已经编译为最新版本。例如如下代码
+
+```cmake
+add_library(obj3 OBJECT obj3.c)
+target_compile_definitions(obj3 PUBLIC OBJ3)
+add_executable(main3 main3.c)
+target_link_libraries(main3 PRIVATE a3 $<TARGET_OBJECTS:obj3> b3)
+```
+
+链接可执行文件 `main3`时 ，先链接 `main3.c` 和 `obj3.c` 的目标文件，之后再链接库 `a3`、`b3`。编译 `main3.c` 时不会带入 `obj3` 的使用要求，例如 `-DOBJ3`。
+
+该方式被用于实现在链接行中传递目标文件的包含关系作为使用要求。延续上例，如下代码
+
+```cmake
+add_library(iface_obj3 INTERFACE)
+target_link_libraries(iface_obj3 INTERFACE obj3 $<TARGET_OBJECTS:obj3>)
+```
+
+创建接口库 `iface_obj3`，它会转发 `obj3` 的使用要求，同时将 `obj3` 的目标文件添加到依赖方的链接行。如下代码
+
+```camke
+add_executable(use_obj3 use_obj3.c)
+target_link_libraries(use_obj3 PRIVATE iface_obj3)
+```
+
+编译 `use_obj3.c` 时会带上 `-DOBJ3`；链接`use_obj3.c` 与 `obj3.c` 的目标文件为可执行文件 `use_obj3`。
+
+该机制也可以通过静态库传递生效。由于静态库本身不执行链接步骤，它不会消耗以此方式引用的对象库的目标文件。取而代之，这些目标文件会成为该静态库的传递链接依赖。延续示例, 如下代码
+
+```cmake
+add_library(static3 STATIC static3.c)
+target_link_libraries(static3 PRIVATE iface_obj3)
+add_executable(use_static3 use_static3.c)
+target_link_libraries(use_static3 PRIVATE static3)
+```
+
+编译 `static3.c`时会带上 `-DOBJ3`，生成的 `libstatic3.a` 仅包含它自身的目标文件。 由于是 `static3`的私有依赖，使用要求不会向外传递，因此编译 `use_static3.c` 时不会定义 `-DOBJ3`。 但是 `static3` 的链接依赖会被传递，其中包含 `iface_obj3` 对 `$<TARGET_OBJECTS:obj3>` 的引用。最终生成的可执行文件 `use_static3` 包含 `use_static3.c` 和 `obj3.c` 的目标文件，同时链接 `libstatic3.a`。
+
+使用该方案时，项目需要自行保证不要将多个二进制程序同时链接到 `iface_obj3`，否则每一个二进制的链接行都会带入 `obj3` 的目标文件。
+
+> **注意**: 在 3.21 之前的 CMake 版本中，部分场景下也可以在 `target_link_libraries` 中使用 `$<TARGET_OBJECTS>`，但并未得到完整支持：
+
+
+1.  不会把目标文件放在链接行所有库的前面；
+2.  不会增加针对对象库的编译顺序依赖；
+3.  在 Xcode 的多架构编译场景无法正常工作。
 
 
 
