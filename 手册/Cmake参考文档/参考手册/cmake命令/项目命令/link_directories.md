@@ -1,6 +1,6 @@
 ---
 title: link_directories
-tags: cmake
+tags: cmake,cmake命令
 ---
 
 ------
