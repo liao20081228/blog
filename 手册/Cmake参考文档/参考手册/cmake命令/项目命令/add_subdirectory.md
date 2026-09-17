@@ -1,6 +1,6 @@
 ---
 title: add_subdirectory
-tags: cmake
+tags: cmake,cmake命令
 ---
 
 ------
