@@ -4,13 +4,12 @@ tags: cmake
 ---
 
 ------
-
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[cmake 参考手册](https://cmake.org/cmake/help/latest/index.html)》。</font>版本为V4.2.0，手册更新时间为2025-06。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
 使用指定的源文件将库添加到项目中。
 
-### 普通库
+# 普通库
 ```cmake
 add_library(<name> [<type>] [EXCLUDE_FROM_ALL] <sources>...)
 ```
@@ -51,7 +50,7 @@ add_library(<name> [<type>] [EXCLUDE_FROM_ALL] <sources>...)
 
 *从 3.30 版本开始*：在不支持共享库的平台上，`add_library` 现在会在调用创建`SHARED` 库时失败，而不是像以前那样自动将其转换为 `STATIC` 库。有关此更改的详细信息，请参见策略 [CMP0164](https://cmake.org/cmake/help/latest/policy/CMP0164.html#policy:CMP0164 "CMP0164")。
 
-### 目标库
+# 目标库
 ```cmake
 add_library(<name> OBJECT <sources>...)
 ```
@@ -66,7 +65,7 @@ add_executable(... $<TARGET_OBJECTS:objlib> ...)
 
 *自 3.12 版本起*：目标库可以通过 [target_link_libraries()](https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries "target_link_libraries") 函数进行链接。
 
-### 接口库
+# 接口库
 ```cmake
 add_library(<name> INTERFACE)
 ```
@@ -114,7 +113,7 @@ add_library( INTERFACE SYMBOLIC)
 
 符号接口库的 [SYMBOLIC](https://cmake.org/cmake/help/latest/prop_tgt/SYMBOLIC.html#prop_tgt:SYMBOLIC) 目标属性会被置为 true。
 
-### 导入库
+# 导入库
 ```cmake
 add_library(<name> <type> IMPORTED [GLOBAL])
 ```
@@ -143,7 +142,7 @@ add_library(<name> <type> IMPORTED [GLOBAL])
 导入目标不会生成任何构建规则，目标属性 [IMPORTED](https://cmake.org/cmake/help/latest/prop_tgt/IMPORTED.html#prop_tgt:IMPORTED) 会被置为`true`。导入库方便在诸如 `target_link_libraries` 等命令中直接引用。
 
 导入库的详细信息依靠设置以 `IMPORTED_`、`INTERFACE_` 开头的属性来配置，更多细节查阅对应属性文档。
-### 别名库
+# 别名库
 ```cmake
 add_library(<name> ALIAS <target>)
 ```
