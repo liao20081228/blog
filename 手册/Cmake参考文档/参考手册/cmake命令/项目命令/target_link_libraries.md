@@ -123,75 +123,56 @@ target_link_libraries(<target> <LINK_PRIVATE|LINK_PUBLIC> <lib>... [<LINK_PRIVAT
 target_link_libraries(<target> LINK_INTERFACE_LIBRARIES <item>...)
 ```
 
-不会参与本目标链接，仅把库追加写入 `INTERFACE_LINK_LIBRARIES` 属性。 CMake4.0之前，CMP0022不为NEW时，同时写入旧属性 `LINK_INTERFACE_LIBRARIES` 及其分配置版本。
 
+`LINK_INTERFACE_LIBRARIES` 模式会将库追加到目标属性 [INTERFACE_LINK_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES)，而不会将这些库用于当前目标的链接过程。
 
+在 CMake 4.0 之前的版本中，如果策略 [CMP0022](https://cmake.org/cmake/help/latest/policy/CMP0022.html#policy:CMP0022) 未设置为 `NEW`，该模式还会把库追加到 [LINK_INTERFACE_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/LINK_INTERFACE_LIBRARIES.html#prop_tgt:LINK_INTERFACE_LIBRARIES) 属性，以及其对应各构建配置。
 
 # 链接 Object Library
 
-3.12 版本新增。
+*3.12 版本新增*。
 
-Object Library 可以作为 `target_link_libraries` 的第一个参数，用来描述对象库内部源码对其他库的依赖。
+[对象库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#object-libraries)（Object Libraries）可以作为 `target_link_libraries` 的第一个参数（即`<target>`），用于指定其源码对其他库的依赖关系。例如下面代码：
 
-示例：
-
-```
+```cmake
 add_library(A SHARED a.c)
 target_compile_definitions(A PUBLIC A)
-
 add_library(obj OBJECT obj.c)
 target_compile_definitions(obj PUBLIC OBJ)
 target_link_libraries(obj PUBLIC A)
-
 ```
 
-编译 `obj.c` 会带上 `-DA -DOBJ`；obj 的使用要求会传递给依赖 obj 的上层目标。
+编译 `obj.c` 时会带上 `-DA -DOBJ`，并且为 `obj` 建立会传递给其依赖方的使用要求。
 
-普通库、可执行文件链接 Object Library，会拿到它的目标文件以及使用要求。 继续示例：
+普通库和可执行文件可以链接[对象库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#object-libraries)，从而获取它的目标文件以及使用要求。延续上面示例，执行代码：
 
-```
+```cmake
 add_library(B SHARED b.c)
 target_link_libraries(B PUBLIC obj)
-
 ```
 
-`b.c` 编译时携带 `-DA -DOBJ`；共享库 B 包含 `b.c`、`obj.c` 的目标文件，并且链接 A。
+编译 `b.c` 会带上 `-DA -DOBJ`；生成共享库 `B`，包含来自 `b.c` 和 `obj.c` 的目标文件，并且将 `B` 链接到 `A`。进一步看下面代码：
 
-```
+```cmake
 add_executable(main main.c)
 target_link_libraries(main B)
-
 ```
 
-`main.c` 编译携带 `-DA -DOBJ`；可执行文件 main 链接 B 和 A。
+编译 `main.c` 带上 `-DA -DOBJ`，可执行文件 `main` 会链接 `B` 和 `A`。对象库的使用要求会经由 `B` 传递下去，但对象库本身的目标文件不会跟着传递。
 
-> 
-> 
-> 对象库的**使用要求会通过B传递，但obj的目标文件不会复制进B，只会在最终链接main时参与**。
-> 
-> 
+[对象库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#object-libraries)也可以“链接”其他对象库以获取使用要求；但对象库本身没有链接步骤，因此不会处理对方的目标文件。接上面示例：
 
-对象库之间互相“链接”只会传播使用要求；对象库本身没有链接步骤，不会处理对方的目标文件。
-
-```
+```cmake
 add_library(obj2 OBJECT obj2.c)
 target_link_libraries(obj2 PUBLIC obj)
-
 add_executable(main2 main2.c)
 target_link_libraries(main2 obj2)
-
 ```
 
-`obj2.c` 使用 `-DA -DOBJ`；`main2` 链接时带入 `main2.c`、`obj2.c` 的目标文件，同时链接 A。
+编译 `obj2.c` 带上 `-DA -DOBJ`；生成可执行文件 `main2`，包含 `main2.c` 与 `obj2.c` 的目标文件，同时 `main2` 链接到 `A`。
 
-> 
-> 
-> 规则：
-> 
-> *   Object Library 出现在属性 `INTERFACE_LINK_LIBRARIES`：行为等同于接口库，仅传播使用要求。
-> *   Object Library 出现在属性 `LINK_LIBRARIES`：不仅传播使用要求，它的目标文件也参与链接。
-> 
-> 
+换言之： 当[对象库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#object-libraries)出现在某个目标的 [INTERFACE_LINK_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/INTERFACE_LINK_LIBRARIES.html#prop_tgt:INTERFACE_LINK_LIBRARIES) 属性中时，它会被当作[接口库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#interface-libraries)（Interface Libraries）处理； 而当对象库出现在某个目标的 [LINK_LIBRARIES](https://cmake.org/cmake/help/latest/prop_tgt/LINK_LIBRARIES.html#prop_tgt:LINK_LIBRARIES) 属性中时，它的目标文件也会一并参与链接。
+
 
 ## 通过 $ 链接对象库
 
