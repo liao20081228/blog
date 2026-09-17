@@ -32,26 +32,23 @@ add_link_options(<option> ...)
 
 目标最终使用的链接选项，由目标自身选项及其依赖的使用要求累积得到。选项集合会执行去重，避免重复。
 
-3.12 版本新增：虽然去重对独立选项有益，但该过程可能拆散选项组。 例如 `-option A -option B` 会被处理成 `-option A B`。 可以使用类似 Shell 的引号配合 `SHELL:` 前缀来指定一组选项。`SHELL:` 前缀会被丢弃，剩余字符串按照 `separate_arguments` 的 `UNIX_COMMAND` 模式解析。 示例：`"SHELL:-option A" "SHELL:-option B"` 最终得到 `-option A -option B`。
+*3.12 版本新增*：虽然去重对单独选项有益，但该过程可能拆散选项组。 例如 `-option A -option B` 会被处理成 `-option A B`。 可以使用类似 Shell 的引号配合 `SHELL:` 前缀来指定一组选项。`SHELL:` 前缀会被丢弃，剩余字符串按照 [separate_arguments](https://cmake.org/cmake/help/latest/command/separate_arguments.html#command:separate_arguments) 的 `UNIX_COMMAND` 模式解析。 示例：`"SHELL:-option A" "SHELL:-option B"` 最终得到 `-option A -option B`。
 
-#### 处理不同编译器驱动的差异
+# 处理不同编译器驱动的差异
 
-向链接器传递选项时，不同编译器驱动拥有各自语法。可使用 `LINKER:` 前缀加逗号分隔符，以可移植方式指定要传递给链接器的选项。 `LINKER:` 会被替换为对应编译器驱动的包装标志，逗号会替换为驱动对应的分隔符。该包装标志与分隔符取自变量 `<LANG>_LINKER_WRAPPER_FLAG`、`<LANG>_LINKER_WRAPPER_FLAG_SEP`。
+向链接器传递选项时，不同编译器驱动拥有各自语法。可使用 `LINKER:` 前缀加逗号分隔符，以可移植方式指定要传递给链接器的选项。 `LINKER:` 会被替换为对应编译器驱动的包装标志，逗号会替换为驱动对应的分隔符。该包装标志与分隔符取自变量 [\<LANG>\_LINKER\_WRAPPER\_FLAG](https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_LINKER_WRAPPER_FLAG.html#variable:CMAKE_%3CLANG%3E_LINKER_WRAPPER_FLAG)、[\<LANG>\_LINKER\_WRAPPER\_FLAG\_SEP](https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_LINKER_WRAPPER_FLAG_SEP.html#variable:CMAKE_%3CLANG%3E_LINKER_WRAPPER_FLAG_SEP)。
 
 示例：`"LINKER:-z,defs"`
 
-*   对于 Clang，展开为：`-Xlinker -z -Xlinker defs`
-*   对于 GNU GCC，展开为：`-Wl,-z,defs`
+* 对于 Clang，展开为：`-Xlinker -z -Xlinker defs`
+* 对于 GNU GCC，展开为：`-Wl,-z,defs`
 
 `LINKER:` 前缀内部可以嵌套使用 `SHELL:` 前缀表达式。 `LINKER:` 支持另一种语法：搭配 `SHELL:` 前缀、以空格作为参数分隔。上面示例等价写法：`"LINKER:SHELL:-z defs"`。
 
-> 
-> 
-> 注意：不支持在 `LINKER:` 前缀以外的任意位置写 `SHELL:` 前缀。
-> 
-> 
 
-#### 参见
+> 注意：不支持在 `LINKER:` 前缀以外的任意位置写 `SHELL:` 前缀。
+
+# 另请参阅
 
 *   `link_libraries`
 *   `target_link_libraries`
