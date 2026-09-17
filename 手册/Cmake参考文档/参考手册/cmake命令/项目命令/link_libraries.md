@@ -1,6 +1,6 @@
 ---
 title: link_libraries
-tags: cmake
+tags: cmake,cmake命令
 ---
 
 ------
