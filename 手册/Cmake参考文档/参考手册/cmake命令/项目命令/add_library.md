@@ -1,6 +1,6 @@
 ---
 title: add_library
-tags: cmake
+tags: cmake,cmake命令
 ---
 
 ------
