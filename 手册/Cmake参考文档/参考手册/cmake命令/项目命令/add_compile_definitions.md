@@ -10,7 +10,6 @@ tags: cmake
 ------
 
 
-# add_compile_definitions
 *自版本 3.12 起添加*。
 
 将预处理器定义添加到源文件的编译过程中。
