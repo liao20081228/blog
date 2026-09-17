@@ -70,9 +70,9 @@ target_link_libraries(<target> ... <item>... ...)
 
 更细粒度的按配置链接，推荐使用 `$<CONFIG:...>` 生成器表达式。更结构化的方式是使用设置了 `IMPORTED_CONFIGURATIONS` 的导入目标做链接，在 Find‑Module 模块中尤为常用。
 
-1.  **包含 `::` 的条目（如 `Foo::Bar`）** 会被识别为导入目标或者别名库目标；不存在该目标时直接报错。参见策略 `CMP0028`。
+包含 `::` 的条目（如 `Foo::Bar`） 会被识别为[导入目标](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#imported-targets)或者[别名库目标](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#alias-targets)；不存在该目标时直接报错。参见策略 [CMP0028](https://cmake.org/cmake/help/latest/policy/CMP0028.html#policy:CMP0028)。
 
-CMake 在链接命令行上排布直接依赖的顺序规则，参见变量 `CMAKE_LINK_LIBRARIES_STRATEGY` 以及目标属性 `LINK_LIBRARIES_STRATEGY`。
+CMake 在链接命令行上排布直接依赖的顺序规则，请参见变量 [CMAKE_LINK_LIBRARIES_STRATEGY](https://cmake.org/cmake/help/latest/variable/CMAKE_LINK_LIBRARIES_STRATEGY.html#variable:CMAKE_LINK_LIBRARIES_STRATEGY) 以及目标属性 [LINK_LIBRARIES_STRATEGY](https://cmake.org/cmake/help/latest/prop_tgt/LINK_LIBRARIES_STRATEGY.html#prop_tgt:LINK_LIBRARIES_STRATEGY)。
 
 更多构建系统属性定义，参见手册 [cmake‑buildsystem(7)](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#manual:cmake-buildsystem(7))。
 
