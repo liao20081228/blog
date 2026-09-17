@@ -218,12 +218,10 @@ target_link_libraries(use_static3 PRIVATE static3)
 
 使用该方案时，项目需要自行保证不要将多个二进制程序同时链接到 `iface_obj3`，否则每一个二进制的链接行都会带入 `obj3` 的目标文件。
 
-> **注意**: 在 3.21 之前的 CMake 版本中，部分场景下也可以在 `target_link_libraries` 中使用 `$<TARGET_OBJECTS>`，但并未得到完整支持：
-
-
-1.  不会把目标文件放在链接行所有库的前面；
-2.  不会增加针对对象库的编译顺序依赖；
-3.  在 Xcode 的多架构编译场景无法正常工作。
+> **注意**: 在 3.21 之前的 CMake 版本中，部分场景下也可以在 `target_link_libraries` 中使用 [\$\<TARGET_OBJECTS>](https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:TARGET_OBJECTS)，但并未得到完整支持：
+>- 不会把目标文件放在链接行所有库的前面；
+>- 不会增加针对对象库的编译顺序依赖；
+>- 在 Xcode 的多架构编译场景无法正常工作。
 
 
 
