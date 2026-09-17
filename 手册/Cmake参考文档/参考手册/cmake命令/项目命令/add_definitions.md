@@ -22,7 +22,7 @@ add_definitions(-DFOO -DBAR...)
 
 以 `-D` 或 `/D` 开头且看起来像是预处理器定义的标志会自动添加到当前目录的 [COMPILE_DEFINITIONS](https://cmake.org/cmake/help/latest/prop_dir/COMPILE_DEFINITIONS.html#prop_dir:COMPILE_DEFINITIONS "COMPILE_DEFINITIONS") 目录属性中。出于向后兼容性的考虑，具有非简单值的定义可能会保留在标志集中，而不是被转换。有关如何将预处理器定义添加到特定作用域和配置的详细信息，请参阅[目录](https://cmake.org/cmake/help/latest/prop_dir/COMPILE_DEFINITIONS.html#prop_dir:COMPILE_DEFINITIONS "COMPILE_DEFINITIONS")、[目标](https://cmake.org/cmake/help/latest/prop_tgt/COMPILE_DEFINITIONS.html#prop_tgt:COMPILE_DEFINITIONS "COMPILE_DEFINITIONS")和[源文件](https://cmake.org/cmake/help/latest/prop_sf/COMPILE_DEFINITIONS.html#prop_sf:COMPILE_DEFINITIONS "COMPILE_DEFINITIONS")的 `COMPILE_DEFINITIONS` 属性的文档。 
 
-### 另请参阅 
+# 另请参阅 
 有关定义构建系统属性的更多信息，请参阅 [cmake-buildsystem(7)](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#manual:cmake-buildsystem(7) "cmake-buildsystem(7)") 手册。
 
 ------
