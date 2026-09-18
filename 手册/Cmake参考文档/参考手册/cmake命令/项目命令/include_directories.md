@@ -27,7 +27,7 @@ include_directories([AFTER|BEFORE] [SYSTEM] dir1 [dir2 ...])
 `include_directories` 的参数可以使用 `$<...>` 语法的生成器表达式。可用的表达式参见 [cmake‑generator‑expressions(7)](https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)) 手册。关于定义构建系统属性的更多内容参见 [cmake‑buildsystem(7)](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#manual:cmake-buildsystem(7)) 手册。
 
 
-> **注意**： 优先使用 [target_include_directories](https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories) 命令为各个目标添加包含目录，并可选择将其传递 / 导出给依赖方。
+> **注意**： 优先使用 [target_include_directories()](https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories) 命令为各个目标添加包含目录，并可选择将其传递 / 导出给依赖方。
 
 
 # 另请参阅
