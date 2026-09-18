@@ -50,20 +50,22 @@ add_library(<name> [<type>] [EXCLUDE_FROM_ALL] <sources>...)
 
 *从 3.30 版本开始*：在不支持共享库的平台上，`add_library` 现在会在调用创建`SHARED` 库时失败，而不是像以前那样自动将其转换为 `STATIC` 库。有关此更改的详细信息，请参见策略 [CMP0164](https://cmake.org/cmake/help/latest/policy/CMP0164.html#policy:CMP0164 "CMP0164")。
 
-# 目标库
+# 对象库
 ```cmake
 add_library(<name> OBJECT <sources>...)
 ```
-添加一个[目标库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#object-libraries)，以便在不将目标文件归档或链接到库文件中的情况下编译源文件。 
+添加一个[对象库](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#object-libraries)，以便在不将目标文件归档或链接到库文件中的情况下编译源文件。 
 
-由 `add_library` 或 [add_executable()](https://cmake.org/cmake/help/latest/command/add_executable.html#command:add_executable "add_executable") 创建的其他目标可以使用形如 [$<TARGET_OBJECTS:objlib>](https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:TARGET_OBJECTS "TARGET_OBJECTS") 的表达式来引用这些目标文件作为源文件，其中 `objlib` 是对象库的名称。例如：
+由 `add_library` 或 [add_executable()](https://cmake.org/cmake/help/latest/command/add_executable.html#command:add_executable "add_executable") 创建的其他目标可以使用形如 [\$<TARGET_OBJECTS:objlib>](https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:TARGET_OBJECTS "TARGET_OBJECTS") 的表达式来引用这些目标文件作为源文件，其中 `objlib` 是对象库的名称。例如：
+
 ```cmake
 add_library(... $<TARGET_OBJECTS:objlib> ...)
 add_executable(... $<TARGET_OBJECTS:objlib> ...)
 ```
-将把 objlib 目标文件包含在一个库中，并与从它们自身源代码编译而来的目标文件一起生成可执行文件。目标库只能包含能够编译的源文件、头文件以及其他不会影响普通库链接的文件（例如`.txt`）。它们可以包含用于生成这些源文件的自定义命令，但不能包含 `PRE_BUILD`、`PRE_LINK` 或 `POST_BUILD` 命令。某些原生构建工具（如 [Xcode](https://cmake.org/cmake/help/latest/generator/Xcode.html#generator:Xcode "Xcode")）可能不喜欢仅包含目标文件的构建目标，因此建议在任何引用 [$<TARGET_OBJECTS:objlib>](https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:TARGET_OBJECTS "TARGET_OBJECTS") 的目标中至少添加一个真实的源文件。
 
-*自 3.12 版本起*：目标库可以通过 [target_link_libraries()](https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries "target_link_libraries") 函数进行链接。
+将把 `objlib` 目标文件包含在一个库中，并与从它们自身源代码编译而来的目标文件一起生成可执行文件。对象库只能包含能够编译的源文件、头文件以及其他不会影响普通库链接的文件（例如`.txt`）。它们可以包含用于生成这些源文件的自定义命令，但不能包含 `PRE_BUILD`、`PRE_LINK` 或 `POST_BUILD` 命令。某些原生构建工具（如 [Xcode](https://cmake.org/cmake/help/latest/generator/Xcode.html#generator:Xcode "Xcode")）可能不喜欢仅包含目标文件的构建目标，因此建议在任何引用 [$<TARGET_OBJECTS:objlib>](https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:TARGET_OBJECTS "TARGET_OBJECTS") 的目标中至少添加一个真实的源文件。
+
+*自 3.12 版本起*：对象库可以通过 [target_link_libraries()](https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries "target_link_libraries") 函数进行链接。
 
 # 接口库
 ```cmake
