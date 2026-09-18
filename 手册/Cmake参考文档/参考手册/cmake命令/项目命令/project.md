@@ -52,13 +52,13 @@ project(<PROJECT-NAME>
 - `VERSION <version>` 
 可选；允许不使用，除非策略 [CMP0048](https://cmake.org/cmake/help/latest/policy/CMP0048.html#policy:CMP0048) 设置为 `NEW`。 
 
-  接收由若干非负整数组成的版本参数`<version>`，格式为 `<主版本>[.<次版本>[.<补丁版本>[.<微调版本>]]]`，并设置如下变量：
+    接收由若干非负整数组成的版本参数`<version>`，格式为 `<主版本>[.<次版本>[.<补丁版本>[.<微调版本>]]]`，并设置如下变量：
 
-  - [PROJECT_VERSION](https://cmake.org/cmake/help/latest/variable/PROJECT_VERSION.html#variable:PROJECT_VERSION)、[\<PROJECT‑NAME>_VERSION](https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION.html#variable:%3CPROJECT-NAME%3E_VERSION) 
-  - PROJECT_VERSION_MAJOR、<PROJECT‑NAME>_VERSION_MAJOR 
-  - PROJECT_VERSION_MINOR、<PROJECT‑NAME>_VERSION_MINOR 
-  - PROJECT_VERSION_PATCH、<PROJECT‑NAME>_VERSION_PATCH 
-  - PROJECT_VERSION_TWEAK、<PROJECT‑NAME>_VERSION_TWEAK
+    - [PROJECT_VERSION](https://cmake.org/cmake/help/latest/variable/PROJECT_VERSION.html#variable:PROJECT_VERSION)、[\<PROJECT‑NAME>_VERSION](https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION.html#variable:%3CPROJECT-NAME%3E_VERSION) 
+    - PROJECT_VERSION_MAJOR、<PROJECT‑NAME>_VERSION_MAJOR 
+    - PROJECT_VERSION_MINOR、<PROJECT‑NAME>_VERSION_MINOR 
+    - PROJECT_VERSION_PATCH、<PROJECT‑NAME>_VERSION_PATCH 
+    - PROJECT_VERSION_TWEAK、<PROJECT‑NAME>_VERSION_TWEAK
 
 3.12 版本新增：如果在顶层 CMakeLists.txt 中调用 project() 命令，该版本号还会保存到变量 CMAKE_PROJECT_VERSION。
 
