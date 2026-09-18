@@ -53,11 +53,10 @@ project(<PROJECT-NAME>
 可选；允许不使用，除非策略 [CMP0048](https://cmake.org/cmake/help/latest/policy/CMP0048.html#policy:CMP0048) 设置为 `NEW`。 
 	
 	接收由若干非负整数组成的版本参数`<version>`，格式为 `<主版本>[.<次版本>[.<补丁版本>[.<微调版本>]]]`，并设置如下变量：
-	
-	
 
   - [PROJECT_VERSION](https://cmake.org/cmake/help/latest/variable/PROJECT_VERSION.html#variable:PROJECT_VERSION)、[\<PROJECT‑NAME>_VERSION](https://cmake.org/cmake/help/latest/variable/PROJECT-NAME_VERSION.html#variable:%3CPROJECT-NAME%3E_VERSION) 
-
+  - a
+ 
 	- PROJECT_VERSION_MAJOR、<PROJECT‑NAME>_VERSION_MAJOR 
 	- PROJECT_VERSION_MINOR、<PROJECT‑NAME>_VERSION_MINOR 
 	- PROJECT_VERSION_PATCH、<PROJECT‑NAME>_VERSION_PATCH 
