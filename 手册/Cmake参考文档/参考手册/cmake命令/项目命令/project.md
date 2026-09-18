@@ -164,7 +164,7 @@ project(<PROJECT-NAME>
 项目的顶层 `CMakeLists.txt` 文件必须直接显式调用 `project()` 命令；通过 [include](https://cmake.org/cmake/help/latest/command/include.html#command:include) 命令加载该调用是不够的。如果不存在此类调用，CMake 会输出一条警告，并在文件顶部隐式生成 `project(Project)`，以此启用默认编程语言（C 和 CXX）。
 
 
-> 注意 应当在顶层 `CMakeLists.txt` 的靠前位置调用 `project()` 命令，但要放在 [cmake_minimum_required](https://cmake.org/cmake/help/latest/command/cmake_minimum_required.html#command:cmake_minimum_required) 命令之后。 需要优先确定版本与策略设置，之后再调用会受这些设置影响的其他命令，这点十分重要。因此如果不遵守该顺序，`project()` 命令会产生警告。另可参阅策略 [CMP0000](https://cmake.org/cmake/help/latest/policy/CMP0000.html#policy:CMP0000)。
+> **注意**： 应当在顶层 `CMakeLists.txt` 的靠前位置调用 `project()` 命令，但要放在 [cmake_minimum_required](https://cmake.org/cmake/help/latest/command/cmake_minimum_required.html#command:cmake_minimum_required) 命令之后。 需要优先确定版本与策略设置，之后再调用会受这些设置影响的其他命令，这点十分重要。因此如果不遵守该顺序，`project()` 命令会产生警告。另可参阅策略 [CMP0000](https://cmake.org/cmake/help/latest/policy/CMP0000.html#policy:CMP0000)。
 
 
 
