@@ -31,7 +31,7 @@ include_directories([AFTER|BEFORE] [SYSTEM] dir1 [dir2 ...])
 
 
 # 另请参阅
-- [target_include_directories](https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories)
+- [target_include_directories()](https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories)
 
 
 ------
