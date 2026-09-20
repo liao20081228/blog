@@ -13,111 +13,27 @@ tags: C
 
 # 取整函数
 
-| 函数 | 数学规则 | 示例 | AArch64 指令 |
-| --- | --- | --- | --- |
-| `ceil(x)` | 向 +∞ 取整 | `ceil(-2.1)=-2.0` | FCVTP |
-| `floor(x)` | 向 −∞ 取整 | `floor(-2.1)=-3.0` | FCVTMS |
-| `trunc(x)` | 向 0 截断 | `trunc(-2.1)=-2.0` | FCVTNS |
-| `round(x)` | 就近舍入，0.5 远离 0 | `round(2.5)=3.0` | FCVTAS |
-| `nearbyint(x)` | 按当前 FP 舍入模式取整，**不抛 inexact** | 受 `fesetround()` 控制 | FCVTN |
-| `rint(x)` | 同 nearbyint，但**会置 inexact 异常** | 受 `fesetround()` 控制 | FCVTN |
-
-# 浮点分解/缩放
-
-| 函数            | 功能                             | 备注                                       |
-| --------------- | -------------------------------- | ------------------------------------------ |
-| `frexp(x,*exp)` | 拆成 `mant·2^exp`，mant∈[0.5,1) | 软件库                                     |
-| `ldexp(x,exp)`  | `x·2^exp`，frexp 逆运算          | SCALB，远快于 `pow(2,n)`                   |
-| `modf(x,*iptr)` | 拆整数部分+小数部分，符号同 x    | `modf(-3.2,&i)→i=-3.0, 返回-0.2`，≠ fmod |
-| `scalbn(x,n)`   | `x·2^n`，n 为 int                | 与 ldexp 等价，历史两套 API                |
-| `ilogb(x)`      | 返回 ⌊log₂                     | x                                          |
-| `logb(x)`       | 返回 log₂                       | x                                          |
-
-# 相邻浮点数/符号操作
-
-| 函数 | 功能 | 备注 |
-| --- | --- | --- |
-| `nextafter(x,y)` | x 往 y 方向下一个可表示浮点数 | 软件库 |
-| `nextup(x)` | x 向 +∞ 方向最小浮点数 | = `nextafter(x,INF)` |
-| `copysign(x,s)` | 取 |x|，符号取 s 的符号位 | 硬件符号位操作，替代 `if(x<0)` |
-| `fabs(x)` | 绝对值 | FABS，硬件单指令 |
-| `signbit(x)` | 符号位是否为 1（含 `-0.0`） | 宏，bit 操作；`x<0` 对 `-0.0` 为 false |
-
-# 浮点余数
-
-| 函数 | 商取整规则 | 余数范围 | 用途 |
-| --- | --- | --- | --- |
-| `fmod(x,y)` | `trunc(x/y)` 向 0 | (−|y|, |y|)，符号同 x | 你原角度归约用的就是它 |
-| `remainder(x,y)` | 就近偶数舍入 | [−|y|/2, |y|/2] | IEEE 余数，不适合 0~2π 折叠 |
-| `remquo(x,y,*q)` | remainder + 输出商低位 | 同上 | GNSS 极少用 |
-
-# 基础算术
-
-| 函数 | 功能 | 备注 |
-| --- | --- | --- |
-| `fma(a,b,c)` | `a*b+c` 一次舍入 | FMA 硬件，需 `-ffp-contract=fast` |
-| `fmax(x,y)` | 取大（NaN 不传染） | FMAX |
-| `fmin(x,y)` | 取小（NaN 不传染） | FMIN |
-| `fdim(x,y)` | `max(x-y,0)` | 软件 |
-| `nan("str")` | 构造 quiet NaN | 标记无效观测值 |
-
-# 6 指数/对数
-
-| 函数       | 功能       | 坑                           |
-| ---------- | ---------- | ---------------------------- |
-| `exp(x)`   | eˣ        | 多项式逼近                   |
-| `exp2(x)`  | 2ˣ        | 比 `pow(2,x)` 快             |
-| `expm1(x)` | eˣ−1     | x→0 必用它，别写 `exp(x)-1` |
-| `log(x)`   | ln(x)      | x≤0 为 NaN                  |
-| `log10(x)` | log₁₀(x) |                              |
-| `log2(x)`  | log₂(x)   |                              |
-| `log1p(x)` | ln(1+x)    | x→0 必用它，别写 `log(1+x)` |
-| `pow(x,y)` | xʸ        | 最贵，多分支，尽量缓存       |
-
-# 幂/根
-
-| 函数 | 功能 | AArch64 |
-| --- | --- | --- |
-| `sqrt(x)` | √x | FSQRT 硬件，快 |
-| `cbrt(x)` | ³√x | 软件 |
-| `hypot(x,y)` | √(x²+y²)，防中间溢出 | 软件 |
-
-# 三角函数
-
-| 函数 | 功能 |
-| --- | --- |
-| `sin/cos/tan` | 正弦/余弦/正切 |
-| `asin/acos/atan` | 反三角 |
-| `atan2(y,x)` | 四象限反正切，方位角核心 |
-| `sinh/cosh/tanh` | 双曲 |
-| `asinh/acosh/atanh` | 反双曲 |
-
-> 优化提示：优先用 `sincos` 一次算出 sin+cos，别分开调 `sin()+cos()`。
+| 函数         | 功能                 | 数学规则                           | 示例                                | 实现          | 工程注意事项                                    |
+| ------------ | -------------------- | ---------------------------------- | ----------------------------------- | ------------- | ----------------------------------------------- |
+| ceil(x)      | 向上取整，向正无穷   | ⌈x⌉ 返回≥x 的最小整数           | `ceil(2.1)=3.0; ceil(-2.1)=‑2.0`   | 硬件 `FCVTPS` | 返回 double，不是 int；负数行为易错；溢出无告警 |
+| floor(x)     | 向下取整，向负无穷   | ⌊x⌋ 返回≤x 的最大整数           | `floor(2.9)=2.0; floor(-2.1)=‑3.0` | 硬件 `FCVTMS` | **角度规约高频**；负数行为与 C 整数除法不同     |
+| trunc(x)     | 截断取整，向 0       | 舍弃小数部分                       | `trunc(2.9)=2.0; trunc(-2.9)=‑2.0` | 硬件 `FCVTZS` | 等价 double 强制转 int 的截断行为               |
+| round(x)     | 四舍五入，0.5 远离 0 | 0.5 向远离 0 舍入                  | `round(2.5)=3.0; round(-2.5)=‑3.0` | 硬件 `FCVTAS` | 不是银行家舍入；GNSS 时间转换常用               |
+| nearbyint(x) | 按 FPU 舍入模式取整  | 遵从 FPU CSR，不产生 FE_INEXACT    | `nearbyint(2.5)=2.0`(默认偶舍入)    | 硬件 `FCVTNS` | 默认就近偶舍入；不置浮点异常标志，UT 友好       |
+| rint(x)      | 按 FPU 舍入模式取整  | 同 nearbyint，舍入时置`FE_INEXACT` | `rint(2.5)=2.0`                     | 硬件 `FCVTNS` | 会修改浮点异常状态；单元测试需清除异常标志      |
 
 
-# 特殊函数
 
-| 函数 | 功能 | 坑 |
-| --- | --- | --- |
-| `erf(x)` | 误差函数，值域 [−1,1] |  |
-| `erfc(x)` | 互补误差 1−erf | x 大时用它，别写 `1-erf(x)` |
-| `tgamma(x)` | Γ(x)，Γ(n)=(n−1)! | 易溢出，大数用 lgamma |
-| `lgamma(x)` | ln|Γ(x)| | 多线程用 `lgamma_r(x,&sign)`，别用全局 `signgam` |
+# 浮点数拆解与指数缩放
 
-# 浮点分类/比较宏
-
-| 宏 | 判断 |
-| --- | --- |
-| `fpclassify(x)` | 返回 FP_NAN/INFINITE/ZERO/NORMAL/SUBNORMAL |
-| `isfinite(x)` | 非 Inf 非 NaN |
-| `isinf(x)` | 是否无穷 |
-| `isnan(x)` | 是否 NaN（**别用 `x!=x` 替代**） |
-| `isnormal(x)` | 是否 normal（非 denormal） |
-| `isgreater/isgreaterequal/isless/islessequal` | 有序比较，遇 NaN 不抛异常 |
-| `islessgreater(x,y)` | x、y 有序且不等 |
-| `isunordered(x,y)` | 任一为 NaN，不可比较 |
-
-* * *
+| 函数               | 功能                        | 数学规则                              | 示例                                  | 实现         | 工程注意事项                                |
+| ------------------ | --------------------------- | ------------------------------------- | ------------------------------------- | ------------ | ------------------------------------------- |
+| frexp(x, &y)       | 拆分为尾数与 2 的指数       | x=mantissa×2^exp^,0.5≤∥mantissa∥<1 | `frexp(8.0, &e)` → mantissa=0.5, e=4 | 软件 libm    | 处理 0、inf、NaN 边界；尾数范围`[0.5,1)`    |
+| ldexp(x, y)        | 乘以 2 的 y次幂             | res=x⋅2^y^                           | `ldexp(1.0,3)=8.0`                    | 硬件 `SCALB` | exp 越界输出 inf/0；不要用 pow(2, y)        |
+| modf(x, &int_part) | 拆分整数、小数部分          | x=int_part+frac，符号与 x 一致        | `modf(-2.3, &i)` → i=-2.0，frac=-0.3 | 软件 libm    | 常用于拆分整数秒 / 小数秒；结果通过指针输出 |
+| scalbn(x,n)        | 乘以2^n^，n 为 int          | res=x⋅2^n^                           | `scalbn(1.0,3)=8.0`                   | 硬件 `SCALB` | 性能远优于 x \*pow(2,n) 优先使用            |
+| ilogb(x)           | 获取二进制指数，返回 int    | 提取浮点数二进制指数                  | `ilogb(8.0)=3`                        | 硬件 `FLOGB` | 0/inf/NaN 返回特殊魔数，输入必须合法性判断  |
+| logb(x)            | 获取二进制指数，返回 double | 同 ilogb，返回 double                 | `logb(8.0)=3.0`                       | 硬件 `FLOGB` | 只看幅值，允许负数输入，不会报错            |
 
 # 一句话分级
 
