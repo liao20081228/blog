@@ -1,21 +1,20 @@
 ---
-title: cp
-tags: 文件管理,用户命令,man1
+title: curl
+tags: man1
 ---
 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《cp manpages》。</font>cp的版本为9.1，手册更新时间为2023-01。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《cp manpages》。</font>cp的版本为8.18.0，手册更新时间为2026-10。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
 # 名称
-cp——复制文件和文件夹。
+curl——传输一个URL
 
 # 概览
 
-**cp** [<u>OPTION</u>]... [<u>-T</u>] <u>SOURCE</u> <u>DEST</u>
-**cp** [<u>OPTION</u>]... <u>SOURCE</u>... <u>DIRECTORY</u>
-**cp** [<u>OPTION</u>]... -t <u>DIRECTORY</u> <u>SOURCE...</u>
+**curl** \[OPTION / URLS]
+
 
 
 # 描述
