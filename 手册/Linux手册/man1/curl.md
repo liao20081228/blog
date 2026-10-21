@@ -1,249 +1,98 @@
 ---
-title: curl
-tags: http,man1
+title: cp
+tags: 文件管理,用户命令,man1
 ---
 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[curl manpages](https://curl.se/docs/manpage.html)》。</font>curl的版本为8.12.0，手册更新时间为2025-02。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《cp manpages》。</font>cp的版本为9.1，手册更新时间为2023-01。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
-
-# 名字
-
-curl--传输一个URL
-
-# 总览
-
-**curl \[options / URLs]**
-
-# 说明
-
-**curl** 是一种使用 URL 从服务器传输数据或向服务器传输数据的工具。它支持以下协议：DICT、FILE、FTP、FTPS、GOPHER、GOPHERS、HTTP、HTTPS、IMAP、IMAPS、LDAP、LDAPS、MQTT、POP3、POP3S、RTMP、RTMPS、RTSP、SCP、SFTP、SMB、SMBS、SMTP、SMTPS、TELNET、TFTP、WS 和 WSS。
-
-curl 由 libcurl 支持所有与传输相关的功能。有关详细信息，请参阅 <u>libcurl</u>(3)。
-
-# URL
-
-URL 语法与协议相关。您可以在 RFC 3986 中找到详细说明。
-
-如果您提供的 URL 没有以 **protocol://** 开头，curl 会猜测您想要的协议。然后它会默认为 HTTP，但会根据常用的主机名前缀假设其他协议。例如，对于以“ftp.”开头的主机名，curl 会假设您想要 FTP。
-
-您可以在命令行上指定任意数量的 URL。除非您使用<u> -Z、--parallel</u>，否则它们会按指定的顺序依次获取。您可以在命令行上以任意顺序混合指定命令行选项和 URL。
-
-curl 会在进行多次传输时尝试重用连接，以便从同一服务器获取许多文件时不会使用多次连接和建立握手。这可以提高速度。连接重用只能针对为单个命令行调用指定的 URL 进行，并且不能在分开的 curl 运行之间执行。
-
-在 URL 中提供带有转义百分号的 IPv6 区域 ID。例如
-```
-“http://[fe80::3%25eth0]/”
-```
-命令行中提供的所有内容（不是命令行选项或其参数）均被 curl 假定为 URL 并按 URL 进行处理。
-
-# 通配符
-您可以通过在括号内写列表或在方括号内写范围来指定多个 URL 或 URL 的部分内容。我们称之为“通配符”。
-
-提供一个包含三个不同名称的列表，如下所示：
-```
-“http://site.{one,two,three}.com”
-```
-使用 \[] 执行字母数字序列，如下所示：
-```
-“ftp://ftp.example.com/file[1-100].txt”
-```
-带前导零：
-```
-“ftp://ftp.example.com/file[001-100].txt”
-```
-带字母表字母：
-```
-“ftp://ftp.example.com/file[a-z].txt”
-```
-不支持嵌套序列，但可以使用多个相邻的序列：
-```
-“http://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html”
-```
-可以为范围指定步进计数器以获取每第 N 个数字或字母：
-```
-“http://example.com/file[1-100:10].txt”
-
-“http://example.com/file[a-z:2].txt”
-```
-
-从命令行提示符调用时使用 \[] 或 \{} 序列时，您可能必须将完整 URL 放在双引号内，以避免 shell 干扰它。这也适用于其他特殊处理的字符，例如“&”、“？”和“\*”。
-
-使用 <u>-g、--globoff</u> 关闭通配符。
-
-# 变量
-
-curl 支持命令行变量（在 8.3.0 中添加）。使用 <u>--variable</u> name=content 或 <u>--variable </u>name@file 设置变量（其中“file”如果设置为单个破折号 (-)，则可以是 stdin）。
-
-如果选项名称以“--expand-”为前缀，则可以使用“{{name}}”在选项参数中展开变量内容。这将插入变量“name”的内容，如果name不存在，则为空白。通过在字符串前面加上反斜杠，如“\{{“，来逐字插入“{{”，”。
-
-您可以通过先导入环境变量来访问和展开它们。您可以选择要求设置环境变量或者在尚未设置的情况下提供默认值。空白的“<u>--variable</u> %name”会导入名为“name”的变量，但如果尚未设置该环境变量，则会退出并出现错误。要提供默认值（如果未设置），请使用“<u>--variable</u> %name=content”或“<u>--variable</u> %name@content”。
-
-示例。将 USER 环境变量放入 URL 中，如果未设置 USER，则失败：
-```
---variable '%USER'
---expand-url = "https://example.com/api/{{USER}}/method"
-```
-展开变量时，curl 支持一组函数，可使变量内容更易于使用。它可以使用“<u>trim</u>”修剪前导和尾随空格，可以使用“<u>json</u>”将内容输出为 JSON 引号字符串，使用“<u>url</u>”对字符串进行 URL 编码或使用“<u>b64</u>”对其进行 base64 编码。要将函数应用于变量展开，请将它们以冒号分隔添加到变量的右侧。展开时变量内容包含未编码的空字节会导致错误。
-
-示例：将名为 \$HOME/.secret 的文件的内容放入名为“fix”的变量中。确保在以 POST 数据形式发送时内容经过修剪和百分比编码：
-```
---variable %HOME
---expand-variable fix@{{HOME}}/.secret
---expand-data "{{fix:trim:url}}"
-https://example.com/
-```
-命令行变量和展开已在 8.3.0 中添加。
-
-# 输出
-
-如果没有其他指示，curl 会将接收到的数据写入 stdout。可以使用 <u>-o</u>、<u>--output</u> 或<u>-O</u>、<u>--remote-name</u> 选项指示将数据保存到本地文件中。如果在命令行上为 curl 提供了多个要传输的 URL，它同样需要多个选项来指定保存位置。
-
-curl 不会解析或以其他方式“理解”它获取或写入到输出的内容。它不进行编码或解码，除非使用专用命令行选项来明确要求。
-
-# 协议
-curl 支持多种协议，或者用 URL 术语来说：方案。您的特定版本可能不支持所有协议。
-
-DICT:
-: 允许您使用在线词典查找单词。
-
-FILE
-: 读取或写入本地文件。curl 不支持远程访问 file:// URL，但在 Microsoft Windows 上运行时，使用本机 UNC 方法可以工作。
-
-FTP(S)
-: curl 支持文件传输协议，并进行了大量调整。使用或不使用 TLS 均可。
-
-GOPHER(S)
-: 检索文件。
-
-HTTP(S)
-: curl 支持 HTTP，并有大量选项和变体。它可以使用 HTTP 版本 0.9、1.0、1.1、2 和 3，具体取决于构建选项和正确的命令行选项。
-
-IMAP(S)
-: 使用邮件阅读协议，curl 可以为您下载电子邮件。使用或不使用 TLS 均可。
-
-LDAP(S)
-: curl 可以为您执行目录查找，使用或不使用 TLS 均可。
-
-MQTT
-: curl 支持 MQTT V3。通过 MQTT 下载相当于订阅主题，而上传/发布相当于发布主题。目前尚不支持 基于 TLS 的 MQTT。
-
-POP3(S)
-: 从 pop3 服务器下载意味着收到邮件。使用或不使用 TLS 均可。
-
-RTMP(S)
-: 实时消息协议主要用于提供流媒体，curl 可以下载。
-
-RTSP
-: curl 支持 RTSP 1.0 下载。
-
-SCP
-
-: curl 支持 SSH 2.0 scp 传输。
-
-SFTP
-
-: curl 支持通过 SSH 2.0 完成的 SFTP（草案 5）。
-
-SMB(S)
-
-: curl 支持 SMB 版本 1 进行上传和下载。
-
-SMTP(S)
-
-: 将内容上传到 SMTP 服务器意味着发送电子邮件。使用或不使用 TLS 均可。
-
-TELNET
-
-: 获取 telnet URL 会启动一个交互式会话，它会在 stdin 上发送读取的内容并输出服务器发送的内容。
-
-TFTP
-
-: curl 可以进行 TFTP 下载和上传。
-
-WS(S)
-
-: WebSocket 基于 HTTP/1。WSS 意味着它基于 HTTPS 工作。
-
-# 进度计
-curl 通常在操作期间显示进度计，指示传输的数据量、传输速度和估计剩余时间等。进度计显示每秒的传输速率（字节数）。后缀（k、M、G、T、P）以 1024 为基数。例如，1k 表示 1024 字节。1M 表示 1048576 字节。
-
-curl 默认将此数据显示到终端，因此如果您调用 curl 执行操作并且即将将数据写入终端，它会禁用进度计，否则会将进度计和响应数据混合在一起，弄乱输出。
-
-如果您想要 HTTP POST 或 PUT 请求的进度条，则需要使用 shell 重定向 (>)、<u>-o</u>、<u>--output</u> 或类似命令将响应输出重定向到文件。
-
-这不适用于 FTP 上传，因为该操作不会向终端吐出任何响应数据。
-
-如果您更喜欢进度条而不是常规仪表，<u>-#、--progress-bar</u> 是您的好帮手。您还可以使用 <u>-s, --silent</u> 选项完全禁用进度计。
-
-# 版本
-此手册页描述了 curl 8.13.0。如果您使用的是更高版本，则此手册页可能未完整记录它。如果您使用的是早期版本，本文档将尝试包含有关引入更改的特定版本的版本信息。
-
-您始终可以通过运行以下命令了解最新的 curl 版本
-```
-curl https://curl.se/info
-```
-此手册页的在线版本始终显示最新版本：<https://curl.se/docs/manpage.html>
-
-
-# 选项
-选项以一个或两个破折号开头。许多选项都需要在其旁边添加一个附加值。如果提供的文本不以破折号开头，则假定它是 URL 并视为 URL。
-
-选项的短“单破折号”形式，例如 <u>-d</u>，可以在其与值之间使用空格或不使用空格，但建议使用空格作为分隔符。长双破折号形式，例如 <u>-d、--data</u>，需要在它与它的值之间添加空格。
-
-不需要任何附加值的短版本选项可以立即彼此相邻使用，例如，您可以一次将所有选项 <u>-O</u>、<u>-L</u> 和<u>-v</u> 指定为 <u>-OLv</u>。
-
-通常，所有布尔选项都使用 **--option** 启用，再次使用 --**no**-option 禁用。也就是说，您使用相同的选项名称，但在其前面加上“no-”。但是，在此列表中，我们主要仅列出并显示它们的 <u>--option</u> 版本。
-
-当使用 <u>-:</u>, <u>--next</u> 时，它会重置解析器状态，并且您会以干净的选项状态重新开始，但全局选项除外。全局选项即使在 <u>-:</u>, <u>--next</u> 之后仍保留其值和含义。
-
-第一个参数正好是两个破折号（“--”）标记选项的结束；选项结束后的任何参数即使以破折号开头也会被解释为 URL 参数。
-
-以下选项是全局的：<u>--fail-early、--libcurl、--parallel-immediate、--parallel-max、-Z、--parallel、-#、--progress-bar、--rate、-S、--show-error、--stderr、--styled-output、--trace-ascii、--trace-config、--trace-ids、--trace-time、--trace 和 -v、--verbose</u>。
-
-# 所有选项
-
-**--abstract-unix-socket \<path>**
-
-（HTTP）通过抽象 Unix 域套接字进行连接，而不是使用网络。注意：netstat 显示以“@”为前缀的抽象套接字的路径，但 \<path> 参数不应包含此前导字符。
-
-如果多次提供 <u>--abstract-unix-socket</u>，则使用最后一次设置的值。
-
-示例：
-```
-curl --abstract-unix-socket socketpath https://example.com
-```
-另请参阅<u> --unix-socket</u>。
-
-
-
-**--alt-svc \<filename>**
-
-(HTTPS) 启用 alt-svc 解析器。如果文件名指向现有的 alt-svc 缓存文件，则使用该文件。传输完成后，如果缓存已被修改，则将再次保存到文件名中。
-
-指定“”文件名（零长度）以避免加载/保存，并使 curl 只处理内存中的缓存。
-
-如果多次使用此选项，curl 会从所有文件加载内容，但最后一个文件用于保存。
-
---alt-svc 可以在命令行中多次使用
-
-示例：
-```
-curl --alt-svc svc.txt https://example.com
-```
-在 7.64.1 中添加。另请参阅 [--resolve](https://curl.se/docs/manpage.html#--resolve) 和 [--connect-to](https://curl.se/docs/manpage.html#--connect-to)。
-
-
-
-
-
-
+# 名称
+cp——复制文件和文件夹。
+
+# 概览
+
+**cp** [<u>OPTION</u>]... [<u>-T</u>] <u>SOURCE</u> <u>DEST</u>
+**cp** [<u>OPTION</u>]... <u>SOURCE</u>... <u>DIRECTORY</u>
+**cp** [<u>OPTION</u>]... -t <u>DIRECTORY</u> <u>SOURCE...</u>
+
+
+# 描述
+将SOURCE复制到DEST，或将多个SOURCE复制到DIRECTORY。
+
+长选项的强制性参数对于短选项也是强制性的。
+
+|短选项|长选项|描述|
+|:--|:--|:--|
+|**-a**|**--archive**|等同于 **-dR --preserve**=<u>all</u>
+||**--attributes-only**|不复制文件数据，仅复制属性|
+||**--backup**\[=<u>CONTROL</u>]|备份每个现有的目标文件|
+|**-b**||类似于 **--backup** 但不接受参数|
+||**--copy-contents**|递归时复制特殊文件的内容|
+|**-d**|| 与 **--no-dereference --preserve**=<u>links</u>相同|
+|**-f**|**--force**| 如果无法打开已存在的目标文件，请将其删除并重试（当同时使用 **-n** 选项时，此选项将被忽略）|
+|**-i**|**--interactive**|  覆盖前提示（覆盖之前的 **-n** 选项）|
+|**-H**||跟随 <u>SOURCE</u> 中的命令行符号链接|
+|**-l**| **--link**|  硬链接文件而不是复制|
+|**-L**| **--dereference**|始终跟随 <u>SOURCE</u> 中的符号链接|
+|**-n** |**--no-clobber**|不覆盖已存在的文件（覆盖之前的 **-i** 选项）|
+|**-P** |**--no-dereference**|永不跟随 SOURCE 中的符号链接|
+|**-p**||等同于 **--preserve**=mode,ownership,timestamps|
+||**--preserve**\[=<u>ATTR_LIST</u>]|保留指定的属性（默认：mode,ownership,timestamps），如果可能的话，保留指定的附加属性：context, links, xattr,all|
+||**--no-preserve**=<u>ATTR_LIST</u>|不保留指定的属性|
+|  |**--parents**|使用 DIRECTORY 下的完整源文件名|
+|**-R**, **-r**| **--recursive**|递归复制目录|
+||**--reflink**\[=<u>WHEN</u>]|控制clone/CoW 副本。 见下文|
+||**--remove-destination**|在尝试打开每个已存在的目标文件之前删除它（与 **--force** 对比）|
+||**--sparse**=<u>WHEN</u>|控制稀疏文件的创建。 见下文|
+||**--strip-trailing-slashes**|从每个 SOURCE 参数中删除所有尾随斜杠|
+|**-s**|**--symbolic-link**|建立符号链接而不是复制|
+|**-S**| **--suffix**=<u>SUFFIX</u>|覆盖通常的备份后缀|
+|**-t** <u>DIRECTORY</u>| **--target-directory**=<u>DIRECTORY</u>|将所有 SOURCE 参数复制到 DIRECTORY 中|
+|**-T**| **--no-target-director**y|将 DEST 视为普通文件|
+|**-u**|**--update**|仅当源文件比目标文件新或目标文件缺失时才复制|
+|**-v**|**--verbose**|解释正在做什么|
+|**-x**|**--one-file-system**|保留在此文件系统上|
+|**-Z**||将目标文件的 SELinux 安全上下文设置为默认类型|
+||**--context**\[=<u>CTX</u>]|类似 **-Z**，或者如果指定了 CTX，则将 SELinux 或 SMACK 安全上下文设置为 CTX|
+||**--help**|显示帮助信息并退出|
+||**--version**|显示版本信息并退出|
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
+
+ 默认情况下，通过粗略启发式检测到稀疏源文件，相应的目标文件也变得稀疏， 这是 **--sparse**=<u>auto</u> 选择的行为； 只要 SOURCE 文件包含足够长的零字节序列，指定 **--sparse**=<u>always</u> 即可创建稀疏 DEST 文件。 使用 **--sparse**=<u>never</u> 禁止创建稀疏文件。
+
+当指定 **--reflink**\[=<u>always</u>] 时执行轻量级复制，其仅在修改时复制数据块，如果这不可能，则复制失败；或者如果指定了 **--reflink**=<u>auto</u>，则回退到标准复制；使用 **--reflink**=<u>never</u> 确保执行标准复制。
+
+除非使用 **--suffix** 或 SIMPLE_BACKUP_SUFFIX 设置，备份后缀为“~”。 版本控制方法可以通过 **--backup** 选项或通过 VERSION_CONTROL 环境变量来选择。 以下是这些值：
+|备份|说明|
+|:--|:--|
+|none, off|从不进行备份（即使给出了 **--backup**）|
+|numbered, t|进行编号备份|
+|existing, nil|如果编号备份存在则编号备份，否则简单备份|
+|simple, never|总是进行简单的备份|
+
+作为一种特殊情况，当指定force和backup选项并且 SOURCE 和 DEST 与现有普通文件名称相同时，cp 会备份 SOURCE。
+
+# 作者
+Torbjorn Granlund、David MacKenzie、Jim Meyering.。
+
+# 报告bugs
+GNU coreutils联机帮助：<https://www.gnu.org/software/coreutils/>
+将转换bugs报告给<https://translationproject.org/team/>
+
+# 版权
+版权所有©2022自由软件基金会公司。 许可证GPLv3+: GNU GPL第3版或更高版本<https://gnu.org/licenses/gpl.html>。
+
+这是自由软件：您可以自由更改和重新分发它。在法律允许的范围内，不提供任何保证。
+
+# 另见
+
+完整文档位于：<https://www.gnu.org/software/coreutils/cp>或通过以下方式在本地获得：`info '(coreutils) cp invocation'`。
 
 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[curl manpages](https://curl.se/docs/manpage.html)》。</font>curl的版本为8.12.0，手册更新时间为2025-02。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《cp manpages》。</font>cp的版本为9.1，手册更新时间为2023-01。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
