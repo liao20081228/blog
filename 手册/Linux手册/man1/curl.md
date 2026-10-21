@@ -18,60 +18,84 @@ curl——传输一个URL
 
 
 # 描述
-将SOURCE复制到DEST，或将多个SOURCE复制到DIRECTORY。
+**curl** 是一个使用 URL 从服务器传输数据或向服务器传输数据的工具。它支持以下协议：DICT、FILE、FTP、FTPS、GOPHER、GOPHERS、HTTP、HTTPS、IMAP、IMAPS、LDAP、LDAPS、MQTT、POP3、POP3S、RTMP、RTMPS、RTSP、SCP、SFTP、SMB、SMBS、SMTP、SMTPS、TELNET、TFTP、WS 和 WSS。
 
-长选项的强制性参数对于短选项也是强制性的。
+**curl** 的所有传输相关功能均由 libcurl 提供支持。详情请参见 <u>libcurl(3)</u>。
 
-|短选项|长选项|描述|
-|:--|:--|:--|
-|**-a**|**--archive**|等同于 **-dR --preserve**=<u>all</u>
-||**--attributes-only**|不复制文件数据，仅复制属性|
-||**--backup**\[=<u>CONTROL</u>]|备份每个现有的目标文件|
-|**-b**||类似于 **--backup** 但不接受参数|
-||**--copy-contents**|递归时复制特殊文件的内容|
-|**-d**|| 与 **--no-dereference --preserve**=<u>links</u>相同|
-|**-f**|**--force**| 如果无法打开已存在的目标文件，请将其删除并重试（当同时使用 **-n** 选项时，此选项将被忽略）|
-|**-i**|**--interactive**|  覆盖前提示（覆盖之前的 **-n** 选项）|
-|**-H**||跟随 <u>SOURCE</u> 中的命令行符号链接|
-|**-l**| **--link**|  硬链接文件而不是复制|
-|**-L**| **--dereference**|始终跟随 <u>SOURCE</u> 中的符号链接|
-|**-n** |**--no-clobber**|不覆盖已存在的文件（覆盖之前的 **-i** 选项）|
-|**-P** |**--no-dereference**|永不跟随 SOURCE 中的符号链接|
-|**-p**||等同于 **--preserve**=mode,ownership,timestamps|
-||**--preserve**\[=<u>ATTR_LIST</u>]|保留指定的属性（默认：mode,ownership,timestamps），如果可能的话，保留指定的附加属性：context, links, xattr,all|
-||**--no-preserve**=<u>ATTR_LIST</u>|不保留指定的属性|
-|  |**--parents**|使用 DIRECTORY 下的完整源文件名|
-|**-R**, **-r**| **--recursive**|递归复制目录|
-||**--reflink**\[=<u>WHEN</u>]|控制clone/CoW 副本。 见下文|
-||**--remove-destination**|在尝试打开每个已存在的目标文件之前删除它（与 **--force** 对比）|
-||**--sparse**=<u>WHEN</u>|控制稀疏文件的创建。 见下文|
-||**--strip-trailing-slashes**|从每个 SOURCE 参数中删除所有尾随斜杠|
-|**-s**|**--symbolic-link**|建立符号链接而不是复制|
-|**-S**| **--suffix**=<u>SUFFIX</u>|覆盖通常的备份后缀|
-|**-t** <u>DIRECTORY</u>| **--target-directory**=<u>DIRECTORY</u>|将所有 SOURCE 参数复制到 DIRECTORY 中|
-|**-T**| **--no-target-director**y|将 DEST 视为普通文件|
-|**-u**|**--update**|仅当源文件比目标文件新或目标文件缺失时才复制|
-|**-v**|**--verbose**|解释正在做什么|
-|**-x**|**--one-file-system**|保留在此文件系统上|
-|**-Z**||将目标文件的 SELinux 安全上下文设置为默认类型|
-||**--context**\[=<u>CTX</u>]|类似 **-Z**，或者如果指定了 CTX，则将 SELinux 或 SMACK 安全上下文设置为 CTX|
-||**--help**|显示帮助信息并退出|
-||**--version**|显示版本信息并退出|
-|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;||
 
- 默认情况下，通过粗略启发式检测到稀疏源文件，相应的目标文件也变得稀疏， 这是 **--sparse**=<u>auto</u> 选择的行为； 只要 SOURCE 文件包含足够长的零字节序列，指定 **--sparse**=<u>always</u> 即可创建稀疏 DEST 文件。 使用 **--sparse**=<u>never</u> 禁止创建稀疏文件。
+# URL
+URL 语法取决于协议。详细说明可在 RFC 3986 中找到。
 
-当指定 **--reflink**\[=<u>always</u>] 时执行轻量级复制，其仅在修改时复制数据块，如果这不可能，则复制失败；或者如果指定了 **--reflink**=<u>auto</u>，则回退到标准复制；使用 **--reflink**=<u>never</u> 确保执行标准复制。
+如果你提供的 URL 没有开头的 `protocol:// scheme`，curl 会猜测你想要的协议。它默认使用 HTTP，但也会根据常用的主机名前缀推断其他协议。例如，对于以 "ftp." 开头的主机名，curl 会假定你想要使用 FTP。
 
-除非使用 **--suffix** 或 SIMPLE_BACKUP_SUFFIX 设置，备份后缀为“~”。 版本控制方法可以通过 **--backup** 选项或通过 VERSION_CONTROL 环境变量来选择。 以下是这些值：
-|备份|说明|
-|:--|:--|
-|none, off|从不进行备份（即使给出了 **--backup**）|
-|numbered, t|进行编号备份|
-|existing, nil|如果编号备份存在则编号备份，否则简单备份|
-|simple, never|总是进行简单的备份|
+你可以在命令行中指定任意数量的 URL。除非使用 <u>--parallel</u>，否则它们会按照指定顺序依次获取。你可以在命令行中以任意顺序混合指定命令行选项和 URL。
 
-作为一种特殊情况，当指定force和backup选项并且 SOURCE 和 DEST 与现有普通文件名称相同时，cp 会备份 SOURCE。
+curl 在进行多次传输时会尝试复用连接，这样从同一服务器获取许多文件时就不会使用多次连接和设置握手。这可以提高速度。连接复用只能用于单次命令行调用中指定的 URL，不能在彼此独立的 curl 运行之间进行。
+
+在 URL 中提供 IPv6 区域 ID 时，要使用转义的百分号。例如：`http://[fe80::3%25eth0]/`
+
+命令行中提供的任何不是命令行选项或其参数的内容，curl 都会假定它是一个 URL，并按 URL 处理。
+
+# 通配符
+你可以在花括号中写列表，或在方括号中写范围，来指定多个 URL 或 URL 的多个部分。我们称之为“globbing”（通配展开）。
+
+像这样提供一个包含三个不同名称的列表：
+
+`https://fun.example/{one,two,three}.jpg`
+`http://sftp://{one,two,three}.example/README`
+
+使用 `[]` 来表示字母数字序列，如下所示：
+
+`ftp://ftp.example.com/file[1-100].txt`
+
+带前导零：
+
+`ftp://ftp.example.com/file[001-100].txt`
+
+使用字母表中的字母：
+
+`ftp://ftp.example.com/file[a-z].txt`
+
+不支持嵌套序列，但你可以将多个序列并排使用：
+
+`https://example.com/archive[1996-1999]/vol[1-4]/part{a,b,c}.html`
+
+你可以为范围指定步长计数器，以获取每第 N 个数字或字母：
+
+`https://example.com/file[1-100:10].txt`
+
+`https://example.com/file[a-z:2].txt`
+
+在命令行提示符下使用 `[]` 或 `{}` 序列时，你可能需要将完整 URL 放在双引号内，以避免 shell 对其进行干扰。对于其他被视为特殊的字符也是如此，例如 `'&'`、`'?'` 和 `'*'`。
+
+使用 `--globoff` 可以关闭 globbing。
+
+# 变量
+curl 支持命令行变量（自 8.3.0 起新增）。使用 `--variable name=content` 或 `--variable name@file` 设置变量（其中 `file` 若设为单个短横线 `-`，则可以是标准输入）。
+
+如果选项名以 `--expand-` 为前缀，则可以在选项参数中使用 `{{name}}` 展开变量内容。这会插入变量 `name` 的内容；如果该名称不作为变量存在，则插入空白。要在字符串中原样插入 `{{`，请在其前面加反斜杠，例如 `\{{`。
+
+要访问和展开环境变量，需先导入它们。你可以选择要求环境变量必须已设置，或者在其尚未设置时提供默认值。单纯的 `--variable %name` 会导入名为 `name` 的变量，但如果该环境变量尚未设置，则会以错误退出。若要在未设置时提供默认值，请使用 `--variable %name=content` 或 `--variable %name@content`。
+
+示例：将 `USER` 环境变量放入 URL，如果 `USER` 未设置则失败：
+
+`--variable '%USER'`
+`--expand-url = "https://example.com/api/{{USER}}/method"`
+
+展开变量时，curl 支持一组函数，可使变量内容更便于使用。它可以用 `trim` 去除首尾空白，用 `json` 将内容输出为 JSON 引号字符串，用 `url` 对字符串进行 URL 编码，用 `b64` 进行 base64 编码，用 `64dec` 进行 base64 解码。要对变量展开应用函数，请将它们以冒号分隔添加到变量右侧。变量内容若包含空字节且在展开时未编码，则会导致错误。
+
+示例：将名为 `$HOME/.secret` 的文件内容读入名为 `fix` 的变量。确保内容在作为 POST 数据发送时已去除首尾空白并进行百分号编码：
+
+`--variable %HOME`
+`--expand-variable fix@{{HOME}}/.secret`
+`--expand-data "{{fix:trim:url}}"`
+`https://example.com/`
+
+命令行变量和展开功能是在 8.3.0 中新增的。
+# 输出
+除非另有指示，curl 会将接收到的数据写入标准输出。可以使用 `--output` 或 `--remote-name` 选项指示它改为将数据保存到本地文件。如果在命令行上给 `curl` 指定多个要传输的 URL，它同样需要多个选项来指定各自的保存位置。
+
+`curl` 不会解析或以其他方式“理解”它获取或作为输出写出的内容。它不进行任何编码或解码，除非通过专用命令行选项明确要求。
 
 # 作者
 Torbjorn Granlund、David MacKenzie、Jim Meyering.。
