@@ -1,6 +1,6 @@
 ---
-title: grep
-tags: 文本处理,用户命令man1
+title: journalctl
+tags: 用户命令man1
 ---
 
 ------
