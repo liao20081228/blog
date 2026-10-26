@@ -5,7 +5,7 @@ tags: 用户命令man1,通用命名手册
 
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《env manpages》。</font>journalctl的版本为systemd 259.5，手册更新时间为2026-10。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《env manpages》。</font>journalctl的版本为0.10.0，手册更新时间为2026-09。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
 
@@ -55,6 +55,6 @@ journalctl——从 systemd 日志中打印日志条目。
 # 另请参阅
 ------
 
-***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《journalctl manpages》。</font>journalctl的版本为systemd 259.5，手册更新时间为2026-10。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《env manpages》。</font>journalctl的版本为0.10.0，手册更新时间为2026-09。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
