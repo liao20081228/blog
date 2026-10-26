@@ -1,6 +1,6 @@
 ---
-title: journalctl
-tags: 用户命令man1
+title: env
+tags: 用户命令man1,通用命名手册
 ---
 
 ------
