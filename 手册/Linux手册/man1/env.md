@@ -10,49 +10,83 @@ tags: 用户命令man1,通用命名手册
 ------
 
 # 名称
-journalctl——从 systemd 日志中打印日志条目。
+ env——在环境中将每个 NAME 设置为 VALUE，并运行 COMMAND
 
-# 概览
-**journalctl** \[OPTIONS...] \[MATCHES...]
+# 概要
+**env** \[-**i**|--**ignore-environment**] \[-**C**|--**chdir**] \[-**0**|--**null**] \[-**f**|--**file**] \[-**u**|--**unset**] \[-**v**|--**debug**]... \[-**S**|--**split-string**] \[-**a**|--**argv0**] \[--**ignore-signal**] \[--**default-signal**] \[--**block-signal**] \[--**list-signal-handling**] \[-**h**|--**help**] \[-**V**|--**version**] \[vars]
 
-# 描述
+**#描述**
 
-`journalctl` 用于打印由 `systemd-journald.service(8)` 和 `systemd-journal-remote.service(8)` 存储在日志中的日志条目。
+在环境中将每个 NAME 设置为 VALUE，并运行 COMMAND
 
-如果调用时不带参数，它将显示调用用户可以访问的日志内容，从收集到的最早条目开始。
+**选项**
+- **-i, --ignore-environment**
+以空环境开始
+- **-C, --chdir \<DIR>**
+将工作目录更改为 DIR
+- **-0, --null**
+每个输出行以 0 字节而不是换行符结束（仅在打印环境时有效）
+- **-f, --file \<PATH>**
+从“.env”风格的配置文件中读取并设置变量（在任何 unset 和/或 set 之前）
+- **-u, --unset \<NAME>**
+从环境中移除变量
+- **-v, --debug**
+为每个处理步骤打印详细信息
+- **-S, --split-string \<S>**
+处理 S 并将其拆分为单独的参数；用于在 shebang 行上传递多个参数
+- **-a, --argv0 \<a>**
+覆盖传递给被执行命令的第零个参数。未使用此选项时，默认值为 `command`。
+- **--ignore-signal\[=\<SIG>]**
+将 SIG 信号的处理设置为不执行任何操作
+- **--default-signal\[=\<SIG>]**
+ 将 SIG 信号的处理重置为默认操作
+- **--block-signal\[=\<SIG>]**
+在运行 COMMAND 时阻止 SIG 信号递送
+-- **--list-signal-handling**
+列出前面选项请求的信号处理更改
+- **-h, --help**
+打印帮助
+- **-V, --version**
+打印版本
+- \[vars]
 
-如果传入一个或多个匹配参数，输出会相应过滤。匹配的格式为 `"FIELD=VALUE"`，例如 `"_SYSTEMD_UNIT=httpd.service"`，指的是结构化日志条目的组成部分。已知字段列表请参见 `systemd.journal-fields(7)`。如果指定了匹配不同字段的多个匹配项，日志条目会同时按这些条件过滤，即结果输出只显示匹配所有这些同类指定匹配项的条目。如果两个匹配项应用于同一字段，则它们会自动作为备选进行匹配，即结果输出会显示匹配该字段任一指定匹配项的条目。最后，字符 `"+"` 可以作为独立单词出现在命令行上其他项之间。这会使之前和之后的所有匹配项以析取方式（即逻辑或）组合。
-
-也可以通过将绝对文件路径指定为参数来过滤条目。文件路径可以是文件或符号链接，且该文件在查询时必须存在。如果文件路径指向可执行二进制文件，则会在查询中添加针对规范化二进制路径的 `"_EXE="` 匹配。如果文件路径指向可执行脚本，则会在查询中添加针对脚本名称的 `"_COMM="` 匹配。如果文件路径指向设备节点，则会在查询中添加针对该设备内核名称及其每个祖先设备内核名称的 `"_KERNEL_DEVICE="` 匹配。符号链接会被解引用，内核名称会被合成，父设备会在查询时从环境中识别。一般来说，设备节点是实际设备的最佳代理，因为日志条目通常不包含标识实际设备的字段。为使结果中的日志条目对实际设备正确，记录条目时环境的相关部分（特别是设备节点对应的实际设备）必须与查询时相同。由于设备节点通常会在重启后改变其对应设备，指定设备节点路径会导致结果条目被限制为来自当前启动的那些条目。
-
-可以使用 `--boot`、`--unit=` 等选项添加额外约束，以进一步限制将显示哪些条目（逻辑与）。
-
-输出会从所有可访问的日志文件交错显示，无论它们是已轮转还是当前正在写入，也无论它们属于系统本身还是可访问的用户日志。可以使用 `--header` 选项来识别正在显示哪些文件。
-
-将使用的日志文件集合可以通过 `--user`、`--system`、`--directory=` 和 `--file=` 选项修改，见下文。
-
-所有用户都被授予访问其私有每用户日志的权限。然而，默认情况下，只有 root 和少数特殊组的成员被授予访问系统日志和其他用户日志的权限。`"systemd-journal"`、`"adm"` 和 `"wheel"` 组的成员可以读取所有日志文件。请注意，后两个组传统上具有发行版指定的额外特权。`"wheel"` 组的成员通常可以执行管理任务。
-
-输出默认通过 `less` 分页，长行会被“截断”到屏幕宽度。隐藏部分可以使用左箭头和右箭头键查看。可以禁用分页；请参见 `--no-pager` 选项和下面的“环境”部分。
-
-输出到 tty 时，行会根据优先级着色：级别为 ERROR 及更高的行显示为红色；级别为 WARNING 的行显示为黄色；级别为 NOTICE 的行高亮显示；级别为 INFO 的行正常显示；级别为 DEBUG 的行显示为灰色。
-
-可以使用几种方法向日志写入条目。一般来说，systemd 单元的输出会自动连接到日志，参见 `systemd-journald.service(8)`。此外，可以使用 `systemd-cat(1)` 直接向日志发送消息。
-# 源选项
-
-# 退出状态
-
-# 环境
-
-# 注意
-
-# 版权
-
-# bugs
+**补充**
+单独的 `-` 意味着 `-i`。如果没有 COMMAND，则打印结果环境。
+# 版本
+       v(uutils coreutils) 0.10.0
 
 # 示例
+显示环境：
+```bash
+env
+```
+运行程序。常用于脚本中 shebang（#!）之后，用于查找程序的路径：
+```bash
+env program
+```
+清空环境并运行程序：
+```bash
+env [-i|--ignore-environment] program
+```
+从环境中移除变量并运行程序：
+```bash
+env [-u|--unset] variable program
+```
+设置一个变量并运行程序：
+```bash
+env variable=value program
+```
+设置一个或多个变量并运行程序：
+```bash
+env variable1=value variable2=value variable3=value ... program
+```
+以不同名称运行程序：
+```bash
+env [-a|--argv0] custom_name program
+```
+ 这些示例由 tldr-pages 项目 <https://tldr.sh> 提供，采用 CC BY 4.0 许可证。请注意，由于 uutils 仍在开发中，某些示例可能会失败。
 
-# 另请参阅
+
 ------
 
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《env manpages》。</font>journalctl的版本为0.10.0，手册更新时间为2026-09。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
