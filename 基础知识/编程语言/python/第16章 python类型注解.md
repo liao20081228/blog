@@ -5,11 +5,72 @@ tags: pyhton
 
 ---
 
+
+# 内置类型
+
+在 Python 中，内置类型不仅是我们日常写代码用的基础数据类型（如整数、字符串），在类型注解的语境下，特指那些**可以直接用来做类型注解，并且在 Python 3.9+ 中支持中括号 `[]` 泛型语法**的原生类。
+
+**核心区别**：
+- **内置类型**（如 `list`, `dict`）：用于**具体**的容器。
+- **抽象基类**（从 `collections.abc` 导入，如 `Iterable`, `Mapping`）：用于描述**行为/接口**。**官方强烈建议**在标注参数时，优先使用抽象基类（如 `Iterable[int]`），因为它给调用者的限制更少（传 list、tuple、生成器都可以）。
+
+**注意事项**
+在函数定义中，`->` 后面的返回类型通常是具体的（比如返回一个列表就写 `list[int]`）。但如果函数是**生成器**，`->` 后面**绝对不能**写内置的容器，必须写 `Iterator` 或 `Generator`（来自 `collections.abc` 或 `typing`），因为生成器不是 `list`。
+
+## 基础标量类型（Scalar Types）
+这些是最基础的数据类型，直接写在 `:` 或 `->` 后面即可。
+
+| 内置类型 | 说明 | 示例 |
+| :--- | :--- | :--- |
+| **`int`** | 整数 | `x: int = 10` |
+| **`float`** | 浮点数 | `y: float = 3.14` |
+| **`str`** | 字符串 | `name: str = "Alice"` |
+| **`bool`** | 布尔值（True/False） | `is_valid: bool = True` |
+| **`bytes`** | 字节串 | `data: bytes = b"hello"` |
+| **`complex`** | 复数 | `z: complex = 1+2j` |
+
+## 容器/集合类型（支持泛型 `[]` 语法）
+**这是 Python 3.9+ 的重大更新**（PEP 585）。你现在可以直接用内置的小写类型加上 `[]` 来做类型注解，完全替代 `typing` 模块里的 `List`, `Dict` 等大写别名。
+
+| 内置类型 | 说明 | 示例（现代写法） | 对应 `typing` 旧写法 |
+| :--- | :--- | :--- | :--- |
+| **`list`** | 列表 | `list[int]` | `typing.List[int]` |
+| **`dict`** | 字典 | `dict[str, int]` | `typing.Dict[str, int]` |
+| **`set`** | 集合 | `set[str]` | `typing.Set[str]` |
+| **`frozenset`** | 不可变集合 | `frozenset[int]` | `typing.FrozenSet[int]` |
+| **`tuple`** | 元组（定长） | `tuple[int, str]` | `typing.Tuple[int, str]` |
+| **`tuple`** | 元组（变长） | `tuple[int, ...]` | `typing.Tuple[int, ...]` |
+
+*(注：如果你的代码需要运行在 Python 3.8 及以下，直接写 `list[int]` 会报错。解决办法是在文件顶部加上 `from __future__ import annotations`，或者老老实实换回 `typing.List`。)*
+
+
+## 特殊内置类型
+除了基础数据和容器，Python 还有几个非常特殊的内置类型，在注解中极其常用：
+
+| 内置类型 | 说明 | 示例 |
+| :--- | :--- | :--- |
+| **`None`** | 空值（其实是 `NoneType` 的单例） | `def f() -> None:` |
+| **`type`** | 类对象本身（等价于 `typing.Type`） | `def create(cls: type[MyClass]) -> MyClass:` |
+| **`object`** | 所有类的基类（代表“任意对象”，但比 `Any` 安全） | `def process(obj: object) -> None:` |
+| **`range`** | 整数范围 | `def loop(r: range) -> None:` |
+
+*关于 `type` 的进阶用法*：在 Python 3.9+ 中，可以直接写 `type[MyClass]` 表示“MyClass 这个类本身”，等价于旧版的 `typing.Type[MyClass]`。
+
+
+## 内置的异常类型
+虽然不常用作业务参数的注解，但在某些场景下（比如写装饰器或异常处理框架）也会用到：
+*   `Exception`, `ValueError`, `TypeError` 等。它们本身就是类，可以直接做注解。
+    ```python
+    def handle_error(err: ValueError) -> None: ...
+    ```
+
+# typing模块
 为了让你能快速查阅，我将 `typing` 模块中最常用的属性、类和方法整理成了综合表格。
 
 按照功能，我将它们分为了三大类：**用于注解的类型/构造器**、**辅助函数**（用于编写代码或运行时操作），以及**特殊常量**。
 
 *(注：示例基于 Python 3.10+ 语法，部分针对旧版本的兼容写法已省略)*
+
 
 ### 1. 基础与特殊类型（可直接用于 `:` 和 `->`）
 
