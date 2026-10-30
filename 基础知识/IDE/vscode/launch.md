@@ -3,113 +3,178 @@ title: launch
 tags: vscode
 ---
 
-# pyhton
-这份 `launch.json` 配置极其详尽，包含了 VS Code Python 调试器（`debugpy`）几乎所有可用的参数。其中很多是**默认生成的冗余配置**，或者针对特定框架（如 Django）的配置。
-
-作为 C 程序员，你可以把它当成一个**“调试器结构体（Struct）的初始化列表”**。我将其按功能划分为 6 大类，为你逐一拆解：
-
----
-
-### 一、 核心基础配置（最常用，决定怎么启动）
-
-| 配置项 | 你的值 | 作用（C 程序员类比） |
-| :--- | :--- | :--- |
-| `name` | `"Python Debug"` | 调试配置的名称，会显示在 VS Code 调试下拉菜单里。 |
-| `type` | `"debugpy"` | 指定使用的调试器类型（新版 Python 插件统一叫 `debugpy`）。 |
-| `request` | `"launch"` | **`launch`** 表示启动并调试一个新进程；`attach` 表示附加到已经运行的程序上（类似 C 里的 `attach PID`）。 |
-| `program` | `"${file}"` | 要运行的入口文件。`${file}` 表示当前编辑器里激活的那个文件。 |
-| `cwd` | `"${fileDirname}"` | **当前工作目录**。极其重要！它决定了相对路径（比如你传的 `12_OMU...txt`）去哪里找。`${fileDirname}` 表示以当前脚本所在目录为准。 |
-| `args` | `["12_OMU...", "v100r900"]` | 传给脚本的命令行参数。等同于 C 语言的 `argv[1]` 和 `argv[2]`。 |
-| `console` | `"integratedTerminal"` | 输出和控制台放在哪。`integratedTerminal` 表示用 VS Code 底部的终端，支持输入交互。 |
-| `python` | `"${command:python.interpreterPath}"` | 动态获取当前右下角选中的 Python 解释器路径（保证环境一致性）。 |
-
----
-
-### 二、 调试行为控制（断点、步进与输出）
-
-| 配置项 | 你的值 | 作用 |
-| :--- | :--- | :--- |
-| `stopOnEntry` | `false` | 设为 `true` 时，启动后会在第一行代码自动暂停（类似于在 `main` 函数第一行打断点）。 |
-| `justMyCode` | `true` | **核心选项**。设为 `true` 时，按 `F11` 单步进入只会进你自己的代码，**直接跳过标准库和第三方库**（类似 C 里不步入 `libc` 源码）。 |
-| `showReturnValue` | `true` | 在调试器的“变量”面板中，显示函数返回后的返回值。 |
-| `redirectOutput` | `false` | 是否将程序的标准输出重定向到调试器内部。设为 `false` 表示直接输出到终端。 |
-| `logToFile` | `false` | 若调试器本身出 Bug 闪退，设为 `true` 会生成 `debugpy` 的底层通信日志。 |
-| `autoReload` | `enable: true` | 热重载功能。当你的代码文件被修改并保存时，调试器会自动重启。 |
-
----
-
-### 三、 环境变量与生命周期钩子
-
-| 配置项 | 你的值 | 作用 |
-| :--- | :--- | :--- |
-| `env` | `{}` | 在启动前注入的环境变量，格式为 `{"KEY": "VALUE"}`（类似 C 里的 `setenv`）。 |
-| `envFile` | `"${workspaceFolder}/.env"` | 从 `.env` 文件中读取环境变量（通常用于存放密码、API Key）。 |
-| `preLaunchTask` | `""` | 在启动调试**之前**自动执行的任务（比如先跑一遍编译、代码格式化）。 |
-| `postDebugTask` | `""` | 在调试**结束/终止后**自动执行的任务（比如清理临时文件）。 |
-
----
-
-### 四、 UI 展示与控制台设置
-
-| 配置项 | 你的值 | 作用 |
-| :--- | :--- | :--- |
-| `consoleName` | `"Python Debug Console"` | 终端标签页的显示名称。 |
-| `internalConsoleOptions` | `"neverOpen"` | 不自动打开内部的“调试控制台”，因为前面配置了使用 `integratedTerminal`。 |
-| `presentation` | `{ hidden: false, group: "pyhton", order: 1 }` | 控制调试配置下拉菜单的显示顺序和分组。（注意你这里有个拼写错误 `pyhton`，应为 `python`，但不影响运行）。 |
-| `terminalQuoteCharacter` | `"'"` | 在终端里拼接命令行时使用的引号类型。 |
-
----
-
-### 五、 特定框架与库专用（这里全关了）
-
-这些配置是给特定 Web 框架或异步库准备的，你这里都是 `false` 或空：
-
-| 配置项 | 你的值 | 作用 |
-| :--- | :--- | :--- |
-| `django` | `false` | 如果调试 Django 项目，设为 `true` 会自动处理模板断点和路由。 |
-| `jinja` | `false` | 支持 Jinja2 模板引擎的断点调试。 |
-| `gevent` | `false` | 针对协程库 `gevent` 的猴子补丁（Monkey Patch）调试支持。 |
-| `pyramid` | `false` | 针对 Pyramid Web 框架的支持。 |
-| `guiEventLoop` | `"matplotlib"` | 如果你用 Matplotlib 画图，调试时它需要接管事件循环才能显示窗口。 |
-| `module` | `""` | 如果你想以模块方式运行（如 `python -m pytest`），填模块名（此时不能填 `program`）。 |
-
----
-
-### 六、 高级网络与远程附加
-
-| 配置项 | 你的值 | 作用 |
-| :--- | :--- | :--- |
-| `debugServer` | `4711` | 调试器底层的监听端口（通常用于远程调试）。 |
-| `pathMappings` | `[]` | 本地代码路径与远程服务器代码路径的映射（远程调试必填，类似 GDB 的 `set substitute-path`）。 |
-| `subProcess` | `false` | 是否调试由主进程启动的子进程。 |
-| `sudo` | `false` | 是否以 Root/管理员权限启动调试（在 Linux 下常用）。 |
-| `serverReadyAction` | `{...}` | 当你的程序在终端打印出特定模式（比如 `listening on port 8080`）时，自动帮你启动 Edge 浏览器并打开对应网址。 |
-| `compounds` | `[]` | 组合调试。如果你有前端和后端，可以在这里配置“一键同时启动并调试多个进程”。 |
-
----
-
-### 💡 给你的“瘦身”建议
-
-这份配置有 40 多行，但对于日常 Python 脚本调试，**90% 都是不需要的**。而且里面有一些隐性的冲突（比如 `pathMappings` 出现了两次，其中一次被注释了）。
-
-如果你想让配置清爽一点，**其实只需要保留下面这几行，就完全足够你现在的调试需求了**：
-
+[TOC]
+# 配置架构
 ```json
 {
+    // 使用 IntelliSense 了解相关属性。
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [
+    "compounds": [
         {
-            "name": "Python Debug",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${file}",
-            "cwd": "${fileDirname}",
-            "console": "integratedTerminal",
-            "args": ["12_OMUSERVICE_CHECK_GET_NET_TOSCA_NAME.txt", "v100r900"],
-            "python": "${command:python.interpreterPath}",
-            "justMyCode": true
+            "name": "组合名字"
+            "configurations": ["configurations中的name的值"]
         }
-    ]
+    ],
+    "inputs": [],
+    "configurations": []
 }
 ```
-其他那些配置，等你有特殊需求（比如调试 Django、远程调试、或者需要热重载）时，再通过点击调试面板的齿轮图标逐个加上去即可。
+
+
+| 配置项         | 取值示例 | 作用                                                                              |
+| :------------- | :------- | :-------------------------------------------------------------------------------- |
+| version        | 0.2.0    | 版本信息                                                                          |
+| compounds      | \[]      | 组合调试。如果你有前端和后端，<br/>可以在这里配置“一键同时启动并调试多个进程”。 |
+| inputs         | \[]      | 输入变量                                                                          |
+| configurations | \[]      | 启动配置项                                                                        |
+# 配置列表
+## 公共配置
+- **name**：调试配置名称，显示在 VS Code 调试下拉列表中。
+- **type**：调试器类型；`debugpy` 表示使用 VS Code Python Debugger。
+- **request**：请求类型；`launch` 表示启动新进程并调试。
+- **cwd**：程序运行时工作目录；`${fileDirname}` 表示当前文件所在目录。
+- **program**：要调试的 Python 入口文件；`${file}` 表示当前打开文件。
+- **args**：传给被调试 Python 程序的命令行参数；这里传文件名和版本号两个参数。
+- **preLaunchTask**：调试启动前运行的 VS Code 任务；空表示不运行。
+- **postDebugTask**：调试结束后运行的任务；空表示不运行。
+- **env/environment**：额外环境变量对象；空表示不添加。
+- **envFile**：从文件加载环境变量；这里从工作区 `.env` 加载。
+- **stopOnEntry/stopAtEntry**：启动后是否立即暂停在入口；`false` 表示不自动暂停。。
+- **presentation**：该配置在调试下拉列表中的展示方式。
+  - **hidden**：是否隐藏；`false` 表示显示。
+  - **group**：分组名；这里为 `pyhton`，拼写有误但不影响运行。
+  - **order**：同组内排序；`1` 表示靠前。
+- **windows**：Windows 平台专属覆盖配置；空对象表示无覆盖。
+- **linux**：Linux 平台专属覆盖配置；空对象表示无覆盖。
+- **osx**：macOS 平台专属覆盖配置；空对象表示无覆盖。
+- **internalConsoleOptions**：内部调试控制台打开策略；`neverOpen` 表示不自动打开。
+- **suppressMultipleSessionWarning**：是否抑制多调试会话警告；`true` 表示抑制。
+
+## python
+```json
+{
+    "name": "Python Debug",
+    "type": "debugpy",
+    "request": "launch",
+    "cwd": "${fileDirname}",
+    "program": "${file}",
+    "console": "integratedTerminal",
+    "args": ["12_OMUSERVICE_CHECK_GET_NET_TOSCA_NAME.txt",  "v100r900"],
+    "pythonArgs": [],
+    "python": "${command:python.interpreterPath}",
+    "preLaunchTask": "",
+    "postDebugTask": "",
+    "showReturnValue": true,
+    "redirectOutput": false,
+    "env": {},
+    "consoleName": "Python Debug Console",
+    "autoReload": {
+        "enable": true,
+        "include": [],
+        "exclude": []
+    },
+    "stopOnEntry": false,
+    "pyramid": false,
+    "justMyCode": true,
+    "pathMappings": [],
+    "sudo": false,
+    "presentation": {
+        "hidden": false,
+        "group": "pyhton",
+        "order": 1,
+    },
+    "windows": {},
+    "linux": {},
+    "osx": {},
+    "autoStartBrowser": false,
+    "clientOS": "windows",
+    "debugAdapterPath": "",
+    "debugServer": 4711,
+    "django": false,
+    "envFile": "${workspaceFolder}/.env",
+    "gevent": false,
+    "guiEventLoop": "matplotlib",
+    "internalConsoleOptions": "neverOpen",
+    "jinja": false,
+    "logToFile": false,
+    "module": "",
+    "pathMappings": [],
+    "purpose": [],
+    "python": "${command:python.interpreterPath}",
+    "serverReadyAction":{
+        "action": "debugWithEdge",
+        "pattern": "listening on port ([0-9]+)",
+        "uriFormat": "http://localhost:%s",
+        "webRoot": "${workspaceFolder}",
+        "killOnServerStop": false,
+
+    },
+    "subProcess": false,
+    "suppressMultipleSessionWarning": true,
+    "terminalQuoteCharacter": "'"
+}
+```
+
+- **name**：调试配置名称，显示在 VS Code 调试下拉列表中。
+- **type**：调试器类型；`debugpy` 表示使用 VS Code Python Debugger。
+- **request**：请求类型；`launch` 表示启动新进程并调试。
+- **cwd**：程序运行时工作目录；`${fileDirname}` 表示当前文件所在目录。
+- **program**：要调试的 Python 入口文件；`${file}` 表示当前打开文件。
+- **console**：程序输入输出使用的控制台；`integratedTerminal` 表示 VS Code 集成终端。
+- **args**：传给被调试 Python 程序的命令行参数；这里传文件名和版本号两个参数。
+- **pythonArgs**：传给 Python 解释器本身的参数；空数组表示不额外传。
+- **python**：指定 Python 解释器；`${command:python.interpreterPath}` 解析为当前选择的解释器。
+- **preLaunchTask**：调试启动前运行的 VS Code 任务；空表示不运行。
+- **postDebugTask**：调试结束后运行的任务；空表示不运行。
+- **showReturnValue**：是否显示函数返回值；`true` 表示显示。
+- **redirectOutput**：是否把输出重定向到调试控制台；`false` 表示通常仍输出到集成终端。
+- **env**：额外环境变量对象；空表示不添加。
+- **consoleName**：集成终端名称；这里为 `Python Debug Console`。
+- **autoReload**：自动重载相关配置。
+  - **enable**：是否启用自动重载；`true` 表示启用。
+  - **include**：自动重载包含的文件/模式；空数组表示未额外指定。
+  - **exclude**：自动重载排除的文件/模式；空数组表示未额外指定。
+- **stopOnEntry**：启动后是否立即暂停在入口；`false` 表示不自动暂停。
+- **pyramid**：是否启用 Pyramid 框架调试支持；`false` 表示不启用。
+- **justMyCode**：是否只调试用户代码、跳过库内部；`true` 表示只调试自己的代码。
+- **pathMappings**：本地路径与远程/容器路径映射；空数组表示不做映射。
+- **sudo**：是否以管理员/`sudo` 权限运行；`false` 表示否。
+- **presentation**：该配置在调试下拉列表中的展示方式。
+  - **hidden**：是否隐藏；`false` 表示显示。
+  - **group**：分组名；这里为 `pyhton`，拼写有误但不影响运行。
+  - **order**：同组内排序；`1` 表示靠前。
+- **windows**：Windows 平台专属覆盖配置；空对象表示无覆盖。
+- **linux**：Linux 平台专属覆盖配置；空对象表示无覆盖。
+- **osx**：macOS 平台专属覆盖配置；空对象表示无覆盖。
+- **autoStartBrowser**：是否自动启动浏览器；`false` 表示不自动启动。
+- **clientOS**：客户端操作系统标识；`windows` 表示按 Windows 客户端处理。
+- **debugAdapterPath**：自定义调试适配器路径；空表示使用默认 debugpy 适配器。
+- **debugServer**：调试服务器端口；这里为 `4711`，普通本地 `launch` 通常不一定需要。
+- **django**：是否启用 Django 调试支持；`false` 表示不启用。
+- **envFile**：从文件加载环境变量；这里从工作区 `.env` 加载。
+- **gevent**：是否启用 gevent 支持；`false` 表示不启用。
+- **guiEventLoop**：GUI 事件循环集成类型；`matplotlib` 表示针对 matplotlib 交互窗口处理事件循环。
+- **internalConsoleOptions**：内部调试控制台打开策略；`neverOpen` 表示不自动打开。
+- **jinja**：是否启用 Jinja 模板调试；`false` 表示不启用。
+- **logToFile**：是否把调试器日志写入文件；`false` 表示不写。
+- **module**：是否以 `python -m 模块名` 方式运行；空表示不使用，改用 `program` 文件。
+- **purpose**：调试配置用途标记；空数组表示无特殊用途。
+- **serverReadyAction**：服务器就绪后自动执行动作。
+  - **action**：动作类型；`debugWithEdge` 表示用 Edge 打开并调试。
+  - **pattern**：从输出中匹配端口的正则；如 `listening on port ([0-9]+)`。
+  - **uriFormat**：用匹配端口生成 URL；如 `http://localhost:%s`。
+  - **webRoot**：Web 根目录；这里为工作区根目录。
+  - **killOnServerStop**：服务器停止时是否关闭浏览器；`false` 表示不关闭。
+- **subProcess**：是否自动调试子进程；`false` 表示否。
+- **suppressMultipleSessionWarning**：是否抑制多调试会话警告；`true` 表示抑制。
+- **terminalQuoteCharacter**：终端中给路径/参数加引号使用的字符；这里为单引号 `'`。
+
+
+
+
+# cppdbg
+
+# gdb
+# lldb
