@@ -1,7 +1,6 @@
 ---
 title: launch
 tags: vscode
-category: /vscode
 ---
 
 # pyhton
