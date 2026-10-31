@@ -1,5 +1,5 @@
 ---
-title: AI Vibe Code
+title: AI_Vibe_Coding
 tags: AI
 ---
 
