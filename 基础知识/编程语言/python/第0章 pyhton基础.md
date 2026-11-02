@@ -48,6 +48,7 @@ Python 的数据类型非常丰富，但核心的**内置基础数据类型**可
 | **集合型** | 集合       | `set`       | **可变** | ✅     | ❌ **否**             | `{1, 2, 3}`           | 无序、元素不重复，支持交并差运算     |
 |            | 不可变集合 | `frozenset` | 不可变   | ✅     | ❌ **否**             | `frozenset({1, 2})`   | 可作为字典的键                       |
 | **映射型** | 字典       | `dict`      | **可变** | ✅     | ✅ **(按 Key)**       | `{"name": "张三"}`    | 键值对集合，**迭代出的是 Key**       |
+|            | 不可变字典 | frozendict  | 不可变   | ✅     | ❌ **否**             | `{"name": "张三"}`    | 键值对集合，**迭代出的是 Key**       |
 | **空值**   | 空对象     | `NoneType`  | 不可变   | ❌ 否  | ❌ **否**             | `None`                | 表示“没有值”或“空”，唯一的单例   |
 
 
@@ -187,7 +188,39 @@ print(isinstance(True, int)) # True (因为 bool 是 int 的子类)
 | if \-\- else                                                                | 条件表达式                         |
 | lambda                                                                      | lambda 表达式                      |
 | :=                                                                          | 赋值表达式                         |
-# 3 内置函数
+## 布尔求值
+
+你给出的表格非常直观，不过有些单元格漏填了。我帮你把这张终极对比表**补全并修正格式**（为了更严谨，我加上了关键的 `1` 这一行，并在表头明确了判断条件）：
+
+### 📊 Python 真假判断终极对比表
+
+| `a` 的值            | `if a`<br/>(真值性) | `a is None`<br/>(是否为None) | `a == True`<br/>(值是否相等) | `a is True`<br/>(是否纯正布尔) |
+| :------------------ | :------------------ | :--------------------------- | :--------------------------- | :----------------------------- |
+| **`None`**          | `False`             | **`True`**                   | `False`                      | `False`                        |
+| **`0` / `0.0`**     | `False`             | `False`                      | `False`                      | `False`                        |
+| **`""` (空字符串)** | `False`             | `False`                      | `False`                      | `False`                        |
+| **`[]` (空列表)**   | `False`             | `False`                      | `False`                      | `False`                        |
+| **`{}` (空字典)**   | `False`             | `False`                      | `False`                      | `False`                        |
+| **`False`**         | `False`             | `False`                      | `False`                      | `False`                        |
+| **`"abc"`**         | `True`              | `False`                      | `False`                      | `False`                        |
+| **`[1, 2]`**        | `True`              | `False`                      | `False`                      | `False`                        |
+| **`123`**           | `True`              | `False`                      | `False`                      | `False`                        |
+| **`1`** (整数)      | `True`              | `False`                      | **`True`**                   | **`False`**                    |
+| **`True`** (布尔)   | `True`              | `False`                      | **`True`**                   | **`True`**                     |
+透过表格看本质（核心记忆点）
+
+1.  **`if a:` 只看“空不空”**：只要不是 `None`、`0`、空容器、`False`，统统放行。**这是最符合 Python 哲学的写法。**
+2.  **`a is None` 最专一**：这辈子只认 `None` 一个。
+3.  **`a == True` 的漏洞**：注意看表格中的 **`1`**！因为 Python 底层 `True == 1` 成立，所以当 `a = 1` 时，`a == True` 竟然会返回 `True`。这在处理业务逻辑（比如判断是否成功，成功可能是 1，也可能是 True）时极其容易埋下 Bug。
+4.  **`a is True` 的严苛**：它要求 `a` 不仅值得是 True，**类型也必须得是 bool**。所以 `1 is True` 是 `False`。
+
+**总结**：
+*   想判断“有没有值”，用 **`if a:`**
+*   想判断“是不是空”，用 **`if a is None:`**
+*   想判断“开关是不是严格开启”，用 **`if a is True:`**
+*   **永远不要写 `if a == True:`**
+
+# 3 内<a class="xsj_anchor xsj_anchor_range xsj_anchor_range_start" name="xsj_1793349709453"></a>置函<a class="xsj_anchor xsj_anchor_range xsj_anchor_range_end" name="xsj_1793349709453"></a>数
 |类别|函数|
 |--|--|
 |数学|`abs()` 、`min()` 、`max()` 、`sum()` 、`pow()` 、`divmod()` 、`round()`|
