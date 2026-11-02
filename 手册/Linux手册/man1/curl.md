@@ -160,6 +160,70 @@ curl 对命令行参数内容的验证很少甚至不做验证。传入诸如换
 以下选项是全局选项：`--fail-early`、`--libcurl`、`--parallel-immediate`、`--parallel-max-host`、`--parallel-max`、`--parallel`、`--progress-bar`、`--rate`、`--show-error`、`--stderr`、`--styled-output`、`--trace-ascii`、`--trace-config`、`--trace-ids`、`--trace-time`、`--trace` 和 `--verbose`。
 
 # 所有选项
+- <font color=darkcyan>--abstract-unix-socket</font > \<path\>
+  （HTTP）通过抽象 Unix 域套接字连接服务器，而不是使用网络。注意：netstat 显示抽象套接字路径时会加上 "@" 前缀，但 \<path\> 参数不应包含这个前导字符。
+
+  如果多次提供 <u>--abstract-unix-socket</u>，则使用最后设置的值。
+
+  示例：
+  `curl --abstract-unix-socket socketpath https://example.com`
+
+  另请参阅 <u>--unix-socket</u>。
+
+- <font color=darkcyan>--alt-svc</font > \<filename\>
+  （HTTPS）启用 alt-svc 解析器。如果该文件名指向一个已存在的 alt-svc 缓存文件，则使用该文件。传输完成后，如果缓存文件已被修改，则再次将缓存保存到该文件名。
+
+  指定空文件名（零长度）可避免加载/保存，并让 <u>curl</u> 仅在内存中处理缓存。
+
+  你可能希望限制自己的 umask，以防止同一系统上的其他用户访问所创建的文件。
+
+  如果多次使用此选项，<u>curl</u> 会从所有文件加载内容，但最后一个文件用于保存。
+
+  <u>--alt-svc</u> 可以在命令行中多次使用。
+
+  示例：
+  `curl --alt-svc svc.txt https://example.com`
+
+  另请参阅 <u>--resolve</u> 和 <u>--connect-to</u>。
+
+- <font color=darkcyan>--anyauth</font >
+  （HTTP）自动探测认证方法，并使用远程站点声称支持的最安全的方法。这是通过先发起请求并检查响应头来完成的，因此可能引发额外的网络往返。此选项用于代替设置特定认证方法，后者可通过 <u>--basic</u>、<u>--digest</u>、<u>--ntlm</u> 和 <u>--negotiate</u> 完成。
+
+  如果从标准输入上传，不建议使用 <u>--anyauth</u>，因为它可能要求数据发送两次，且客户端必须能够回退。如果在从标准输入上传时出现这种需求，上传操作会失败。
+
+  与 <u>--user</u> 一起使用。
+
+  示例：
+  `curl --anyauth --user me:pwd https://example.com`
+
+  另请参阅 <u>--proxy-anyauth</u>、<u>--basic</u> 和 <u>--digest</u>。
+
+- <font color=darkcyan>-a, --append</font >
+  （FTP SFTP）在上传中使用时，此选项使 <u>curl</u> 追加到目标文件，而不是覆盖它。如果远程文件不存在，则会创建它。注意，某些 SFTP 服务器（包括 OpenSSH）会忽略此标志。
+
+  多次提供 <u>--append</u> 没有额外效果。可使用 <u>--no-append</u> 再次禁用它。
+
+  示例：
+  `curl --upload-file local --append ftp://example.com/`
+
+  另请参阅 <u>--range</u> 和 <u>--continue-at</u>。
+
+- <font color=darkcyan>--aws-sigv4</font > \<provider1\[:prvdr2\[:reg\[:srv\]\]\]\>
+  （HTTP）在传输中使用 AWS V4 签名认证。
+
+  provider 参数是一个字符串，算法在创建传出认证头时会使用它。
+
+  region 参数是一个字符串，当端点中省略区域名称时，它指向资源集合的地理区域（区域代码）。
+
+  service 参数是一个字符串，当端点中省略服务名称时，它指向由云提供的功能（服务代码）。
+
+  如果多次提供 <u>--aws-sigv4</u>，则使用最后设置的值。
+
+  示例：
+  `curl --aws-sigv4 "aws:amz:us-east-2:es" --user "key:secret" https://example.com`
+
+  在 7.75.0 中添加。另请参阅 <u>--basic</u> 和 <u>--user</u>。
+
 # 作者
 Torbjorn Granlund、David MacKenzie、Jim Meyering.。
 
