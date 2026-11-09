@@ -133,3 +133,9 @@ Python 的算术魔法方法有三种变体：**普通**（`a + b`）、**反向
 2. **`__eq__` 与 `__hash__` 联动**：定义了 `__eq__` 而没定义 `__hash__` 时，对象会变得**不可哈希**（不能做 `dict` 键或放入 `set`）。
 3. **返回 `NotImplemented`**：在 `__eq__` 等比较方法中，如果无法处理另一类型，应返回 `NotImplemented`（而非 `False`），以允许 Python 尝试对方的反向比较方法。
 4. **优先使用 `__str__` 和 `__repr__`**：日常开发中，这两个是最常实现的，用于调试和日志输出。
+
+------
+
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[python doc](https://docs.python.org/3/)》。</font>版本为V3.14.3，手册更新时间为2025-06。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+
+------
