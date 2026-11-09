@@ -1,7 +1,14 @@
 ---
 title: 第16章 python魔法方法
-tags: pyhton
+tags: python
 ---
+
+
+------
+
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[python doc](https://docs.python.org/3/)》。</font>版本为V3.14.3，手册更新时间为2025-06。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+
+------
 
 **魔法方法是 Python 内置的一种“暗号”。当你对对象使用某些特定的内置语法（如加号、索引、打印、循环）时，Python 会偷偷地去调用这些“暗号”对应的方法。**
 
