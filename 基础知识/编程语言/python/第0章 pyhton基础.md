@@ -325,4 +325,10 @@ print(f"你好 {name}, 你今年 {age} 岁。")
 | **核心目的** | 防君子不防小人 | 防止子类误覆盖 | 定义系统级别行为 |
 | **示例** | `_conn`, `_parse()` | `__token`, `__run()` | `__init__`, `__str__` |
 
+------
+
+***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[python doc](https://docs.python.org/3/)》。</font>版本为V3.14.3，手册更新时间为2025-06。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
+
+------
+
 
