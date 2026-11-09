@@ -1,5 +1,5 @@
 ---
-title: 第16章 python类型注解
+title: 第16章 python魔法方法
 tags: pyhton
 
 
