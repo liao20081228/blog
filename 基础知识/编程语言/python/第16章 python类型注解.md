@@ -147,7 +147,11 @@ tags: python
 #💡 补充提醒
 * **方法**：`typing` 模块主要提供的是**类和函数**，并没有类似 `list.append()` 那种绑定在实例上的“方法”。上面的 `get_args()`、`cast()` 等都是模块级别的函数。
 * **版本差异**：像 `Self`、`TypeGuard`、`Unpack` 等是较新版本（3.10/3.11+）引入的，如果你在老版本 Python 中使用，Pylance 会提示你从 `typing_extensions` 库中导入。
-*   
+
+
+
+
+
 ------
 
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[python doc](https://docs.python.org/3/)》。</font>版本为V3.14.3，手册更新时间为2025-06。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
