@@ -217,7 +217,7 @@ print(isinstance(True, int)) # True (因为 bool 是 int 的子类)
 *   想判断“开关是不是严格开启”，用 **`if a is True:`**
 *   **永远不要写 `if a == True:`**
 
-# 3 内<a class="xsj_anchor xsj_anchor_range xsj_anchor_range_start" name="xsj_1793349709453"></a>置函<a class="xsj_anchor xsj_anchor_range xsj_anchor_range_end" name="xsj_1793349709453"></a>数
+# 3 内置函数
 |类别|函数|
 |--|--|
 |数学|`abs()` 、`min()` 、`max()` 、`sum()` 、`pow()` 、`divmod()` 、`round()`|
