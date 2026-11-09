@@ -1,5 +1,5 @@
 ---
-title: 第14章 python迭代器、生成器与修饰器 
+title: 第14章 python迭代器、生成器
 tags: python
 ---
 
