@@ -145,8 +145,8 @@ tags: python
 | **`TYPE_CHECKING`** | 布尔值（运行时为 `False`，检查时为 `True`） | `if TYPE_CHECKING: from x import Y` |
 
 #💡 补充提醒
-*   **方法**：`typing` 模块主要提供的是**类和函数**，并没有类似 `list.append()` 那种绑定在实例上的“方法”。上面的 `get_args()`、`cast()` 等都是模块级别的函数。
-*   **版本差异**：像 `Self`、`TypeGuard`、`Unpack` 等是较新版本（3.10/3.11+）引入的，如果你在老版本 Python 中使用，Pylance 会提示你从 `typing_extensions` 库中导入。
+* **方法**：`typing` 模块主要提供的是**类和函数**，并没有类似 `list.append()` 那种绑定在实例上的“方法”。上面的 `get_args()`、`cast()` 等都是模块级别的函数。
+* **版本差异**：像 `Self`、`TypeGuard`、`Unpack` 等是较新版本（3.10/3.11+）引入的，如果你在老版本 Python 中使用，Pylance 会提示你从 `typing_extensions` 库中导入。
 *   
 ------
 
