@@ -8,6 +8,7 @@ tags: pyhton
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[python doc](https://docs.python.org/3/)》。</font>版本为V3.14.3，手册更新时间为2025-06。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
+
 [TOC]
 
 # 0 基础类型
@@ -49,7 +50,7 @@ Python 的数据类型非常丰富，但核心的**内置基础数据类型**可
 | **空值**   | 空对象     | `NoneType`  | 不可变   | ❌ 否  | ❌ **否**             | `None`                | 表示“没有值”或“空”，唯一的单例   |
 
 
-## **进阶/扩展数据类型（标准库提供）**
+## 进阶/扩展数据类型（标准库提供）
 
 除了内置的基础类型，Python 标准库中还提供了一些针对特定场景优化的“加强版”数据类型（主要在 `collections` 模块中）：
 
