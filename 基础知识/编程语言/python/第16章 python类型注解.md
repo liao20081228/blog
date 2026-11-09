@@ -9,6 +9,7 @@ tags: python
 ***<font color=blue>版权声明：</font>本文翻译自<font color=blue>《[python doc](https://docs.python.org/3/)》。</font>版本为V3.14.3，手册更新时间为2025-06。<font color=red>本文与原始文档采用相同的版权许可。</font><font color=blue>转载请注明出处！！！</font>***
 
 ------
+
 [TOC]
 
 # 内置类型
@@ -19,7 +20,8 @@ tags: python
 - **内置类型**（如 `list`, `dict`）：用于**具体**的容器。
 - **抽象基类**（从 `collections.abc` 导入，如 `Iterable`, `Mapping`）：用于描述**行为/接口**。**官方强烈建议**在标注参数时，优先使用抽象基类（如 `Iterable[int]`），因为它给调用者的限制更少（传 list、tuple、生成器都可以）。
 
-**注意事项**
+**注意事项**：
+
 在函数定义中，`->` 后面的返回类型通常是具体的（比如返回一个列表就写 `list[int]`）。但如果函数是**生成器**，`->` 后面**绝对不能**写内置的容器，必须写 `Iterator` 或 `Generator`（来自 `collections.abc` 或 `typing`），因为生成器不是 `list`。
 
 ## 基础标量类型（Scalar Types）
@@ -77,7 +79,7 @@ tags: python
 *(注：示例基于 Python 3.10+ 语法，部分针对旧版本的兼容写法已省略)*
 
 
-### 1. 基础与特殊类型（可直接用于 `:` 和 `->`）
+## 1. 基础与特殊类型（可直接用于 `:` 和 `->`）
 
 | 属性 / 类名 | 作用 | 示例 |
 | :--- | :--- | :--- |
@@ -93,9 +95,8 @@ tags: python
 | **`NoReturn`** | 函数永不正常返回（通常抛异常） | `def fail() -> NoReturn: raise Error()` |
 | **`Annotated`** | 附加元数据（供框架使用） | `x: Annotated[int, "positive"]` |
 
----
 
-### 2. 容器与抽象基类（可直接用于 `:` 和 `->`）
+## 2. 容器与抽象基类（可直接用于 `:` 和 `->`）
 *注：Python 3.9+ 官方推荐使用内置的 `list[int]`, `dict[str, int]`，但 `typing` 的别名依然可用。*
 
 | 属性 / 类名 | 作用 | 示例 |
@@ -108,9 +109,7 @@ tags: python
 | **`Generator`** | 生成器对象 | `def f() -> Generator[int, None, None]: ...` |
 | **`Coroutine`** | 协程对象 | `async def f() -> Coroutine[Any, Any, int]: ...` |
 
----
-
-### 3. 泛型与特殊构造器
+## 3. 泛型与特殊构造器
 
 | 属性 / 类名 | 作用 | 示例 |
 | :--- | :--- | :--- |
@@ -121,9 +120,8 @@ tags: python
 | **`NamedTuple`** | 创建带字段名的元组 | `class Point(NamedTuple): x: int; y: int` |
 | **`NewType`** | 创建逻辑上独立的子类型 | `UserId = NewType('UserId', int)` |
 
----
 
-### 4. 辅助函数（用于逻辑判断、代码编写、运行时获取）
+## 4. 辅助函数（用于逻辑判断、代码编写、运行时获取）
 
 *这些函数不能直接作为类型写在 `:` 或 `->` 后面。*
 
@@ -139,17 +137,14 @@ tags: python
 | **`reveal_type()`** | 调试用，让 IDE 打印出推断出的类型 | `reveal_type(x) # IDE 提示: int` |
 | **`assert_type()`** | 断言某个变量就是某个类型 | `assert_type(x, int)` |
 
----
 
-### 5. 特殊常量
+## 5. 特殊常量
 
 | 常量名 | 作用 | 示例 |
 | :--- | :--- | :--- |
 | **`TYPE_CHECKING`** | 布尔值（运行时为 `False`，检查时为 `True`） | `if TYPE_CHECKING: from x import Y` |
 
----
-
-### 💡 补充提醒
+#💡 补充提醒
 *   **方法**：`typing` 模块主要提供的是**类和函数**，并没有类似 `list.append()` 那种绑定在实例上的“方法”。上面的 `get_args()`、`cast()` 等都是模块级别的函数。
 *   **版本差异**：像 `Self`、`TypeGuard`、`Unpack` 等是较新版本（3.10/3.11+）引入的，如果你在老版本 Python 中使用，Pylance 会提示你从 `typing_extensions` 库中导入。
 *   
