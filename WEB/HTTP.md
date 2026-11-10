@@ -16,7 +16,7 @@ tags: https
   - 常见的请求头包括`Host`、`User-Agent`、`Accept`、`Accept-Encoding`、`Content-Length`等。
 - **空行**：请求头和请求体之间的分隔符，表示请求头的结束。
 - **请求体**（可选）：在某些类型的HTTP请求（如 POST 和 PUT）中，请求体包含要发送给服务器的数据。
-"
+
 
 响应
 - **响应行/状态行**（Status Line）：
